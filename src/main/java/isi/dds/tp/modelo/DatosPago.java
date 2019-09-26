@@ -1,5 +1,14 @@
 package isi.dds.tp.modelo;
 
-public class DatosPago {
+import isi.dds.tp.enums.EnumPagoCuota;
 
+public class DatosPago {
+	
+	private Cuota cuota;
+	private Pago pago;
+
+	private Float bonificacionPagoAdelantado;
+	private Float recargoPorMora;
+	private EnumPagoCuota estadoPagoCuota;
+	
 }
