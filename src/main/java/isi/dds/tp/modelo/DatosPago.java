@@ -11,6 +11,14 @@ public class DatosPago {
 	private Float recargoPorMora;
 	private EnumPagoCuota estadoPagoCuota;
 	
+	public DatosPago(Cuota cuota, Pago pago, Float bonificacionPagoAdelantado, Float recargoPorMora, EnumPagoCuota estadoPagoCuota) {
+		this.cuota = cuota;
+		this.pago = pago;
+		this.bonificacionPagoAdelantado = bonificacionPagoAdelantado;
+		this.recargoPorMora = recargoPorMora;
+		this.estadoPagoCuota = estadoPagoCuota;
+	}
+	
 	public Cuota getCuota() {
 		return cuota;
 	}

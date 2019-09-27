@@ -8,7 +8,7 @@ public class AnioModelo {
 
 	public AnioModelo(Modelo modelo, Integer anio) {
 		this.modelo = modelo;
-		/*AÑADIR A MODELO CON ADD CREANDO UN METODO*/
+		modelo.getAnios().add(this);
 		this.anio = anio;		
 	}
 	

@@ -49,4 +49,5 @@ public class BitacoraSolicitudPoliza {
 	}
 
 	/*METODO AÑADIR AL MAP*/
+	
 }

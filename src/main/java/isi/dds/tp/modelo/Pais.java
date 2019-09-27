@@ -10,6 +10,10 @@ public class Pais {
 	private Integer idPais;
 	private String nombre;
 	
+	/**
+	 * @param idPais
+	 * @param nombre
+	 */
 	public Pais(Integer idPais, String nombre) {
 		this.provincias = new ArrayList<Provincia>();
 		this.idPais = idPais;

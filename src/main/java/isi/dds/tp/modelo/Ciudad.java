@@ -11,10 +11,17 @@ public class Ciudad {
 	private Integer idCiudad;
 	private String nombre;
 	
-	public Ciudad(Provincia provincia, Integer idCiudad, String nombre) {
+	/**
+	 * @param provincia
+	 * @param idCiudad
+	 * @param nombre
+	 * @param riesgo
+	 */
+	public Ciudad(Provincia provincia, Integer idCiudad, String nombre, Float riesgo) {
 		this.provincia = provincia;
-		/*AÑADIR CIUDAd A PROVINCIA FIJARSE METODO*/
+		provincia.getCiudades().add(this);
 		this.riesgos = new ArrayList<RiesgoCiudad>();
+		this.riesgos.add(new RiesgoCiudad(this, riesgo));
 		this.idCiudad = idCiudad;
 		this.nombre = nombre;
 	}

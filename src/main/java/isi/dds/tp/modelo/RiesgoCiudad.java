@@ -3,13 +3,24 @@ package isi.dds.tp.modelo;
 import java.time.LocalDate;
 
 public class RiesgoCiudad {
-
 	private Ciudad ciudad;
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
 	private LocalDate fechaInicioVigencia;
 	private LocalDate fechaFinVigencia;
 	private Float valorPorcentual;
+
+	/**
+	 * @param ciudad
+	 * @param valorPorcentual
+	 */
+	public RiesgoCiudad(Ciudad ciudad,  Float valorPorcentual) {
+		this.ciudad = ciudad;
+		this.bitacoraParametros = null;
+		this.fechaInicioVigencia = LocalDate.now();
+		this.fechaFinVigencia = null;
+		this.valorPorcentual = valorPorcentual;
+	}
 	
 	public Ciudad getCiudad() {
 		return ciudad;

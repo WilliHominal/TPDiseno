@@ -4,7 +4,6 @@ import java.time.*;
 import java.util.*;
 
 public class Pago {
-	
 	private List<DatosPago> datosPago;
 	
 	private Integer numeroRecibo; 
@@ -15,6 +14,29 @@ public class Pago {
 	private OffsetDateTime hora;
 	private Float premio; 
 	private String operador;
+	
+	/**
+	 * @param numeroRecibo
+	 * @param importeParcial
+	 * @param importeTotal
+	 * @param vuelto
+	 * @param fechaPago
+	 * @param hora
+	 * @param premio
+	 * @param operador
+	 */
+	public Pago(Integer numeroRecibo, Float importeParcial, Float importeTotal, Float vuelto,
+			LocalDate fechaPago, OffsetDateTime hora, Float premio, String operador) {
+		this.datosPago = new ArrayList<DatosPago>();;
+		this.numeroRecibo = numeroRecibo;
+		this.importeParcial = importeParcial;
+		this.importeTotal = importeTotal;
+		this.vuelto = vuelto;
+		this.fechaPago = fechaPago;
+		this.hora = hora;
+		this.premio = premio;
+		this.operador = operador;
+	}
 	
 	public List<DatosPago> getDatosPago() {
 		return datosPago;

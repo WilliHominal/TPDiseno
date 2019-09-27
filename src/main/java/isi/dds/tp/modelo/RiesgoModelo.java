@@ -3,13 +3,25 @@ package isi.dds.tp.modelo;
 import java.time.LocalDate;
 
 public class RiesgoModelo {
-
 	private Modelo modelo;
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
 	private LocalDate fechaInicioVigencia;
 	private LocalDate fechaFinVigencia;
 	private Float valorPorcentual;
+
+	/**
+	 * @param modelo
+	 * @param valorPorcentual
+	 */
+	public RiesgoModelo(Modelo modelo, Float valorPorcentual) {
+		this.modelo = modelo;
+		this.bitacoraParametros = null;
+		this.fechaInicioVigencia = LocalDate.now();
+		this.fechaFinVigencia = null;
+		this.valorPorcentual = valorPorcentual;
+	}
+	
 	public Modelo getModelo() {
 		return modelo;
 	}

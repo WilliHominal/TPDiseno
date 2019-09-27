@@ -1,6 +1,7 @@
 package isi.dds.tp.modelo;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.enums.*;
 
@@ -28,6 +29,35 @@ public class Cliente {
 	private EnumEstadoCivil estadoCivil; 
 	private String profesion;
 	private Integer anioRegistro;
+	
+	public Cliente(Ciudad ciudad, Long numeroCliente, EnumCondicion condicion, String apellido,
+			String nombre, EnumTipoDocumento tipoDocumento, Integer numeroDocumento, Long numeroCuil, EnumSexo sexo,
+			Date fechaNacimiento, String calle, Integer numeroCalle, Integer piso, String departamento,
+			Integer codigoPostal, EnumCondicionIVA condicionIva, String correoElectronico, EnumEstadoCivil estadoCivil,
+			String profesion, Integer anioRegistro) {
+		this.ciudad = ciudad;
+		this.polizas = new ArrayList<Poliza>();
+		
+		this.numeroCliente = numeroCliente;
+		this.condicion = condicion;
+		this.apellido = apellido;
+		this.nombre = nombre;
+		this.tipoDocumento = tipoDocumento;
+		this.numeroDocumento = numeroDocumento;
+		this.numeroCuil = numeroCuil;
+		this.sexo = sexo;
+		this.fechaNacimiento = fechaNacimiento;
+		this.calle = calle;
+		this.numeroCalle = numeroCalle;
+		this.piso = piso;
+		this.departamento = departamento;
+		this.codigoPostal = codigoPostal;
+		this.condicionIva = condicionIva;
+		this.correoElectronico = correoElectronico;
+		this.estadoCivil = estadoCivil;
+		this.profesion = profesion;
+		this.anioRegistro = anioRegistro;
+	}
 	
 	public Ciudad getCiudad() {
 		return ciudad;

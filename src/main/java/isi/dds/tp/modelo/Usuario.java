@@ -1,18 +1,33 @@
 package isi.dds.tp.modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import isi.dds.tp.enums.EnumTipoUsuario;
 
 public class Usuario {
-	
 	private List <BitacoraSolicitudPoliza> bitacorasSolicitudPoliza;
 	private List <BitacoraParametrosPoliza> bitacoraParametrosPoliza;
 	
 	private Integer idUsuario;
 	private String contrasenia;
 	private EnumTipoUsuario tipoUsuario;
+
 	
+	/**
+	 * @param idUsuario
+	 * @param contrasenia
+	 * @param tipoUsuario
+	 */
+	public Usuario(Integer idUsuario, String contrasenia,
+			EnumTipoUsuario tipoUsuario) {
+		super();
+		this.bitacorasSolicitudPoliza = new ArrayList<BitacoraSolicitudPoliza>();
+		this.bitacoraParametrosPoliza = new ArrayList<BitacoraParametrosPoliza>();
+		this.idUsuario = idUsuario;
+		this.contrasenia = contrasenia;
+		this.tipoUsuario = tipoUsuario;
+	}
 	
 	public List<BitacoraSolicitudPoliza> getBitacorasSolicitudPoliza() {
 		return bitacorasSolicitudPoliza;

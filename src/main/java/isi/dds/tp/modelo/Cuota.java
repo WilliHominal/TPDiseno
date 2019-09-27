@@ -14,6 +14,17 @@ public class Cuota {
 	private LocalDate ultimoDiaPago;
 	private EnumEstadoCuota estado; 
 	private Boolean fuePagada;
+
+	public Cuota(Poliza poliza, DatosPago datosPago, Integer numeroCuota, Float monto, LocalDate ultimoDiaPago,
+			EnumEstadoCuota estado, Boolean fuePagada) {
+		this.poliza = poliza;
+		this.datosPago = datosPago;
+		this.numeroCuota = numeroCuota;
+		this.monto = monto;
+		this.ultimoDiaPago = ultimoDiaPago;
+		this.estado = estado;
+		this.fuePagada = fuePagada;
+	}
 	
 	public Poliza getPoliza() {
 		return poliza;

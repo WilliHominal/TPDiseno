@@ -3,13 +3,24 @@ package isi.dds.tp.modelo;
 import java.time.LocalDate;
 
 public class RiesgoTipoCobertura {
-	
 	private TipoCobertura tipoCobertura;
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
 	private LocalDate fechaInicioVigencia;
 	private LocalDate fechaFinVigencia;
 	private Float valorPorcentual;
+	
+	/**
+	 * @param tipoCobertura
+	 * @param valorPorcentual
+	 */
+	public RiesgoTipoCobertura(TipoCobertura tipoCobertura,	Float valorPorcentual) {
+		this.tipoCobertura = tipoCobertura;
+		this.bitacoraParametros = null;
+		this.fechaInicioVigencia = LocalDate.now();
+		this.fechaFinVigencia = null;
+		this.valorPorcentual = valorPorcentual;
+	}
 	
 	public TipoCobertura getTipoCobertura() {
 		return tipoCobertura;

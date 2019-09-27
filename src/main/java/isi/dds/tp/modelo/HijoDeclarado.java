@@ -10,6 +10,13 @@ public class HijoDeclarado {
 	private String sexo; 
 	private EnumEstadoCivil estadoCivil;
 	
+	public HijoDeclarado(Integer numeroHijo, LocalDate fechaNacimiento, String sexo, EnumEstadoCivil estadoCivil) {
+		this.numeroHijo = numeroHijo;
+		this.fechaNacimiento = fechaNacimiento;
+		this.sexo = sexo;
+		this.estadoCivil = estadoCivil;
+	}
+	
 	public Integer getNumeroHijo() {
 		return numeroHijo;
 	}

@@ -11,11 +11,12 @@ public class Modelo {
 	private Integer idModelo;
 	private String nombre;
 	
-	public Modelo(Marca marca, Integer idModelo, String nombre) {
+	public Modelo(Marca marca, Integer idModelo, String nombre, Float riesgo) {
 		this.marca = marca;
-		/*AÑADIR CON ADD A MARCA, CREANDO UN METODO*/
+		marca.getModelos().add(this);
 		this.anios = new ArrayList<AnioModelo>();
 		this.riesgos = new ArrayList<RiesgoModelo>();
+		this.riesgos.add(new RiesgoModelo(this, riesgo));
 		this.idModelo = idModelo;
 		this.nombre = nombre;		
 	}

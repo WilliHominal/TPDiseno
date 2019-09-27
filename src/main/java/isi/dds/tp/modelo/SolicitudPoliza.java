@@ -4,10 +4,9 @@ import java.util.*;
 import isi.dds.tp.enums.*;
 
 public class SolicitudPoliza {
-	
 	private List<HijoDeclarado> hijosDeclarados;
 	private List<BitacoraSolicitudPoliza> bitacorasSolicitud;
-	
+
 	private Integer numeroSolicitud; /*CLAVE: numeroSolicitud*/
 	private String patente; /*CLAVE: patente*/
 	private String motor; /*CLAVE: motor*/
@@ -20,6 +19,10 @@ public class SolicitudPoliza {
 	private Boolean tieneRastreoVehicular; /*CLAVE: tieneRastreoVehicular*/
 	private EnumTipoCobertura tipoCobertura; /*CLAVE: tipoCobertura*/
 		
+	/**
+	 * @param poliza
+	 * @param numeroSolicitud
+	 */
 	public SolicitudPoliza(Poliza p, Integer numeroSolicitud) {
 		p.setSolicitudPoliza(this);
 		this.hijosDeclarados = p.getHijosDeclarado();

@@ -1,11 +1,11 @@
 package isi.dds.tp.modelo;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.enums.*;
 
 public class Poliza {
-	
 	private Cliente cliente;
 	private List<HijoDeclarado> hijosDeclarado;
 	private TipoCobertura tipoCobertura;
@@ -41,6 +41,66 @@ public class Poliza {
 	private Float valorRiesgoCiudad; 
 	private Float valorRiesgoModelo;
 	private Float porcentajeValorAsegurado;
+	
+	/**
+	 * @param cliente
+	 * @param tipoCobertura
+	 * @param anioModelo
+	 * @param ciudad
+	 * @param parametroPoliza
+	 * @param solicitudPoliza
+	 * @param numeroPoliza
+	 * @param sumaAsegurada
+	 * @param estado
+	 * @param motor
+	 * @param chasis
+	 * @param patente
+	 * @param kmRealizadosPorAnio
+	 * @param guardaGarage
+	 * @param tieneAlarma
+	 * @param tieneRastreoVehicular
+	 * @param tieneTuercasAntirobo
+	 * @param numerosSiniestrosUltimoAnios
+	 */
+	public Poliza(Cliente cliente, TipoCobertura tipoCobertura, AnioModelo anioModelo, Ciudad ciudad, ParametroPoliza parametroPoliza, SolicitudPoliza solicitudPoliza,
+			Long numeroPoliza, Float sumaAsegurada, EnumEstadoPoliza estado, String motor, String chasis,
+			String patente, String kmRealizadosPorAnio, Boolean guardaGarage, Boolean tieneAlarma,
+			Boolean tieneRastreoVehicular, Boolean tieneTuercasAntirobo, EnumSiniestros numerosSiniestrosUltimoAnios) {
+		this.cliente = cliente;
+		this.hijosDeclarado = new ArrayList<HijoDeclarado>();
+		this.tipoCobertura = tipoCobertura;
+		this.anioModelo = anioModelo;
+		this.ciudad = ciudad;
+		this.parametroPoliza = parametroPoliza;
+		this.solicitudPoliza = solicitudPoliza;
+		this.numeroPoliza = numeroPoliza;
+		this.sumaAsegurada = sumaAsegurada;
+		this.estado = estado;
+		this.motor = motor;
+		this.chasis = chasis;
+		this.patente = patente;
+		this.kmRealizadosPorAnio = kmRealizadosPorAnio;
+		this.guardaGarage = guardaGarage;
+		this.tieneAlarma = tieneAlarma;
+		this.tieneRastreoVehicular = tieneRastreoVehicular;
+		this.tieneTuercasAntirobo = tieneTuercasAntirobo;
+		this.numerosSiniestrosUltimoAnios = numerosSiniestrosUltimoAnios;
+		this.inicioVigencia = null;
+		this.fechaEmision = null;
+		this.finVigencia = null;
+		this.formaPago = null;
+		this.esPropuesta = null;
+		this.estaEmitida = null;
+		this.valorDescuentoPorUnidadAdicional = null;
+		this.valorPremio = null;
+		this.valorPrima = null;
+		this.valorDescuento = null;
+		this.valorBonificacionPagoSemestral = null;
+		this.valorInteresGenero = null;
+		this.valorRiesgoCiudad = null;
+		this.valorRiesgoModelo = null;
+		this.porcentajeValorAsegurado = null;
+	}
 	
 	public Cliente getCliente() {
 		return cliente;

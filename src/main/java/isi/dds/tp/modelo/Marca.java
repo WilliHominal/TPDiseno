@@ -9,6 +9,10 @@ public class Marca {
 	private Integer idMarca;
 	private String nombre;
 	
+	/**
+	 * @param idMarca
+	 * @param nombre
+	 */
 	public Marca(Integer idMarca, String nombre) {
 		this.modelos = new ArrayList<Modelo>();
 		this.idMarca = idMarca;

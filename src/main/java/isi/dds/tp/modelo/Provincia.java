@@ -3,16 +3,20 @@ package isi.dds.tp.modelo;
 import java.util.*;
 
 public class Provincia {
-
 	private Pais pais;
 	private List<Ciudad> ciudades;
 	
 	private Integer idProvincia;
 	private String nombre;
 	
+	/**
+	 * @param pais
+	 * @param idProvincia
+	 * @param nombre
+	 */
 	public Provincia(Pais pais, Integer idProvincia, String nombre) {
 		this.pais = pais;
-		/*AÑADIR PROVINCIA A PAIS FIJARSE METODO*/
+		pais.getProvincias().add(this);
 		this.ciudades = new ArrayList<Ciudad>();
 		this.idProvincia = idProvincia;
 		this.nombre = nombre;
