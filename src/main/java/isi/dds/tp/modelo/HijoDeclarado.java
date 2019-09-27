@@ -1,19 +1,19 @@
 package isi.dds.tp.modelo;
 
-import java.sql.Date;
+import java.time.LocalDate;
 import isi.dds.tp.enums.EnumEstadoCivil;
 
 public class HijoDeclarado {
 
 	private Integer numeroHijo;
-	private Date fechaNacimiento; 
+	private LocalDate fechaNacimiento; 
 	private String sexo; 
 	private EnumEstadoCivil estadoCivil;
 	
 	public Integer getNumeroHijo() {
 		return numeroHijo;
 	}
-	public Date getFechaNacimiento() {
+	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 	public String getSexo() {
@@ -25,7 +25,7 @@ public class HijoDeclarado {
 	public void setNumeroHijo(Integer numeroHijo) {
 		this.numeroHijo = numeroHijo;
 	}
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 	public void setSexo(String sexo) {

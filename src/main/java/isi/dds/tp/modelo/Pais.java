@@ -1,5 +1,6 @@
 package isi.dds.tp.modelo;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Pais {
@@ -8,6 +9,12 @@ public class Pais {
 	
 	private Integer idPais;
 	private String nombre;
+	
+	public Pais(Integer idPais, String nombre) {
+		this.provincias = new ArrayList<Provincia>();
+		this.idPais = idPais;
+		this.nombre = nombre;
+	}
 	
 	public List<Provincia> getProvincias() {
 		return provincias;

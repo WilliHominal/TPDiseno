@@ -1,6 +1,7 @@
 package isi.dds.tp.modelo;
 
-import java.sql.Date;
+import java.util.*;
+import java.time.*;
 
 public class BitacoraSolicitudPoliza {
 
@@ -8,7 +9,16 @@ public class BitacoraSolicitudPoliza {
 	private SolicitudPoliza solicitudPoliza;
 	
 	private Integer codigoBitacora;
-	private Date fechaModificacion;
+	private LocalDate fechaModificacion;
+	private Map<String, Object> atributosModificados;
+	
+	public BitacoraSolicitudPoliza(Usuario usuario, SolicitudPoliza solicitudPoliza, Integer codigo){
+		this.usuario = usuario;
+		this.solicitudPoliza = solicitudPoliza;
+		this.codigoBitacora = codigo;
+		this.fechaModificacion = LocalDate.now();
+		this.atributosModificados = new HashMap<String, Object>();
+	}
 	
 	public Usuario getUsuario() {
 		return usuario;
@@ -19,7 +29,7 @@ public class BitacoraSolicitudPoliza {
 	public Integer getCodigoBitacora() {
 		return codigoBitacora;
 	}
-	public Date getFechaModificacion() {
+	public LocalDate getFechaModificacion() {
 		return fechaModificacion;
 	}
 	public void setUsuario(Usuario usuario) {
@@ -31,7 +41,12 @@ public class BitacoraSolicitudPoliza {
 	public void setCodigoBitacora(Integer codigoBitacora) {
 		this.codigoBitacora = codigoBitacora;
 	}
-	public void setFechaModificacion(Date fechaModificacion) {
+	public Map<String, Object> getAtributosModificados() {
+		return atributosModificados;
+	}
+	public void setFechaModificacion(LocalDate fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
+
+	/*METODO AÑADIR AL MAP*/
 }

@@ -1,25 +1,26 @@
 package isi.dds.tp.modelo;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 public class RiesgoCiudad {
 
 	private Ciudad ciudad;
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
-	private Date fechaInicioVigencia;
-	private Date fechaFinVigencia;
+	private LocalDate fechaInicioVigencia;
+	private LocalDate fechaFinVigencia;
 	private Float valorPorcentual;
+	
 	public Ciudad getCiudad() {
 		return ciudad;
 	}
 	public BitacoraParametrosPoliza getBitacoraParametros() {
 		return bitacoraParametros;
 	}
-	public Date getFechaInicioVigencia() {
+	public LocalDate getFechaInicioVigencia() {
 		return fechaInicioVigencia;
 	}
-	public Date getFechaFinVigencia() {
+	public LocalDate getFechaFinVigencia() {
 		return fechaFinVigencia;
 	}
 	public Float getValorPorcentual() {
@@ -31,10 +32,10 @@ public class RiesgoCiudad {
 	public void setBitacoraParametros(BitacoraParametrosPoliza bitacoraParametros) {
 		this.bitacoraParametros = bitacoraParametros;
 	}
-	public void setFechaInicioVigencia(Date fechaInicioVigencia) {
+	public void setFechaInicioVigencia(LocalDate fechaInicioVigencia) {
 		this.fechaInicioVigencia = fechaInicioVigencia;
 	}
-	public void setFechaFinVigencia(Date fechaFinVigencia) {
+	public void setFechaFinVigencia(LocalDate fechaFinVigencia) {
 		this.fechaFinVigencia = fechaFinVigencia;
 	}
 	public void setValorPorcentual(Float valorPorcentual) {

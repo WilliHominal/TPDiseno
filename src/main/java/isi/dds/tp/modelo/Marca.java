@@ -1,6 +1,6 @@
 package isi.dds.tp.modelo;
 
-import java.util.List;
+import java.util.*;
 
 public class Marca {
 	
@@ -8,6 +8,12 @@ public class Marca {
 	
 	private Integer idMarca;
 	private String nombre;
+	
+	public Marca(Integer idMarca, String nombre) {
+		this.modelos = new ArrayList<Modelo>();
+		this.idMarca = idMarca;
+		this.nombre = nombre;
+	}
 	
 	public List<Modelo> getModelos() {
 		return modelos;

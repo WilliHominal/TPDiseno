@@ -1,8 +1,7 @@
 package isi.dds.tp.modelo;
 
-import java.sql.Date;
-import java.sql.Time;
-import java.util.List;
+import java.time.*;
+import java.util.*;
 
 public class Pago {
 	
@@ -12,8 +11,8 @@ public class Pago {
 	private Float importeParcial; 
 	private Float importeTotal;
 	private Float vuelto;
-	private Date fechaPago; 
-	private Time hora;
+	private LocalDate fechaPago; 
+	private OffsetDateTime hora;
 	private Float premio; 
 	private String operador;
 	
@@ -32,10 +31,10 @@ public class Pago {
 	public Float getVuelto() {
 		return vuelto;
 	}
-	public Date getFechaPago() {
+	public LocalDate getFechaPago() {
 		return fechaPago;
 	}
-	public Time getHora() {
+	public OffsetDateTime getHora() {
 		return hora;
 	}
 	public Float getPremio() {
@@ -59,10 +58,10 @@ public class Pago {
 	public void setVuelto(Float vuelto) {
 		this.vuelto = vuelto;
 	}
-	public void setFechaPago(Date fechaPago) {
+	public void setFechaPago(LocalDate fechaPago) {
 		this.fechaPago = fechaPago;
 	}
-	public void setHora(Time hora) {
+	public void setHora(OffsetDateTime hora) {
 		this.hora = hora;
 	}
 	public void setPremio(Float premio) {

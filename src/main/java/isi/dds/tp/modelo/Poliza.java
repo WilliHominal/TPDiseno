@@ -1,15 +1,18 @@
 package isi.dds.tp.modelo;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.List;
 import isi.dds.tp.enums.*;
 
 public class Poliza {
 	
 	private Cliente cliente;
+	private List<HijoDeclarado> hijosDeclarado;
 	private TipoCobertura tipoCobertura;
 	private AnioModelo anioModelo;
 	private Ciudad ciudad;
 	private ParametroPoliza parametroPoliza;
+	private SolicitudPoliza solicitudPoliza;
 	
 	private Long numeroPoliza;
 	private Float sumaAsegurada;
@@ -23,9 +26,9 @@ public class Poliza {
 	private Boolean tieneRastreoVehicular;
 	private Boolean tieneTuercasAntirobo;
 	private EnumSiniestros numerosSiniestrosUltimoAnios; 
-	private Date inicioVigencia; 
-	private Date fechaEmision;
-	private Date finVigencia;
+	private LocalDate inicioVigencia; 
+	private LocalDate fechaEmision;
+	private LocalDate finVigencia;
 	private EnumFormaPago formaPago; 
 	private Boolean esPropuesta;
 	private Boolean estaEmitida; 
@@ -56,6 +59,12 @@ public class Poliza {
 	}
 	public Long getNumeroPoliza() {
 		return numeroPoliza;
+	}
+	public List<HijoDeclarado> getHijosDeclarado() {
+		return hijosDeclarado;
+	}
+	public void setHijosDeclarado(List<HijoDeclarado> hijosDeclarado) {
+		this.hijosDeclarado = hijosDeclarado;
 	}
 	public Float getSumaAsegurada() {
 		return sumaAsegurada;
@@ -90,13 +99,13 @@ public class Poliza {
 	public EnumSiniestros getNumerosSiniestrosUltimoAnios() {
 		return numerosSiniestrosUltimoAnios;
 	}
-	public Date getInicioVigencia() {
+	public LocalDate getInicioVigencia() {
 		return inicioVigencia;
 	}
-	public Date getFechaEmision() {
+	public LocalDate getFechaEmision() {
 		return fechaEmision;
 	}
-	public Date getFinVigencia() {
+	public LocalDate getFinVigencia() {
 		return finVigencia;
 	}
 	public EnumFormaPago getFormaPago() {
@@ -186,13 +195,13 @@ public class Poliza {
 	public void setNumerosSiniestrosUltimoAnios(EnumSiniestros numerosSiniestrosUltimoAnios) {
 		this.numerosSiniestrosUltimoAnios = numerosSiniestrosUltimoAnios;
 	}
-	public void setInicioVigencia(Date inicioVigencia) {
+	public void setInicioVigencia(LocalDate inicioVigencia) {
 		this.inicioVigencia = inicioVigencia;
 	}
-	public void setFechaEmision(Date fechaEmision) {
+	public void setFechaEmision(LocalDate fechaEmision) {
 		this.fechaEmision = fechaEmision;
 	}
-	public void setFinVigencia(Date finVigencia) {
+	public void setFinVigencia(LocalDate finVigencia) {
 		this.finVigencia = finVigencia;
 	}
 	public void setFormaPago(EnumFormaPago formaPago) {
@@ -230,5 +239,11 @@ public class Poliza {
 	}
 	public void setPorcentajeValorAsegurado(Float porcentajeValorAsegurado) {
 		this.porcentajeValorAsegurado = porcentajeValorAsegurado;
+	}
+	public SolicitudPoliza getSolicitudPoliza() {
+		return solicitudPoliza;
+	}
+	public void setSolicitudPoliza(SolicitudPoliza solicitudPoliza) {
+		this.solicitudPoliza = solicitudPoliza;
 	} 
 }

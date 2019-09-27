@@ -1,6 +1,6 @@
 package isi.dds.tp.modelo;
 
-import java.util.List;
+import java.util.*;
 
 public class Modelo {
 
@@ -10,6 +10,15 @@ public class Modelo {
 	
 	private Integer idModelo;
 	private String nombre;
+	
+	public Modelo(Marca marca, Integer idModelo, String nombre) {
+		this.marca = marca;
+		/*AÑADIR CON ADD A MARCA, CREANDO UN METODO*/
+		this.anios = new ArrayList<AnioModelo>();
+		this.riesgos = new ArrayList<RiesgoModelo>();
+		this.idModelo = idModelo;
+		this.nombre = nombre;		
+	}
 	
 	public Marca getMarca() {
 		return marca;

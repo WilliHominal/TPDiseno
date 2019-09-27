@@ -1,6 +1,7 @@
 package isi.dds.tp.modelo;
 
-import java.sql.Date;
+
+import java.time.LocalDate;
 import isi.dds.tp.enums.EnumEstadoCuota;
 
 public class Cuota {
@@ -10,7 +11,7 @@ public class Cuota {
 	
 	private Integer numeroCuota; 
 	private Float monto;
-	private Date ultimoDiaPago;
+	private LocalDate ultimoDiaPago;
 	private EnumEstadoCuota estado; 
 	private Boolean fuePagada;
 	
@@ -26,7 +27,7 @@ public class Cuota {
 	public Float getMonto() {
 		return monto;
 	}
-	public Date getUltimoDiaPago() {
+	public LocalDate getUltimoDiaPago() {
 		return ultimoDiaPago;
 	}
 	public EnumEstadoCuota getEstado() {
@@ -47,7 +48,7 @@ public class Cuota {
 	public void setMonto(Float monto) {
 		this.monto = monto;
 	}
-	public void setUltimoDiaPago(Date ultimoDiaPago) {
+	public void setUltimoDiaPago(LocalDate ultimoDiaPago) {
 		this.ultimoDiaPago = ultimoDiaPago;
 	}
 	public void setEstado(EnumEstadoCuota estado) {

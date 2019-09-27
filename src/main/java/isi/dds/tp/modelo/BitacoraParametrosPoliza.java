@@ -1,7 +1,7 @@
 package isi.dds.tp.modelo;
 
-import java.sql.Date;
-import java.util.List;
+import java.time.*;
+import java.util.*;
 
 public class BitacoraParametrosPoliza {
 
@@ -12,7 +12,16 @@ public class BitacoraParametrosPoliza {
 	private List<ParametroPoliza> parametrosPoliza;
 	
 	private Integer codigoBitacora;
-	private Date fechaModificacion;
+	private LocalDate fechaModificacion;
+	
+	public BitacoraParametrosPoliza(Usuario usuario, Integer codigo){
+		this.usuario = usuario;
+		this.codigoBitacora = codigo;
+		this.fechaModificacion = LocalDate.now();
+		this.riesgosTipoCobertura = new ArrayList<RiesgoTipoCobertura>();
+		this.riesgosModelo = new ArrayList<RiesgoModelo>();
+		this.riesgosCiudad = new ArrayList<RiesgoCiudad>();
+	}
 	
 	public Usuario getUsuario() {
 		return usuario;
@@ -32,7 +41,7 @@ public class BitacoraParametrosPoliza {
 	public Integer getCodigoBitacora() {
 		return codigoBitacora;
 	}
-	public Date getFechaModificacion() {
+	public LocalDate getFechaModificacion() {
 		return fechaModificacion;
 	}
 	public void setUsuario(Usuario usuario) {
@@ -53,7 +62,7 @@ public class BitacoraParametrosPoliza {
 	public void setCodigoBitacora(Integer codigoBitacora) {
 		this.codigoBitacora = codigoBitacora;
 	}
-	public void setFechaModificacion(Date fechaModificacion) {
+	public void setFechaModificacion(LocalDate fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}
 }
