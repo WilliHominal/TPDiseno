@@ -10,6 +10,9 @@ public class RiesgoCiudad {
 	private LocalDate fechaFinVigencia;
 	private Float valorPorcentual;
 
+	public RiesgoCiudad() {
+	}
+	
 	/**
 	 * @param ciudad
 	 * @param valorPorcentual
