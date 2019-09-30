@@ -3,11 +3,11 @@ package isi.dds.tp.modelo;
 import java.time.LocalDate;
 import javax.persistence.*;
 
-@Entity
-@Table
+
 public class ParametroPoliza {
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
+
 	private Integer codigoParametroPoliza;
 	private LocalDate fechaInicioVigencia; 
 	private LocalDate fechaFinVigencia;

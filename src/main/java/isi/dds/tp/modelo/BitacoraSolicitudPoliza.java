@@ -4,8 +4,6 @@ import java.util.*;
 import java.time.*;
 import javax.persistence.*;
 
-@Entity
-@Table
 public class BitacoraSolicitudPoliza {
 
 	private Usuario usuario;

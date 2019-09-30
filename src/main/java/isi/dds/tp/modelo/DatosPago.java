@@ -3,8 +3,6 @@ package isi.dds.tp.modelo;
 import isi.dds.tp.enums.EnumPagoCuota;
 import javax.persistence.*;
 
-@Entity
-@Table
 public class DatosPago {
 	
 	private Cuota cuota;

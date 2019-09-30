@@ -36,7 +36,8 @@ public class Provincia {
 	
 	public Provincia(Pais pais, Integer idProvincia, String nombre) {
 		this.pais = pais;
-		pais.getProvincias().add(this);
+		/*TODO GET*/
+		//pais.getProvincias().add(this);
 		this.ciudades = new ArrayList<Ciudad>();
 		this.idProvincia = idProvincia;
 		this.nombre = nombre;

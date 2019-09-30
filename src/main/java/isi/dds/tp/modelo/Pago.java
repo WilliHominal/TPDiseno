@@ -4,11 +4,10 @@ import java.time.*;
 import java.util.*;
 import javax.persistence.*;
 
-@Entity
-@Table
 public class Pago {
 	private List<DatosPago> datosPago;
 	
+
 	private Integer numeroRecibo; 
 	private Float importeParcial; 
 	private Float importeTotal;

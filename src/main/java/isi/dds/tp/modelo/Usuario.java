@@ -5,12 +5,12 @@ import java.util.List;
 import isi.dds.tp.enums.EnumTipoUsuario;
 import javax.persistence.*;
 
-@Entity
-@Table
+
 public class Usuario {
 	private List <BitacoraSolicitudPoliza> bitacorasSolicitudPoliza;
 	private List <BitacoraParametrosPoliza> bitacoraParametrosPoliza;
 	
+	@Id
 	private Integer idUsuario;
 	private String contrasenia;
 	private EnumTipoUsuario tipoUsuario;

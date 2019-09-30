@@ -8,6 +8,7 @@ import javax.persistence.*;
 @Table
 public class HijoDeclarado {
 
+	@Id
 	private Integer numeroHijo;
 	private LocalDate fechaNacimiento; 
 	private String sexo; 

@@ -5,13 +5,13 @@ import java.time.LocalDate;
 import isi.dds.tp.enums.EnumEstadoCuota;
 import javax.persistence.*;
 
-@Entity
-@Table
+
 public class Cuota {
 	
 	private Poliza poliza;
 	private DatosPago datosPago;
 	
+	@Id
 	private Integer numeroCuota; 
 	private Float monto;
 	private LocalDate ultimoDiaPago;

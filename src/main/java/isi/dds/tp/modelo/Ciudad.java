@@ -15,10 +15,10 @@ public class Ciudad {
 	@JoinColumn(name="idProvincia")
 	private Provincia provincia;
 	
-	@OneToMany(cascade= CascadeType.ALL)
+	/*@OneToMany(cascade= CascadeType.ALL)
 	@JoinColumn(name="idCiudad")
 	@IndexColumn(name="idx")
-	private List<RiesgoCiudad> riesgos;
+	private List<RiesgoCiudad> riesgos;*/
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_ciudad")
@@ -36,8 +36,8 @@ public class Ciudad {
 	public Ciudad(Provincia provincia, Integer idCiudad, String nombre, Float riesgo) {
 		this.provincia = provincia;
 		provincia.getCiudades().add(this);
-		this.riesgos = new ArrayList<RiesgoCiudad>();
-		this.riesgos.add(new RiesgoCiudad(this, riesgo));
+	//	this.riesgos = new ArrayList<RiesgoCiudad>();
+		//this.riesgos.add(new RiesgoCiudad(this, riesgo));
 		this.idCiudad = idCiudad;
 		this.nombre = nombre;
 	}
@@ -45,9 +45,9 @@ public class Ciudad {
 	public Provincia getProvincia() {
 		return provincia;
 	}
-	public List<RiesgoCiudad> getRiesgos() {
+	/*public List<RiesgoCiudad> getRiesgos() {
 		return riesgos;
-	}
+	}*/
 	public Integer getIdCiudad() {
 		return idCiudad;
 	}
@@ -58,7 +58,7 @@ public class Ciudad {
 		this.provincia = provincia;
 	}
 	public void setRiesgos(List<RiesgoCiudad> riesgos) {
-		this.riesgos = riesgos;
+	//	this.riesgos = riesgos;
 	}
 	public void setIdCiudad(Integer idCiudad) {
 		this.idCiudad = idCiudad;

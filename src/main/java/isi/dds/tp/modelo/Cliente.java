@@ -6,8 +6,7 @@ import java.util.List;
 import isi.dds.tp.enums.*;
 import javax.persistence.*;
 
-@Entity
-@Table
+
 public class Cliente {
 	
 	private Ciudad ciudad;

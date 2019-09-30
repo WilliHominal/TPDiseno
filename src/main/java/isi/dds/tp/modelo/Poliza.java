@@ -6,8 +6,6 @@ import java.util.List;
 import isi.dds.tp.enums.*;
 import javax.persistence.*;
 
-@Entity
-@Table
 public class Poliza {
 	private Cliente cliente;
 	private List<HijoDeclarado> hijosDeclarado;
@@ -17,6 +15,7 @@ public class Poliza {
 	private ParametroPoliza parametroPoliza;
 	private SolicitudPoliza solicitudPoliza;
 	
+	@Id
 	private Long numeroPoliza;
 	private Float sumaAsegurada;
 	private EnumEstadoPoliza estado;

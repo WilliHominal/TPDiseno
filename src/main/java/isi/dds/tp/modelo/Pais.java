@@ -1,26 +1,29 @@
 package isi.dds.tp.modelo;
 
-import java.util.ArrayList;
+import java.io.Serializable;
+//import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
 
 import org.hibernate.annotations.IndexColumn;
 
-@SuppressWarnings("deprecation")
+
+@SuppressWarnings({ "serial", "deprecation" })
 @Entity
-@Table
-public class Pais {
+@Table(name = "Pais")
+public class Pais implements Serializable{
 	
-	@OneToMany(cascade= CascadeType.ALL)
+
+	/*@OneToMany(cascade= CascadeType.ALL)
 	@JoinColumn(name="idPais")
 	@IndexColumn(name="idx")
-	private List<Provincia> provincias;
+	private List<Provincia> provincias;*/
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_pais")
-	@SequenceGenerator(name="id_pais", sequenceName = "id_pais_seq", initialValue = 1, allocationSize = 1)
-	@Column(nullable = false)
+	/*@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_pais")
+	@SequenceGenerator(name="id_pais", sequenceName = "id_pais_seq", initialValue = 300, allocationSize = 2)*/
+	@Column(name = "id",nullable = false)
 	private Integer idPais;
 	
 	@Column(nullable = false)
@@ -30,15 +33,14 @@ public class Pais {
 		
 	}
 	
-	public Pais(Integer idPais, String nombre) {
-		this.provincias = new ArrayList<Provincia>();
-		this.idPais = idPais;
+	public Pais(String nombre) {
+		//this.provincias = new ArrayList<Provincia>();
 		this.nombre = nombre;
 	}
 	
-	public List<Provincia> getProvincias() {
+	/*public List<Provincia> getProvincias() {
 		return provincias;
-	}
+	}*/
 	public Integer getIdPais() {
 		return idPais;
 	}
@@ -46,7 +48,7 @@ public class Pais {
 		return nombre;
 	}
 	public void setProvincias(List<Provincia> provincias) {
-		this.provincias = provincias;
+		//this.provincias = provincias;
 	}
 	public void setIdPais(Integer idPais) {
 		this.idPais = idPais;

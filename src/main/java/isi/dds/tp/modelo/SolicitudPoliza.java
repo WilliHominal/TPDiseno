@@ -4,8 +4,6 @@ import java.util.*;
 import isi.dds.tp.enums.*;
 import javax.persistence.*;
 
-@Entity
-@Table
 public class SolicitudPoliza {
 	private List<HijoDeclarado> hijosDeclarados;
 	private List<BitacoraSolicitudPoliza> bitacorasSolicitud;
