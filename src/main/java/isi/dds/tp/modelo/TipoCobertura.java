@@ -8,7 +8,7 @@ import org.hibernate.annotations.IndexColumn;
 
 @SuppressWarnings("deprecation")
 @Entity
-@Table(name = "tip_cobertura")
+@Table(name = "tipo_cobertura")
 public class TipoCobertura {
 	
 	@OneToMany(cascade= CascadeType.ALL)

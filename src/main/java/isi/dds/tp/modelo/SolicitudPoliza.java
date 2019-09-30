@@ -21,38 +21,41 @@ public class SolicitudPoliza {
 	private List<BitacoraSolicitudPoliza> bitacorasSolicitud;
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "numero_solicitud")
+	@SequenceGenerator(name="numero_solicitud", sequenceName = "numero_solicitud_seq", initialValue = 100, allocationSize = 1)
+	@Column(name = "numero_solicitud")
 	/*TODO generar numero solicitud, CAMBIAR en el new*/
 	private Integer numeroSolicitud;
 	
-	@Column(nullable = false)
+	@Column
 	private String patente;
 	
-	@Column(nullable = false)
+	@Column
 	private String motor;
 	
-	@Column(nullable = false)
+	@Column
 	private String chasis;
 	
-	@Column(nullable = false, name = "km_realizados_por_anio")
+	@Column(name = "km_realizados_por_anio")
 	private String kmRealizadosPorAnio;
 	
-	@Column(nullable = false, name = "numeros_siniestros_ultimo_anios")
+	@Column(name = "numeros_siniestros_ultimo_anios")
 	@Enumerated(EnumType.STRING)
 	private EnumSiniestros numerosSiniestrosUltimoAnios;
 	
-	@Column(nullable = false, name = "tiene_alarma")
+	@Column(name = "tiene_alarma")
 	private Boolean tieneAlarma;
 	
-	@Column(nullable = false, name = "guarda_garage")
+	@Column(name = "guarda_garage")
 	private Boolean guardaGarage;
 	
-	@Column(nullable = false, name = "tiene_tuercas_antirobo")
+	@Column(name = "tiene_tuercas_antirobo")
 	private Boolean tieneTuercasAntirobo;
 	
-	@Column(nullable = false, name = "tiene_rastreo_vehicular")
+	@Column(name = "tiene_rastreo_vehicular")
 	private Boolean tieneRastreoVehicular;	
 	
-	@Column(nullable = false, name = "tipo_cobertura")
+	@Column(name = "tipo_cobertura")
 	@Enumerated(EnumType.STRING)
 	private EnumTipoCobertura tipoCobertura; 
 		
@@ -64,10 +67,10 @@ public class SolicitudPoliza {
 		p.setSolicitudPoliza(this);
 		this.hijosDeclarados = p.getHijosDeclarado();
 		this.bitacorasSolicitud = new ArrayList<BitacoraSolicitudPoliza>();
-		
+		this.hijosDeclarados = getHijosDeclarados();
 		
 		this.numeroSolicitud = numeroSolicitud;
-		
+		/*TODO ver numero solicitud como generar*/
 		//this.numeroSolicitud = p.getNumeroPoliza();
 		
 		

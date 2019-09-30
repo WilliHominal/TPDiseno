@@ -10,6 +10,7 @@ import org.hibernate.annotations.IndexColumn;
 @SuppressWarnings("deprecation")
 @Entity
 @Table
+
 public class Poliza {
 	
 	@ManyToOne
@@ -97,7 +98,7 @@ public class Poliza {
 	@Column(nullable = false, name = "fin_vigencia")
 	private LocalDate finVigencia;
 	
-	@Column(nullable = false, name = "forma_pPago")
+	@Column(nullable = false, name = "forma_pago")
 	@Enumerated(EnumType.STRING)
 	private EnumFormaPago formaPago; 
 	
@@ -122,7 +123,7 @@ public class Poliza {
 	@Column(nullable = false, name = "valor_bonificacion_pago_semestral")
 	private Float valorBonificacionPagoSemestral;
 	
-	@Column(nullable = false, name = "valor_interesGenero")
+	@Column(nullable = false, name = "valor_interes_genero")
 	private Float valorInteresGenero;
 	
 	@Column(nullable = false, name = "valor_riesgo_ciudad")
@@ -136,9 +137,48 @@ public class Poliza {
 	
 	@Column(nullable = false, name = "porcentaje_valor_asegurado")
 	private Float porcentajeValorAsegurado;
-	
+		
 	public Poliza() {
 		
+	}
+	
+	public Poliza(Long l) {
+		this.cliente = new Cliente();;
+		this.hijosDeclarado = new ArrayList<HijoDeclarado>();
+		this.cuotas = new ArrayList<Cuota>();
+		this.tipoCobertura = new TipoCobertura();
+		this.anioModelo = new AnioModelo();
+		this.ciudad = new Ciudad();
+		this.parametroPoliza = new ParametroPoliza();
+		this.solicitudPoliza = new SolicitudPoliza();
+		this.numeroPoliza = l;
+		this.sumaAsegurada = 45f;
+		this.estado = EnumEstadoPoliza.GENERADA;
+		this.motor = "ads";
+		this.chasis = "oko";
+		this.patente = "okok";
+		this.kmRealizadosPorAnio = "popopopo";
+		this.guardaGarage = true;
+		this.tieneAlarma = true;
+		this.tieneRastreoVehicular = true;
+		this.tieneTuercasAntirobo = true;
+		this.numerosSiniestrosUltimoAnios = EnumSiniestros.NINGUNO;
+		this.inicioVigencia = LocalDate.now();
+		this.fechaEmision = LocalDate.now();
+		this.finVigencia = LocalDate.now();
+		this.formaPago = EnumFormaPago.MENSUAL;
+		this.esPropuesta = true;
+		this.estaEmitida = true;
+		this.valorDescuentoPorUnidadAdicional = 45f;
+		this.valorPremio = 5634f;
+		this.valorPrima = 123f;
+		this.valorDescuento = 234f;
+		this.valorBonificacionPagoSemestral = 34f;
+		this.valorInteresGenero = 2f;
+		this.valorRiesgoCiudad = 2f;
+		this.valorRiesgoModelo = 4f;
+		this.valorRiesgoCobertura = 56f;
+		this.porcentajeValorAsegurado = 45f;
 	}
 
 	public Poliza(Cliente cliente, TipoCobertura tc, AnioModelo am, Ciudad ciudad, ParametroPoliza p, SolicitudPoliza sp,
@@ -390,5 +430,30 @@ public class Poliza {
 	}
 	public void setCuotas(List<Cuota> cuotas) {
 		this.cuotas = cuotas;
+	}
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((numeroPoliza == null) ? 0 : numeroPoliza.hashCode());
+		return result;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Poliza other = (Poliza) obj;
+		if (numeroPoliza == null) {
+			if (other.numeroPoliza != null)
+				return false;
+		} else if (!numeroPoliza.equals(other.numeroPoliza))
+			return false;
+		return true;
 	} 
 }

@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 @Entity
 @Table
-public class Cuota {
+public class Cuota{
 	
 	@ManyToOne
 	@JoinColumn(name = "numero_poliza")
@@ -17,8 +17,9 @@ public class Cuota {
     @PrimaryKeyJoinColumn(name = "datos_pago")
 	private DatosPago datosPago;
 	
-	@Id
-	@Column(nullable = false, name = "numero_cuota")
+    /*@EmbeddedID*/
+    @Id
+	@Column(nullable = false, name = "numero")
 	/*TODO  clave compuesta cuota con poliza*/
 	private Integer numeroCuota; 
 	
@@ -29,6 +30,7 @@ public class Cuota {
 	private LocalDate ultimoDiaPago;
 	
 	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private EnumEstadoCuota estado;
 
 	public Cuota() {

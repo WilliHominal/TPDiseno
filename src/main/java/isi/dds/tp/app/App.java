@@ -1,41 +1,59 @@
 package isi.dds.tp.app;
 
-import java.util.List;
-
-import javax.imageio.spi.ServiceRegistry;
-
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.hibernate.query.Query;
 
 import isi.dds.tp.hibernate.HibernateUtil;
-import isi.dds.tp.modelo.Ciudad;
-import isi.dds.tp.modelo.Pais;
-import isi.dds.tp.modelo.Provincia;
+import isi.dds.tp.modelo.*;
 
 public class App {
     
 	public static void main(String[] args) {
-       Pais pais = new Pais("Argentina");
-       Provincia pr = new Provincia(pais,"Santa Fe");
-       Ciudad ci = new Ciudad(pr,"Santa Fe", 2.5f);
-       Ciudad c2 = new Ciudad(pr,"Esperanza", 1.5f);
-        Transaction transaction = null;
-        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+
+		Poliza p1 = new Poliza(1l);		
+		Poliza p2 = new Poliza(2l);
+		
+		Cuota c1 = new Cuota();
+		c1.setNumeroCuota(1);
+		Cuota c2 = new Cuota();
+		c2.setNumeroCuota(2);
+		Cuota c3 = new Cuota();
+		c3.setNumeroCuota(3);
+		Cuota c4 = new Cuota();
+		c4.setNumeroCuota(1);
+		Cuota c5 = new Cuota();
+		c5.setNumeroCuota(2);
+		Cuota c6 = new Cuota();
+		c6.setNumeroCuota(3);
+		
+		p1.getCuotas().add(c1);
+		p1.getCuotas().add(c2);
+		p1.getCuotas().add(c3);
+		p2.getCuotas().add(c4);
+		p2.getCuotas().add(c5);
+		p2.getCuotas().add(c6);
+		
+		Ciudad c = new Ciudad();
+		c.setNombre("asdads");
+		
+		
+		Ciudad ci2 = new Ciudad();
+		ci2.setNombre("asdads");
+      
+       
+		Transaction transaction = null;
+		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
         	transaction = session.getSessionFactory().openSession().getTransaction();
         	// start a transaction
             session.beginTransaction();
 
             // save the student objects
-            session.save(pais);
-            session.save(pr);
-            session.save(ci);
-            session.save(c2);
+            session.save(ci2);
    
             // commit transaction           
             session.getTransaction().commit();
-        } catch (Exception e) {
-            if (transaction != null) {
+		} catch (Exception e) {
+        	if (transaction != null) {
                 transaction.rollback();
             }
             e.printStackTrace();

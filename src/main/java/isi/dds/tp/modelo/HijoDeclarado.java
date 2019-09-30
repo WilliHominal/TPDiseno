@@ -14,7 +14,7 @@ public class HijoDeclarado {
 	
 	@Id
 	@Column(name = "numero_hijo")
-	/*TODO  clave compuesta hioj declarado con poliza*/
+	/*TODO  clave compuesta hijo declarado con poliza*/
 	private Integer numeroHijo;
 	
 	@Column(nullable = false, name = "fecha_nacimiento")
