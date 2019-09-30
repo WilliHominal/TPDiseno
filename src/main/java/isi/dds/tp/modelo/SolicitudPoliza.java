@@ -2,7 +2,10 @@ package isi.dds.tp.modelo;
 
 import java.util.*;
 import isi.dds.tp.enums.*;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class SolicitudPoliza {
 	private List<HijoDeclarado> hijosDeclarados;
 	private List<BitacoraSolicitudPoliza> bitacorasSolicitud;
@@ -19,10 +22,10 @@ public class SolicitudPoliza {
 	private Boolean tieneRastreoVehicular; /*CLAVE: tieneRastreoVehicular*/
 	private EnumTipoCobertura tipoCobertura; /*CLAVE: tipoCobertura*/
 		
-	/**
-	 * @param poliza
-	 * @param numeroSolicitud
-	 */
+	public SolicitudPoliza() {
+		
+	}
+	
 	public SolicitudPoliza(Poliza p, Integer numeroSolicitud) {
 		p.setSolicitudPoliza(this);
 		this.hijosDeclarados = p.getHijosDeclarado();

@@ -2,7 +2,10 @@ package isi.dds.tp.modelo;
 
 import java.util.*;
 import java.time.*;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class BitacoraSolicitudPoliza {
 
 	private Usuario usuario;
@@ -11,6 +14,10 @@ public class BitacoraSolicitudPoliza {
 	private Integer codigoBitacora;
 	private LocalDate fechaModificacion;
 	private Map<String, Object> atributosModificados;
+	
+	public BitacoraSolicitudPoliza() {
+		
+	}
 	
 	public BitacoraSolicitudPoliza(Usuario usuario, SolicitudPoliza solicitudPoliza, Integer codigo){
 		this.usuario = usuario;

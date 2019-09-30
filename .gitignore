@@ -1,2 +1,5 @@
 
 src/main/java/isi/dd/tp/pruebaHibernate/pruebas.java
+target/classes/pruebas/HibernateUtil.class
+target/classes/pruebas/Main.class
+*.java

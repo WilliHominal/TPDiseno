@@ -3,7 +3,10 @@ package isi.dds.tp.modelo;
 
 import java.time.LocalDate;
 import isi.dds.tp.enums.EnumEstadoCuota;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class Cuota {
 	
 	private Poliza poliza;
@@ -15,6 +18,10 @@ public class Cuota {
 	private EnumEstadoCuota estado; 
 	private Boolean fuePagada;
 
+	public Cuota() {
+		
+	}
+	
 	public Cuota(Poliza poliza, DatosPago datosPago, Integer numeroCuota, Float monto, LocalDate ultimoDiaPago,
 			EnumEstadoCuota estado, Boolean fuePagada) {
 		this.poliza = poliza;

@@ -2,18 +2,38 @@ package isi.dds.tp.modelo;
 
 import java.util.*;
 
+import javax.persistence.*;
+
+import org.hibernate.annotations.IndexColumn;
+
+@SuppressWarnings("deprecation")
+@Entity
+@Table
 public class Provincia {
+	
+	@ManyToOne
+	@JoinColumn(name="idPais")
 	private Pais pais;
+	
+	@OneToMany(cascade= CascadeType.ALL)
+	@JoinColumn(name="idProvincia")
+	@IndexColumn(name="idx")
 	private List<Ciudad> ciudades;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_provincia")
+	@SequenceGenerator(name="id_provincia", sequenceName = "id_provincia_seq", initialValue = 1, allocationSize = 1)
+	@Column(nullable = false)
 	private Integer idProvincia;
+	
+	@Column(nullable = false)
 	private String nombre;
 	
-	/**
-	 * @param pais
-	 * @param idProvincia
-	 * @param nombre
-	 */
+	
+	public Provincia() {
+		
+	}
+	
 	public Provincia(Pais pais, Integer idProvincia, String nombre) {
 		this.pais = pais;
 		pais.getProvincias().add(this);

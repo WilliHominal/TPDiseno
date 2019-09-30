@@ -2,7 +2,10 @@ package isi.dds.tp.modelo;
 
 import java.time.*;
 import java.util.*;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class BitacoraParametrosPoliza {
 
 	private Usuario usuario;
@@ -13,6 +16,10 @@ public class BitacoraParametrosPoliza {
 	
 	private Integer codigoBitacora;
 	private LocalDate fechaModificacion;
+	
+	public BitacoraParametrosPoliza(){
+		
+	}
 	
 	public BitacoraParametrosPoliza(Usuario usuario, Integer codigo){
 		this.usuario = usuario;

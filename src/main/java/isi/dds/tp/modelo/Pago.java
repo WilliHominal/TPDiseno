@@ -2,7 +2,10 @@ package isi.dds.tp.modelo;
 
 import java.time.*;
 import java.util.*;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class Pago {
 	private List<DatosPago> datosPago;
 	
@@ -14,6 +17,10 @@ public class Pago {
 	private OffsetDateTime hora;
 	private Float premio; 
 	private String operador;
+	
+	public Pago() {
+		
+	}
 	
 	/**
 	 * @param numeroRecibo

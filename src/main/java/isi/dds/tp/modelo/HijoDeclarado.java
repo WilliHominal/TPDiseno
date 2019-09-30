@@ -2,13 +2,20 @@ package isi.dds.tp.modelo;
 
 import java.time.LocalDate;
 import isi.dds.tp.enums.EnumEstadoCivil;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class HijoDeclarado {
 
 	private Integer numeroHijo;
 	private LocalDate fechaNacimiento; 
 	private String sexo; 
 	private EnumEstadoCivil estadoCivil;
+	
+	public HijoDeclarado () {
+	
+	}
 	
 	public HijoDeclarado(Integer numeroHijo, LocalDate fechaNacimiento, String sexo, EnumEstadoCivil estadoCivil) {
 		this.numeroHijo = numeroHijo;

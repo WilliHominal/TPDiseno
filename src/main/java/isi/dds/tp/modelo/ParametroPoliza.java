@@ -1,7 +1,10 @@
 package isi.dds.tp.modelo;
 
 import java.time.LocalDate;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class ParametroPoliza {
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
@@ -62,21 +65,21 @@ public class ParametroPoliza {
 
 	public ParametroPoliza(ParametroPoliza p) {
 		//CORREGIR
-		this.codigoParametroPoliza = codigoParametroPoliza;
-		this.fechaInicioVigencia = fechaInicioVigencia;
-		this.fechaFinVigencia = fechaFinVigencia;
-		this.porcentajeTuercasAntirobo = porcentajeTuercasAntirobo;
-		this.porcentajeGuardaEnGarage = porcentajeGuardaEnGarage;
-		this.porcentajeAlarma = porcentajeAlarma;
-		this.porcentajeRastreoVehicular = porcentajeRastreoVehicular;
-		this.porcentajeAjusteKm = porcentajeAjusteKm;
-		this.porcentajeNingunSiniestro = porcentajeNingunSiniestro;
-		this.porcentajeUnSiniestro = porcentajeUnSiniestro;
-		this.porcentajeDosSiniestro = porcentajeDosSiniestro;
-		this.porcentajeMayorADosSiniestro = porcentajeMayorADosSiniestro;
-		this.porcentajePorHijoRegistrado = porcentajePorHijoRegistrado;
-		this.descuentoUnidadAdicional = descuentoUnidadAdicional;
-		this.valorDerechoEmision = valorDerechoEmision;
+		this.codigoParametroPoliza = p.codigoParametroPoliza;
+		this.fechaInicioVigencia = p.fechaInicioVigencia;
+		this.fechaFinVigencia = p.fechaFinVigencia;
+		this.porcentajeTuercasAntirobo = p.porcentajeTuercasAntirobo;
+		this.porcentajeGuardaEnGarage = p.porcentajeGuardaEnGarage;
+		this.porcentajeAlarma = p.porcentajeAlarma;
+		this.porcentajeRastreoVehicular = p.porcentajeRastreoVehicular;
+		this.porcentajeAjusteKm = p.porcentajeAjusteKm;
+		this.porcentajeNingunSiniestro = p.porcentajeNingunSiniestro;
+		this.porcentajeUnSiniestro = p.porcentajeUnSiniestro;
+		this.porcentajeDosSiniestro = p.porcentajeDosSiniestro;
+		this.porcentajeMayorADosSiniestro = p.porcentajeMayorADosSiniestro;
+		this.porcentajePorHijoRegistrado = p.porcentajePorHijoRegistrado;
+		this.descuentoUnidadAdicional = p.descuentoUnidadAdicional;
+		this.valorDerechoEmision = p.valorDerechoEmision;
 	}
 	
 	

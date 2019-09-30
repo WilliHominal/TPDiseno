@@ -3,17 +3,33 @@ package isi.dds.tp.modelo;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.*;
+
+import org.hibernate.annotations.IndexColumn;
+
+@SuppressWarnings("deprecation")
+@Entity
+@Table
 public class Pais {
 	
+	@OneToMany(cascade= CascadeType.ALL)
+	@JoinColumn(name="idPais")
+	@IndexColumn(name="idx")
 	private List<Provincia> provincias;
-	
+
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_pais")
+	@SequenceGenerator(name="id_pais", sequenceName = "id_pais_seq", initialValue = 1, allocationSize = 1)
+	@Column(nullable = false)
 	private Integer idPais;
+	
+	@Column(nullable = false)
 	private String nombre;
 	
-	/**
-	 * @param idPais
-	 * @param nombre
-	 */
+	public Pais(){
+		
+	}
+	
 	public Pais(Integer idPais, String nombre) {
 		this.provincias = new ArrayList<Provincia>();
 		this.idPais = idPais;

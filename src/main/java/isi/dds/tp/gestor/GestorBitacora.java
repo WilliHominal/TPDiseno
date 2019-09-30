@@ -7,7 +7,7 @@ public class GestorBitacora {
     private GestorBitacora() {
 
     }
-
+    
     public static GestorBitacora getGestorBitacora() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorBitacora();

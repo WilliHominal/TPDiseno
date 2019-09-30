@@ -4,7 +4,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.enums.*;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class Poliza {
 	private Cliente cliente;
 	private List<HijoDeclarado> hijosDeclarado;

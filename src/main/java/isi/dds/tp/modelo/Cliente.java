@@ -4,31 +4,70 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.enums.*;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class Cliente {
 	
 	private Ciudad ciudad;
 	private List<Poliza> polizas;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_cliente_ciudad")
+	@SequenceGenerator(name="id_cliente_ciudad", sequenceName = "id_cliente_ciudadd_seq", initialValue = 1, allocationSize = 1)
+	@Column(nullable = false)
 	private Long numeroCliente;
+	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private EnumCondicion condicion; 
+	
+	@Column(nullable = false)
 	private String apellido;
+	
+	@Column(nullable = false)
 	private String nombre;
+	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private EnumTipoDocumento tipoDocumento;
-	private Integer numeroDocumento; 
+	
+	@Column(nullable = false)
+	private Integer numeroDocumento;
+	
+	@Column(nullable = false)
 	private Long numeroCuil;
+	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private EnumSexo sexo;
-	private Date fechaNacimiento; 
+	
+	@Column(nullable = false)
+	private Date fechaNacimiento;
+	
+	@Column(nullable = false)
 	private String calle;
 	private Integer numeroCalle; 
 	private Integer piso; 
 	private String departamento; 
 	private Integer codigoPostal;
-	private EnumCondicionIVA condicionIva; 
+	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
+	private EnumCondicionIVA condicionIva;
+	
 	private String correoElectronico;
+	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private EnumEstadoCivil estadoCivil; 
 	private String profesion;
 	private Integer anioRegistro;
+	
+	public Cliente() {
+
+	}
 	
 	public Cliente(Ciudad ciudad, Long numeroCliente, EnumCondicion condicion, String apellido,
 			String nombre, EnumTipoDocumento tipoDocumento, Integer numeroDocumento, Long numeroCuil, EnumSexo sexo,

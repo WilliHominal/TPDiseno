@@ -1,15 +1,40 @@
 package isi.dds.tp.modelo;
 
 import java.util.*;
+import javax.persistence.*;
+import org.hibernate.annotations.IndexColumn;
 
+@SuppressWarnings("deprecation")
+@Entity
+@Table
 public class Modelo {
 
+	@ManyToOne
+	@JoinColumn(name="idMarca")
 	private Marca marca;
+	
+	@OneToMany(cascade= CascadeType.ALL)
+	@JoinColumn(name="idModelo")
+	@IndexColumn(name="idx")
 	private List<AnioModelo> anios;
+	
+	@OneToMany(cascade= CascadeType.ALL)
+	@JoinColumn(name="idModelo")
+	@IndexColumn(name="idx")
 	private List<RiesgoModelo> riesgos;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_modelo")
+	@SequenceGenerator(name="id_modelo", sequenceName = "id_modelo_seq", initialValue = 1, allocationSize = 1)
+	@Column(nullable = false)
 	private Integer idModelo;
+	
+	@Column(nullable = false)
 	private String nombre;
+	
+	public Modelo() {
+		
+	}
 	
 	public Modelo(Marca marca, Integer idModelo, String nombre, Float riesgo) {
 		this.marca = marca;

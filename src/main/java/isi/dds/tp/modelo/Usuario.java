@@ -2,9 +2,11 @@ package isi.dds.tp.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import isi.dds.tp.enums.EnumTipoUsuario;
+import javax.persistence.*;
 
+@Entity
+@Table
 public class Usuario {
 	private List <BitacoraSolicitudPoliza> bitacorasSolicitudPoliza;
 	private List <BitacoraParametrosPoliza> bitacoraParametrosPoliza;
@@ -13,12 +15,10 @@ public class Usuario {
 	private String contrasenia;
 	private EnumTipoUsuario tipoUsuario;
 
+	public Usuario() {
+		
+	}
 	
-	/**
-	 * @param idUsuario
-	 * @param contrasenia
-	 * @param tipoUsuario
-	 */
 	public Usuario(Integer idUsuario, String contrasenia,
 			EnumTipoUsuario tipoUsuario) {
 		super();

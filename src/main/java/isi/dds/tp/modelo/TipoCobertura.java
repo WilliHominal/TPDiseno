@@ -4,15 +4,30 @@ import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.enums.EnumTipoCobertura;
 
+import javax.persistence.*;
+
+import org.hibernate.annotations.IndexColumn;
+
+
+@SuppressWarnings("deprecation")
+@Entity
+@Table
 public class TipoCobertura {
+	
+
+	@OneToMany(cascade= CascadeType.ALL)
+	@JoinColumn(name="tipoCobertura")
+	@IndexColumn(name="idx")
 	private List<RiesgoTipoCobertura> riesgo;
 	
+	@Id
+	@Enumerated(EnumType.STRING)
 	private EnumTipoCobertura tipoCobertura;
 	
-	/**
-	 * @param tipoCobertura
-	 * @param riesgo
-	 */
+	public TipoCobertura() {
+		
+	}
+	
 	public TipoCobertura(EnumTipoCobertura tipoCobertura, Float riesgo) {
 		this.riesgo =  new  ArrayList<RiesgoTipoCobertura>();
 		this.riesgo.add(new RiesgoTipoCobertura(this, riesgo));
