@@ -10,14 +10,14 @@ import org.hibernate.annotations.IndexColumn;
 public class Marca {
 
 	@OneToMany(cascade= CascadeType.ALL)
-	@JoinColumn(name="idMarca")
+	@JoinColumn(name="id_marca")
 	@IndexColumn(name="idx")
 	private List<Modelo> modelos;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_marca")
-	@SequenceGenerator(name="id_marca", sequenceName = "id_marca_seq", initialValue = 1, allocationSize = 1)
-	@Column(nullable = false)
+	@SequenceGenerator(name="id_marca", sequenceName = "id_marca_seq", initialValue = 100, allocationSize = 1)
+	@Column(nullable = false, name = "id_marca")
 	private Integer idMarca;
 	
 	@Column(nullable = false)
@@ -27,9 +27,8 @@ public class Marca {
 		
 	}
 	
-	public Marca(Integer idMarca, String nombre) {
+	public Marca(String nombre) {
 		this.modelos = new ArrayList<Modelo>();
-		this.idMarca = idMarca;
 		this.nombre = nombre;
 	}
 	

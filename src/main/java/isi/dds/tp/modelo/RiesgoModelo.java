@@ -4,29 +4,32 @@ import java.time.LocalDate;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "riesgo_modelo")
 public class RiesgoModelo {
 	
 	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn (name = "idModelo")
+	@JoinColumn (name = "id_modelo")
 	private Modelo modelo;
 	
-	//private BitacoraParametrosPoliza bitacoraParametros;
+	//optional permita que la relacion pueda ser nual, que seria el caso cuando se crea por primera vez una ciudad
+	@ManyToOne (optional = true, fetch = FetchType.LAZY)
+	@JoinColumn (name = "codigo_bitacora")
+	private BitacoraParametrosPoliza bitacoraParametros;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_riesgo_modelo")
-	@SequenceGenerator(name="id_riesgo_modelo", sequenceName = "id_riesgo_modelo_seq", initialValue = 1, allocationSize = 1)
+	@SequenceGenerator(name="id_riesgo_modelo", sequenceName = "id_riesgo_modelo_seq", initialValue = 100, allocationSize = 1)
 	@Column(nullable = false)
 	private Integer id;
 	
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name = "inicio_vigencia")
 	private LocalDate fechaInicioVigencia;
 	
-	@Column
+	@Column(name = "fin_vigencia")
 	private LocalDate fechaFinVigencia;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name = "valor_porcentual")
 	private Float valorPorcentual;
 	
 	@Column(nullable = false)
@@ -38,11 +41,21 @@ public class RiesgoModelo {
 
 	public RiesgoModelo(Modelo modelo, Float valorPorcentual) {
 		this.modelo = modelo;
-		//this.bitacoraParametros = null;
+		this.bitacoraParametros = null;
 		this.fechaInicioVigencia = LocalDate.now();
 		this.fechaFinVigencia = null;
 		this.valorPorcentual = valorPorcentual;
 		this.ultimo = true;
+	}
+
+	public RiesgoModelo(BitacoraParametrosPoliza b, Modelo modelo, Float valorPorcentual) {
+		this.modelo = modelo;
+		this.bitacoraParametros = b;
+		this.fechaInicioVigencia = LocalDate.now();
+		this.fechaFinVigencia = null;
+		this.valorPorcentual = valorPorcentual;
+		this.ultimo = true;
+		b.getRiesgosModelo().add(this);
 	}
 	
 	public Modelo getModelo() {
@@ -51,9 +64,9 @@ public class RiesgoModelo {
 	public Integer getId() {
 		return id;
 	}
-	/*public BitacoraParametrosPoliza getBitacoraParametros() {
+	public BitacoraParametrosPoliza getBitacoraParametros() {
 		return bitacoraParametros;
-	}*/
+	}
 	public LocalDate getFechaInicioVigencia() {
 		return fechaInicioVigencia;
 	}
@@ -70,7 +83,7 @@ public class RiesgoModelo {
 		this.modelo = modelo;
 	}
 	public void setBitacoraParametros(BitacoraParametrosPoliza bitacoraParametros) {
-	//	this.bitacoraParametros = bitacoraParametros;
+		this.bitacoraParametros = bitacoraParametros;
 	}
 	public void setFechaInicioVigencia(LocalDate fechaInicioVigencia) {
 		this.fechaInicioVigencia = fechaInicioVigencia;

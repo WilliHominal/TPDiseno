@@ -4,29 +4,31 @@ import java.time.LocalDate;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "riesgo_tipo_cobertura")
 public class RiesgoTipoCobertura {
 	
 	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn (name = "tipoCobertura")
+	@JoinColumn (name = "tipo_cobertura")
 	private TipoCobertura tipoCobertura;
 	
-	//private BitacoraParametrosPoliza bitacoraParametros;
+	//optional permita que la relacion pueda ser nual, que seria el caso cuando se crea por primera vez una ciudad
+	@ManyToOne (optional = true, fetch = FetchType.LAZY)
+	@JoinColumn (name = "codigo_bitacora")
+	private BitacoraParametrosPoliza bitacoraParametros;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_riesgo_tipo_cobertura")
-	@SequenceGenerator(name="id_riesgo_tipo_cobertura", sequenceName = "id_riesgo_tipo_cobertura_seq", initialValue = 1, allocationSize = 1)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_riesgo_cobertura")
+	@SequenceGenerator(name="id_riesgo_cobertura", sequenceName = "id_riesgo_cobertura_seq", initialValue = 100, allocationSize = 1)
 	@Column(nullable = false)
 	private Integer id;
-	
-	
-	@Column(nullable = false)
+		
+	@Column(nullable = false, name = "inicio_vigencia")
 	private LocalDate fechaInicioVigencia;
 	
-	@Column
+	@Column(name = "fin_vigencia")
 	private LocalDate fechaFinVigencia;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, name = "valor_porcentual")
 	private Float valorPorcentual;
 	
 	@Column(nullable = false)
@@ -38,19 +40,29 @@ public class RiesgoTipoCobertura {
 	
 	public RiesgoTipoCobertura(TipoCobertura tipoCobertura,	Float valorPorcentual) {
 		this.tipoCobertura = tipoCobertura;
-		//this.bitacoraParametros = null;
+		this.bitacoraParametros = null;
 		this.fechaInicioVigencia = LocalDate.now();
 		this.fechaFinVigencia = null;
 		this.valorPorcentual = valorPorcentual;
 		this.ultimo = true;
 	}
 	
+	public RiesgoTipoCobertura(BitacoraParametrosPoliza b, TipoCobertura tipoCobertura,	Float valorPorcentual) {
+		this.tipoCobertura = tipoCobertura;
+		this.bitacoraParametros = b;
+		this.fechaInicioVigencia = LocalDate.now();
+		this.fechaFinVigencia = null;
+		this.valorPorcentual = valorPorcentual;
+		this.ultimo = true;
+		b.getRiesgosTipoCobertura().add(this);
+	}
+	
 	public TipoCobertura getTipoCobertura() {
 		return tipoCobertura;
 	}
-	//public BitacoraParametrosPoliza getBitacoraParametros() {
-		//return bitacoraParametros;
-//	}
+	public BitacoraParametrosPoliza getBitacoraParametros() {
+		return bitacoraParametros;
+	}
 	public LocalDate getFechaInicioVigencia() {
 		return fechaInicioVigencia;
 	}
@@ -64,7 +76,7 @@ public class RiesgoTipoCobertura {
 		this.tipoCobertura = tipoCobertura;
 	}
 	public void setBitacoraParametros(BitacoraParametrosPoliza bitacoraParametros) {
-		//this.bitacoraParametros = bitacoraParametros;
+		this.bitacoraParametros = bitacoraParametros;
 	}
 	public void setFechaInicioVigencia(LocalDate fechaInicioVigencia) {
 		this.fechaInicioVigencia = fechaInicioVigencia;

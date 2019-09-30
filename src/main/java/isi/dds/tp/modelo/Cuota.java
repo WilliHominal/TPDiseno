@@ -5,18 +5,31 @@ import java.time.LocalDate;
 import isi.dds.tp.enums.EnumEstadoCuota;
 import javax.persistence.*;
 
-
+@Entity
+@Table
 public class Cuota {
 	
+	@ManyToOne
+	@JoinColumn(name = "numero_poliza")
 	private Poliza poliza;
+	
+    @OneToOne
+    @PrimaryKeyJoinColumn(name = "datos_pago")
 	private DatosPago datosPago;
 	
 	@Id
+	@Column(nullable = false, name = "numero_cuota")
+	/*TODO  clave compuesta cuota con poliza*/
 	private Integer numeroCuota; 
+	
+	@Column(nullable = false)
 	private Float monto;
+	
+	@Column(nullable = false, name = "ultimo_dia_pago")
 	private LocalDate ultimoDiaPago;
-	private EnumEstadoCuota estado; 
-	private Boolean fuePagada;
+	
+	@Column(nullable = false)
+	private EnumEstadoCuota estado;
 
 	public Cuota() {
 		
@@ -30,7 +43,6 @@ public class Cuota {
 		this.monto = monto;
 		this.ultimoDiaPago = ultimoDiaPago;
 		this.estado = estado;
-		this.fuePagada = fuePagada;
 	}
 	
 	public Poliza getPoliza() {
@@ -51,9 +63,6 @@ public class Cuota {
 	public EnumEstadoCuota getEstado() {
 		return estado;
 	}
-	public Boolean getFuePagada() {
-		return fuePagada;
-	}
 	public void setPoliza(Poliza poliza) {
 		this.poliza = poliza;
 	}
@@ -71,8 +80,5 @@ public class Cuota {
 	}
 	public void setEstado(EnumEstadoCuota estado) {
 		this.estado = estado;
-	}
-	public void setFuePagada(Boolean fuePagada) {
-		this.fuePagada = fuePagada;
 	}
 }

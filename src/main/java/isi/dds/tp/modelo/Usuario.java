@@ -5,26 +5,42 @@ import java.util.List;
 import isi.dds.tp.enums.EnumTipoUsuario;
 import javax.persistence.*;
 
+import org.hibernate.annotations.IndexColumn;
 
+@SuppressWarnings("deprecation")
+@Entity
+@Table
 public class Usuario {
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name ="id_usuario")
+	@IndexColumn(name ="idx")
 	private List <BitacoraSolicitudPoliza> bitacorasSolicitudPoliza;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name ="id_usuario")
+	@IndexColumn(name ="idx")
 	private List <BitacoraParametrosPoliza> bitacoraParametrosPoliza;
 	
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_usuario")
+	@SequenceGenerator(name = "id_usuario", sequenceName = "id_usuario_seq", initialValue = 100, allocationSize = 1)
+	@Column(nullable = false, name = "id_usuario")
 	private Integer idUsuario;
+	
+	@Column(nullable = false)
 	private String contrasenia;
+	
+	@Column(nullable = false, name = "tipo_usuario")
 	private EnumTipoUsuario tipoUsuario;
 
 	public Usuario() {
 		
 	}
 	
-	public Usuario(Integer idUsuario, String contrasenia,
-			EnumTipoUsuario tipoUsuario) {
-		super();
+	public Usuario(String contrasenia, EnumTipoUsuario tipoUsuario) {
 		this.bitacorasSolicitudPoliza = new ArrayList<BitacoraSolicitudPoliza>();
 		this.bitacoraParametrosPoliza = new ArrayList<BitacoraParametrosPoliza>();
-		this.idUsuario = idUsuario;
 		this.contrasenia = contrasenia;
 		this.tipoUsuario = tipoUsuario;
 	}

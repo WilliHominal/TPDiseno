@@ -3,25 +3,22 @@ package isi.dds.tp.modelo;
 import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.enums.EnumTipoCobertura;
-
 import javax.persistence.*;
-
 import org.hibernate.annotations.IndexColumn;
-
 
 @SuppressWarnings("deprecation")
 @Entity
-@Table
+@Table(name = "tip_cobertura")
 public class TipoCobertura {
 	
-
 	@OneToMany(cascade= CascadeType.ALL)
-	@JoinColumn(name="tipoCobertura")
+	@JoinColumn(name="tipo_cobertura")
 	@IndexColumn(name="idx")
 	private List<RiesgoTipoCobertura> riesgo;
 	
 	@Id
 	@Enumerated(EnumType.STRING)
+	@Column(name = "tipo_cobertura")
 	private EnumTipoCobertura tipoCobertura;
 	
 	public TipoCobertura() {

@@ -3,11 +3,11 @@ package isi.dds.tp.modelo;
 import javax.persistence.*;
 
 @Entity
-@Table
+@Table(name = "anio_modelo")
 public class AnioModelo {
 	
 	@ManyToOne
-	@JoinColumn (name = "idModelo")
+	@JoinColumn (name = "id_modelo")
 	private Modelo modelo;
 	
 	@Id
@@ -16,12 +16,6 @@ public class AnioModelo {
 
 	public AnioModelo() {
 		
-	}
-	
-	public AnioModelo(Modelo modelo, Integer anio) {
-		this.modelo = modelo;
-		modelo.getAnios().add(this);
-		this.anio = anio;		
 	}
 	
 	public Modelo getModelo() {

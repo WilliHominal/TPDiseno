@@ -3,42 +3,67 @@ package isi.dds.tp.modelo;
 import java.time.LocalDate;
 import javax.persistence.*;
 
-
+@Entity
+@Table(name = "parametros_poliza")
 public class ParametroPoliza {
+	
+	//optional permita que la relacion pueda ser nual, que seria el caso cuando se crea por primera vez una ciudad
+	@ManyToOne (optional = true, fetch = FetchType.LAZY)
+	@JoinColumn (name = "codigo_bitacora")
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
-
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codigo_parametros")
+	@SequenceGenerator(name="codigo_parametros", sequenceName = "codigo_parametros_seq", initialValue = 64, allocationSize = 3)
+	@Column(nullable = false, name = "codigo_parametros")
 	private Integer codigoParametroPoliza;
-	private LocalDate fechaInicioVigencia; 
+	
+	@Column(nullable = false, name = "inicio_vigencia")
+	private LocalDate fechaInicioVigencia;
+	
+	@Column(name = "fin_vigencia")
 	private LocalDate fechaFinVigencia;
-	private Float porcentajeTuercasAntirobo; 
+	
+	@Column(nullable = false, name = "porcentaje_tuercas_antirobo")
+	private Float porcentajeTuercasAntirobo;
+	
+	@Column(nullable = false, name = "porcentaje_guarda_en_garage")
 	private Float porcentajeGuardaEnGarage;
+	
+	@Column(nullable = false, name = "porcentaje_alarma")
 	private Float porcentajeAlarma;
-	private Float porcentajeRastreoVehicular; 
+	
+	@Column(nullable = false, name = "porcentaje_rastreo_vehicular")
+	private Float porcentajeRastreoVehicular;
+	
+	@Column(nullable = false, name = "porcentaje_ajuste_km")
 	private Float porcentajeAjusteKm;
-	private Float porcentajeNingunSiniestro; 
+	
+	@Column(nullable = false, name = "porcentaje_ningun_siniestro")
+	private Float porcentajeNingunSiniestro;
+	
+	@Column(nullable = false, name = "porcentaje_un_siniestro")
 	private Float porcentajeUnSiniestro;
+	
+	@Column(nullable = false, name = "porcentaje_dos_siniestro")
 	private Float porcentajeDosSiniestro; 
-	private Float porcentajeMayorADosSiniestro; 
+	
+	@Column(nullable = false, name = "porcentaje_mayor_a_dos_siniestro")
+	private Float porcentajeMayorADosSiniestro;
+	
+	@Column(nullable = false, name = "porcentaje_por_hijo_registrado")
 	private Float porcentajePorHijoRegistrado;
+	
+	@Column(nullable = false, name = "descuento_unidad_adicional")
 	private Float descuentoUnidadAdicional;
+	
+	@Column(nullable = false, name = "valor_derecho_emision")
 	private Float valorDerechoEmision;
 	
-	/**
-	 * @param codigoParametroPoliza
-	 * @param porcentajeTuercasAntirobo
-	 * @param porcentajeGuardaEnGarage
-	 * @param porcentajeAlarma
-	 * @param porcentajeRastreoVehicular
-	 * @param porcentajeAjusteKm
-	 * @param porcentajeNingunSiniestro
-	 * @param porcentajeUnSiniestro
-	 * @param porcentajeDosSiniestro
-	 * @param porcentajeMayorADosSiniestro
-	 * @param porcentajePorHijoRegistrado
-	 * @param descuentoUnidadAdicional
-	 * @param valorDerechoEmision
-	 */
+	public ParametroPoliza (){
+		
+	}
+	
 	public ParametroPoliza(Integer codigoParametroPoliza, Float porcentajeTuercasAntirobo, 
 			Float porcentajeGuardaEnGarage, Float porcentajeAlarma, Float porcentajeRastreoVehicular,
 			Float porcentajeAjusteKm, Float porcentajeNingunSiniestro, Float porcentajeUnSiniestro,
@@ -61,27 +86,6 @@ public class ParametroPoliza {
 		this.descuentoUnidadAdicional = descuentoUnidadAdicional;
 		this.valorDerechoEmision = valorDerechoEmision;
 	}
-	
-
-	public ParametroPoliza(ParametroPoliza p) {
-		//CORREGIR
-		this.codigoParametroPoliza = p.codigoParametroPoliza;
-		this.fechaInicioVigencia = p.fechaInicioVigencia;
-		this.fechaFinVigencia = p.fechaFinVigencia;
-		this.porcentajeTuercasAntirobo = p.porcentajeTuercasAntirobo;
-		this.porcentajeGuardaEnGarage = p.porcentajeGuardaEnGarage;
-		this.porcentajeAlarma = p.porcentajeAlarma;
-		this.porcentajeRastreoVehicular = p.porcentajeRastreoVehicular;
-		this.porcentajeAjusteKm = p.porcentajeAjusteKm;
-		this.porcentajeNingunSiniestro = p.porcentajeNingunSiniestro;
-		this.porcentajeUnSiniestro = p.porcentajeUnSiniestro;
-		this.porcentajeDosSiniestro = p.porcentajeDosSiniestro;
-		this.porcentajeMayorADosSiniestro = p.porcentajeMayorADosSiniestro;
-		this.porcentajePorHijoRegistrado = p.porcentajePorHijoRegistrado;
-		this.descuentoUnidadAdicional = p.descuentoUnidadAdicional;
-		this.valorDerechoEmision = p.valorDerechoEmision;
-	}
-	
 	
 	public BitacoraParametrosPoliza getBitacoraParametros() {
 		return bitacoraParametros;

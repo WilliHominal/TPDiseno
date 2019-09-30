@@ -3,22 +3,58 @@ package isi.dds.tp.modelo;
 import java.util.*;
 import isi.dds.tp.enums.*;
 import javax.persistence.*;
+import org.hibernate.annotations.IndexColumn;
 
+@SuppressWarnings("deprecation")
+@Entity
+@Table(name = "solicitud_poliza")
 public class SolicitudPoliza {
+	
+	@OneToMany()
+	@JoinColumn(name="numero_solicitud")
+	@IndexColumn(name="idx")
 	private List<HijoDeclarado> hijosDeclarados;
+	
+	@OneToMany()
+	@JoinColumn(name="numero_solicitud")
+	@IndexColumn(name="idx")
 	private List<BitacoraSolicitudPoliza> bitacorasSolicitud;
 
-	private Integer numeroSolicitud; /*CLAVE: numeroSolicitud*/
-	private String patente; /*CLAVE: patente*/
-	private String motor; /*CLAVE: motor*/
-	private String chasis; /*CLAVE: chasis*/
-	private String kmRealizadosPorAnio; /*CLAVE: kmRealizadosPorAnio*/
-	private EnumSiniestros numerosSiniestrosUltimoAnios; /*CLAVE: numerosSiniestrosUltimoAnios*/ 
-	private Boolean tieneAlarma; /*CLAVE: tieneAlarma*/
-	private Boolean guardaGarage; /*CLAVE: guardaGarage*/
-	private Boolean tieneTuercasAntirobo; /*CLAVE: tieneTuercasAntirobo*/ 
-	private Boolean tieneRastreoVehicular; /*CLAVE: tieneRastreoVehicular*/
-	private EnumTipoCobertura tipoCobertura; /*CLAVE: tipoCobertura*/
+	@Id
+	/*TODO generar numero solicitud, CAMBIAR en el new*/
+	private Integer numeroSolicitud;
+	
+	@Column(nullable = false)
+	private String patente;
+	
+	@Column(nullable = false)
+	private String motor;
+	
+	@Column(nullable = false)
+	private String chasis;
+	
+	@Column(nullable = false, name = "km_realizados_por_anio")
+	private String kmRealizadosPorAnio;
+	
+	@Column(nullable = false, name = "numeros_siniestros_ultimo_anios")
+	@Enumerated(EnumType.STRING)
+	private EnumSiniestros numerosSiniestrosUltimoAnios;
+	
+	@Column(nullable = false, name = "tiene_alarma")
+	private Boolean tieneAlarma;
+	
+	@Column(nullable = false, name = "guarda_garage")
+	private Boolean guardaGarage;
+	
+	@Column(nullable = false, name = "tiene_tuercas_antirobo")
+	private Boolean tieneTuercasAntirobo;
+	
+	@Column(nullable = false, name = "tiene_rastreo_vehicular")
+	private Boolean tieneRastreoVehicular;	
+	
+	@Column(nullable = false, name = "tipo_cobertura")
+	@Enumerated(EnumType.STRING)
+	private EnumTipoCobertura tipoCobertura; 
 		
 	public SolicitudPoliza() {
 		
@@ -28,7 +64,13 @@ public class SolicitudPoliza {
 		p.setSolicitudPoliza(this);
 		this.hijosDeclarados = p.getHijosDeclarado();
 		this.bitacorasSolicitud = new ArrayList<BitacoraSolicitudPoliza>();
+		
+		
 		this.numeroSolicitud = numeroSolicitud;
+		
+		//this.numeroSolicitud = p.getNumeroPoliza();
+		
+		
 		this.patente = p.getPatente(); 
 		this.motor = p.getMotor();
 		this.chasis = p.getChasis();

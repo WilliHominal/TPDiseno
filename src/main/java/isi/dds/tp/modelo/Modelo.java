@@ -10,23 +10,23 @@ import org.hibernate.annotations.IndexColumn;
 public class Modelo {
 
 	@ManyToOne
-	@JoinColumn(name="idMarca")
+	@JoinColumn(name="id_marca")
 	private Marca marca;
 	
-	@OneToMany(cascade= CascadeType.ALL)
-	@JoinColumn(name="idModelo")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="id_modelo")
 	@IndexColumn(name="idx")
 	private List<AnioModelo> anios;
 	
-	@OneToMany(cascade= CascadeType.ALL)
-	@JoinColumn(name="idModelo")
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name="id_modelo")
 	@IndexColumn(name="idx")
 	private List<RiesgoModelo> riesgos;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_modelo")
-	@SequenceGenerator(name="id_modelo", sequenceName = "id_modelo_seq", initialValue = 1, allocationSize = 1)
-	@Column(nullable = false)
+	@SequenceGenerator(name="id_modelo", sequenceName = "id_modelo_seq", initialValue = 100, allocationSize = 1)
+	@Column(nullable = false, name = "id_modelo")
 	private Integer idModelo;
 	
 	@Column(nullable = false)

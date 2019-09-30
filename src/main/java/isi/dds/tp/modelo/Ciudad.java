@@ -7,23 +7,25 @@ import org.hibernate.annotations.IndexColumn;
 
 @SuppressWarnings("deprecation")
 
+
 @Entity
 @Table
 public class Ciudad {
 	
-	@ManyToOne
-	@JoinColumn(name="idProvincia")
+	@ManyToOne (fetch = FetchType.LAZY)
+	@JoinColumn(name="id_provincia")
 	private Provincia provincia;
 	
-	/*@OneToMany(cascade= CascadeType.ALL)
-	@JoinColumn(name="idCiudad")
+
+	@OneToMany(cascade= CascadeType.ALL)
+	@JoinColumn(name="id_ciudad")
 	@IndexColumn(name="idx")
-	private List<RiesgoCiudad> riesgos;*/
+	private List<RiesgoCiudad> riesgos;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_ciudad")
-	@SequenceGenerator(name="id_ciudad", sequenceName = "id_ciudad_seq", initialValue = 1, allocationSize = 1)
-	@Column(nullable = false)
+	@SequenceGenerator(name="id_ciudad", sequenceName = "id_ciudad_seq", initialValue = 100, allocationSize = 1)
+	@Column(nullable = false, name = "id_ciudad")
 	private Integer idCiudad;
 	
 	@Column(nullable = false)
@@ -33,21 +35,20 @@ public class Ciudad {
 		
 	}
 	
-	public Ciudad(Provincia provincia, Integer idCiudad, String nombre, Float riesgo) {
-		this.provincia = provincia;
-		provincia.getCiudades().add(this);
-	//	this.riesgos = new ArrayList<RiesgoCiudad>();
-		//this.riesgos.add(new RiesgoCiudad(this, riesgo));
-		this.idCiudad = idCiudad;
+	public Ciudad(Provincia pr, String nombre, float f) {
+		this.provincia = pr;
 		this.nombre = nombre;
+		this.riesgos = new ArrayList<RiesgoCiudad>();
+		this.riesgos.add(new RiesgoCiudad(this, f));
+		pr.getCiudades().add(this);
 	}
-	
+
 	public Provincia getProvincia() {
 		return provincia;
 	}
-	/*public List<RiesgoCiudad> getRiesgos() {
+	public List<RiesgoCiudad> getRiesgos() {
 		return riesgos;
-	}*/
+	}
 	public Integer getIdCiudad() {
 		return idCiudad;
 	}
@@ -58,7 +59,7 @@ public class Ciudad {
 		this.provincia = provincia;
 	}
 	public void setRiesgos(List<RiesgoCiudad> riesgos) {
-	//	this.riesgos = riesgos;
+		this.riesgos = riesgos;
 	}
 	public void setIdCiudad(Integer idCiudad) {
 		this.idCiudad = idCiudad;

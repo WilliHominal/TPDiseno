@@ -5,76 +5,153 @@ import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.enums.*;
 import javax.persistence.*;
+import org.hibernate.annotations.IndexColumn;
 
+@SuppressWarnings("deprecation")
+@Entity
+@Table
 public class Poliza {
+	
+	@ManyToOne
+	@JoinColumn(name = "numero_cliente")
 	private Cliente cliente;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "numero_poliza")
+	@IndexColumn(name = "idx")
+	/*TODO configuar unidireccionalidad*/
 	private List<HijoDeclarado> hijosDeclarado;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "numero_poliza")
+	@IndexColumn(name ="idx")
+	/*TODO configuar unidireccionalidad*/
+	private List<Cuota> cuotas;
+	
+    @OneToOne
+    @PrimaryKeyJoinColumn(name = "tipo_cobertura")
 	private TipoCobertura tipoCobertura;
+
+	@OneToOne
+    @PrimaryKeyJoinColumn(name = "anio_modelo")
 	private AnioModelo anioModelo;
+	
+	@OneToOne
+    @PrimaryKeyJoinColumn
 	private Ciudad ciudad;
+	
+    @OneToOne
+    @PrimaryKeyJoinColumn(name = "parametros_poliza")
 	private ParametroPoliza parametroPoliza;
+    
+    @OneToOne(cascade=CascadeType.ALL)
+    @PrimaryKeyJoinColumn(name = "solicitud_poliza")
 	private SolicitudPoliza solicitudPoliza;
 	
 	@Id
+	@Column(name = "numero_poliza")
+	/*TODO definir numero poliza*/
 	private Long numeroPoliza;
+	
+	@Column(nullable = false, name = "suma_asegurada")
 	private Float sumaAsegurada;
+	
+	@Column(nullable = false)
+	@Enumerated(EnumType.STRING)
 	private EnumEstadoPoliza estado;
+	
+	@Column(nullable = false, unique = true)
 	private String motor;
+	
+	@Column(nullable = false, unique = true)
 	private String chasis;
+	
+	@Column(unique = true)
 	private String patente;
+	
+	@Column(nullable = false, name = "km_realizados_por_anio")
 	private String kmRealizadosPorAnio;
+	
+	@Column(nullable = false, name = "guarda_garage")
 	private Boolean guardaGarage;
+	
+	@Column(nullable = false, name = "tiene_alarma")
 	private Boolean tieneAlarma;
+	
+	@Column(nullable = false, name = "tiene_rastreo_vehicular")
 	private Boolean tieneRastreoVehicular;
+	
+	@Column(nullable = false, name = "tiene_tuercas_antirobo")
 	private Boolean tieneTuercasAntirobo;
-	private EnumSiniestros numerosSiniestrosUltimoAnios; 
+	
+	@Column(nullable = false, name = "numeros_siniestros_ultimo_anios")
+	@Enumerated(EnumType.STRING)
+	private EnumSiniestros numerosSiniestrosUltimoAnios;
+	
+	@Column(nullable = false, name = "inicio_vigencia")
 	private LocalDate inicioVigencia; 
+	
+	@Column(nullable = false, name = "fecha_emision")
 	private LocalDate fechaEmision;
+	
+	@Column(nullable = false, name = "fin_vigencia")
 	private LocalDate finVigencia;
+	
+	@Column(nullable = false, name = "forma_pPago")
+	@Enumerated(EnumType.STRING)
 	private EnumFormaPago formaPago; 
+	
+	@Column(name = "es_propuesta")
 	private Boolean esPropuesta;
-	private Boolean estaEmitida; 
+	
+	@Column(name = "esta_emitida")
+	private Boolean estaEmitida;
+	
+	@Column(nullable = false, name = "valor_descuento_por_unidad_adicional")
 	private Float valorDescuentoPorUnidadAdicional;
+	
+	@Column(nullable = false, name = "valor_premio")
 	private Float valorPremio;
+	
+	@Column(nullable = false, name = "valor_prima")
 	private Float valorPrima;
-	private Float valorDescuento; 
-	private Float valorBonificacionPagoSemestral; 
-	private Float valorInteresGenero; 
-	private Float valorRiesgoCiudad; 
+	
+	@Column(nullable = false, name = "valor_descuento")
+	private Float valorDescuento;
+	
+	@Column(nullable = false, name = "valor_bonificacion_pago_semestral")
+	private Float valorBonificacionPagoSemestral;
+	
+	@Column(nullable = false, name = "valor_interesGenero")
+	private Float valorInteresGenero;
+	
+	@Column(nullable = false, name = "valor_riesgo_ciudad")
+	private Float valorRiesgoCiudad;
+	
+	@Column(nullable = false, name = "valor_riesgo_modelo")
 	private Float valorRiesgoModelo;
+
+	@Column(nullable = false, name = "valor_riesgo_cobertura")
+	private Float valorRiesgoCobertura;
+	
+	@Column(nullable = false, name = "porcentaje_valor_asegurado")
 	private Float porcentajeValorAsegurado;
 	
-	/**
-	 * @param cliente
-	 * @param tipoCobertura
-	 * @param anioModelo
-	 * @param ciudad
-	 * @param parametroPoliza
-	 * @param solicitudPoliza
-	 * @param numeroPoliza
-	 * @param sumaAsegurada
-	 * @param estado
-	 * @param motor
-	 * @param chasis
-	 * @param patente
-	 * @param kmRealizadosPorAnio
-	 * @param guardaGarage
-	 * @param tieneAlarma
-	 * @param tieneRastreoVehicular
-	 * @param tieneTuercasAntirobo
-	 * @param numerosSiniestrosUltimoAnios
-	 */
-	public Poliza(Cliente cliente, TipoCobertura tipoCobertura, AnioModelo anioModelo, Ciudad ciudad, ParametroPoliza parametroPoliza, SolicitudPoliza solicitudPoliza,
+	public Poliza() {
+		
+	}
+
+	public Poliza(Cliente cliente, TipoCobertura tc, AnioModelo am, Ciudad ciudad, ParametroPoliza p, SolicitudPoliza sp,
 			Long numeroPoliza, Float sumaAsegurada, EnumEstadoPoliza estado, String motor, String chasis,
 			String patente, String kmRealizadosPorAnio, Boolean guardaGarage, Boolean tieneAlarma,
-			Boolean tieneRastreoVehicular, Boolean tieneTuercasAntirobo, EnumSiniestros numerosSiniestrosUltimoAnios) {
+			Boolean tieneRastreoVehicular, Boolean tt, EnumSiniestros ns) {
 		this.cliente = cliente;
 		this.hijosDeclarado = new ArrayList<HijoDeclarado>();
-		this.tipoCobertura = tipoCobertura;
-		this.anioModelo = anioModelo;
+		this.tipoCobertura = tc;
+		this.anioModelo = am;
 		this.ciudad = ciudad;
-		this.parametroPoliza = parametroPoliza;
-		this.solicitudPoliza = solicitudPoliza;
+		this.parametroPoliza = p;
+		this.solicitudPoliza = sp;
 		this.numeroPoliza = numeroPoliza;
 		this.sumaAsegurada = sumaAsegurada;
 		this.estado = estado;
@@ -85,8 +162,8 @@ public class Poliza {
 		this.guardaGarage = guardaGarage;
 		this.tieneAlarma = tieneAlarma;
 		this.tieneRastreoVehicular = tieneRastreoVehicular;
-		this.tieneTuercasAntirobo = tieneTuercasAntirobo;
-		this.numerosSiniestrosUltimoAnios = numerosSiniestrosUltimoAnios;
+		this.tieneTuercasAntirobo = tt;
+		this.numerosSiniestrosUltimoAnios = ns;
 		this.inicioVigencia = null;
 		this.fechaEmision = null;
 		this.finVigencia = null;
@@ -307,5 +384,11 @@ public class Poliza {
 	}
 	public void setSolicitudPoliza(SolicitudPoliza solicitudPoliza) {
 		this.solicitudPoliza = solicitudPoliza;
+	}
+	public List<Cuota> getCuotas() {
+		return cuotas;
+	}
+	public void setCuotas(List<Cuota> cuotas) {
+		this.cuotas = cuotas;
 	} 
 }

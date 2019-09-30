@@ -4,15 +4,44 @@ import java.time.*;
 import java.util.*;
 import javax.persistence.*;
 
+import org.hibernate.annotations.IndexColumn;
+
+@SuppressWarnings("deprecation")
+@Entity
+@Table(name = "bitacora_parametros_poliza")
 public class BitacoraParametrosPoliza {
 
+	@ManyToOne
+	@JoinColumn(name="id_usuario")
 	private Usuario usuario;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name ="codigo_bitacora")
+	@IndexColumn(name ="idx")
 	private List<RiesgoTipoCobertura> riesgosTipoCobertura;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name ="codigo_bitacora")
+	@IndexColumn(name ="idx")
 	private List<RiesgoModelo> riesgosModelo;
+	
+	@OneToMany(cascade= CascadeType.ALL)
+	@JoinColumn(name ="codigo_bitacora")
+	@IndexColumn(name ="idx")
 	private List<RiesgoCiudad> riesgosCiudad;
+	
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name ="codigo_bitacora")
+	@IndexColumn(name ="idx")
 	private List<ParametroPoliza> parametrosPoliza;
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codigo_bitacora_parametro")
+	@SequenceGenerator(name = "codigo_bitacora_parametro", sequenceName = "codigo_bitacora_parametro_seq", initialValue = 100, allocationSize = 1)
+	@Column(nullable = false, name = "codigo_bitacora")
 	private Integer codigoBitacora;
+	
+	@Column(nullable = false, name = "fecha_modificacion")
 	private LocalDate fechaModificacion;
 	
 	public BitacoraParametrosPoliza(){

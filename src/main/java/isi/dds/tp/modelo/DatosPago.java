@@ -3,13 +3,32 @@ package isi.dds.tp.modelo;
 import isi.dds.tp.enums.EnumPagoCuota;
 import javax.persistence.*;
 
+@Entity
+@Table(name = "datos_pago")
 public class DatosPago {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_datos_pago")
+	@SequenceGenerator(name="id_datos_pago", sequenceName = "id_datos_pago_seq", initialValue = 100, allocationSize = 1)
+	@Column(nullable = false)
+	private Integer id;
+	
+    @OneToOne
+    @PrimaryKeyJoinColumn
 	private Cuota cuota;
+    
+	@ManyToOne
+	@JoinColumn(name="numero_recibo")
 	private Pago pago;
 
+	@Column(nullable = false, name = "bonificacion_pago_adelantado")
 	private Float bonificacionPagoAdelantado;
+	
+	@Column(nullable = false, name = "recargo_por_mora")
 	private Float recargoPorMora;
+	
+	@Column(nullable = false, name = "estado_pago_cuota")
+	@Enumerated(EnumType.STRING)
 	private EnumPagoCuota estadoPagoCuota;
 	
 	public DatosPago() {
@@ -53,5 +72,11 @@ public class DatosPago {
 	}
 	public void setEstadoPagoCuota(EnumPagoCuota estadoPagoCuota) {
 		this.estadoPagoCuota = estadoPagoCuota;
+	}
+	public Integer getId() {
+		return id;
+	}
+	public void setId(Integer id) {
+		this.id = id;
 	}	
 }
