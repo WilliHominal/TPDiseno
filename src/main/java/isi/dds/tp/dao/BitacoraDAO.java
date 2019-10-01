@@ -14,4 +14,6 @@ public class BitacoraDAO {
         }    
         return instanciaDAO;
     }
+    
+    
 }
