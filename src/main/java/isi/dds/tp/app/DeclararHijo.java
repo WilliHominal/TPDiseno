@@ -1,5 +1,12 @@
 package isi.dds.tp.app;
 
-public class DeclararHijo {
+import javax.swing.*;
+
+@SuppressWarnings("serial")
+public class DeclararHijo extends JPanel  {
+
+	public DeclararHijo(JFrame principal) {
+		
+	}
 
 }
