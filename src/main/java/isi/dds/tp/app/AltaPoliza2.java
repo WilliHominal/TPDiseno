@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.swing.*;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
-
 import com.toedter.calendar.JDateChooser;
 
 @SuppressWarnings("serial")

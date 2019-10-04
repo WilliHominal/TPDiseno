@@ -1,7 +1,7 @@
 package isi.dds.tp.gestor;
 
-import isi.dds.tp.modelo.Usuario;
-import isi.dds.tp.dao.UsuarioDAO;
+import isi.dds.tp.modelo.Cliente;
+import isi.dds.tp.dao.ClienteDAO;
 
 public class GestorCliente {
 	
@@ -18,4 +18,41 @@ public class GestorCliente {
         return instanciaGestor;
     }
 
+    public void AltaCliente(Cliente c) {
+    	
+    }
+    
+    public Integer calcularTiempoActivo(Cliente c) {
+    	return null;
+    }
+    
+    public Boolean validacionDatosCliente(Cliente c) {
+		return null;
+    }
+    
+    public Boolean validacionCUIL(Cliente c) {
+    	return null;
+    }
+    
+    public Boolean comprobarEdad(Cliente c) {
+    	return null;
+    }
+    
+    public void actualizarCondicion(Cliente c) {
+
+    }
+    
+    public Boolean validarFechaVigencia(Cliente c) {
+    	return null;
+    }
+    
+    public void generarNumeroCliente(Cliente c) {
+
+    }
+    
+    public Cliente actualizarCliente(Cliente c) {
+    	return null;
+    }
+
+    
 }

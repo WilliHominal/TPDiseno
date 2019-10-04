@@ -3,6 +3,8 @@ package isi.dds.tp.app;
 import java.awt.*;
 import javax.swing.*;
 
+import isi.dds.tp.pruebas.PanelPrueba;
+
 public class App {
 
 	private JFrame frame;
@@ -35,14 +37,15 @@ public class App {
 		frame.setTitle("AAAA");
 		frame.getContentPane().setFont(new Font("Serif", Font.PLAIN, 11));
 		frame.setBounds(0,0,1024,600);
+
+		setAltaPoliza2();
+		frame.setContentPane(altaPoliza2);
 		
-		//setAltaPoliza1(); usar este
-		AppPruebas pruebas = new AppPruebas(frame); //quitar esto
-		
-		frame.setContentPane(pruebas);
-		
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setVisible(true);				
+		//AltaPolizaBis pruebas = new AltaPolizaBis(frame); //quitar esto
+		//frame.setContentPane(pruebas);
+	
+		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//frame.setVisible(true);				
 	}
 
 	public JFrame getFrame() {
