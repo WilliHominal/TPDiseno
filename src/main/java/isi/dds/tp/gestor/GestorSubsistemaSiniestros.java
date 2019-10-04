@@ -14,4 +14,9 @@ public class GestorSubsistemaSiniestros {
         }    
         return instanciaGestor;
     }
+
+	public int getSiniestrosUltimosAnios(Integer numeroDocumento) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

@@ -1,10 +1,6 @@
 package isi.dds.tp.gestor;
 
-import isi.dds.tp.dao.ParametrosVehiculosDAO;
-import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
-import isi.dds.tp.modelo.AnioModelo;
-import isi.dds.tp.modelo.RiesgoModelo;
 
 public class GestorParametrosVehiculo {
 	
@@ -20,4 +16,9 @@ public class GestorParametrosVehiculo {
         return instanciaGestor;
     }
 
+    
+    public Float getRiesgoModelo(Modelo m) {
+    	//retorna el ultimo valor de riesgo de la ciudad
+    	return null;
+    }
 }
