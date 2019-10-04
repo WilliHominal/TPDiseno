@@ -33,6 +33,12 @@ public class Usuario {
 	
 	@Column(nullable = false, name = "tipo_usuario")
 	private EnumTipoUsuario tipoUsuario;
+	
+	@Column(nullable = false)
+	private String nombre;
+	
+	@Column(nullable = false)
+	private String apellido;
 
 	public Usuario() {
 		
@@ -83,5 +89,22 @@ public class Usuario {
 	
 	public void setTipoUsuario(EnumTipoUsuario tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
+	}
+
+	public String getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+
+	public String getApellido() {
+		return apellido;
+	}
+
+	public void setApellido(String apellido) {
+		this.apellido = apellido;
 	} 
+	
 }

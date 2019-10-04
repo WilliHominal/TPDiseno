@@ -13,6 +13,9 @@ public class AnioModelo {
 	@Id
 	@Column(nullable = false)
 	private Integer anio;
+	
+	@Column(nullable = false)
+	private Float sumaAsegurada;
 
 	public AnioModelo() {
 		
