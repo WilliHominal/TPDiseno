@@ -18,5 +18,29 @@ public class GestorParametroPoliza {
         }    
         return instanciaGestor;
     }
+    
+    public Float calcularPrima(Float porcentajeCobertura, Float porcentajeAjusteModelo, Float porcentajeAjusteDomicilio){
+    	return null;
+    }
+    
+    public Float calcularPremio() {
+    	return null;
+    }
+    
+    public Boolean verificarValorPorcentual() {
+    	return null;
+    }
+    
+    public Boolean verificarDerechoEmision() {
+    	return null;
+    }
+    
+    public Boolean verificarDescuentoPorUnidad() {
+    	return null;
+    }	
+    
+    public Float calcularDescuento() {
+    	return null;
+    }
 	
 }

@@ -21,4 +21,30 @@ public class GestorDomicilio {
         return instanciaGestor;
     }
 
+    public Boolean validarAjustePorcentual(RiesgoCiudad r){
+		return null;    	
+    }
+    
+    public void addCiudad(Ciudad c) {
+    	
+    }
+    
+    public void addProvincia(Pais c) {
+    	
+    }
+    
+    public void addPais(Pais p) {
+    	
+    }
+    
+    public Float getRiesgoCiudad(Ciudad c) {
+    	//retorna el ultimo valor de riesgo de la ciudad
+    	return null;
+    }
+    
+    public void addValorRiesgoCiudad(Ciudad c, Float valor) {
+    	
+    }
+    
+    
 }

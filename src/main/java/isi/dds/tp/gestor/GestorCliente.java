@@ -1,6 +1,10 @@
 package isi.dds.tp.gestor;
 
 import isi.dds.tp.modelo.Cliente;
+import isi.dds.tp.modelo.Poliza;
+
+import java.util.List;
+
 import isi.dds.tp.dao.ClienteDAO;
 
 public class GestorCliente {
@@ -54,5 +58,12 @@ public class GestorCliente {
     	return null;
     }
 
+    public Cliente getCliente(Long numeroCliente) {
+    	return null;
+    }
+    
+    public List<Poliza> getPoliza(Long numeroCliente) {
+    	return null;
+    }
     
 }

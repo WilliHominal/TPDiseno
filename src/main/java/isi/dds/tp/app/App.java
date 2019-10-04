@@ -34,9 +34,9 @@ public class App {
 
 	private void inicializar() {
 		frame = new JFrame();
-		frame.setTitle("AAAA");
-		frame.getContentPane().setFont(new Font("Serif", Font.PLAIN, 11));
-		frame.setBounds(0,0,1024,600);
+		//frame.setTitle("AAAA");
+		//frame.getContentPane().setFont(new Font("Serif", Font.PLAIN, 11));
+	//	frame.setBounds(0,0,1024,600);
 
 		setAltaPoliza2();
 		frame.setContentPane(altaPoliza2);
@@ -44,8 +44,8 @@ public class App {
 		//AltaPolizaBis pruebas = new AltaPolizaBis(frame); //quitar esto
 		//frame.setContentPane(pruebas);
 	
-		//frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//frame.setVisible(true);				
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setVisible(true);				
 	}
 
 	public JFrame getFrame() {

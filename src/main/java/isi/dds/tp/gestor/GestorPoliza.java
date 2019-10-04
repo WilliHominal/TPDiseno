@@ -1,6 +1,7 @@
 package isi.dds.tp.gestor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import isi.dds.tp.dao.PolizaDAO;
 import isi.dds.tp.modelo.Poliza;
@@ -60,5 +61,22 @@ public class GestorPoliza {
     	
     }
     
+    public Poliza getPoliza(Long numeroPoliza) {
+		return null;    	
+    }
+    
+    public List<Cuota> getCuotas(Long numeroPoliza){
+		return null;    	
+    }
+    
+    public List<HijoDeclarado> getHijos(Long numeroPoliza){
+    	return null;  
+    }
+    
+    public SolicitudPoliza getSolicitud(Long numeroPoliza) {
+    	return null;
+    }
+    
+    //AGREGAR LOS DE CUOTA
 
 }
