@@ -4,7 +4,6 @@ import java.awt.*;
 
 import javax.swing.*;
 
-import isi.dds.tp.pruebas.AltaPoliza2Prueba;
 
 
 public class App {
@@ -44,7 +43,7 @@ public class App {
 		//AltaPoliza2Prueba a = new AltaPoliza2Prueba(frame, tema);
 		//frame.setContentPane(a);
 		
-		setAltaPoliza1();
+		setAltaPoliza2();
 	
 		frame.setVisible(true);				
 	}
