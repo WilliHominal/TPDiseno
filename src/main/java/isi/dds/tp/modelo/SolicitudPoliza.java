@@ -19,18 +19,6 @@ public class SolicitudPoliza {
 	@JoinColumn(name="numero_solicitud")
 	@IndexColumn(name="idx")
 	private List<BitacoraSolicitudPoliza> bitacorasSolicitud;
-	
-    @OneToOne
-    @PrimaryKeyJoinColumn(name = "tipo_cobertura")
-	private TipoCobertura tipoCobertura;
-
-	@OneToOne
-    @PrimaryKeyJoinColumn(name = "anio_modelo")
-	private AnioModelo anioModelo;
-	
-	@OneToOne
-    @PrimaryKeyJoinColumn
-	private Ciudad ciudad;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "numero_solicitud")
@@ -66,9 +54,36 @@ public class SolicitudPoliza {
 	
 	@Column(name = "tiene_rastreo_vehicular")
 	private Boolean tieneRastreoVehicular;	
+	
+	@Column(name = "tipo_cobertura")
+	@Enumerated(EnumType.STRING)
+	private EnumTipoCobertura tipoCobertura; 
 		
 	public SolicitudPoliza() {
 		
+	}
+	
+	public SolicitudPoliza(Poliza p, Integer numeroSolicitud) {
+		p.setSolicitudPoliza(this);
+		this.hijosDeclarados = p.getHijosDeclarado();
+		this.bitacorasSolicitud = new ArrayList<BitacoraSolicitudPoliza>();
+		this.hijosDeclarados = getHijosDeclarados();
+		
+		this.numeroSolicitud = numeroSolicitud;
+		/*TODO ver numero solicitud como generar*/
+		//this.numeroSolicitud = p.getNumeroPoliza();
+		
+		
+		this.patente = p.getPatente(); 
+		this.motor = p.getMotor();
+		this.chasis = p.getChasis();
+		this.kmRealizadosPorAnio = p.getKmRealizadosPorAnio();
+		this.numerosSiniestrosUltimoAnios = p.getNumerosSiniestrosUltimoAnios(); 
+		this.tieneAlarma = p.getTieneAlarma();
+		this.guardaGarage = p.getGuardaGarage();
+		this.tieneTuercasAntirobo = p.getTieneTuercasAntirobo(); 
+		this.tieneRastreoVehicular = p.getTieneRastreoVehicular();
+		this.tipoCobertura = p.getTipoCobertura().getTipoCobertura();
 	}
 	
 	public List<HijoDeclarado> getHijosDeclarados() {
@@ -116,6 +131,9 @@ public class SolicitudPoliza {
 	public Boolean getTieneRastreoVehicular() {
 		return tieneRastreoVehicular;
 	}
+	public EnumTipoCobertura getTipoCobertura() {
+		return tipoCobertura;
+	}
 	public void setPatente(String patente) {
 		this.patente = patente;
 	}
@@ -143,22 +161,7 @@ public class SolicitudPoliza {
 	public void setTieneRastreoVehicular(Boolean tieneRastreoVehicular) {
 		this.tieneRastreoVehicular = tieneRastreoVehicular;
 	}
-	public TipoCobertura getTipoCobertura() {
-		return tipoCobertura;
-	}
-	public void setTipoCobertura(TipoCobertura tipoCobertura) {
+	public void setTipoCobertura(EnumTipoCobertura tipoCobertura) {
 		this.tipoCobertura = tipoCobertura;
-	}
-	public AnioModelo getAnioModelo() {
-		return anioModelo;
-	}
-	public void setAnioModelo(AnioModelo anioModelo) {
-		this.anioModelo = anioModelo;
-	}
-	public Ciudad getCiudad() {
-		return ciudad;
-	}
-	public void setCiudad(Ciudad ciudad) {
-		this.ciudad = ciudad;
 	}
 }
