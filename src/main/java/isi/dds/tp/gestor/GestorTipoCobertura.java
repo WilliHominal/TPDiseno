@@ -1,6 +1,9 @@
 package isi.dds.tp.gestor;
 
+import isi.dds.tp.dao.TipoCoberturaDAO;
 import isi.dds.tp.modelo.TipoCobertura;
+import isi.dds.tp.modelo.Ciudad;
+import isi.dds.tp.modelo.RiesgoTipoCobertura;
 
 public class GestorTipoCobertura {
 	
@@ -21,7 +24,7 @@ public class GestorTipoCobertura {
     	
     }
     
-    public Float getRiesgoCobertura(TipoCobertura t) {
+    public Float getRiesgoCiudad(TipoCobertura t) {
     	//retorna el ultimo valor de riesgo de la ciudad
     	return null;
     }

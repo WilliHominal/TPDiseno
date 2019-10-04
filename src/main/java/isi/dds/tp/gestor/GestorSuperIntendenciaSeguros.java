@@ -15,9 +15,4 @@ public class GestorSuperIntendenciaSeguros {
         return instanciaGestor;
     }
 
-	public Float getSumaAsegurada(String nombre, String nombre2, Integer anio) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }
