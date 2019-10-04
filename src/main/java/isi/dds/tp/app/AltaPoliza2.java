@@ -41,11 +41,21 @@ import com.toedter.calendar.JTextFieldDateEditor;
 import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.EnumCondicionIVA;
 import isi.dds.tp.enums.EnumEstadoCivil;
+import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumSexo;
 import isi.dds.tp.enums.EnumTipoDocumento;
+import isi.dds.tp.gestor.GestorCliente;
+import isi.dds.tp.gestor.GestorDomicilio;
+import isi.dds.tp.gestor.GestorParametroPoliza;
+import isi.dds.tp.gestor.GestorParametrosVehiculo;
+import isi.dds.tp.gestor.GestorPoliza;
+import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
+import isi.dds.tp.gestor.GestorSuperIntendenciaSeguros;
+import isi.dds.tp.gestor.GestorTipoCobertura;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Cliente;
+import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
 import isi.dds.tp.modelo.Pais;
@@ -58,7 +68,7 @@ public class AltaPoliza2 extends JPanel  {
 	/////////////////////////////////////////////////////////////////BORRAR CLIENTE + POLIZA Y USAR LOS DATOS QUE LE PASA LA OTRA INTERFAZ
 	public Cliente cliente = new Cliente(new Ciudad(new Provincia(new Pais("PA1"), "PR1"), "C1", 0), 123456l, EnumCondicion.NORMAL, "APE", "NOM", EnumTipoDocumento.DNI, 11111111, 
 			2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo.xd", EnumEstadoCivil.CASADO, "PROF", 2019);
-	public Poliza poliza = new Poliza(1231212l);
+	//public Poliza poliza = new Poliza(1231212l);
 	public Poliza pol2 = new Poliza(123l);
 	public List<Poliza> polizas = new ArrayList<Poliza>();
 	/////////////////////////////////////////////////////////////////
@@ -85,7 +95,7 @@ public class AltaPoliza2 extends JPanel  {
 	JTable tablaPagos = new JTable(6,2);
 	JScrollPane scrollTablaPagos;
 
-	public AltaPoliza2(JFrame ventana, Object[] tema) {
+	public AltaPoliza2(JFrame ventana, Object[] tema, Poliza poliza) {
 		
 		/////////////////////////////////////////////////////////////////BORRAR
 		polizas.add(poliza);
@@ -98,6 +108,7 @@ public class AltaPoliza2 extends JPanel  {
 		am.setAnio(1997);
 		am.setModelo(mod);
 		poliza.setAnioModelo(am);
+		
 		/////////////////////////////////////////////////////////////////BORRAR
 		
 		inicializarTema((Color) tema[0], (Color) tema[1], (Color)tema[2], (Color) tema[3], (Font) tema[4], (Font) tema[5]);
@@ -117,7 +128,6 @@ public class AltaPoliza2 extends JPanel  {
 		
 		scrollTablaPagos = new JScrollPane(tablaPagos,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 		scrollTablaPagos.setPreferredSize(new Dimension(325, 119));
-		
 		scrollTablaPagos.setBorder(new LineBorder((Color)tema[3]));
 		scrollTablaPagos.getViewport().setBackground((Color)tema[2]);
 		scrollTablaPagos.setBorder(new LineBorder((Color)tema[3]));
@@ -159,6 +169,7 @@ public class AltaPoliza2 extends JPanel  {
 		diaMesProximo.add(Calendar.MONTH, 1);
 		dcInicioVigencia.setDate(diaManana.getTime());
 		
+		//datos auxiliares para calcular si la fecha inicio vigencia esta dentro de los limites permitidos
 		int diaDelMes1 = diaManana.get(Calendar.DAY_OF_MONTH);
 		int mesDelAnio1 = diaManana.get(Calendar.MONTH);
 		int anioActual1 = diaManana.get(Calendar.YEAR);
@@ -387,8 +398,6 @@ public class AltaPoliza2 extends JPanel  {
 			//cargo datos parte inferior
 			generarPoliza.setEnabled(true);
 			
-			/////////////////////////////////////////////////////////////////
-			//ver si le paso poliza auxiliar o parametros separados
 			tfApellido.setText(poliza.getCliente().getApellido());
 			tfNombre.setText(poliza.getCliente().getNombre());
 			tfModelo.setText(poliza.getAnioModelo().getModelo().getNombre());
@@ -397,18 +406,31 @@ public class AltaPoliza2 extends JPanel  {
 			tfChasis.setText(poliza.getChasis());
 			tfPatente.setText(poliza.getPatente());
 			
-			if (poliza.getCliente().getPolizas().size() > 1){lDesc1.setVisible(true);}
+			if (poliza.getCliente().getPolizas().size() > 1)
+				lDesc1.setVisible(true);
 			
-			//GestorParametroPoliza gpp = new GestorParametroPoliza();
-			//GestorSuperIntendenciaSeguros gsis = new GestorSuperIntendenciaSeguros();
-			//float sumaAsegurada = gsis.getSumaAsegurada(poliza.getAnioModelo().getModelo().getMarca().getNombre(), poliza.getAnioModelo().getModelo().getNombre(), poliza.getAnioModelo().getAnio());
-			//float prima = gpp.calcularPrima(a,b,c);
-			//float derechoEmision = gpp.getDerechoEmision();
-			//float premio = gpp.calcularPremio(prima, derechoEmision);
-			//float descuento = gpp.calcularDescuento(boolean desc1, boolean desc2);
-			//
-			/////////////////////////////////////////////////////////////////
+			/*
+			//calculo premio, prima derechoEmision y descuento
+			GestorParametroPoliza gpp = GestorParametroPoliza.getGestorParametroPoliza();
+			GestorSuperIntendenciaSeguros gsis = GestorSuperIntendenciaSeguros.getGestorSuperIntendenciaSeguros();
+			float sumaAsegurada = gsis.getSumaAsegurada(poliza.getAnioModelo().getModelo().getMarca().getNombre(), poliza.getAnioModelo().getModelo().getNombre(), poliza.getAnioModelo().getAnio());
+			GestorTipoCobertura gtc = GestorTipoCobertura.getGestorTipoCobertura();
+			GestorParametrosVehiculo gpv = GestorParametrosVehiculo.getGestorParametroPoliza();
+			GestorDomicilio gd = GestorDomicilio.getGestorDomicilio();
+			float prima = gpp.calcularPrima(gtc.getRiesgoCobertura(poliza.getTipoCobertura()), gpv.getRiesgoModelo(poliza.getAnioModelo().getModelo()), gd.getRiesgoCiudad(poliza.getCiudad()));
+			float derechoEmision = gpp.getDerechoEmision();
+			float premio = gpp.calcularPremio(prima, derechoEmision);
+			Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;
+			if (poliza.getCliente().getPolizas().size() > 1)
+				descuentoMasDeUnaUnidad = true;
+			if (semestral.isSelected())
+				descuentoSemestral = true;
+			float descuento = gpp.calcularDescuento(descuentoMasDeUnaUnidad, descuentoSemestral);
+			tfSumaAsegurada.setText(Float.toString(sumaAsegurada));
+			tfPremio.setText(Float.toString(premio));
+			tfDescuentos.setText(Float.toString(descuento));*/
 			
+			//seteo datos tabla
 			dcInicio.setDate(dcInicioVigencia.getDate());
 			Calendar fechaFinVigencia = Calendar.getInstance();
 			fechaFinVigencia.setTime(dcInicioVigencia.getDate());
@@ -443,18 +465,47 @@ public class AltaPoliza2 extends JPanel  {
 			}
 		});
 		
+		//listener para sacar color rojo cuando lo selecciona
 		seleccionTipoCobertura.addActionListener (a -> {
 			seleccionTipoCobertura.setForeground(Color.black);
 		});
 		
 		generarPoliza.addActionListener(a -> {
-			
+			if(JOptionPane.showConfirmDialog(ventana, "¿Desea generar la póliza?","Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
+				GestorPoliza gp = GestorPoliza.get();
+				gp.altaPoliza(poliza);
+				
+				//veo si es cliente Plata o Activo
+				Boolean esPlata = true;
+				
+				GestorSubsistemaSiniestros gss = GestorSubsistemaSiniestros.getGestorSubsistemaSiniestros();
+				if (gss.getSiniestrosUltimosAnios(poliza.getCliente().getNumeroDocumento()) > 0)
+					esPlata = false;
+				
+				for (Cuota cuota : poliza.getCuotas()) {
+					if (cuota.getEstado() == EnumEstadoCuota.IMPAGO)
+						esPlata = false;
+				}
+				
+				GestorCliente gc = GestorCliente.getGestorCliente();
+				if (gc.calcularTiempoActivo(poliza.getCliente()) < 365*2)
+					esPlata = false;
+				
+				if (esPlata)
+					gc.actualizarCondicion(poliza.getCliente(), EnumCondicion.PLATA);
+				else
+					gc.actualizarCondicion(poliza.getCliente(), EnumCondicion.ACTIVO);
+				
+				System.out.println(poliza.getCliente().getCondicion());
+				
+				JOptionPane.showConfirmDialog(ventana, "Póliza generada correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			}
 		});
 		
 		volver.addActionListener(a -> {
 			if(JOptionPane.showConfirmDialog(ventana, "¿Desea corregir algún dato ingresado?","Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 				//VOLVER A VENTANA ANTERIOR
-				new AltaPoliza2(ventana, tema); //CAMBIAR POR VENTANA ANTERIOR
+				new AltaPoliza2(ventana, tema, new Poliza(123123l)); //CAMBIAR POR VENTANA ANTERIOR
 			}
 		});
 		

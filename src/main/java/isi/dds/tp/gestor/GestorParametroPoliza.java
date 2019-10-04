@@ -23,7 +23,7 @@ public class GestorParametroPoliza {
     	return null;
     }
     
-    public Float calcularPremio() {
+    public Float calcularPremio(float prima, float derechoEmision) {
     	return null;
     }
     
@@ -39,8 +39,13 @@ public class GestorParametroPoliza {
     	return null;
     }	
     
-    public Float calcularDescuento() {
+    public Float calcularDescuento(Boolean descuentoMasDeUnaUnidad, Boolean descuentoSemestral) {
     	return null;
     }
+
+	public Float getDerechoEmision() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }

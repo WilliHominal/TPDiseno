@@ -4,6 +4,8 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import isi.dds.tp.modelo.Poliza;
+
 
 
 public class App {
@@ -79,7 +81,7 @@ public class App {
 	}
 
 	public void setAltaPoliza2( ) {
-		this.altaPoliza2 = new AltaPoliza2(frame, tema);
+		this.altaPoliza2 = new AltaPoliza2(frame, tema, new Poliza(123l));
 		frame.setContentPane(altaPoliza2);
 	}
 
