@@ -14,16 +14,22 @@ import com.toedter.calendar.JDateChooser;
 public class AltaPoliza2 extends JPanel  {
 
 	public AltaPoliza2(JFrame ventana) {
-		JPanel panel = new JPanel(new GridBagLayout());
+		setLayout(new GridBagLayout());
+		
 		GridBagConstraints constraints = new GridBagConstraints();
+		
 		JLabel lTipoCobertura = new JLabel("Tipo de cobertura"), lFechaInicioVigencia = new JLabel("Fecha de inicio de vigencia de la póliza"), lFormaPago = new JLabel("Forma de pago"),
 				lInfoPoliza = new JLabel("Información de la póliza"), lTitularSeguro =  new JLabel("Titular del seguro"), lDatosVehiculo =  new JLabel("Datos del vehículo"),
 				lFechaInicio =  new JLabel("Fecha inicio"), lFechaFin =  new JLabel("Fecha fin");
+		
 		JDateChooser dcInicioVigencia = new JDateChooser(), dcInicio = new JDateChooser(), dcFin = new JDateChooser();
+		
 		JTextField tfApellido = new JTextField(15), tfNombre = new JTextField(15), tfMarca = new JTextField(15), tfMotor = new JTextField(15), 
 				tfModelo = new JTextField(10), tfChasis = new JTextField(10), tfPatente = new JTextField(10),
 				tfF1 = new JTextField(10), tfF2 = new JTextField(10), tfF3 = new JTextField(10), tfF4 = new JTextField(10);
+		
 		JButton confirmarDatos = new JButton("CONFIRMAR DATOS"), generarPoliza = new JButton("GENERAR PÓLIZA"), volver = new JButton("VOLVER");
+		
 		JComboBox<String> seleccionTipoCobertura = new JComboBox<String>();
 		final ButtonGroup rbFormaPago = new ButtonGroup();
 		JRadioButton mensual = new JRadioButton("Mensual"), semestral = new JRadioButton("Semestral");
@@ -74,20 +80,20 @@ public class AltaPoliza2 extends JPanel  {
 		//FILA 0
 		constraints.gridy=0;
 		constraints.gridx=0;
-		panel.add(lTipoCobertura, constraints);
+		add(lTipoCobertura, constraints);
 		
 		constraints.gridx=1;
-		panel.add(lFechaInicioVigencia, constraints);
+		add(lFechaInicioVigencia, constraints);
 
 		constraints.gridx=2;
 		constraints.insets.set(5, 5, 5, 140);
-		panel.add(lFormaPago, constraints);
+		add(lFormaPago, constraints);
 		constraints.insets.set(5, 5, 5, 55);
 		
 		constraints.gridx=3;
 		constraints.insets.set(5, 5, 5, 5);
 		constraints.gridheight=2;
-		panel.add(confirmarDatos, constraints);
+		add(confirmarDatos, constraints);
 		constraints.insets.set(5, 5, 5, 55);
 		constraints.gridheight=1;
 		
@@ -102,16 +108,16 @@ public class AltaPoliza2 extends JPanel  {
 		seleccionTipoCobertura.addItem("TERCEROS COMPLETOS");
 		seleccionTipoCobertura.addItem("TODO RIESGO CON FRANQUICIA");
 		constraints.fill=GridBagConstraints.HORIZONTAL;
-		panel.add(seleccionTipoCobertura, constraints);
+		add(seleccionTipoCobertura, constraints);
 		constraints.fill=GridBagConstraints.NONE;
 		
 		constraints.gridx=1;
-		panel.add(dcInicioVigencia, constraints);
+		add(dcInicioVigencia, constraints);
 		
 		constraints.gridx=2;
-		panel.add(mensual, constraints);
+		add(mensual, constraints);
 		constraints.anchor=GridBagConstraints.EAST;
-		panel.add(semestral, constraints);
+		add(semestral, constraints);
 		constraints.anchor=GridBagConstraints.WEST;
 		
 		//FILA 2
@@ -119,7 +125,7 @@ public class AltaPoliza2 extends JPanel  {
 		constraints.gridx=0;
 		constraints.gridwidth=4;
 		constraints.insets.set(0, 5, 5, 5);
-		panel.add(new JLabel("__________________________________________________________________________________________________________________________________________"), constraints);
+		add(new JLabel("__________________________________________________________________________________________________________________________________________"), constraints);
 		constraints.gridwidth=1;
 
 		//FILA 3
@@ -127,97 +133,97 @@ public class AltaPoliza2 extends JPanel  {
 		constraints.gridx=0;
 		constraints.gridwidth=4;
 		lInfoPoliza.setFont(new Font(lInfoPoliza.getFont().getName(), lInfoPoliza.getFont().getStyle(), 20));
-		panel.add(lInfoPoliza, constraints);
+		add(lInfoPoliza, constraints);
 		constraints.gridwidth=1;
 		
 		//FILA 4
 		constraints.gridy=4;
 		constraints.gridx=0;
-		panel.add(lTitularSeguro, constraints);
+		add(lTitularSeguro, constraints);
 		
 		//FILA 5
 		constraints.gridy=5;
 		constraints.gridx=0;
 		constraints.gridwidth=3;
-		panel.add(new JLabel("Apellido:"), constraints);
+		add(new JLabel("Apellido:"), constraints);
 		constraints.insets.set(5, 65, 5, 5);
-		panel.add(tfApellido, constraints);
+		add(tfApellido, constraints);
 		constraints.insets.set(5, 275, 5, 5);
-		panel.add(new JLabel("Nombre:"), constraints);
+		add(new JLabel("Nombre:"), constraints);
 		constraints.insets.set(5, 335, 5, 5);
-		panel.add(tfNombre, constraints);
+		add(tfNombre, constraints);
 		constraints.insets.set(5, 5, 5, 5);
 		
 		//FILA 6
 		constraints.gridy=6;
 		constraints.gridx=0;
-		panel.add(lDatosVehiculo, constraints);
+		add(lDatosVehiculo, constraints);
 		
 		//FILA 7
 		constraints.gridy=7;
 		constraints.gridx=0;
 		constraints.gridwidth=3;
-		panel.add(new JLabel("Marca:"), constraints);
+		add(new JLabel("Marca:"), constraints);
 		constraints.insets.set(5, 65, 5, 5);
-		panel.add(tfMarca, constraints);
+		add(tfMarca, constraints);
 		constraints.insets.set(5, 275, 5, 5);
-		panel.add(new JLabel("Modelo:"), constraints);
+		add(new JLabel("Modelo:"), constraints);
 		constraints.insets.set(5, 335, 5, 5);
-		panel.add(tfModelo, constraints);
+		add(tfModelo, constraints);
 		constraints.insets.set(5, 5, 5, 5);
 		
 		//FILA 8
 		constraints.gridy=8;
 		constraints.gridx=0;
 		constraints.gridwidth=3;
-		panel.add(new JLabel("Motor:"), constraints);
+		add(new JLabel("Motor:"), constraints);
 		constraints.insets.set(5, 65, 5, 5);
-		panel.add(tfMotor, constraints);
+		add(tfMotor, constraints);
 		constraints.insets.set(5, 275, 5, 5);
-		panel.add(new JLabel("Chasis:"), constraints);
+		add(new JLabel("Chasis:"), constraints);
 		constraints.insets.set(5, 335, 5, 5);
-		panel.add(tfChasis, constraints);
+		add(tfChasis, constraints);
 		constraints.insets.set(5, 490, 5, 5);
-		panel.add(new JLabel("Patente:"), constraints);
+		add(new JLabel("Patente:"), constraints);
 		constraints.insets.set(5, 555, 5, 5);
-		panel.add(tfPatente, constraints);
+		add(tfPatente, constraints);
 		constraints.insets.set(5, 5, 5, 5);
 		
 		//FILA 9
 		constraints.gridy=9;
 		constraints.gridx=0;
 		constraints.gridwidth=3;
-		panel.add(lFechaInicio, constraints);
+		add(lFechaInicio, constraints);
 		constraints.insets.set(5, 275, 5, 5);
-		panel.add(lFechaFin, constraints);
+		add(lFechaFin, constraints);
 		constraints.insets.set(5, 5, 5, 5);
 		
 		//FILA 10
 		constraints.gridy=10;
 		constraints.gridx=0;
 		constraints.gridwidth=3;
-		panel.add(dcInicio, constraints);
+		add(dcInicio, constraints);
 		constraints.insets.set(5, 275, 5, 5);
-		panel.add(dcFin, constraints);
+		add(dcFin, constraints);
 		constraints.insets.set(5, 5, 5, 5);
 		
 		//FILA 11
 		constraints.gridy=11;
 		constraints.gridx=0;
 		constraints.gridwidth=4;
-		panel.add(new JLabel("Suma asegurada:"), constraints);
+		add(new JLabel("Suma asegurada:"), constraints);
 		constraints.insets.set(5, 120, 5, 5);
-		panel.add(tfF1, constraints);
+		add(tfF1, constraints);
 		constraints.insets.set(5, 275, 5, 5);
-		panel.add(new JLabel("Premio:"), constraints);
+		add(new JLabel("Premio:"), constraints);
 		constraints.insets.set(5, 335, 5, 5);
-		panel.add(tfF2, constraints);
+		add(tfF2, constraints);
 		constraints.insets.set(5, 490, 5, 5);
-		panel.add(new JLabel("Importe por descuento:"), constraints);
+		add(new JLabel("Importe por descuento:"), constraints);
 		constraints.insets.set(5, 645, 5, 5);
-		panel.add(tfF3, constraints);
+		add(tfF3, constraints);
 		constraints.insets.set(5, 760, 5, 5);
-		panel.add(new JLabel("-Descuento por más de una unidad"), constraints);
+		add(new JLabel("-Descuento por más de una unidad"), constraints);
 		constraints.insets.set(5, 5, 5, 5);
 		
 		//FILA 12
@@ -225,29 +231,29 @@ public class AltaPoliza2 extends JPanel  {
 		constraints.gridx=0;
 		constraints.gridwidth=4;
 		constraints.insets.set(5, 760, 5, 5);
-		panel.add(new JLabel("-Descuento por pago semestral"), constraints);
+		add(new JLabel("-Descuento por pago semestral"), constraints);
 		constraints.insets.set(5, 5, 5, 5);
 		
 		//FILA 13
 		constraints.gridy=13;
 		constraints.gridx=0;
 		constraints.gridwidth=2;
-		panel.add(scrollTablaPagos, constraints);
+		add(scrollTablaPagos, constraints);
 		
 		//FILA 14
 		constraints.gridy=14;
 		constraints.gridx=0;
 		constraints.gridwidth=4;
 		constraints.insets.set(15, 135, 30, 5);
-		panel.add(new JLabel("Monto total:"), constraints);
+		add(new JLabel("Monto total:"), constraints);
 		constraints.insets.set(15, 215, 30, 5);
-		panel.add(tfF4, constraints);
+		add(tfF4, constraints);
 		constraints.insets.set(15, 645, 30, 5);
-		panel.add(generarPoliza, constraints);
+		add(generarPoliza, constraints);
 		constraints.insets.set(15, 815, 30, 5);
-		panel.add(volver, constraints);
+		add(volver, constraints);
 		
-		ventana.setContentPane(panel);
+		ventana.setContentPane(this);
 		ventana.pack();
 		ventana.setSize(1024, 600);
 		ventana.setLocationRelativeTo(null);
