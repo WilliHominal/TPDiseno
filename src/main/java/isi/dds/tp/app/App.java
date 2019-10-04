@@ -1,9 +1,9 @@
 package isi.dds.tp.app;
 
 import java.awt.*;
-
 import javax.swing.*;
 
+import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.pruebas.AltaPoliza2Prueba;
 
 
@@ -44,7 +44,7 @@ public class App {
 		//AltaPoliza2Prueba a = new AltaPoliza2Prueba(frame, tema);
 		//frame.setContentPane(a);
 		
-		setAltaPoliza1();
+		setAltaPoliza2();
 	
 		frame.setVisible(true);				
 	}
@@ -80,7 +80,7 @@ public class App {
 	}
 
 	public void setAltaPoliza2( ) {
-		this.altaPoliza2 = new AltaPoliza2(frame, tema);
+		this.altaPoliza2 = new AltaPoliza2(frame, tema, new Poliza(123l));
 		frame.setContentPane(altaPoliza2);
 	}
 

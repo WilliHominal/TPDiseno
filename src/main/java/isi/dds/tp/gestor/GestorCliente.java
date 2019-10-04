@@ -6,6 +6,7 @@ import isi.dds.tp.modelo.Poliza;
 import java.util.List;
 
 import isi.dds.tp.dao.ClienteDAO;
+import isi.dds.tp.enums.EnumCondicion;
 
 public class GestorCliente {
 	
@@ -42,7 +43,7 @@ public class GestorCliente {
     	return null;
     }
     
-    public void actualizarCondicion(Cliente c) {
+    public void actualizarCondicion(Cliente c, EnumCondicion e) {
 
     }
     
