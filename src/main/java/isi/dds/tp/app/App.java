@@ -40,9 +40,6 @@ public class App {
 
 	private void inicializar() {
 		frame = new JFrame();
-
-		//AltaPoliza2Prueba a = new AltaPoliza2Prueba(frame, tema);
-		//frame.setContentPane(a);
 		
 		setAltaPoliza2();
 	

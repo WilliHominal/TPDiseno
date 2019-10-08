@@ -27,11 +27,11 @@ public class AltaPoliza2Prueba extends JPanel  {
 	private JLabel lMotor = new JLabel("Motor:");
 	private JLabel lChasis = new JLabel("Chasis:");
 	private JLabel lPatente = new JLabel("Patente:");
-	private JLabel lSumaA= new JLabel("Suma asegurada:");
+	private JLabel lSumaAsegurada = new JLabel("Suma asegurada:");
 	private JLabel lPremio = new JLabel("Premio:");
-	private JLabel lImporte = new JLabel("Importe por descuento:");
-	private JLabel lDescuentoPor= new JLabel("-Descuento por más de una unidad");
-	private JLabel lDescuento = new JLabel("-Descuento por pago semestral");
+	private JLabel lDescuento = new JLabel("Importe por descuento:");
+	private JLabel lDesc1 = new JLabel("-Descuento por más de una unidad");
+	private JLabel lDesc2 = new JLabel("-Descuento por pago semestral");
 	private JLabel lMontoTotal = new JLabel("Monto total:");
 
 	private JDateChooser dcInicioVigencia = new JDateChooser();
@@ -45,15 +45,16 @@ public class AltaPoliza2Prueba extends JPanel  {
 	private JTextField tfModelo = new JTextField(10);
 	private JTextField tfChasis = new JTextField(10);
 	private JTextField tfPatente = new JTextField(10);
-	private JTextField tfF1 = new JTextField(10);
-	private JTextField tfF2 = new JTextField(10);
-	private JTextField tfF3 = new JTextField(10);
-	private JTextField tfF4 = new JTextField(10);
+	private JTextField tfSumaAsegurada = new JTextField(10);
+	private JTextField tfPremio = new JTextField(10);
+	private JTextField tfDescuentos = new JTextField(10);
+	private JTextField tfMontoTotal = new JTextField(10);
 	
 	private JButton confirmarDatos = new JButton("CONFIRMAR DATOS");
 	private JButton generarPoliza = new JButton("GENERAR PÓLIZA");
 	private JButton volver = new JButton("VOLVER");
 	
+	private final ButtonGroup rbFormaPago = new ButtonGroup();	
 	private JRadioButton mensual = new JRadioButton("Mensual");
 	private JRadioButton semestral = new JRadioButton("Semestral");
 	
@@ -68,7 +69,7 @@ public class AltaPoliza2Prueba extends JPanel  {
 		
 		GridBagConstraints constraints = new GridBagConstraints();
 		
-		final ButtonGroup rbFormaPago = new ButtonGroup();
+
 		rbFormaPago.add(mensual);
 		rbFormaPago.add(semestral);
 		
@@ -235,19 +236,19 @@ public class AltaPoliza2Prueba extends JPanel  {
 		constraints.gridy=11;
 		constraints.gridx=0;
 		constraints.gridwidth=4;
-		add(lSumaA, constraints);
+		add(lSumaAsegurada, constraints);
 		constraints.insets.set(5, 120, 5, 5);
-		add(tfF1, constraints);
+		add(tfSumaAsegurada, constraints);
 		constraints.insets.set(5, 275, 5, 5);
 		add(lPremio, constraints);
 		constraints.insets.set(5, 335, 5, 5);
-		add(tfF2, constraints);
+		add(tfPremio, constraints);
 		constraints.insets.set(5, 490, 5, 5);
-		add(lImporte, constraints);
+		add(lDescuento, constraints);
 		constraints.insets.set(5, 645, 5, 5);
-		add(tfF3, constraints);
+		add(tfDescuentos, constraints);
 		constraints.insets.set(5, 760, 5, 5);
-		add(lDescuentoPor, constraints);
+		add(lDesc1, constraints);
 		constraints.insets.set(5, 5, 5, 5);
 
 		//FILA 12
@@ -255,7 +256,7 @@ public class AltaPoliza2Prueba extends JPanel  {
 		constraints.gridx=0;
 		constraints.gridwidth=4;
 		constraints.insets.set(5, 760, 5, 5);
-		add(lDescuento, constraints);
+		add(lDesc2, constraints);
 		constraints.insets.set(5, 5, 5, 5);
 		
 		//FILA 13
@@ -272,7 +273,7 @@ public class AltaPoliza2Prueba extends JPanel  {
 		constraints.insets.set(15, 135, 30, 5);
 		add(lMontoTotal, constraints);
 		constraints.insets.set(15, 215, 30, 5);
-		add(tfF4, constraints);
+		add(tfMontoTotal, constraints);
 		constraints.insets.set(15, 645, 30, 5);
 		add(generarPoliza, constraints);
 		constraints.insets.set(15, 815, 30, 5);
@@ -362,18 +363,18 @@ public class AltaPoliza2Prueba extends JPanel  {
 		tfPatente.setFont(letra);
 		tfPatente.setBackground(colorFondoTexto);
 		tfPatente.setBorder(new LineBorder(borde));
-		tfF1.setFont(letra);
-		tfF1.setBackground(colorFondoTexto);
-		tfF1.setBorder(new LineBorder(borde));
-		tfF2.setFont(letra);
-		tfF2.setBackground(colorFondoTexto);
-		tfF2.setBorder(new LineBorder(borde));
-		tfF3.setFont(letra);
-		tfF3.setBackground(colorFondoTexto);
-		tfF3.setBorder(new LineBorder(borde));
-		tfF4.setFont(letra);
-		tfF4.setBackground(colorFondoTexto);
-		tfF4.setBorder(new LineBorder(borde));
+		tfSumaAsegurada.setFont(letra);
+		tfSumaAsegurada.setBackground(colorFondoTexto);
+		tfSumaAsegurada.setBorder(new LineBorder(borde));
+		tfPremio.setFont(letra);
+		tfPremio.setBackground(colorFondoTexto);
+		tfPremio.setBorder(new LineBorder(borde));
+		tfDescuentos.setFont(letra);
+		tfDescuentos.setBackground(colorFondoTexto);
+		tfDescuentos.setBorder(new LineBorder(borde));
+		tfMontoTotal.setFont(letra);
+		tfMontoTotal.setBackground(colorFondoTexto);
+		tfMontoTotal.setBorder(new LineBorder(borde));
 		
 		confirmarDatos.setFont(letra);
 		confirmarDatos.setBackground(colorBoton);

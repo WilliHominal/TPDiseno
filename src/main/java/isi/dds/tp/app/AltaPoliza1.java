@@ -21,8 +21,10 @@ import net.miginfocom.swing.MigLayout;
 @SuppressWarnings("serial")
 public class AltaPoliza1 extends JPanel {
 		
-	private JLabel ldatosCliente = new JLabel("DATOS CLIENTE");
-	private JLabel ldatosPoliza = new JLabel("DATOS P\u00d3LIZA");
+	//private JLabel ldatosCliente = new JLabel("DATOS CLIENTE");
+	//private JLabel ldatosPoliza = new JLabel("DATOS P\u00d3LIZA");
+	//FIJARSE SI PONER TITULO 
+	
 	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
 	private JLabel ldocumento = new JLabel("Documento:");
@@ -34,8 +36,8 @@ public class AltaPoliza1 extends JPanel {
 	private JLabel lprovincia = new JLabel("Provincia*:");
 	private JLabel lciudad = new JLabel("Ciudad*:");
 	private JLabel lmarca = new JLabel("Marca veh\u00edculo*:");
-	private JLabel lmodelo = new JLabel("Modelo veh\u00edculo:");
-	private JLabel lanio = new JLabel("A\u00f1o modelo:");
+	private JLabel lmodelo = new JLabel("Modelo veh\u00edculo:*");
+	private JLabel lanio = new JLabel("A\u00f1o modelo:*");
 	private JLabel lmotor = new JLabel("Motor*:");
 	private JLabel lchasis = new JLabel("Chasis*:");
 	private JLabel lpatente = new JLabel("Patente*:");
@@ -93,145 +95,12 @@ public class AltaPoliza1 extends JPanel {
 	private Object[][] datosTabla = {{""},{""},{""},{""}};
 
 	
-	@SuppressWarnings({ "deprecation", "rawtypes", "unchecked" })
 	public AltaPoliza1(JFrame ventana, Object[] tema) {
 		
+		inicializarComponentes();
 		inicializarTema((Color) tema[0], (Color) tema[1], (Color)tema[2], (Color) tema[3], (Font) tema[4], (Font) tema[5]);
-		setLayout(new MigLayout());
-		
-		//add(ldatosCliente,"cell 0 0, wrap, alignx center, span 12 1");
-		
-		btnBuscarCliente.setEnabled(true);
-		add(btnBuscarCliente, "height 20px, width 150px");
-		
-		add(lnumeroCliente, "gapleft 20,  alignx right");
-		tnumeroCliente.disable();
-		add(tnumeroCliente);
+		ubicarComponentes();
 
-		add(ltipoDocumento, "alignx right");
-		ttipoDocumento.disable();
-		add(ttipoDocumento);
-
-		add(ldocumento, "alignx right");
-		tdocumento.disable();
-		add(tdocumento, "WRAP");
-		
-		btnAltaCliente.setEnabled(true);
-		add(btnAltaCliente, "height 10px, width 150px");
-		
-		add(lapellido, "alignx right");
-		tapellido.disable();
-		add(tapellido);
-		
-		add(lnombres, "gap left 10, alignx right");
-		tnombres.disable();
-		add(tnombres, "wrap");
-		
-		add(lcalle, "cell 1 3, alignx right");
-		tcalle.disable();
-		add(tcalle);
-		
-		add(lnumeroDom, "gapleft 10, alignx right");
-		tnumeroDom.disable();
-		add(tnumeroDom);
-	
-		add(ldepartamento, "gapleft 10, alignx right");
-		tdepartamento.disable();
-		add(tdepartamento, "wrap");
-		
-		add(new JLabel("_______________________________________________________________________________________________________________________"), "wrap, span 20 1, alignx center");
-		
-		//add(ldatosPoliza, "gaptop 5, cell 0 5, wrap, alignx center, span 10 1");
-		
-		add(lprovincia, "gaptop 10, cell 0 6, alignx left, span 10 1");
-		cmbProvincia.setModel(new DefaultComboBoxModel(new String[] {"SANTIAGO DEL ESTERO", "Santa FE"}));
-		add(cmbProvincia, "cell 0 6, alignx left, span 7 1");
-				
-		add(lciudad, "gapleft 20, cell 0 6, alignx left, span 10 1");
-		cmbCiudad.setModel(new DefaultComboBoxModel(new String[] {"Santiago del Estero"}));
-		add(cmbCiudad,"cell 0 6, alignx left, span 4 1, wrap");
-	
-		add(lmarca,"gaptop 10, cell 0 7, alignx left, span 10 1");
-		cmbMarca.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar marca"}));
-		add(cmbMarca, "cell 0 7, alignx left, span 6 1");
-		
-		add(lmodelo, "gapleft 20, cell 0 7, alignx left, span 10 1");
-		cmbModelo.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar modelo"}));
-		cmbModelo.setEnabled(false);
-		add(cmbModelo, "cell 0 7, alignx left, span 10 1");
-		
-		add(lanio, "gapleft 20, cell 0 7, alignx left, span 10 1");
-		cmbAnio.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar a\u00f1o"}));
-		cmbAnio.setEnabled(false);
-		add(cmbAnio, "cell 0 7, alignx left, span 10 1, wrap");
-		
-		add(lmotor, "gaptop 10, cell 0 8, alignx left, span 6 1");
-		add(tmotor, "cell 0 8, alignx left, span 10 1");
-		
-		add(lchasis, "gapleft 30, cell 0 8, alignx left, span 6 1");
-		add(tchasis, "cell 0 8, alignx left, span 10 1");
-		
-		add(lpatente, "gapleft 30, cell 0 8, alignx left, span 6 1");
-		add(tpatente, "cell 0 8, alignx left, span 10 1, WRAP");
-
-		add(lsumaAseg, "gaptop 10, cell 0 9, alignx left, span 3 1");
-		add(tsumaAsegurada, "cell 0 9, alignx left, span 3 1");
-		add(lmoneda, "cell 0 9, alignx left, span 3 1, wrap");
-		
-		add(lkm, "gaptop 10, cell 0 10, alignx left, span 3 1");
-		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar rango"}));
-		add(cmbKm, "cell 0 10, alignx left, span 3 1, wrap");
-		
-		add(lsiniestros, "gaptop 10, cell 0 11, alignx left, span 10 1");
-		cmbSiniestros.setModel(new DefaultComboBoxModel(new String[] {"AGRANDAR PARA ESPACIO DE 10"}));
-		add(cmbSiniestros, "cell 0 11, alignx left, span 10 1, wrap");
-		
-		add(lgarage, "gaptop 10, cell 0 12, alignx left, span 12 1");
-		garage.add(rgarageSi);
-		garage.add(rgarageNo);
-		add(rgarageSi, "cell 0 12, alignx center, span 20 1");
-		rgarageNo.setSelected(true);
-		add(rgarageNo, "cell 0 12, alignx center, span 20 1");
-		
-		add(lalarma, "gapleft 50, cell 0 12, alignx center, span 12 1");
-		alarma.add(ralarmaSi);
-		alarma.add(ralarmaNo);
-		add(ralarmaSi, "cell 0 12, alignx center, span 20 1");
-		ralarmaNo.setSelected(true);
-		add(ralarmaNo, "cell 0 12, alignx center, span 20 1");
-		
-		add(lrastreo, "cell 0 13, alignx left, span 12 1");
-		rastreo.add(rrastreoSi);
-		rastreo.add(rrastreoNo);
-		add(rrastreoSi, "cell 0 13, alignx center, span 20 1");
-		rrastreoNo.setSelected(true);
-		add(rrastreoNo, "cell 0 13, alignx center, span 20 1");
-		
-		add(ltuercas, "gapleft 50, cell 0 13, alignx center, span 12 1");
-		tuercas.add(rtuercasSi);
-		tuercas.add(rtuercasNo);
-		add(rtuercasSi, "cell 0 13, alignx left, span 20 1");
-		rtuercasNo.setSelected(true);
-		add(rtuercasNo, "cell 0 13, alignx left, span 20 1");
-
-		add(lcantidadHijos, "gaptop 10, cell 0 14, align left, span 2 1, wrap");
-		
-		add(tablaHijosScroll, "cell 0 15, span 4 8");
-	
-		btnAgregarHijo.setEnabled(true);
-		add(btnAgregarHijo, "gaptop 5,  cell 2 16, height 20px, width 150px, span 2 1, alignx right");
-
-		btnQuitarHijo.setEnabled(false);
-		add(btnQuitarHijo, "cell 2 19, height 20px, width 150px, span 2 1, alignx right");
-
-		
-		btnConfirmarDatos.setEnabled(false);
-		add(btnConfirmarDatos, "cell 5 16, span 3 1, alignx right, height 20px, width 150px");
-		
-		btnCancelar.setEnabled(true);
-		add(btnCancelar, "cell 5 19, alignx right, span 3 1, height 20px, width 150px");
-		
-		add(ldatosObligatorios, "dock south");
 		
 		ventana.setBounds(0,0,1024,600);
 		ventana.setLocationRelativeTo(null);
@@ -241,29 +110,265 @@ public class AltaPoliza1 extends JPanel {
 		
 	}
 
-	/**
-	 * @param colorBoton
-	 * @param colorFoncolorFondoPantallado
-	 * @param colorFondoTexto
-	 * @param letra
-	 * @param letraTitulo
-	 */
-	public void inicializarTema(Color colorBoton, Color colorFondoPantalla, Color colorFondoTexto, Color borde, Font letra, Font letraTitulo) {
+	private void ubicarComponentes() {
+		
+		setLayout (new GridBagLayout());
+		GridBagConstraints constraints = new GridBagConstraints();
+		
+		//FILA 1
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 2;
+		constraints.gridheight = 1;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.insets.set(5, 5, 5, 15);
+		add(btnBuscarCliente, constraints);
+		
+		constraints.gridx = 2;
+		constraints.gridwidth = 1;
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets.set(5, 0, 5, 5);
+		add(lnumeroCliente, constraints);
+		
+		constraints.gridx = 3;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 0, 5, 15);
+		add(tnumeroCliente, constraints);
+		
+		constraints.gridx = 4;
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets.set(5, 0, 5, 5);
+		add(ltipoDocumento, constraints);
+		
+		constraints.gridx = 5;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 0, 5, 15);
+		add(ttipoDocumento, constraints);
+		
+		constraints.gridx = 6;
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets.set(5, 0, 5, 5);
+		add(ldocumento, constraints);
+		
+		constraints.gridx = 7;
+		constraints.gridwidth = 1;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 0, 5, 0);
+		add(tdocumento, constraints);
+		
+		//FILA 2
+		constraints.gridx = 0;
+		constraints.gridy = 1;
+		constraints.gridwidth = 2;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.insets.set(5, 5, 5, 15);
+		add(btnAltaCliente, constraints);
+		
+		constraints.gridx = 2;
+		constraints.gridwidth = 1;
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets.set(5, 0, 5, 5);
+		add(lapellido, constraints);
+		
+		constraints.gridx = 3;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 0, 5, 15);
+		add(tapellido, constraints);
+		
+		constraints.gridx = 4;
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets.set(5, 0, 5, 5);
+		add(lnombres, constraints);
+		
+		constraints.gridx = 5;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 0, 5, 0);
+		add(tnombres, constraints);
+		
+		//FILA 3
+		constraints.gridy = 2;
+		constraints.gridx = 2;
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets.set(5, 0, 5, 5);
+		add(lcalle, constraints);
+		
+		constraints.gridx = 3;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 0, 5, 20);
+		add(tcalle, constraints);
+		
+		constraints.gridx = 4;
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets.set(5, 0, 5, 5);
+		add(lnumeroDom, constraints);
+		
+		constraints.gridx = 5;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 0, 5, 15);
+		add(tnumeroDom, constraints);
+		
+		constraints.gridx = 6;
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets.set(5, 0, 5, 5);
+		add(ldepartamento, constraints);
+		
+		constraints.gridx = 7;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 0, 5, 0);
+		add(tdepartamento, constraints);
+		
+		//FILA 4
+		constraints.gridy = 3;
+		constraints.gridx = 0;
+		constraints.gridwidth = 15;
+		constraints.gridheight = 1;
+		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.insets.set(5, 0, 5, 0);
+		add(new JLabel("___________________________________________________________________________________________________________________________"), constraints);
+		
+		//FILA 5
+		constraints.gridy = 4;
+		constraints.gridx = 0;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 5, 5, 5);
+		add(lprovincia, constraints);
+		constraints.insets.set(5, 75, 5, 5);
+		add(cmbProvincia, constraints);
+		constraints.insets.set(5, 295, 5, 5);
+		add(lciudad, constraints);
+		constraints.insets.set(5, 355, 5, 5);
+		add(cmbCiudad, constraints);
+		
+		//FILA 6
+		constraints.gridy = 5;
+		constraints.insets.set(5, 5, 5, 5);
+		add(lmarca, constraints);
+		constraints.insets.set(5, 111, 5, 5);
+		add(cmbMarca, constraints);
+		constraints.insets.set(5, 295, 5, 5);
+		add(lmodelo, constraints);
+		constraints.insets.set(5, 410, 5, 5);
+		add(cmbModelo, constraints);
+		constraints.insets.set(5, 575, 5, 5);
+		add(lanio, constraints);
+		constraints.insets.set(5, 664, 5, 5);
+		add(cmbAnio, constraints);
+
+		//FILA 7
+		constraints.gridy = 6;
+		constraints.insets.set(5, 5, 5, 5);
+		add(lmotor, constraints);
+		constraints.insets.set(5, 60, 5, 5);
+		add(tmotor, constraints);
+		constraints.insets.set(5, 295, 5, 5);
+		add(lchasis, constraints);
+		constraints.insets.set(5, 349, 5, 5);
+		add(tchasis, constraints);
+		constraints.insets.set(5, 575, 5, 5);
+		add(lpatente, constraints);
+		constraints.insets.set(5, 638, 5, 5);
+		add(tpatente, constraints);
+		
+		//FILA 8
+		constraints.gridy = 7;
+		constraints.insets.set(5, 5, 5, 5);
+		add(lsumaAseg, constraints);
+		constraints.insets.set(5, 113, 5, 5);
+		add(tsumaAsegurada, constraints);
+		constraints.insets.set(5, 295, 5, 5);
+		add(lmoneda, constraints);
+
+		//FILA 9
+		constraints.gridy = 8;
+		constraints.insets.set(5, 5, 5, 5);
+		add(lkm, constraints);
+		constraints.insets.set(5, 145, 5, 5);
+		add(cmbKm, constraints);
+		
+		//FILA 10
+		constraints.gridy = 9;
+		constraints.insets.set(5, 5, 5, 5);
+		add(lsiniestros, constraints);
+		constraints.insets.set(5, 247, 5, 5);
+		add(cmbSiniestros, constraints);
+		
+		//FILA 11
+		constraints.gridy = 10;
+		constraints.insets.set(5, 5, 5, 5);
+		add(lgarage, constraints);
+		constraints.insets.set(5, 140, 0, 5);
+		add(rgarageSi, constraints);
+		constraints.insets.set(5, 175, 0, 5);
+		add(rgarageNo, constraints);
+		
+		constraints.insets.set(5, 250, 0, 5);
+		add(lalarma, constraints);
+		constraints.insets.set(5, 340, 0, 5);
+		add(ralarmaSi, constraints);
+		constraints.insets.set(5, 375, 0, 5);
+		add(ralarmaNo, constraints);
+		
+		//FILA 11
+		constraints.gridy = 11;
+		constraints.insets.set(2, 5, 5, 5);
+		add(lrastreo, constraints);
+		constraints.insets.set(2, 245, 3, 5);
+		add(rrastreoSi, constraints);
+		constraints.insets.set(2, 280, 3, 5);
+		add(rrastreoNo, constraints);
+		
+		constraints.insets.set(2, 355, 5, 5);
+		add(ltuercas, constraints);
+		constraints.insets.set(2, 515, 3, 5);
+		add(rtuercasSi, constraints);
+		constraints.insets.set(2, 550, 3, 5);
+		add(rtuercasNo, constraints);
+		
+		//FILA 12
+		constraints.gridy = 12;
+		constraints.insets.set(5, 5, 2, 5);
+		add(lcantidadHijos, constraints);
+		
+		//FILA 13
+		constraints.gridy = 13;
+		constraints.insets.set(3, 5, 2, 5);
+		add(tablaHijosScroll, constraints);
+		
+		constraints.insets.set(0, 425, 40, 5);
+		add(btnAgregarHijo, constraints);
+		
+		constraints.insets.set(40, 425, 2, 5);
+		add(btnQuitarHijo, constraints);
+		
+		
+		//FILA 14
+		constraints.gridy = 14;
+		constraints.insets.set(3, 5, 0, 5);
+		add(ldatosObligatorios, constraints);
+		
+		constraints.insets.set(0, 655, 0, 5);
+		add(btnConfirmarDatos, constraints);
+		
+		constraints.insets.set(0, 830, 0, 5);
+		add(btnCancelar, constraints);
+
+	}
+		
+	private void inicializarTema(Color colorBoton, Color colorFondoPantalla, Color colorFondoTexto, Color borde, Font letra, Font letraTitulo) {
 		setBounds(0,0,1024,600);
 		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setFont(letra);
 		setBackground(colorFondoPantalla);
 		
-		
-		ldatosCliente.setFont(letraTitulo);
-		ldatosPoliza.setFont(letraTitulo);
+		//ldatosCliente.setFont(letraTitulo);
+		//ldatosPoliza.setFont(letraTitulo);
 		
 		//subrayado
-		Font subrayado = ldatosCliente.getFont();
-		Map<TextAttribute, Object> attributes = new HashMap<>(subrayado.getAttributes());
-		attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-		ldatosCliente.setFont(subrayado.deriveFont(attributes));
-		ldatosPoliza.setFont(subrayado.deriveFont(attributes));
+		//Font subrayado = ldatosCliente.getFont();
+		//Map<TextAttribute, Object> attributes = new HashMap<>(subrayado.getAttributes());
+		//attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
+		//ldatosCliente.setFont(subrayado.deriveFont(attributes));
+		//ldatosPoliza.setFont(subrayado.deriveFont(attributes));
 		
 		lnumeroCliente.setFont(letra);
 		ltipoDocumento.setFont(letra);
@@ -290,7 +395,7 @@ public class AltaPoliza1 extends JPanel {
 		lrastreo.setFont(letra);
 		ltuercas.setFont(letra);
 		lcantidadHijos.setFont(letra);
-		ldatosObligatorios.setFont(letra);
+		ldatosObligatorios.setFont(new Font("Open Sans", Font.ITALIC, 9));
 			
 		tnumeroCliente.setFont(letra);
 		tnumeroCliente.setBackground(colorFondoTexto);
@@ -415,6 +520,62 @@ public class AltaPoliza1 extends JPanel {
 		tablaHijosScroll.getViewport().setBackground(colorFondoTexto);
 		tablaHijosScroll.setBorder(new LineBorder(borde));
 	}
+	
+	@SuppressWarnings({ "unused", "deprecation", "rawtypes", "unchecked" })
+	private void inicializarComponentes() {
+		tnumeroCliente.disable();
+		ttipoDocumento.disable();
+		tdocumento.disable();
+		tapellido.disable();
+		tnombres.disable();
+		tcalle.disable();
+		tnumeroDom.disable();
+		tdepartamento.disable();
+		tsumaAsegurada.disable();
+		
+		cmbProvincia.setModel(new DefaultComboBoxModel(new String[] {"SANTIAGO DEL ESTERO", "Santa FE"}));
+		cmbProvincia.setPreferredSize(new Dimension(199, 25));
+		cmbCiudad.setModel(new DefaultComboBoxModel(new String[] {"Santiago del Estero"}));
+		cmbCiudad.setPreferredSize(new Dimension(199, 25));
+		cmbMarca.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar marca"}));
+		cmbMarca.setPreferredSize(new Dimension(163, 25));
+		cmbModelo.setModel(new DefaultComboBoxModel(new String[] {"VOLKSWAGEN"}));
+		cmbModelo.setPreferredSize(new Dimension(145, 25));
+		cmbModelo.setEnabled(false);
+		cmbAnio.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar a\u00f1o"}));
+		cmbAnio.setPreferredSize(new Dimension(130, 25));
+		cmbAnio.setEnabled(false);
+		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar rango"}));
+		cmbKm.setPreferredSize(new Dimension(220, 25));
+		cmbSiniestros.setModel(new DefaultComboBoxModel(new String[] {"AGRANDAR PARA ESPACIO DE 10"}));
+		cmbSiniestros.setPreferredSize(new Dimension(220, 25));
+		
+		garage.add(rgarageSi);
+		garage.add(rgarageNo);
+		rgarageNo.setSelected(true);
+		alarma.add(ralarmaSi);
+		alarma.add(ralarmaNo);
+		ralarmaNo.setSelected(true);
+		rastreo.add(rrastreoSi);
+		rastreo.add(rrastreoNo);
+		rrastreoNo.setSelected(true);
+		tuercas.add(rtuercasSi);
+		tuercas.add(rtuercasNo);
+		rtuercasNo.setSelected(true);
+		
+		btnQuitarHijo.setEnabled(false);
+		btnConfirmarDatos.setEnabled(false);
+		
+		btnBuscarCliente.setPreferredSize(new Dimension(160, 25));
+		btnAltaCliente.setPreferredSize(new Dimension(160, 25));
+		btnAgregarHijo.setPreferredSize(new Dimension(160, 25));
+		btnQuitarHijo.setPreferredSize(new Dimension(160, 25));
+		btnConfirmarDatos.setPreferredSize(new Dimension(160, 25));
+		btnCancelar.setPreferredSize(new Dimension(160, 25));
+		
+		
+	}
+	
 }
 
 
