@@ -13,8 +13,9 @@ public class HijoDeclarado {
 	private Poliza poliza;
 	
 	@Id
-	@Column(name = "numero_hijo")
-	/*TODO  clave compuesta hijo declarado con poliza*/
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_numero_hijo")
+	@SequenceGenerator(name="id_numero_hijo", sequenceName = "id_numero_hijo_seq", initialValue = 100, allocationSize = 1)
+	@Column(nullable = false)
 	private Integer numeroHijo;
 	
 	@Column(nullable = false, name = "fecha_nacimiento")

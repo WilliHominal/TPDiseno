@@ -80,7 +80,7 @@ public class App {
 	}
 
 	public void setAltaPoliza2( ) {
-		this.altaPoliza2 = new AltaPoliza2(frame, tema, new Poliza(123l));
+		this.altaPoliza2 = new AltaPoliza2(frame, tema, new Poliza());
 		frame.setContentPane(altaPoliza2);
 	}
 

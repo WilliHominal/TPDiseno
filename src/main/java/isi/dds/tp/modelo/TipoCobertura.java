@@ -21,6 +21,12 @@ public class TipoCobertura {
 	@Column(name = "tipo_cobertura")
 	private EnumTipoCobertura tipoCobertura;
 	
+	@Column(nullable = false)
+	private EnumTipoCobertura nombre;
+	
+	@Column(nullable = false)
+	private EnumTipoCobertura descripcion;
+	
 	public TipoCobertura() {
 		
 	}
@@ -45,5 +51,21 @@ public class TipoCobertura {
 
 	public void setTipoCobertura(EnumTipoCobertura tipoCobertura) {
 		this.tipoCobertura = tipoCobertura;
+	}
+
+	public EnumTipoCobertura getNombre() {
+		return nombre;
+	}
+
+	public void setNombre(EnumTipoCobertura nombre) {
+		this.nombre = nombre;
+	}
+
+	public EnumTipoCobertura getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(EnumTipoCobertura descripcion) {
+		this.descripcion = descripcion;
 	}
 }

@@ -17,8 +17,12 @@ public class Cuota{
     @PrimaryKeyJoinColumn(name = "datos_pago")
 	private DatosPago datosPago;
 	
-    /*@EmbeddedID*/
-    @Id
+	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_cuota")
+	@SequenceGenerator(name="id_cuota", sequenceName = "id_cuota_seq", initialValue = 100, allocationSize = 1)
+	@Column(nullable = false)
+	private Integer id;
+
 	@Column(nullable = false, name = "numero")
 	/*TODO  clave compuesta cuota con poliza*/
 	private Integer numeroCuota; 
@@ -82,5 +86,13 @@ public class Cuota{
 	}
 	public void setEstado(EnumEstadoCuota estado) {
 		this.estado = estado;
+	}
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
 	}
 }

@@ -135,6 +135,9 @@ public class Poliza {
 	@Column(nullable = false, name = "valor_riesgo_cobertura")
 	private Float valorRiesgoCobertura;
 	
+	@Column(nullable = false, name = "valor_derecho_emision")
+	private Float valorDerechoEmison;
+	
 	@Column(nullable = false, name = "porcentaje_valor_asegurado")
 	private Float porcentajeValorAsegurado;
 		
@@ -430,8 +433,20 @@ public class Poliza {
 	}
 	public void setCuotas(List<Cuota> cuotas) {
 		this.cuotas = cuotas;
+	}	
+	public Float getValorRiesgoCobertura() {
+		return valorRiesgoCobertura;
 	}
-	
+	public void setValorRiesgoCobertura(Float valorRiesgoCobertura) {
+		this.valorRiesgoCobertura = valorRiesgoCobertura;
+	}
+	public Float getValorDerechoEmison() {
+		return valorDerechoEmison;
+	}
+	public void setValorDerechoEmison(Float valorDerechoEmison) {
+		this.valorDerechoEmison = valorDerechoEmison;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

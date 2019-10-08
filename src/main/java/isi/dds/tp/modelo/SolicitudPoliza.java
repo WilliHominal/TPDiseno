@@ -10,6 +10,18 @@ import org.hibernate.annotations.IndexColumn;
 @Table(name = "solicitud_poliza")
 public class SolicitudPoliza {
 	
+    @OneToOne
+    @PrimaryKeyJoinColumn(name = "tipo_cobertura")
+	private TipoCobertura tipoCobertura;
+
+	@OneToOne
+    @PrimaryKeyJoinColumn(name = "anio_modelo")
+	private AnioModelo anioModelo;
+	
+	@OneToOne
+    @PrimaryKeyJoinColumn
+	private Ciudad ciudad;
+	
 	@OneToMany()
 	@JoinColumn(name="numero_solicitud")
 	@IndexColumn(name="idx")
@@ -54,10 +66,6 @@ public class SolicitudPoliza {
 	
 	@Column(name = "tiene_rastreo_vehicular")
 	private Boolean tieneRastreoVehicular;	
-	
-	@Column(name = "tipo_cobertura")
-	@Enumerated(EnumType.STRING)
-	private EnumTipoCobertura tipoCobertura; 
 		
 	public SolicitudPoliza() {
 		
@@ -83,7 +91,6 @@ public class SolicitudPoliza {
 		this.guardaGarage = p.getGuardaGarage();
 		this.tieneTuercasAntirobo = p.getTieneTuercasAntirobo(); 
 		this.tieneRastreoVehicular = p.getTieneRastreoVehicular();
-		this.tipoCobertura = p.getTipoCobertura().getTipoCobertura();
 	}
 	
 	public List<HijoDeclarado> getHijosDeclarados() {
@@ -131,9 +138,6 @@ public class SolicitudPoliza {
 	public Boolean getTieneRastreoVehicular() {
 		return tieneRastreoVehicular;
 	}
-	public EnumTipoCobertura getTipoCobertura() {
-		return tipoCobertura;
-	}
 	public void setPatente(String patente) {
 		this.patente = patente;
 	}
@@ -161,7 +165,22 @@ public class SolicitudPoliza {
 	public void setTieneRastreoVehicular(Boolean tieneRastreoVehicular) {
 		this.tieneRastreoVehicular = tieneRastreoVehicular;
 	}
-	public void setTipoCobertura(EnumTipoCobertura tipoCobertura) {
+	public TipoCobertura getTipoCobertura() {
+		return tipoCobertura;
+	}
+	public void setTipoCobertura(TipoCobertura tipoCobertura) {
 		this.tipoCobertura = tipoCobertura;
+	}
+	public AnioModelo getAnioModelo() {
+		return anioModelo;
+	}
+	public void setAnioModelo(AnioModelo anioModelo) {
+		this.anioModelo = anioModelo;
+	}
+	public Ciudad getCiudad() {
+		return ciudad;
+	}
+	public void setCiudad(Ciudad ciudad) {
+		this.ciudad = ciudad;
 	}
 }
