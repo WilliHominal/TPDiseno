@@ -24,28 +24,6 @@ public class PolizaDAO {
     }
 
     public void a() {
-    	Poliza p1 = new Poliza(1l);
-		Poliza p2 = new Poliza(2l);
-
-		Cuota c1 = new Cuota();
-		c1.setNumeroCuota(1);
-		Cuota c2 = new Cuota();
-		c2.setNumeroCuota(2);
-		Cuota c3 = new Cuota();
-		c3.setNumeroCuota(3);
-		Cuota c4 = new Cuota();
-		c4.setNumeroCuota(1);
-		Cuota c5 = new Cuota();
-		c5.setNumeroCuota(2);
-		Cuota c6 = new Cuota();
-		c6.setNumeroCuota(3);
-		
-		p1.getCuotas().add(c1);
-		p1.getCuotas().add(c2);
-		p1.getCuotas().add(c3);
-		p2.getCuotas().add(c4);
-		p2.getCuotas().add(c5);
-		p2.getCuotas().add(c6);
 
 		Ciudad c = new Ciudad();
 		c.setNombre("esperanza");

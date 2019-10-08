@@ -16,7 +16,7 @@ public class HijoDeclarado {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_numero_hijo")
 	@SequenceGenerator(name="id_numero_hijo", sequenceName = "id_numero_hijo_seq", initialValue = 100, allocationSize = 1)
 	@Column(nullable = false)
-	private Integer numeroHijo;
+	private Integer idHijo;
 	
 	@Column(nullable = false, name = "fecha_nacimiento")
 	private LocalDate fechaNacimiento; 
@@ -31,8 +31,8 @@ public class HijoDeclarado {
 	
 	}
 	
-	public Integer getNumeroHijo() {
-		return numeroHijo;
+	public Integer getIdHijo() {
+		return idHijo;
 	}
 	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
@@ -43,8 +43,8 @@ public class HijoDeclarado {
 	public EnumEstadoCivil getEstadoCivil() {
 		return estadoCivil;
 	}
-	public void setNumeroHijo(Integer numeroHijo) {
-		this.numeroHijo = numeroHijo;
+	public void setIdHijo(Integer idHijo) {
+		this.idHijo = idHijo;
 	}
 	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;

@@ -17,7 +17,6 @@
         <mapping class="isi.dds.tp.modelo.Ciudad"/>
         <mapping class="isi.dds.tp.modelo.Cliente"/>
         <mapping class="isi.dds.tp.modelo.Cuota"/>
-        <mapping class="isi.dds.tp.modelo.DatosPago"/>
         <mapping class="isi.dds.tp.modelo.HijoDeclarado"/>
         <mapping class="isi.dds.tp.modelo.Marca"/>
         <mapping class="isi.dds.tp.modelo.Modelo"/>

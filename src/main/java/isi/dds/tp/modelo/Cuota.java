@@ -3,6 +3,8 @@ package isi.dds.tp.modelo;
 
 import java.time.LocalDate;
 import isi.dds.tp.enums.EnumEstadoCuota;
+import isi.dds.tp.enums.EnumPagoCuota;
+
 import javax.persistence.*;
 
 @Entity
@@ -13,19 +15,15 @@ public class Cuota{
 	@JoinColumn(name = "numero_poliza")
 	private Poliza poliza;
 	
-    @OneToOne
-    @PrimaryKeyJoinColumn(name = "datos_pago")
-	private DatosPago datosPago;
+	@ManyToOne
+	@JoinColumn(name="numero_recibo")
+	private Pago pago;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_cuota")
 	@SequenceGenerator(name="id_cuota", sequenceName = "id_cuota_seq", initialValue = 100, allocationSize = 1)
 	@Column(nullable = false)
-	private Integer id;
-
-	@Column(nullable = false, name = "numero")
-	/*TODO  clave compuesta cuota con poliza*/
-	private Integer numeroCuota; 
+	private Integer idCuota;
 	
 	@Column(nullable = false)
 	private Float monto;
@@ -36,29 +34,23 @@ public class Cuota{
 	@Column(nullable = false)
 	@Enumerated(EnumType.STRING)
 	private EnumEstadoCuota estado;
+	
+	@Column(name = "bonificacion_pago_adelantado")
+	private Float bonificacionPagoAdelantado;
+	
+	@Column(name = "recargo_por_mora")
+	private Float recargoPorMora;
+	
+	@Column(name = "estado_pago_cuota")
+	@Enumerated(EnumType.STRING)
+	private EnumPagoCuota estadoPagoCuota;
 
 	public Cuota() {
 		
 	}
 	
-	public Cuota(Poliza poliza, DatosPago datosPago, Integer numeroCuota, Float monto, LocalDate ultimoDiaPago,
-			EnumEstadoCuota estado, Boolean fuePagada) {
-		this.poliza = poliza;
-		this.datosPago = datosPago;
-		this.numeroCuota = numeroCuota;
-		this.monto = monto;
-		this.ultimoDiaPago = ultimoDiaPago;
-		this.estado = estado;
-	}
-	
 	public Poliza getPoliza() {
 		return poliza;
-	}
-	public DatosPago getDatosPago() {
-		return datosPago;
-	}
-	public Integer getNumeroCuota() {
-		return numeroCuota;
 	}
 	public Float getMonto() {
 		return monto;
@@ -72,12 +64,6 @@ public class Cuota{
 	public void setPoliza(Poliza poliza) {
 		this.poliza = poliza;
 	}
-	public void setDatosPago(DatosPago datosPago) {
-		this.datosPago = datosPago;
-	}
-	public void setNumeroCuota(Integer numeroCuota) {
-		this.numeroCuota = numeroCuota;
-	}
 	public void setMonto(Float monto) {
 		this.monto = monto;
 	}
@@ -87,12 +73,34 @@ public class Cuota{
 	public void setEstado(EnumEstadoCuota estado) {
 		this.estado = estado;
 	}
-
-	public Integer getId() {
-		return id;
+	public Pago getPago() {
+		return pago;
 	}
-
-	public void setId(Integer id) {
-		this.id = id;
+	public void setPago(Pago pago) {
+		this.pago = pago;
+	}
+	public Integer getIdCuota() {
+		return idCuota;
+	}
+	public void setIdCuota(Integer idCuota) {
+		this.idCuota = idCuota;
+	}
+	public Float getBonificacionPagoAdelantado() {
+		return bonificacionPagoAdelantado;
+	}
+	public void setBonificacionPagoAdelantado(Float bonificacionPagoAdelantado) {
+		this.bonificacionPagoAdelantado = bonificacionPagoAdelantado;
+	}
+	public Float getRecargoPorMora() {
+		return recargoPorMora;
+	}
+	public void setRecargoPorMora(Float recargoPorMora) {
+		this.recargoPorMora = recargoPorMora;
+	}
+	public EnumPagoCuota getEstadoPagoCuota() {
+		return estadoPagoCuota;
+	}
+	public void setEstadoPagoCuota(EnumPagoCuota estadoPagoCuota) {
+		this.estadoPagoCuota = estadoPagoCuota;
 	}
 }

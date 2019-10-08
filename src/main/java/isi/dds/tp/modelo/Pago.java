@@ -13,7 +13,7 @@ public class Pago {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name="numero_recibo")
 	@IndexColumn(name="idx")
-	private List<DatosPago> datosPago;
+	private List<Cuota> cuotas;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "numero_recibo")
@@ -22,13 +22,7 @@ public class Pago {
 	private Integer numeroRecibo; 
 	
 	@Column(nullable = false, name = "importe_parcial")
-	private Float importeParcial;
-	
-	@Column(nullable = false, name = "importe_total")
-	private Float importeTotal;
-	
-	@Column(nullable = false)
-	private Float vuelto;
+	private Float importe;
 	
 	@Column(nullable = false, name = "fecha_pago")
 	private LocalDate fechaPago;
@@ -45,33 +39,14 @@ public class Pago {
 	public Pago() {
 		
 	}
-	
-	public Pago(Integer numeroRecibo, Float importeParcial, Float importeTotal, Float vuelto, Float premio, String operador) {
-		this.datosPago = new ArrayList<DatosPago>();
-		this.numeroRecibo = numeroRecibo;
-		this.importeParcial = importeParcial;
-		this.importeTotal = importeTotal;
-		this.vuelto = vuelto;
-		this.fechaPago = LocalDate.now();
-		this.hora = OffsetDateTime.now();
-		this.premio = premio;
-		this.operador = operador;
-	}
-	
-	public List<DatosPago> getDatosPago() {
-		return datosPago;
+	public List<Cuota> getCuotas() {
+		return cuotas;
 	}
 	public Integer getNumeroRecibo() {
 		return numeroRecibo;
 	}
-	public Float getImporteParcial() {
-		return importeParcial;
-	}
-	public Float getImporteTotal() {
-		return importeTotal;
-	}
-	public Float getVuelto() {
-		return vuelto;
+	public Float getImporte() {
+		return importe;
 	}
 	public LocalDate getFechaPago() {
 		return fechaPago;
@@ -85,20 +60,14 @@ public class Pago {
 	public String getOperador() {
 		return operador;
 	}
-	public void setDatosPago(List<DatosPago> datosPago) {
-		this.datosPago = datosPago;
-	}
+	public void setCuotas(List<Cuota> cuotas) {
+		this.cuotas = cuotas;
+	} 
 	public void setNumeroRecibo(Integer numeroRecibo) {
 		this.numeroRecibo = numeroRecibo;
 	}
-	public void setImporteParcial(Float importeParcial) {
-		this.importeParcial = importeParcial;
-	}
-	public void setImporteTotal(Float importeTotal) {
-		this.importeTotal = importeTotal;
-	}
-	public void setVuelto(Float vuelto) {
-		this.vuelto = vuelto;
+	public void setImporte(Float importe) {
+		this.importe = importe;
 	}
 	public void setFechaPago(LocalDate fechaPago) {
 		this.fechaPago = fechaPago;
@@ -111,6 +80,5 @@ public class Pago {
 	}
 	public void setOperador(String operador) {
 		this.operador = operador;
-	} 
-	
+	}
 }
