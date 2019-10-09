@@ -20,10 +20,16 @@ public class AnioModelo {
 	private Integer anio;
 	
 	@Column(nullable = false)
-	private Integer sumaAsegurada;
+	private Float sumaAsegurada;
 
 	public AnioModelo() {
 		
+	}
+	
+	public AnioModelo(Modelo modelo, Integer anio, Float suma) {
+		modelo.getAnios().add(this);
+		this.anio = anio;
+		this.sumaAsegurada = suma;
 	}
 	
 	public Modelo getModelo() {
@@ -39,11 +45,11 @@ public class AnioModelo {
 		this.anio = anio;
 	}
 
-	public Integer getSumaAsegurada() {
+	public Float getSumaAsegurada() {
 		return sumaAsegurada;
 	}
 
-	public void setSumaAsegurada(Integer sumaAsegurada) {
+	public void setSumaAsegurada(Float sumaAsegurada) {
 		this.sumaAsegurada = sumaAsegurada;
 	}
 
@@ -54,4 +60,10 @@ public class AnioModelo {
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
+	@Override
+	public String toString() {
+		return anio.toString();
+	}
 }
+

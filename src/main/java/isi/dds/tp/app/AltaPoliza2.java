@@ -8,6 +8,7 @@ import java.util.*;
 import java.util.List;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -92,8 +93,8 @@ public class AltaPoliza2 extends JPanel  {
 		cliente.setPolizas(polizas);
 		poliza.setCliente(cliente);
 		AnioModelo am = new AnioModelo();
-		Marca mar = new Marca("Marca1");
-		Modelo mod = new Modelo(mar, 1, "Modelo1", 0.54f);
+		Marca mar = new Marca( "Marca1");
+		Modelo mod = new Modelo(mar, "Modelo1", 0.54f);
 		am.setAnio(1997);
 		am.setModelo(mod);
 		poliza.setAnioModelo(am);
@@ -101,9 +102,11 @@ public class AltaPoliza2 extends JPanel  {
 		/////////////////////////////////////////////////////////////////BORRAR
 
 		inicializarComponentes();
-		inicializarTema((Color) tema[0], (Color) tema[1], (Color)tema[2], (Color) tema[3], (Font) tema[4], (Font) tema[5]);
+		inicializarTema((Color) tema[0], (Color) tema[1], (Color)tema[2], (Color) tema[3], (Color) tema[4], (Font) tema[5], (Font) tema[6]);
 		ubicarComponentes();
 		
+		DefaultCellEditor editor = (DefaultCellEditor) tablaPagos.getDefaultEditor(Object.class);
+		editor.setClickCountToStart(10000);
 			
 		//setear fecha default dia inicio vigencia
 		Date diaActual = new Date();
@@ -311,7 +314,7 @@ public class AltaPoliza2 extends JPanel  {
 		constraints.insets.set(5, 5, 5, 55);
 		
 		constraints.gridx=3;
-		constraints.insets.set(5, 5, 5, 5);
+		constraints.insets.set(5, 0, 5, 10);
 		constraints.gridheight=2;
 		add(confirmarDatos, constraints);
 		constraints.insets.set(5, 5, 5, 55);
@@ -345,9 +348,12 @@ public class AltaPoliza2 extends JPanel  {
 		constraints.gridx=0;
 		constraints.gridwidth=4;
 		constraints.insets.set(0, 5, 5, 5);
+		constraints.anchor = GridBagConstraints.CENTER;
 		add(new JLabel("________________________________________________________________________________________________________________________________________"), constraints);
 		constraints.gridwidth=1;
+		
 		//FILA 3
+		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridy=3;
 		constraints.gridx=0;
 		constraints.gridwidth=4;
@@ -442,7 +448,7 @@ public class AltaPoliza2 extends JPanel  {
 		constraints.insets.set(5, 645, 5, 5);
 		add(tfDescuentos, constraints);
 		constraints.insets.set(5, 770, 5, 5);
-		lDesc1.setVisible(false);
+		
 		add(lDesc1, constraints);
 		constraints.insets.set(5, 5, 5, 5);
 		
@@ -451,7 +457,6 @@ public class AltaPoliza2 extends JPanel  {
 		constraints.gridx=0;
 		constraints.gridwidth=4;
 		constraints.insets.set(5, 770, 5, 5);
-		lDesc2.setVisible(false);
 		add(lDesc2, constraints);
 		constraints.insets.set(5, 5, 5, 5);
 		
@@ -475,11 +480,13 @@ public class AltaPoliza2 extends JPanel  {
 		add(volver, constraints);
 	}
 	
-	private void inicializarTema(Color colorBoton, Color colorFondoPantalla, Color colorFondoTexto, Color borde, Font letra, Font letraTitulo) {
+	private void inicializarTema(Color colorBoton, Color colorFondoPantalla, Color colorFondoTexto, Color borde, Color colorLetraBloqueado, Font letra, Font letraTitulo) {
 		setBounds(0,0,1024,600);
-		setBorder(new EmptyBorder(0, 0, 0, 0));
 		setFont(letra);
 		setBackground(colorFondoPantalla);
+		
+		UIManager.put( "ComboBox.disabledBackground", colorFondoPantalla );
+		UIManager.put( "ComboBox.disabledForeground", colorLetraBloqueado);
 		
 		//subrayado
 		Font font = lTipoCobertura.getFont();
@@ -516,40 +523,51 @@ public class AltaPoliza2 extends JPanel  {
 		lDescuento.setFont(letra);
 		lMontoTotal.setFont(letra);
 			
+		tfApellido.setDisabledTextColor(colorLetraBloqueado);
 		tfApellido.setFont(letra);
 		tfApellido.setBackground(colorFondoTexto);
-		tfApellido.setBorder(new LineBorder(borde));
+		tfApellido.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tfNombre.setDisabledTextColor(colorLetraBloqueado);
 		tfNombre.setFont(letra);
 		tfNombre.setBackground(colorFondoTexto);
-		tfNombre.setBorder(new LineBorder(borde));
+		tfNombre.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tfMarca.setDisabledTextColor(colorLetraBloqueado);
 		tfMarca.setFont(letra);
 		tfMarca.setBackground(colorFondoTexto);
-		tfMarca.setBorder(new LineBorder(borde));
+		tfMarca.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tfMotor.setDisabledTextColor(colorLetraBloqueado);
 		tfMotor.setFont(letra);
 		tfMotor.setBackground(colorFondoTexto);
-		tfMotor.setBorder(new LineBorder(borde));
+		tfMotor.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tfModelo.setDisabledTextColor(colorLetraBloqueado);
 		tfModelo.setFont(letra);
 		tfModelo.setBackground(colorFondoTexto);
-		tfModelo.setBorder(new LineBorder(borde));
+		tfModelo.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tfChasis.setDisabledTextColor(colorLetraBloqueado);
 		tfChasis.setFont(letra);
 		tfChasis.setBackground(colorFondoTexto);
-		tfChasis.setBorder(new LineBorder(borde));
+		tfChasis.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tfPatente.setDisabledTextColor(colorLetraBloqueado);
 		tfPatente.setFont(letra);
 		tfPatente.setBackground(colorFondoTexto);
-		tfPatente.setBorder(new LineBorder(borde));
+		tfPatente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tfSumaAsegurada.setDisabledTextColor(colorLetraBloqueado);
 		tfSumaAsegurada.setFont(letra);
 		tfSumaAsegurada.setBackground(colorFondoTexto);
-		tfSumaAsegurada.setBorder(new LineBorder(borde));
+		tfSumaAsegurada.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tfPremio.setDisabledTextColor(colorLetraBloqueado);
 		tfPremio.setFont(letra);
 		tfPremio.setBackground(colorFondoTexto);
-		tfPremio.setBorder(new LineBorder(borde));
+		tfPremio.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tfDescuentos.setDisabledTextColor(colorLetraBloqueado);
 		tfDescuentos.setFont(letra);
 		tfDescuentos.setBackground(colorFondoTexto);
-		tfDescuentos.setBorder(new LineBorder(borde));
+		tfDescuentos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tfMontoTotal.setDisabledTextColor(colorLetraBloqueado);
 		tfMontoTotal.setFont(letra);
 		tfMontoTotal.setBackground(colorFondoTexto);
-		tfMontoTotal.setBorder(new LineBorder(borde));
-		tfApellido.setDisabledTextColor(Color.blue);
+		tfMontoTotal.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		
 		
 		confirmarDatos.setBackground(colorBoton);
 		confirmarDatos.setFont(letra);
@@ -568,45 +586,33 @@ public class AltaPoliza2 extends JPanel  {
 		tablaPagos.setBackground(colorFondoTexto);
 		tablaPagos.setFont(letra);
 		
-		scrollTablaPagos.setBorder(new LineBorder(borde));
+		tablaPagos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		scrollTablaPagos.getViewport().setBackground(colorFondoTexto);
-		scrollTablaPagos.setBorder(new LineBorder(borde));
+		//scrollTablaPagos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
 		((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setBackground(colorFondoTexto);
 		((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setFont(letra);
 		((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setBorder(new LineBorder(borde));
 		((JTextFieldDateEditor)dcInicio.getDateEditor()).setBackground(colorFondoTexto);
 		((JTextFieldDateEditor)dcInicio.getDateEditor()).setFont(letra);
-		((JTextFieldDateEditor)dcInicio.getDateEditor()).setBorder(new LineBorder(borde));
+		((JTextFieldDateEditor)dcInicio.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		((JTextFieldDateEditor)dcFin.getDateEditor()).setBackground(colorFondoTexto);
 		((JTextFieldDateEditor)dcFin.getDateEditor()).setFont(letra);
-		((JTextFieldDateEditor)dcFin.getDateEditor()).setBorder(new LineBorder(borde));
+		((JTextFieldDateEditor)dcFin.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 	}
 	
 	private void inicializarComponentes() {
 		rbFormaPago.add(mensual);
 		rbFormaPago.add(semestral);
 		
-		//tabla
-		tablaPagos.setFillsViewportHeight(true);
-		tablaPagos.setBorder(new LineBorder(new Color(0, 0, 0)));
-		tablaPagos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-		rightRenderer.setHorizontalAlignment( JLabel.RIGHT );
-
-		scrollTablaPagos = new JScrollPane(tablaPagos,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollTablaPagos.setPreferredSize(new Dimension(325, 119));
-
-		tablaPagos.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
-		tablaPagos.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
-		tablaPagos.getColumnModel().getColumn(0).setPreferredWidth(200);
-		tablaPagos.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tablaPagos.getColumnModel().getColumn(0).setHeaderValue("Último día de pago");
-		tablaPagos.getColumnModel().getColumn(1).setHeaderValue("Monto");
 		
-		DefaultCellEditor editor = (DefaultCellEditor) tablaPagos.getDefaultEditor(Object.class);
-		editor.setClickCountToStart(10000);
-		
+		dcInicioVigencia.setPreferredSize(new Dimension(100, 20));
+		dcInicio.setPreferredSize(new Dimension(100, 20));
+		dcFin.setPreferredSize(new Dimension(100, 20));
+		confirmarDatos.setPreferredSize(new Dimension(160, 25));
+		generarPoliza.setPreferredSize(new Dimension(160, 25));
+		volver.setPreferredSize(new Dimension(160, 25));
+				
 		//deshabilitar campos
 		tfApellido.setEnabled(false);
 		tfNombre.setEnabled(false);
@@ -622,6 +628,30 @@ public class AltaPoliza2 extends JPanel  {
 		generarPoliza.setEnabled(false);
 		dcInicio.setEnabled(false);
 		dcFin.setEnabled(false);
+		tablaPagos.setEnabled(false);
+		
 		mensual.setSelected(true);
+
+		
+		lDesc1.setVisible(false);
+		lDesc2.setVisible(false);
+				
+		tablaPagos.setFillsViewportHeight(true);
+		tablaPagos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment( JLabel.RIGHT );
+
+		scrollTablaPagos = new JScrollPane(tablaPagos,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollTablaPagos.setPreferredSize(new Dimension(325, 119));
+
+		tablaPagos.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
+		tablaPagos.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
+		tablaPagos.getColumnModel().getColumn(0).setPreferredWidth(200);
+		tablaPagos.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tablaPagos.getColumnModel().getColumn(0).setHeaderValue("Último día de pago");
+		tablaPagos.getColumnModel().getColumn(1).setHeaderValue("Monto");
+		
+		
 	}
 }

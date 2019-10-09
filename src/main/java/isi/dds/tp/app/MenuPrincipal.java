@@ -4,8 +4,6 @@ import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import net.miginfocom.swing.MigLayout;
-
 @SuppressWarnings("serial")
 public class MenuPrincipal extends JPanel {
 

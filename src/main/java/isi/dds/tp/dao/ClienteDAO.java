@@ -8,7 +8,7 @@ public class ClienteDAO {
 
     }
 
-    public static ClienteDAO getClienteDAO() {
+    public static ClienteDAO getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new ClienteDAO();
         }    

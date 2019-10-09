@@ -36,13 +36,12 @@ public class Modelo {
 		
 	}
 	
-	public Modelo(Marca marca, Integer idModelo, String nombre, Float riesgo) {
+	public Modelo(Marca marca,  String nombre,  Float riesgo) {
 		this.marca = marca;
 		marca.getModelos().add(this);
 		this.anios = new ArrayList<AnioModelo>();
 		this.riesgos = new ArrayList<RiesgoModelo>();
 		this.riesgos.add(new RiesgoModelo(this, riesgo));
-		this.idModelo = idModelo;
 		this.nombre = nombre;		
 	}
 	
@@ -76,4 +75,9 @@ public class Modelo {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}	
+	
+	@Override
+	public String toString() {
+		return nombre;
+	}
 }	

@@ -28,8 +28,8 @@ public class Marca {
 	}
 	
 	public Marca(String nombre) {
-		this.modelos = new ArrayList<Modelo>();
 		this.nombre = nombre;
+		this.modelos = new ArrayList<Modelo>();
 	}
 	
 	public List<Modelo> getModelos() {
@@ -50,5 +50,12 @@ public class Marca {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
+
+	@Override
+	public String toString() {
+		return nombre;
+	}
+	
+	
 	
 }

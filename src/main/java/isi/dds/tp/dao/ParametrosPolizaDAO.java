@@ -8,7 +8,7 @@ public class ParametrosPolizaDAO {
 
     }
 
-    public static ParametrosPolizaDAO getParametrosPolizaDAO() {
+    public static ParametrosPolizaDAO getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new ParametrosPolizaDAO();
         }    

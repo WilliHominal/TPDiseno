@@ -1,9 +1,10 @@
 package isi.dds.tp.dao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
-
-import isi.dds.tp.hibernate.HibernateUtil;
+import org.hibernate.cfg.Configuration;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.Poliza;
@@ -16,38 +17,29 @@ public class PolizaDAO {
 
     }
 
-    public static PolizaDAO getPolizaDAO() {
+    public static PolizaDAO getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new PolizaDAO();
         }    
         return instanciaDAO;
     }
 
-    public void a() {
+    public void addCiudad(Ciudad c) {
 
-		Ciudad c = new Ciudad();
-		c.setNombre("esperanza");
-
-		Ciudad ci2 = new Ciudad();
-		ci2.setNombre("sin servidor activo");
-
-		Transaction transaction = null;
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			transaction = session.getSessionFactory().openSession().getTransaction();
-			// start a transaction
-			session.beginTransaction();
-
-			// save the student objects
-			session.save(ci2);
-
-			// commit transaction
-			session.getTransaction().commit();
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
-			e.printStackTrace();
-		}
+    	SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
+        Session session = sessionFactory.getCurrentSession();
+                  
+        try {
+            session.beginTransaction();
+            session.save(c);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }finally {
+     	   session.close();
+        }
 
 		// Transaction transaction = null;
 		/*

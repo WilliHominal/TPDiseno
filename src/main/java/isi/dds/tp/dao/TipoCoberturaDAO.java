@@ -8,7 +8,7 @@ public class TipoCoberturaDAO {
 
     }
 
-    public static TipoCoberturaDAO getTipoCoberturaDAO() {
+    public static TipoCoberturaDAO getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new TipoCoberturaDAO();
         }    

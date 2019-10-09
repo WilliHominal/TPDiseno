@@ -8,7 +8,7 @@ public class UsuarioDAO {
 
     }
 
-    public static UsuarioDAO getUsuarioDAO() {
+    public static UsuarioDAO getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new UsuarioDAO();
         }    

@@ -1,29 +1,26 @@
 package isi.dds.tp.app;
 
 import java.awt.*;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
-import java.util.Map;
+import java.time.LocalDate;
+import java.util.ArrayList;
 
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
+import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
-import com.toedter.calendar.JDateChooser;
-
-import isi.dds.tp.enums.EnumSiniestros;
+import isi.dds.tp.enums.*;
+import isi.dds.tp.gestor.GestorDomicilio;
+import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.modelo.*;
-import net.miginfocom.swing.MigLayout;
 
 
 @SuppressWarnings("serial")
 public class AltaPoliza1 extends JPanel {
-		
-	//private JLabel ldatosCliente = new JLabel("DATOS CLIENTE");
-	//private JLabel ldatosPoliza = new JLabel("DATOS P\u00d3LIZA");
-	//FIJARSE SI PONER TITULO 
+	
+	public Cliente cliente = new Cliente(new Ciudad(new Provincia(new Pais("PA1"), "PR1"), "C1", 0), 123456l, EnumCondicion.NORMAL, "APE", "NOM", EnumTipoDocumento.DNI, 11111111, 
+			2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo.xd", EnumEstadoCivil.CASADO, "PROF", 2019);
+
 	
 	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
@@ -53,12 +50,12 @@ public class AltaPoliza1 extends JPanel {
 	private JLabel ldatosObligatorios = new JLabel("(*) datos obligatios)");
 		
 	private JTextField tnumeroCliente = new JTextField(10);
-	private JTextField ttipoDocumento = new JTextField(15);;
-	private JTextField tdocumento = new JTextField(8);
+	private JTextField ttipoDocumento = new JTextField(15);
+	private JTextField tnumeroDocumento = new JTextField(8);
 	private JTextField tapellido = new JTextField(15);
-	private JTextField tnombres = new JTextField(15);;
+	private JTextField tnombres = new JTextField(15);
 	private JTextField tcalle = new JTextField(15);
-	private JTextField tnumeroDom = new JTextField(8);
+	private JTextField tnumeroDomicilio = new JTextField(8);
 	private JTextField tdepartamento = new JTextField(3);
 	private JTextField tmotor = new JTextField(15);
 	private JTextField tchasis = new JTextField(8);
@@ -91,16 +88,28 @@ public class AltaPoliza1 extends JPanel {
 	private JRadioButton rtuercasNo = new JRadioButton("NO");
 	
 	private JTable tablaHijos = new JTable(6, 4);
-	private JScrollPane tablaHijosScroll = new JScrollPane(tablaHijos);
+	private JScrollPane tablaHijosScroll = new JScrollPane(tablaHijos,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	private Object[][] datosTabla = {{""},{""},{""},{""}};
 
 	
 	public AltaPoliza1(JFrame ventana, Object[] tema) {
-		
+	
 		inicializarComponentes();
-		inicializarTema((Color) tema[0], (Color) tema[1], (Color)tema[2], (Color) tema[3], (Font) tema[4], (Font) tema[5]);
 		ubicarComponentes();
+		inicializarTema((Color) tema[0], (Color) tema[1], (Color)tema[2], (Color) tema[3], (Color) tema[4], (Font) tema[5], (Font) tema[6]);
 
+		btnBuscarCliente.addActionListener(a -> {
+			try {
+				
+				buscarClienteExitoso(cliente, (Color) tema[4]);
+				
+
+			
+						
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		});
 		
 		ventana.setBounds(0,0,1024,600);
 		ventana.setLocationRelativeTo(null);
@@ -154,7 +163,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 0);
-		add(tdocumento, constraints);
+		add(tnumeroDocumento, constraints);
 		
 		//FILA 2
 		constraints.gridx = 0;
@@ -194,7 +203,7 @@ public class AltaPoliza1 extends JPanel {
 		
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(5, 0, 5, 20);
+		constraints.insets.set(5, 0, 5, 15);
 		add(tcalle, constraints);
 		
 		constraints.gridx = 4;
@@ -205,7 +214,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridx = 5;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 15);
-		add(tnumeroDom, constraints);
+		add(tnumeroDomicilio, constraints);
 		
 		constraints.gridx = 6;
 		constraints.anchor = GridBagConstraints.EAST;
@@ -224,7 +233,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.insets.set(5, 0, 5, 0);
-		add(new JLabel("___________________________________________________________________________________________________________________________"), constraints);
+		add(new JLabel("___________________________________________________________________________________________________________________________________"), constraints);
 		
 		//FILA 5
 		constraints.gridy = 4;
@@ -275,7 +284,7 @@ public class AltaPoliza1 extends JPanel {
 		add(lsumaAseg, constraints);
 		constraints.insets.set(5, 113, 5, 5);
 		add(tsumaAsegurada, constraints);
-		constraints.insets.set(5, 295, 5, 5);
+		constraints.insets.set(5, 298, 5, 5);
 		add(lmoneda, constraints);
 
 		//FILA 9
@@ -354,21 +363,13 @@ public class AltaPoliza1 extends JPanel {
 
 	}
 		
-	private void inicializarTema(Color colorBoton, Color colorFondoPantalla, Color colorFondoTexto, Color borde, Font letra, Font letraTitulo) {
+	private void inicializarTema(Color colorBoton, Color colorFondoPantalla, Color colorFondoTexto, Color borde, Color colorLetraBloqueado, Font letra, Font letraTitulo) {
 		setBounds(0,0,1024,600);
-		setBorder(new EmptyBorder(5, 5, 5, 5));
 		setFont(letra);
 		setBackground(colorFondoPantalla);
 		
-		//ldatosCliente.setFont(letraTitulo);
-		//ldatosPoliza.setFont(letraTitulo);
-		
-		//subrayado
-		//Font subrayado = ldatosCliente.getFont();
-		//Map<TextAttribute, Object> attributes = new HashMap<>(subrayado.getAttributes());
-		//attributes.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_ON);
-		//ldatosCliente.setFont(subrayado.deriveFont(attributes));
-		//ldatosPoliza.setFont(subrayado.deriveFont(attributes));
+		UIManager.put( "ComboBox.disabledBackground", colorFondoPantalla );
+		UIManager.put( "ComboBox.disabledForeground", colorLetraBloqueado);
 		
 		lnumeroCliente.setFont(letra);
 		ltipoDocumento.setFont(letra);
@@ -399,40 +400,52 @@ public class AltaPoliza1 extends JPanel {
 			
 		tnumeroCliente.setFont(letra);
 		tnumeroCliente.setBackground(colorFondoTexto);
-		tnumeroCliente.setBorder(new LineBorder(borde));
+		tnumeroCliente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tnumeroCliente.setDisabledTextColor(colorLetraBloqueado);
 		ttipoDocumento.setFont(letra);
 		ttipoDocumento.setBackground(colorFondoTexto);
-		ttipoDocumento.setBorder(new LineBorder(borde));
-		tdocumento.setFont(letra);
-		tdocumento.setBackground(colorFondoTexto);
-		tdocumento.setBorder(new LineBorder(borde));
+		ttipoDocumento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		ttipoDocumento.setDisabledTextColor(colorLetraBloqueado);
+		tnumeroDocumento.setFont(letra);
+		tnumeroDocumento.setBackground(colorFondoTexto);
+		tnumeroDocumento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tnumeroDocumento.setDisabledTextColor(colorLetraBloqueado);
 		tapellido.setFont(letra);
 		tapellido.setBackground(colorFondoTexto);
-		tapellido.setBorder(new LineBorder(borde));
+		tapellido.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tapellido.setDisabledTextColor(colorLetraBloqueado);
 		tnombres.setFont(letra);
 		tnombres.setBackground(colorFondoTexto);
-		tnombres.setBorder(new LineBorder(borde));
+		tnombres.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tnombres.setDisabledTextColor(colorLetraBloqueado);
 		tcalle.setFont(letra);
 		tcalle.setBackground(colorFondoTexto);
-		tcalle.setBorder(new LineBorder(borde));
-		tnumeroDom.setFont(letra);
-		tnumeroDom.setBackground(colorFondoTexto);
-		tnumeroDom.setBorder(new LineBorder(borde));
+		tcalle.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tcalle.setDisabledTextColor(colorLetraBloqueado);
+		tnumeroDomicilio.setFont(letra);
+		tnumeroDomicilio.setBackground(colorFondoTexto);
+		tnumeroDomicilio.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tnumeroDomicilio.setDisabledTextColor(colorLetraBloqueado);
 		tdepartamento.setFont(letra);
 		tdepartamento.setBackground(colorFondoTexto);
-		tdepartamento.setBorder(new LineBorder(borde));
-		tmotor.setFont(letra);
-		tmotor.setBackground(colorFondoTexto);
-		tmotor.setBorder(new LineBorder(borde));
-		tchasis.setFont(letra);
-		tchasis.setBackground(colorFondoTexto);
-		tchasis.setBorder(new LineBorder(borde));
-		tpatente.setFont(letra);
-		tpatente.setBackground(colorFondoTexto);
-		tpatente.setBorder(new LineBorder(borde));
+		tdepartamento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tdepartamento.setDisabledTextColor(colorLetraBloqueado);
 		tsumaAsegurada.setFont(letra);
 		tsumaAsegurada.setBackground(colorFondoTexto);
-		tsumaAsegurada.setBorder(new LineBorder(borde));
+		tsumaAsegurada.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tsumaAsegurada.setDisabledTextColor(colorLetraBloqueado);
+
+		
+		tmotor.setFont(letra);
+		tmotor.setBackground(colorFondoTexto);
+		tmotor.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tchasis.setFont(letra);
+		tchasis.setBackground(colorFondoTexto);
+		tchasis.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tpatente.setFont(letra);
+		tpatente.setBackground(colorFondoTexto);
+		tpatente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+
 		
 		btnBuscarCliente.setBackground(colorBoton);
 		btnBuscarCliente.setFont(letra);
@@ -453,15 +466,17 @@ public class AltaPoliza1 extends JPanel {
 		cmbCiudad.setFont(letra);
 		cmbMarca.setBackground(colorFondoTexto);
 		cmbMarca.setFont(letra);
+		cmbMarca.setOpaque(true);
 		cmbModelo.setBackground(colorFondoTexto);
 		cmbModelo.setFont(letra);
+		cmbModelo.setOpaque(true);
 		cmbAnio.setBackground(colorFondoTexto);
 		cmbAnio.setFont(letra);
 		cmbKm.setBackground(colorFondoTexto);
 		cmbKm.setFont(letra);
 		cmbSiniestros.setBackground(colorFondoTexto);
-		cmbSiniestros.setFont(letra);
-
+		cmbSiniestros.setFont(letra);	
+		
 		rgarageSi.setBackground(colorFondoPantalla);
 		rgarageSi.setFont(letra);
 		rgarageNo.setBackground(colorFondoPantalla);
@@ -482,7 +497,96 @@ public class AltaPoliza1 extends JPanel {
 		
 		tablaHijos.setBackground(colorFondoTexto);
 		tablaHijos.setFont(letra);
+		tablaHijos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tablaHijosScroll.getViewport().setBackground(colorFondoTexto);
+		//tablaHijosScroll.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+
+	}
+	
+	
+	@SuppressWarnings({"rawtypes", "unchecked" })
+	private void inicializarComponentes() {
 		
+		//deshabilitar componentes
+		tnumeroCliente.setEnabled(false);
+		ttipoDocumento.setEnabled(false);
+		tnumeroDocumento.setEnabled(false);
+		tapellido.setEnabled(false);
+		tnombres.setEnabled(false);
+		tcalle.setEnabled(false);
+		tnumeroDomicilio.setEnabled(false);
+		tdepartamento.setEnabled(false);
+		tsumaAsegurada.setEnabled(false);
+		tmotor.setEnabled(false);
+		tchasis.setEnabled(false);
+		tpatente.setEnabled(false);
+		
+		cmbProvincia.setEnabled(false);
+		cmbCiudad.setEnabled(false);
+		cmbMarca.setEnabled(false);
+		cmbModelo.setEnabled(false);
+		cmbAnio.setEnabled(false);
+		cmbKm.setEnabled(false);
+		cmbSiniestros.setEnabled(false);
+		
+		rgarageSi.setEnabled(false);
+		rgarageNo.setEnabled(false);
+		ralarmaSi.setEnabled(false);
+		ralarmaNo.setEnabled(false);
+		rrastreoNo.setEnabled(false);
+		rrastreoSi.setEnabled(false);
+		rtuercasSi.setEnabled(false);
+		rtuercasNo.setEnabled(false);
+		
+		tablaHijos.setEnabled(false);
+		
+		btnQuitarHijo.setEnabled(false);
+		btnConfirmarDatos.setEnabled(false);
+		btnAgregarHijo.setEnabled(false);
+		
+		//iniciabilizar componentes
+		cmbProvincia.setModel(new DefaultComboBoxModel(new String[] {}));
+		cmbCiudad.setModel(new DefaultComboBoxModel(new String[] {}));
+		cmbMarca.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar marca"}));
+		cmbModelo.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar modelo"}));
+		cmbAnio.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar a\u00f1o"}));
+		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar rango"}));
+		cmbSiniestros.setModel(new DefaultComboBoxModel(new String[] {"NO ES COMBO CAMBIAR"}));
+		
+		
+				
+		garage.add(rgarageSi);
+		garage.add(rgarageNo);
+		rgarageNo.setSelected(true);
+		alarma.add(ralarmaSi);
+		alarma.add(ralarmaNo);
+		ralarmaNo.setSelected(true);
+		rastreo.add(rrastreoSi);
+		rastreo.add(rrastreoNo);
+		rrastreoNo.setSelected(true);
+		tuercas.add(rtuercasSi);
+		tuercas.add(rtuercasNo);
+		rtuercasNo.setSelected(true);
+		
+		
+		//dar cierto tamaño
+		cmbProvincia.setPreferredSize(new Dimension(199, 25));
+		cmbCiudad.setPreferredSize(new Dimension(199, 25));
+		cmbMarca.setPreferredSize(new Dimension(163, 25));
+		cmbModelo.setPreferredSize(new Dimension(145, 25));
+		cmbAnio.setPreferredSize(new Dimension(130, 25));
+		cmbKm.setPreferredSize(new Dimension(220, 25));
+		cmbSiniestros.setPreferredSize(new Dimension(220, 25));
+		
+		btnBuscarCliente.setPreferredSize(new Dimension(160, 25));
+		btnAltaCliente.setPreferredSize(new Dimension(160, 25));
+		btnAgregarHijo.setPreferredSize(new Dimension(160, 25));
+		btnQuitarHijo.setPreferredSize(new Dimension(160, 25));
+		btnConfirmarDatos.setPreferredSize(new Dimension(160, 25));
+		btnCancelar.setPreferredSize(new Dimension(160, 25));
+		
+
+		//definir tabla
 		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 6) {
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
@@ -503,10 +607,10 @@ public class AltaPoliza1 extends JPanel {
 		tablaHijos.getColumnModel().getColumn(2).setCellRenderer(centrado);
 		tablaHijos.getColumnModel().getColumn(3).setCellRenderer(centrado);
 		
-		tablaHijos.getColumnModel().getColumn(0).setPreferredWidth(200);
-		tablaHijos.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tablaHijos.getColumnModel().getColumn(2).setPreferredWidth(200);
-		tablaHijos.getColumnModel().getColumn(3).setPreferredWidth(100);
+		tablaHijos.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tablaHijos.getColumnModel().getColumn(1).setPreferredWidth(155);
+		tablaHijos.getColumnModel().getColumn(2).setPreferredWidth(150);
+		tablaHijos.getColumnModel().getColumn(3).setPreferredWidth(200);
 		
 		tablaHijos.getColumnModel().getColumn(0).setHeaderValue("Hijo");
 		tablaHijos.getColumnModel().getColumn(1).setHeaderValue("Fecha nacimiento");
@@ -515,67 +619,68 @@ public class AltaPoliza1 extends JPanel {
 		
 		tablaHijosScroll.setPreferredSize(new Dimension(400, 100));
 		
-		/*TODO cambiar borde*/
-		tablaHijosScroll.setBorder(new LineBorder(borde));
-		tablaHijosScroll.getViewport().setBackground(colorFondoTexto);
-		tablaHijosScroll.setBorder(new LineBorder(borde));
 	}
 	
-	@SuppressWarnings({ "unused", "deprecation", "rawtypes", "unchecked" })
-	private void inicializarComponentes() {
-		tnumeroCliente.disable();
-		ttipoDocumento.disable();
-		tdocumento.disable();
-		tapellido.disable();
-		tnombres.disable();
-		tcalle.disable();
-		tnumeroDom.disable();
-		tdepartamento.disable();
-		tsumaAsegurada.disable();
+	private void buscarClienteExitoso(Cliente cliente, Color borde){
+		tnumeroCliente.setText(cliente.getNumeroCliente().toString());
+		ttipoDocumento.setText(cliente.getTipoDocumento().toString());
+		tnumeroDocumento.setText(cliente.getNumeroDocumento().toString());
+		tapellido.setText(cliente.getApellido());
+		tnombres.setText(cliente.getNombre());
+		tcalle.setText(cliente.getCalle());
+		tnumeroDomicilio.setText(cliente.getNumeroCalle().toString());
+		tdepartamento.setText(cliente.getDepartamento());
 		
-		cmbProvincia.setModel(new DefaultComboBoxModel(new String[] {"SANTIAGO DEL ESTERO", "Santa FE"}));
-		cmbProvincia.setPreferredSize(new Dimension(199, 25));
-		cmbCiudad.setModel(new DefaultComboBoxModel(new String[] {"Santiago del Estero"}));
-		cmbCiudad.setPreferredSize(new Dimension(199, 25));
-		cmbMarca.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar marca"}));
-		cmbMarca.setPreferredSize(new Dimension(163, 25));
-		cmbModelo.setModel(new DefaultComboBoxModel(new String[] {"VOLKSWAGEN"}));
-		cmbModelo.setPreferredSize(new Dimension(145, 25));
-		cmbModelo.setEnabled(false);
-		cmbAnio.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar a\u00f1o"}));
-		cmbAnio.setPreferredSize(new Dimension(130, 25));
-		cmbAnio.setEnabled(false);
-		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar rango"}));
-		cmbKm.setPreferredSize(new Dimension(220, 25));
-		cmbSiniestros.setModel(new DefaultComboBoxModel(new String[] {"AGRANDAR PARA ESPACIO DE 10"}));
-		cmbSiniestros.setPreferredSize(new Dimension(220, 25));
+		tmotor.setEnabled(true);
+		tchasis.setEnabled(true);
+		tpatente.setEnabled(true);
 		
-		garage.add(rgarageSi);
-		garage.add(rgarageNo);
-		rgarageNo.setSelected(true);
-		alarma.add(ralarmaSi);
-		alarma.add(ralarmaNo);
-		ralarmaNo.setSelected(true);
-		rastreo.add(rrastreoSi);
-		rastreo.add(rrastreoNo);
-		rrastreoNo.setSelected(true);
-		tuercas.add(rtuercasSi);
-		tuercas.add(rtuercasNo);
-		rtuercasNo.setSelected(true);
+		tmotor.setBorder(new LineBorder(borde));
+		tchasis.setBorder(new LineBorder(borde));
+		tpatente.setBorder(new LineBorder(borde));
+		tablaHijos.setBorder(new LineBorder(borde));
 		
-		btnQuitarHijo.setEnabled(false);
-		btnConfirmarDatos.setEnabled(false);
+		cmbProvincia.setEnabled(true);
+		cmbCiudad.setEnabled(true);
+		cmbMarca.setEnabled(true);
+		cmbKm.setEnabled(true);
+		cmbSiniestros.setEnabled(true);
 		
-		btnBuscarCliente.setPreferredSize(new Dimension(160, 25));
-		btnAltaCliente.setPreferredSize(new Dimension(160, 25));
-		btnAgregarHijo.setPreferredSize(new Dimension(160, 25));
-		btnQuitarHijo.setPreferredSize(new Dimension(160, 25));
-		btnConfirmarDatos.setPreferredSize(new Dimension(160, 25));
-		btnCancelar.setPreferredSize(new Dimension(160, 25));
+		rgarageSi.setEnabled(true);
+		rgarageNo.setEnabled(true);
+		ralarmaSi.setEnabled(true);
+		ralarmaNo.setEnabled(true);
+		rrastreoNo.setEnabled(true);
+		rrastreoSi.setEnabled(true);
+		rtuercasSi.setEnabled(true);
+		rtuercasNo.setEnabled(true);
 		
+		tablaHijos.setEnabled(true);
+		
+		btnAgregarHijo.setEnabled(true);
+		
+		
+		
+		
+		ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.getGestorDomicilio().getProvincias(null);
+		
+		cmbProvincia.addItem(provincias.get(0));
+		cmbProvincia.addItem(provincias.get(1));
+		//TODO cambiar como elegit ciudades
+		cmbCiudad.addItem(provincias.get(0).getCiudades().get(0));
+		
+		
+		ArrayList<Marca> marcas = (ArrayList<Marca>) GestorParametrosVehiculo.getGestorParametroPoliza().getMarcas();
+		cmbMarca.addItem(marcas.get(0));
+		cmbMarca.addItem(marcas.get(1));
+		
+
+		/* TODO cargar los combos
+		cmbKm
+		cmbSiniestros;
+		 */
 		
 	}
-	
 }
 
 

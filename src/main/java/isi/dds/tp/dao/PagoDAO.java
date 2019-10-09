@@ -8,7 +8,7 @@ public class PagoDAO {
 
     }
 
-    public static PagoDAO getPagoDAO() {
+    public static PagoDAO getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new PagoDAO();
         }    

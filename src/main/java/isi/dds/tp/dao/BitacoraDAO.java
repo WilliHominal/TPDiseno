@@ -8,7 +8,7 @@ public class BitacoraDAO {
 
     }
 
-    public static BitacoraDAO getBitacoraDAO() {
+    public static BitacoraDAO getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new BitacoraDAO();
         }    
