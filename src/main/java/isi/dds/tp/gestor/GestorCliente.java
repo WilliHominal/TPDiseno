@@ -16,7 +16,7 @@ public class GestorCliente {
 
     }
 
-    public static GestorCliente getGestorCliente() {
+    public static GestorCliente get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorCliente();
         }    
@@ -24,6 +24,8 @@ public class GestorCliente {
     }
 
     public void AltaCliente(Cliente c) {
+    	
+    	ClienteDAO.getDAO().addCliente(c);
     	
     }
     
@@ -60,7 +62,8 @@ public class GestorCliente {
     }
 
     public Cliente getCliente(Long numeroCliente) {
-    	return null;
+    	Cliente cliente = ClienteDAO.getDAO().getCliente(numeroCliente);
+    	return cliente;
     }
     
     public List<Poliza> getPoliza(Long numeroCliente) {

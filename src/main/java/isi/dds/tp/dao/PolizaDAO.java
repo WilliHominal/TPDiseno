@@ -1,13 +1,14 @@
 package isi.dds.tp.dao;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
-import org.hibernate.cfg.Configuration;
-import isi.dds.tp.modelo.Ciudad;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Cuota;
+import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.Poliza;
+import isi.dds.tp.modelo.SolicitudPoliza;
 
 public class PolizaDAO {
 	
@@ -24,11 +25,25 @@ public class PolizaDAO {
         return instanciaDAO;
     }
 
-    public void addCiudad(Ciudad c) {
+    public void addPoliza(Poliza p) {
 
-    	SessionFactory sessionFactory = new Configuration().configure().buildSessionFactory();
-        Session session = sessionFactory.getCurrentSession();
-                  
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            session.save(p);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
+    }
+    
+    public void addCuota(Cuota c) {
+
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
         try {
             session.beginTransaction();
             session.save(c);
@@ -37,25 +52,111 @@ public class PolizaDAO {
         catch (HibernateException e) {
             e.printStackTrace();
             session.getTransaction().rollback();
-        }finally {
-     	   session.close();
         }
+    }
+    
+    public void addSolicitudPoliza(SolicitudPoliza s) {
 
-		// Transaction transaction = null;
-		/*
-		 * try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-		 * /*Query query = session.createQuery("SELECT p FROM Pais p"); List <Pais>
-		 * paises = query.list(); for (Pais pais : paises) {
-		 * System.out.println(pais.getProvincias().get(0).getNombre()); }
-		 *//*
-			 * List <Pais> paises = session.createQuery("from Pais", Pais.class).list();
-			 * paises.forEach(s -> System.out.println(s.getNombre()));
-			 * 
-			 * 
-			 * } catch (Exception e) { if (transaction != null) { transaction.rollback(); }
-			 * e.printStackTrace(); }
-			 */
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            session.save(s);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
+    }
+    
+    public void addHijoDeclarado(HijoDeclarado h) {
 
-	
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            session.save(h);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<Poliza> getPolizas(Long numeroCliente) {
+    	
+    	List<Poliza> polizas = null;
+
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            polizas = session.createQuery("SELECT p FROM Poliza p WHERE numero_cliente="+numeroCliente).list();
+            
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        
+        return polizas;
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<Cuota> getCuotas(Long numeroPoliza) {
+
+    	List<Cuota> cuotas = null;
+    	
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            cuotas = session.createQuery("SELECT c FROM Cuota c WHERE numero_poliza="+numeroPoliza).list();
+            
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        
+        return cuotas;
+    }
+    
+    public SolicitudPoliza getSolicitudPoliza(Long numeroPoliza) {
+
+    	SolicitudPoliza solicitud = null;
+    	
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            solicitud = (SolicitudPoliza) session.createQuery("SELECT s FROM SolicitudPoliza s WHERE numero_poliza="+numeroPoliza);
+            
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        
+        return solicitud;
+    }
+    
+    @SuppressWarnings("unchecked")
+	public List<HijoDeclarado> getHijosDeclarados(Long numeroPoliza) {
+
+    	List<HijoDeclarado> hijos = null;
+    	
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            hijos = session.createQuery("SELECT h FROM HijoDeclarado h WHERE numero_poliza="+numeroPoliza).list();
+            
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        
+        return hijos;
     }
 }

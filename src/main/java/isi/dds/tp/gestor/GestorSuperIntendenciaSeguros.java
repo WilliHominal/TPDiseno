@@ -8,7 +8,7 @@ public class GestorSuperIntendenciaSeguros {
 
     }
 
-    public static GestorSuperIntendenciaSeguros getGestorSuperIntendenciaSeguros() {
+    public static GestorSuperIntendenciaSeguros get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorSuperIntendenciaSeguros();
         }    

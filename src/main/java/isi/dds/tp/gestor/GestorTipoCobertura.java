@@ -13,7 +13,7 @@ public class GestorTipoCobertura {
 
     }
 
-    public static GestorTipoCobertura getGestorTipoCobertura() {
+    public static GestorTipoCobertura get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorTipoCobertura();
         }    

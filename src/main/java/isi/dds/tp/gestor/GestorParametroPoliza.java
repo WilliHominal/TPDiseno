@@ -12,7 +12,7 @@ public class GestorParametroPoliza {
 
     }
 
-    public static GestorParametroPoliza getGestorParametroPoliza() {
+    public static GestorParametroPoliza get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorParametroPoliza();
         }    

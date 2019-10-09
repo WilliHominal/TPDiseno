@@ -22,8 +22,9 @@ public class Cliente {
 	private List<Poliza> polizas;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_cliente_ciudad")
-	@SequenceGenerator(name = "id_cliente_ciudad", sequenceName = "id_cliente_ciudadd_seq", initialValue = 100, allocationSize = 1)
+	//TODO cambiar como se genera numeroClietne
+	//@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_cliente_ciudad")
+	//@SequenceGenerator(name = "id_cliente_ciudad", sequenceName = "id_cliente_ciudadd_seq", initialValue = 100, allocationSize = 1)
 	@Column(nullable = false, name = "numero_cliente")
 	private Long numeroCliente;
 	

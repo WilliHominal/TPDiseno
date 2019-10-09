@@ -1,5 +1,11 @@
 package isi.dds.tp.dao;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+
+import isi.dds.tp.hibernate.HibernateUtil;
+import isi.dds.tp.modelo.Cliente;
+
 public class ClienteDAO {
 	
 	private static ClienteDAO instanciaDAO = null;
@@ -15,5 +21,47 @@ public class ClienteDAO {
         return instanciaDAO;
     }
 
+    public void addCliente(Cliente c) {
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            session.save(c);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
+    }
+    
+    
+    public Cliente getCliente(Long numeroCliente) {
+    	Cliente c = null;
+    	/*
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            c = session.get(Cliente.class, numeroCliente);
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }*/
+    	
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            c = (Cliente) session.createQuery("SELECT c FROM Cliente c WHERE numero_cliente="+numeroCliente);
+            
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+    	
+    	return c;
+    }
+    
     
 }

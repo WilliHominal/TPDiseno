@@ -8,7 +8,7 @@ public class GestorInformes {
 
     }
 
-    public static GestorInformes getGestorInformes() {
+    public static GestorInformes get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorInformes();
         }    

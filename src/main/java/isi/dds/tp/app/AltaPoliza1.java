@@ -10,6 +10,7 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import isi.dds.tp.enums.*;
+import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.modelo.*;
@@ -17,10 +18,6 @@ import isi.dds.tp.modelo.*;
 
 @SuppressWarnings("serial")
 public class AltaPoliza1 extends JPanel {
-	
-	public Cliente cliente = new Cliente(new Ciudad(new Provincia(new Pais("PA1"), "PR1"), "C1", 0), 123456l, EnumCondicion.NORMAL, "APE", "NOM", EnumTipoDocumento.DNI, 11111111, 
-			2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo.xd", EnumEstadoCivil.CASADO, "PROF", 2019);
-
 	
 	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
@@ -101,6 +98,11 @@ public class AltaPoliza1 extends JPanel {
 		btnBuscarCliente.addActionListener(a -> {
 			try {
 				
+				//GestorCliente.get().getClientes() o consultaClientes
+				
+				Cliente cliente = GestorCliente.get().getCliente(123456l);
+				
+								
 				buscarClienteExitoso(cliente, (Color) tema[4]);
 				
 
@@ -662,7 +664,7 @@ public class AltaPoliza1 extends JPanel {
 		
 		
 		
-		ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.getGestorDomicilio().getProvincias(null);
+		ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.get().getProvincias(null);
 		
 		cmbProvincia.addItem(provincias.get(0));
 		cmbProvincia.addItem(provincias.get(1));
@@ -670,7 +672,7 @@ public class AltaPoliza1 extends JPanel {
 		cmbCiudad.addItem(provincias.get(0).getCiudades().get(0));
 		
 		
-		ArrayList<Marca> marcas = (ArrayList<Marca>) GestorParametrosVehiculo.getGestorParametroPoliza().getMarcas();
+		ArrayList<Marca> marcas = (ArrayList<Marca>) GestorParametrosVehiculo.get().getMarcas();
 		cmbMarca.addItem(marcas.get(0));
 		cmbMarca.addItem(marcas.get(1));
 		

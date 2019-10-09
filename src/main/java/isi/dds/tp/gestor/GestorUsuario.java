@@ -11,7 +11,7 @@ public class GestorUsuario {
 
     }
 
-    public static GestorUsuario getGestorUsuario() {
+    public static GestorUsuario get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorUsuario();
         }    

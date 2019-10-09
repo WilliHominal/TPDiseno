@@ -8,7 +8,7 @@ public class GestorSubsistemaSiniestros {
 
     }
 
-    public static GestorSubsistemaSiniestros getGestorSubsistemaSiniestros() {
+    public static GestorSubsistemaSiniestros get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorSubsistemaSiniestros();
         }    

@@ -248,7 +248,7 @@ public class AltaPoliza2 extends JPanel  {
 				//veo si es cliente Plata o Activo
 				Boolean esPlata = true;
 
-				GestorSubsistemaSiniestros gss = GestorSubsistemaSiniestros.getGestorSubsistemaSiniestros();
+				GestorSubsistemaSiniestros gss = GestorSubsistemaSiniestros.get();
 				if (gss.getSiniestrosUltimosAnios(poliza.getCliente().getNumeroDocumento()) > 0)
 					esPlata = false;
 
@@ -257,7 +257,7 @@ public class AltaPoliza2 extends JPanel  {
 						esPlata = false;
 				}
 
-				GestorCliente gc = GestorCliente.getGestorCliente();
+				GestorCliente gc = GestorCliente.get();
 				if (gc.calcularTiempoActivo(poliza.getCliente()) < 365*2)
 					esPlata = false;
 

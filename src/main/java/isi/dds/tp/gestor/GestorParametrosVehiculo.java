@@ -15,7 +15,7 @@ public class GestorParametrosVehiculo {
     private GestorParametrosVehiculo() {
     }
 
-    public static GestorParametrosVehiculo getGestorParametroPoliza() {
+    public static GestorParametrosVehiculo get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorParametrosVehiculo();
         }    

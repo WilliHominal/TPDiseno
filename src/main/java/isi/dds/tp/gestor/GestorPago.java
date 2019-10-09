@@ -11,7 +11,7 @@ public class GestorPago {
 
     }
 
-    public static GestorPago getGestorPago() {
+    public static GestorPago get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorPago();
         }    

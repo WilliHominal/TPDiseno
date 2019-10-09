@@ -16,7 +16,7 @@ public class GestorDomicilio {
 
     }
 
-    public static GestorDomicilio getGestorDomicilio() {
+    public static GestorDomicilio get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorDomicilio();
         }    

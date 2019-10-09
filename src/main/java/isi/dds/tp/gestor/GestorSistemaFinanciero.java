@@ -8,7 +8,7 @@ public class GestorSistemaFinanciero {
 
     }
 
-    public static GestorSistemaFinanciero getGestorSistemaFinanciero() {
+    public static GestorSistemaFinanciero get() {
         if (instanciaGestor == null){
         	instanciaGestor = new GestorSistemaFinanciero();
         }    
