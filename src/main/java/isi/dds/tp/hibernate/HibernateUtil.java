@@ -10,7 +10,6 @@ import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
-import isi.dds.tp.dao.*;
 import isi.dds.tp.enums.*;
 import isi.dds.tp.gestor.*;
 import isi.dds.tp.modelo.*;
@@ -19,6 +18,9 @@ public class HibernateUtil {
 	
     private static StandardServiceRegistry registry;
     private static SessionFactory sessionFactory;
+    
+	private static StandardServiceRegistry registryBis;
+    private static SessionFactory sessionFactoryBis;
     
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
@@ -31,18 +33,22 @@ public class HibernateUtil {
                 Metadata metadata = sources.getMetadataBuilder().build();
 
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
+                
             } catch (Exception e) {
-    			            	//TODO BUSCAR EXEPCION POR BASE DE DATOS NO CREADA, Y SE QUIERE VALIDAR
-            	JOptionPane.showMessageDialog(null, "Se debe configurar la Bases de datos antes de lanzar la aplicacion.\n"
-                        + "Utilizando PostgreSQL, cree una Database en PGADMIN cuyo nombre sea \"grupo5a\" y cuya password sea 12345.\n"
-                        + "En caso de tener un password configurada distinta, modificar el archivo \"hibernate.cfg.xml\",\n"
-                        + "ubicado en el path /src/main/resources, y sobreescribir el campo \"hibernate.connection.password\"\n"
-                        + "con la contraseña que se posea configurada.",
-                          "Configurar bases de datos.", JOptionPane.ERROR_MESSAGE);       	
-      		                 
-                if (registry != null) {
-                    StandardServiceRegistryBuilder.destroy(registry);
-                }
+            	sessionFactory = HibernateUtil.getSessionFactoryBis();
+            	
+            	//si es null, significa que la contraseña y/o la database estan mal configuradas
+            	if(sessionFactory == null) {
+        		  	//TODO BUSCAR EXEPCION POR BASE DE DATOS NO CREADA, Y SE QUIERE VALIDAR
+                	JOptionPane.showMessageDialog(null, "Se debe configurar la Bases de datos antes de lanzar la aplicacion.\n"
+                            + "Utilizando PostgreSQL, cree una Database en PGADMIN cuyo nombre sea \"grupo5a\" y cuya password sea 12345.\n"
+                            + "En caso de tener un password configurada distinta, modificar el archivo \"hibernate.cfg.xml\",\n"
+                            + "ubicado en el path /src/main/resources, y sobreescribir el campo \"hibernate.connection.password\"\n"
+                            + "con la contraseña que se posea configurada.",
+                              "Configurar bases de datos.", JOptionPane.ERROR_MESSAGE);       	
+          		                          		
+            	}
+ 
             }
         }
         return sessionFactory;
@@ -50,7 +56,33 @@ public class HibernateUtil {
     
     public static void shutdown() {
         if (registry != null) {
+        	sessionFactory = null;
             StandardServiceRegistryBuilder.destroy(registry);
+        }
+    }
+    
+    public static SessionFactory getSessionFactoryBis() {
+        if (sessionFactoryBis == null) {
+            try {
+            	
+            	registryBis = new StandardServiceRegistryBuilder().configure("/crearBase/hibernate.cfg.xml").build();
+            	
+                MetadataSources sources = new MetadataSources(registryBis);
+
+                Metadata metadata = sources.getMetadataBuilder().build();
+
+                sessionFactoryBis = metadata.getSessionFactoryBuilder().build();
+            } catch (Exception e) {
+                
+                return null;
+            }
+        }
+        return sessionFactoryBis;
+    }
+    
+    public static void shutdownBis() {
+        if (registryBis != null) {
+            StandardServiceRegistryBuilder.destroy(registryBis);
         }
     }
     
@@ -89,6 +121,9 @@ public class HibernateUtil {
 		Cliente cliente1 = new Cliente(ciudad1, 123456l, EnumCondicion.NORMAL, "APELLIDO", "NOMBRES", EnumTipoDocumento.DNI, 99999999, 
 				2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM", EnumEstadoCivil.CASADO, "PROFESOR", 2019);
 
+		//PARA RECREAR LA BASE, BORRA Y LA RECARGA DE NUEVO
+		HibernateUtil.getSessionFactoryBis();
+		
 		
 		GestorParametrosVehiculo.get().addMarca(marca1);
 		GestorParametrosVehiculo.get().addMarca(marca2);

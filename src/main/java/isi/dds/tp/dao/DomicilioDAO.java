@@ -120,12 +120,11 @@ public class DomicilioDAO {
         catch (HibernateException e) {
             e.printStackTrace();
         }
-        
     	return  provincias;
     }
     
 	@SuppressWarnings("unchecked")
-	public List<Ciudad> getCiudades(Integer id_prov) {
+	public List<Ciudad> getCiudades(Integer id_provincia) {
     	
     	List<Ciudad> ciudades = null;
     	
@@ -133,7 +132,7 @@ public class DomicilioDAO {
                   
         try {
         	session.beginTransaction();
-            ciudades = session.createQuery("SELECT c FROM Ciudad c where id_provincia="+id_prov).list();
+            ciudades = session.createQuery("SELECT c FROM Ciudad c where id_provincia="+id_provincia).list();
         }
         catch (HibernateException e) {
             e.printStackTrace();

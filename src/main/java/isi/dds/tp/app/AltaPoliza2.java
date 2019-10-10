@@ -486,7 +486,7 @@ public class AltaPoliza2 extends JPanel  {
 	private void inicializarTema() {
 		Color colorBoton = (Color) tema[0], colorFondoPantalla = (Color) tema[1], colorFondoTexto = (Color)tema[2];
 		Color borde = (Color)tema[3], colorLetraBloqueado = (Color) tema[4]; 
-		Font letra = (Font) tema[5];
+		Font letra = (Font) tema[6];
 		
 		setBounds(0,0,1024,600);
 		setFont(letra);

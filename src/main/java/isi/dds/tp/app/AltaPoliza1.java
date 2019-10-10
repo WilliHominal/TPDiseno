@@ -14,13 +14,18 @@ import isi.dds.tp.enums.*;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.*;
 
 
 @SuppressWarnings("serial")
 public class AltaPoliza1 extends JPanel {
 	
+	private JFrame ventana;
 	private Object[] tema;
+	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra;
+	private Font letra;
+	
 	
 	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
@@ -93,8 +98,16 @@ public class AltaPoliza1 extends JPanel {
 
 	
 	public AltaPoliza1(JFrame ventana, Object[] tema) {
-		
+		this.ventana = ventana;
 		this.tema = tema;
+		
+		colorBoton = (Color) tema[0];
+		colorFondoPantalla = (Color) tema[1];
+		colorFondoTexto = (Color)tema[2];
+		borde = (Color)tema[3];
+		colorLetraBloqueado = (Color) tema[4];
+		colorLetra = (Color) tema[5];
+		letra = (Font) tema[6];
 	
 		inicializarComponentes();
 		ubicarComponentes();
@@ -102,12 +115,11 @@ public class AltaPoliza1 extends JPanel {
 
 		comportamientoBotones();
 		comportamientoComboBox();
-
+		
 		ventana.setBounds(0,0,1024,600);
 		ventana.setLocationRelativeTo(null);
 		ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");
 		ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ventana.setVisible(true);
 		
 	}
 
@@ -355,11 +367,7 @@ public class AltaPoliza1 extends JPanel {
 
 	}
 		
-	private void inicializarTema() {
-		
-		Color colorBoton = (Color) tema[0], colorFondoPantalla = (Color) tema[1], colorFondoTexto = (Color)tema[2], colorLetraBloqueado = (Color) tema[4]; 
-		Font letra = (Font) tema[5];
-		
+	private void inicializarTema() {		
 		setBounds(0,0,1024,600);
 		setFont(letra);
 		setBackground(colorFondoPantalla);
@@ -499,7 +507,6 @@ public class AltaPoliza1 extends JPanel {
 
 	}
 	
-	@SuppressWarnings({"rawtypes", "unchecked" })
 	private void inicializarComponentes() {
 		
 		//deshabilitar componentes
@@ -540,12 +547,6 @@ public class AltaPoliza1 extends JPanel {
 		btnConfirmarDatos.setEnabled(false);
 		btnAgregarHijo.setEnabled(false);
 		
-		//iniciabilizar componentes
-		cmbMarca.addItem(new Marca("Seleccionar marca"));
-		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Selecionar km"}));
-		cmbSiniestros.setModel(new DefaultComboBoxModel(new String[] {"cambiar combobox por opcion fija"}));
-		
-				
 		garage.add(rgarageSi);
 		garage.add(rgarageNo);
 		rgarageNo.setSelected(true);
@@ -558,7 +559,6 @@ public class AltaPoliza1 extends JPanel {
 		tuercas.add(rtuercasSi);
 		tuercas.add(rtuercasNo);
 		rtuercasNo.setSelected(true);
-		
 		
 		//dar cierto tamaño
 		cmbProvincia.setPreferredSize(new Dimension(199, 25));
@@ -618,9 +618,12 @@ public class AltaPoliza1 extends JPanel {
 				//GestorCliente.get().getClientes() o consultaClientes
 				Cliente cliente = GestorCliente.get().getCliente(123456l);
 				obtenerCliente(cliente);
+				btnBuscarCliente.setEnabled(false);
+				btnAltaCliente.setEnabled(false);
 						
 			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+            	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
+                          "Error.", JOptionPane.ERROR_MESSAGE);       	
 			}
 		});
 		
@@ -628,9 +631,12 @@ public class AltaPoliza1 extends JPanel {
 			try {				
 				//GestorCliente.get().getClientes() o consultaClientes
 				Cliente cliente = GestorCliente.get().getCliente(123456l);								
-				obtenerCliente(cliente);				
+				obtenerCliente(cliente);			
+				btnBuscarCliente.setEnabled(false);
+				btnAltaCliente.setEnabled(false);
 			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
+                        "Error.", JOptionPane.ERROR_MESSAGE);    
 			}
 		});
 		
@@ -653,15 +659,33 @@ public class AltaPoliza1 extends JPanel {
 
 		 
 		btnConfirmarDatos.addActionListener(a -> {
-			try {				
-			
+			try {			
+				
+				if (cmbMarca.getSelectedIndex() == 0) {
+					cmbMarca.setForeground(Color.red);
+					JOptionPane.showConfirmDialog(ventana, "Seleccione un marca.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+					return;
+				}
+				
+				this.setVisible(false);
+				ventana.remove(this);
+				
+				ventana.setContentPane(new AltaPoliza2(ventana, tema, new Poliza(123l)));
+				
+				HibernateUtil.shutdown();
+				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		 
 		btnCancelar.addActionListener(a -> {
-			try {				
+			try {			
+				this.setVisible(false);
+				ventana.remove(this);				
+				ventana.setContentPane(new AltaPoliza1(ventana, tema));
+				
+				HibernateUtil.shutdown();
 				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -711,6 +735,10 @@ public class AltaPoliza1 extends JPanel {
 		});
 		
 		cmbModelo.addActionListener (a -> {
+			
+			//para cuando es seleccionado luego de clickear el confirmar datos
+			cmbMarca.setForeground(colorLetra);
+			
 			if(cmbModelo.isEnabled()) {
 				
 					Modelo modelo = cmbModelo.getItemAt(cmbModelo.getSelectedIndex());
@@ -743,10 +771,10 @@ public class AltaPoliza1 extends JPanel {
 		});
 	}
 	
+
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void obtenerCliente(Cliente cliente){
-		Color borde = (Color) tema[4];
-		Color colorFondoPantalla = (Color) tema[1];
-		Color colorFondoTexto = (Color) tema[2];
+		
 		//cambiar
 		//SETEAR CAMPOS CLIENTES
 		tnumeroCliente.setText(cliente.getNumeroCliente().toString());
@@ -789,18 +817,16 @@ public class AltaPoliza1 extends JPanel {
 		tmotor.setBackground(colorFondoTexto);
 		tchasis.setBackground(colorFondoTexto);
 		tpatente.setBackground(colorFondoTexto);
-		tsumaAsegurada.setBackground(colorFondoTexto);
+		//tsumaAsegurada.setBackground(colorFondoTexto);
 		
 		tmotor.setBorder(new LineBorder(borde));
 		tchasis.setBorder(new LineBorder(borde));
 		tpatente.setBorder(new LineBorder(borde));
 		tablaHijos.setBorder(new LineBorder(borde));
-		
-		
+
 		
 		//TODO determinar que provincias elegir primero
-		ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.get().getProvincias(null);
-		
+		ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.get().getProvincias(100);
 		Iterator<Provincia> iteradorProvincias = provincias.iterator();
 		while(iteradorProvincias.hasNext()){
 			cmbProvincia.addItem(iteradorProvincias.next());
@@ -812,16 +838,22 @@ public class AltaPoliza1 extends JPanel {
 		}
 		
 		ArrayList<Marca> marcas = (ArrayList<Marca>) GestorParametrosVehiculo.get().getMarcas();
-		
+		cmbMarca.addItem(new Marca("Seleccionar marca"));
 		Iterator<Marca> marcasIterator = marcas.iterator();
 		while(marcasIterator.hasNext()){
 			cmbMarca.addItem(marcasIterator.next());
 		}
 		
+		
+		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Selecionar km"}));
+		cmbSiniestros.setModel(new DefaultComboBoxModel(new String[] {"cambiar combobox por opcion fija"}));
 		/* TODO cargar los combos
 		cmbKm
 		cmbSiniestros;
 		 */
+		//TODO QUTIARRRRR
+		btnConfirmarDatos.setEnabled(true);
+			
 		
 	}
 }

@@ -28,55 +28,39 @@ public class GestorDomicilio {
     }
     
     public void addPais(Pais p) {
-    	
+    	DomicilioDAO.getDAO().addPais(p);
     }
     
-    public void addProvincia(Pais pais, Provincia provincia) {
-    	
+    public void addProvincia(Provincia p) {
+    	DomicilioDAO.getDAO().addProvincia(p);
     }
     
-    public void addCiudad(Provincia provincia, Ciudad ciudad) {
-    	
+    public void addCiudad(Ciudad c) {
+    	DomicilioDAO.getDAO().addCiudad(c);
     }
     
-    public void addRiesgoCiudad(Ciudad c, Float riesgo) {
-    	
+    public void addRiesgoCiudad(RiesgoCiudad r) {
+    	DomicilioDAO.getDAO().addRiesgoCiudad(r);
     }
     
     public List<Pais> getPaises() {
-    	List<Pais> paises = null;
-    	
-    	return paises;
+    	return DomicilioDAO.getDAO().getPaises();
     }
     
-    public List<Provincia> getProvincias(Pais c) {
-    	
-    	//TODO modificar pais
-    	List<Provincia> provincias = DomicilioDAO.getDAO().getProvincias(100);
-    	
-    	return provincias;
+    public List<Provincia> getProvincias(Integer id_pais) {
+    	return DomicilioDAO.getDAO().getProvincias(id_pais);
     }
     
-    public List<Ciudad> getCiudades(Provincia p) {
-
-    	List<Ciudad> ciudades = null;
-    	
-    	return ciudades;
+    public List<Ciudad> getCiudades(Integer id_provincia) {
+    	return DomicilioDAO.getDAO().getCiudades(id_provincia);
     }
     
-    public List<RiesgoCiudad> getRiesgosCiudad(Ciudad c) {
-    	//retorna el ultimo valor de riesgo de la ciudad
-
-    	List<RiesgoCiudad> riesgosCiudad = null;
-    	
-    	return riesgosCiudad;
+    public List<RiesgoCiudad> getRiesgosCiudad(Integer id_ciudad) {
+    	return DomicilioDAO.getDAO().getRiesgosCiudad(id_ciudad);
     }
     
-    public RiesgoCiudad ultimoRiesgoCiudad(Ciudad c) {
-    	return null;
+    public RiesgoCiudad ultimoRiesgoCiudad(Integer id_ciudad) {
+    	return DomicilioDAO.getDAO().getUltimoRiesgoCiudad(id_ciudad);
     }
-    
-
-    
     
 }

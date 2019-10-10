@@ -2,6 +2,7 @@ package isi.dds.tp.app;
 
 import java.awt.*;
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.*;
 
@@ -12,9 +13,6 @@ import isi.dds.tp.modelo.*;
 public class App {
 
 	private JFrame frame;
-	//el color del borde deberia ser igual al del fondo
-	//Color colorBoton, Color colorFondoPantalla, Color colorFondoTexto, Color borde, Color colorLetraBloqueado, Font letra
-	private Object[] tema = {new Color(0, 128, 128), new Color(192,192,192), /*new Color(192,192,192)*/new Color(222,184,135), Color.BLACK, Color.GRAY, new Font("Open Sans", Font.PLAIN, 13)};
 	private AltaClientes altaClientes;
 	private AltaPoliza1 altaPoliza1;
 	private AltaPoliza2 altaPoliza2;
@@ -22,13 +20,16 @@ public class App {
 	private DeclararHijo declararHijo;
 	private MenuPrincipal menu;
 	
+	
+							//  colorBoton     			colorFondoPantalla     colorFondoTexto         borde		colorLetraBloqueado  colorLetra			letra
+	private Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK, new Color(71,71,71), Color.BLACK, new Font("Open Sans", Font.PLAIN, 13)};
+	
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					App window = new App();
-					window.frame.setVisible(true);
+					new App();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -36,25 +37,22 @@ public class App {
 		});
 	}
 
-	public App() {
-		
+	
+	public App() {		
 		Boolean conectoBase = conectarBaseDatos();//TODO agregar condicion si da falso
-		
-		//CargarBase.get();
-		
 		if(!conectoBase) {
+			//HibernateUtil.cargarBase();
 			inicializar();
 		}	
-		
-
 	}
 
 	private void inicializar() {
-		frame = new JFrame();
 		
+		frame = new JFrame();
 		setAltaPoliza1();
+		frame.setVisible(true);
+		
 	
-		frame.setVisible(true);	
 	}
 
 	public JFrame getFrame() {
@@ -120,14 +118,16 @@ public class App {
 	}
 
 	public Boolean conectarBaseDatos() {
-		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+		//desactiva que se abra la consola cada vez que se inicia
+		Logger log = Logger.getLogger("org.hibernate");
+	    log.setLevel(Level.OFF); 
+	    
 		if(HibernateUtil.getSessionFactory() != null) {
 			return false;
 		}
 		else {
 			return true;
 		}
-		
 	}
 			
 }

@@ -60,7 +60,7 @@ public class ParametrosVehiculosDAO {
     public void addMarca(Marca m){
     	
     	Session session = HibernateUtil.getSessionFactory().openSession();
-                  
+    	
         try {
             session.beginTransaction();
             session.save(m);
