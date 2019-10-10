@@ -2,12 +2,7 @@ package isi.dds.tp.gestor;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
-
 import isi.dds.tp.dao.PolizaDAO;
-import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.SolicitudPoliza;

@@ -7,7 +7,6 @@ import java.time.*;
 import java.util.*;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -31,6 +30,8 @@ public class AltaPoliza2 extends JPanel  {
 	public Poliza pol2 = new Poliza(123l);
 	public List<Poliza> polizas = new ArrayList<Poliza>();
 	/////////////////////////////////////////////////////////////////
+	
+	private Object tema[];
 	
 	private JLabel lTipoCobertura = new JLabel("Tipo de cobertura");
 	private JLabel lFechaInicioVigencia = new JLabel("Fecha de inicio de vigencia de la póliza");
@@ -101,8 +102,9 @@ public class AltaPoliza2 extends JPanel  {
 
 		/////////////////////////////////////////////////////////////////BORRAR
 
+		this.tema = tema;
 		inicializarComponentes();
-		inicializarTema((Color) tema[0], (Color) tema[1], (Color)tema[2], (Color) tema[3], (Color) tema[4], (Font) tema[5], (Font) tema[6]);
+		inicializarTema();
 		ubicarComponentes();
 		
 		DefaultCellEditor editor = (DefaultCellEditor) tablaPagos.getDefaultEditor(Object.class);
@@ -238,6 +240,7 @@ public class AltaPoliza2 extends JPanel  {
 		seleccionTipoCobertura.addActionListener (a -> {
 			seleccionTipoCobertura.setForeground(Color.black);
 		});
+		//TODO VER ESTO DE SELECCIONAR COMBOBOXC
 
 		generarPoliza.addActionListener(a -> {
 
@@ -480,7 +483,11 @@ public class AltaPoliza2 extends JPanel  {
 		add(volver, constraints);
 	}
 	
-	private void inicializarTema(Color colorBoton, Color colorFondoPantalla, Color colorFondoTexto, Color borde, Color colorLetraBloqueado, Font letra, Font letraTitulo) {
+	private void inicializarTema() {
+		Color colorBoton = (Color) tema[0], colorFondoPantalla = (Color) tema[1], colorFondoTexto = (Color)tema[2];
+		Color borde = (Color)tema[3], colorLetraBloqueado = (Color) tema[4]; 
+		Font letra = (Font) tema[5];
+		
 		setBounds(0,0,1024,600);
 		setFont(letra);
 		setBackground(colorFondoPantalla);

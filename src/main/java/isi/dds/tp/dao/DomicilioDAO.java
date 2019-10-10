@@ -161,5 +161,23 @@ public class DomicilioDAO {
 
         return  riesgosCiudad;
     }
+    
+    public RiesgoCiudad getUltimoRiesgoCiudad(Integer id_ciudad) {
+    	RiesgoCiudad riesgo = null;
+    	
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            //TODO HACER SUBCONSULTA PARA OBTENER EL ULTIMO RIESGO
+            riesgo = (RiesgoCiudad) session.createQuery("SELECT p FROM RiesgoCiudad p where id_ciudad="+id_ciudad).uniqueResult();
+            
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+    	
+    	return riesgo;
+    }
 
 }

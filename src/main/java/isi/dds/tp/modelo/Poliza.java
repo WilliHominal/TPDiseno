@@ -29,24 +29,25 @@ public class Poliza {
 	/*TODO configuar unidireccionalidad*/
 	private List<Cuota> cuotas;
 	
+    
+	@JoinColumn(name = "tipo_cobertura")
     @OneToOne
-    @PrimaryKeyJoinColumn(name = "tipo_cobertura")
 	private TipoCobertura tipoCobertura;
 
-	@OneToOne
-    @PrimaryKeyJoinColumn(name = "anio_modelo")
+	@JoinColumn(name = "anio_modelo")
+    @OneToOne
 	private AnioModelo anioModelo;
 	
-	@OneToOne
-    @PrimaryKeyJoinColumn
+	@JoinColumn
+    @OneToOne
 	private Ciudad ciudad;
 	
+	@JoinColumn(name = "parametros_poliza")
     @OneToOne
-    @PrimaryKeyJoinColumn(name = "parametros_poliza")
 	private ParametroPoliza parametroPoliza;
     
+	@JoinColumn(name = "solicitud_poliza")
     @OneToOne(cascade=CascadeType.ALL)
-    @PrimaryKeyJoinColumn(name = "solicitud_poliza")
 	private SolicitudPoliza solicitudPoliza;
 	
 	@Id

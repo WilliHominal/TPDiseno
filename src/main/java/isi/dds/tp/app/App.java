@@ -1,9 +1,10 @@
 package isi.dds.tp.app;
 
 import java.awt.*;
+import java.util.logging.Level;
+
 import javax.swing.*;
 
-import isi.dds.tp.hibernate.CargarBase;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.*;
 
@@ -12,8 +13,8 @@ public class App {
 
 	private JFrame frame;
 	//el color del borde deberia ser igual al del fondo
-	//Color colorBoton, Color colorFondoPantalla, Color borde, Color colorFondoTexto, Color colorLetraBloqueado, Font letra, Font letraTitulo
-	private Object[] tema = {new Color(0, 128, 128), new Color(192,192,192), /*new Color(192,192,192)*/new Color(222,184,135), Color.BLACK, Color.GRAY, new Font("Open Sans", Font.PLAIN, 13), new Font("Open Sans", Font.BOLD, 15)};
+	//Color colorBoton, Color colorFondoPantalla, Color colorFondoTexto, Color borde, Color colorLetraBloqueado, Font letra
+	private Object[] tema = {new Color(0, 128, 128), new Color(192,192,192), /*new Color(192,192,192)*/new Color(222,184,135), Color.BLACK, Color.GRAY, new Font("Open Sans", Font.PLAIN, 13)};
 	private AltaClientes altaClientes;
 	private AltaPoliza1 altaPoliza1;
 	private AltaPoliza2 altaPoliza2;
@@ -37,11 +38,13 @@ public class App {
 
 	public App() {
 		
-		conectar();//TODO agregar condicion si da falso
+		Boolean conectoBase = conectarBaseDatos();//TODO agregar condicion si da falso
 		
 		//CargarBase.get();
 		
-		inicializar();
+		if(!conectoBase) {
+			inicializar();
+		}	
 		
 
 	}
@@ -116,9 +119,14 @@ public class App {
 		frame.setContentPane(menu);
 	}
 
-	public void conectar() {
-		
-		HibernateUtil.getSessionFactory();
+	public Boolean conectarBaseDatos() {
+		java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+		if(HibernateUtil.getSessionFactory() != null) {
+			return false;
+		}
+		else {
+			return true;
+		}
 		
 	}
 			

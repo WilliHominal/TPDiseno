@@ -116,7 +116,7 @@ public class ParametrosVehiculosDAO {
                   
         try {
             session.beginTransaction();
-            modelos = session.createQuery("SELECT m FROM Modelo m where id_marca="+id_marca).list();
+            modelos = session.createQuery("SELECT m FROM Modelo m where id_marca="+id_marca+" order by nombre").list();
             
         }
         catch (HibernateException e) {
@@ -165,5 +165,23 @@ public class ParametrosVehiculosDAO {
         }
 
     	return riesgosModelo;
+    }
+	
+    public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
+    	RiesgoModelo riesgo = null;
+    	
+    	Session session = HibernateUtil.getSessionFactory().openSession();
+        
+        try {
+            session.beginTransaction();
+            //TODO HACER SUBCONSULTA PARA OBTENER EL ULTIMO RIESGO
+            riesgo = (RiesgoModelo) session.createQuery("SELECT p FROM RiesgoModelo p where id_modelo="+id_modelo).uniqueResult();
+            
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+    	
+    	return riesgo;
     }
 }

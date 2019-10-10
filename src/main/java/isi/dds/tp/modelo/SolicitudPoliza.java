@@ -10,16 +10,16 @@ import org.hibernate.annotations.IndexColumn;
 @Table(name = "solicitud_poliza")
 public class SolicitudPoliza {
 	
+	@JoinColumn(name = "tipo_cobertura")
     @OneToOne
-    @PrimaryKeyJoinColumn(name = "tipo_cobertura")
-	private TipoCobertura tipoCobertura;
+    private TipoCobertura tipoCobertura;
 
-	@OneToOne
-    @PrimaryKeyJoinColumn(name = "anio_modelo")
+	@JoinColumn(name = "anio_modelo")
+    @OneToOne
 	private AnioModelo anioModelo;
 	
-	@OneToOne
-    @PrimaryKeyJoinColumn
+	@JoinColumn
+    @OneToOne
 	private Ciudad ciudad;
 	
 	@OneToMany()

@@ -12,8 +12,8 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Cliente {
 	
-	@OneToOne
-    @PrimaryKeyJoinColumn
+	@JoinColumn
+    @OneToOne
 	private Ciudad ciudad;
 	
 	@OneToMany(cascade = CascadeType.ALL)

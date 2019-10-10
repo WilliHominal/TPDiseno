@@ -36,6 +36,12 @@ public class Modelo {
 		
 	}
 	
+	//es para los combobox
+	public Modelo(String nombre) {
+		this.nombre = nombre;
+	}
+	
+	
 	public Modelo(Marca marca,  String nombre,  Float riesgo) {
 		this.marca = marca;
 		marca.getModelos().add(this);
@@ -79,5 +85,22 @@ public class Modelo {
 	@Override
 	public String toString() {
 		return nombre;
+	}
+
+	public Object compareTo(Modelo m2) {
+		if (this.nombre.compareTo(m2.getNombre()) == 0) {
+			   return 0;
+		}
+		else {
+			if (this.nombre.compareTo(m2.getNombre()) < 0) {
+			  return -1;
+			}
+			else {
+				if (this.nombre.compareTo(m2.getNombre()) > 0) {
+				  return 1;
+				}
+			}
+		}
+		return 0;
 	}
 }	

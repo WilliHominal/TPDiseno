@@ -1,8 +1,9 @@
 package isi.dds.tp.app;
 
 import java.awt.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
 
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -18,6 +19,8 @@ import isi.dds.tp.modelo.*;
 
 @SuppressWarnings("serial")
 public class AltaPoliza1 extends JPanel {
+	
+	private Object[] tema;
 	
 	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
@@ -90,29 +93,16 @@ public class AltaPoliza1 extends JPanel {
 
 	
 	public AltaPoliza1(JFrame ventana, Object[] tema) {
+		
+		this.tema = tema;
 	
 		inicializarComponentes();
 		ubicarComponentes();
-		inicializarTema((Color) tema[0], (Color) tema[1], (Color)tema[2], (Color) tema[3], (Color) tema[4], (Font) tema[5], (Font) tema[6]);
+		inicializarTema();
 
-		btnBuscarCliente.addActionListener(a -> {
-			try {
-				
-				//GestorCliente.get().getClientes() o consultaClientes
-				
-				Cliente cliente = GestorCliente.get().getCliente(123456l);
-				
-								
-				buscarClienteExitoso(cliente, (Color) tema[4]);
-				
+		comportamientoBotones();
+		comportamientoComboBox();
 
-			
-						
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		});
-		
 		ventana.setBounds(0,0,1024,600);
 		ventana.setLocationRelativeTo(null);
 		ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");
@@ -365,7 +355,11 @@ public class AltaPoliza1 extends JPanel {
 
 	}
 		
-	private void inicializarTema(Color colorBoton, Color colorFondoPantalla, Color colorFondoTexto, Color borde, Color colorLetraBloqueado, Font letra, Font letraTitulo) {
+	private void inicializarTema() {
+		
+		Color colorBoton = (Color) tema[0], colorFondoPantalla = (Color) tema[1], colorFondoTexto = (Color)tema[2], colorLetraBloqueado = (Color) tema[4]; 
+		Font letra = (Font) tema[5];
+		
 		setBounds(0,0,1024,600);
 		setFont(letra);
 		setBackground(colorFondoPantalla);
@@ -433,19 +427,19 @@ public class AltaPoliza1 extends JPanel {
 		tdepartamento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		tdepartamento.setDisabledTextColor(colorLetraBloqueado);
 		tsumaAsegurada.setFont(letra);
-		tsumaAsegurada.setBackground(colorFondoTexto);
+		tsumaAsegurada.setBackground(colorFondoPantalla);
 		tsumaAsegurada.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		tsumaAsegurada.setDisabledTextColor(colorLetraBloqueado);
 
 		
 		tmotor.setFont(letra);
-		tmotor.setBackground(colorFondoTexto);
+		tmotor.setBackground(colorFondoPantalla);
 		tmotor.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		tchasis.setFont(letra);
-		tchasis.setBackground(colorFondoTexto);
+		tchasis.setBackground(colorFondoPantalla);
 		tchasis.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		tpatente.setFont(letra);
-		tpatente.setBackground(colorFondoTexto);
+		tpatente.setBackground(colorFondoPantalla);
 		tpatente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
 		
@@ -505,7 +499,6 @@ public class AltaPoliza1 extends JPanel {
 
 	}
 	
-	
 	@SuppressWarnings({"rawtypes", "unchecked" })
 	private void inicializarComponentes() {
 		
@@ -519,6 +512,7 @@ public class AltaPoliza1 extends JPanel {
 		tnumeroDomicilio.setEnabled(false);
 		tdepartamento.setEnabled(false);
 		tsumaAsegurada.setEnabled(false);
+		tsumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
 		tmotor.setEnabled(false);
 		tchasis.setEnabled(false);
 		tpatente.setEnabled(false);
@@ -547,14 +541,9 @@ public class AltaPoliza1 extends JPanel {
 		btnAgregarHijo.setEnabled(false);
 		
 		//iniciabilizar componentes
-		cmbProvincia.setModel(new DefaultComboBoxModel(new String[] {}));
-		cmbCiudad.setModel(new DefaultComboBoxModel(new String[] {}));
-		cmbMarca.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar marca"}));
-		cmbModelo.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar modelo"}));
-		cmbAnio.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar a\u00f1o"}));
-		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Seleccionar rango"}));
-		cmbSiniestros.setModel(new DefaultComboBoxModel(new String[] {"NO ES COMBO CAMBIAR"}));
-		
+		cmbMarca.addItem(new Marca("Seleccionar marca"));
+		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Selecionar km"}));
+		cmbSiniestros.setModel(new DefaultComboBoxModel(new String[] {"cambiar combobox por opcion fija"}));
 		
 				
 		garage.add(rgarageSi);
@@ -623,7 +612,143 @@ public class AltaPoliza1 extends JPanel {
 		
 	}
 	
-	private void buscarClienteExitoso(Cliente cliente, Color borde){
+	public void comportamientoBotones() {
+		btnBuscarCliente.addActionListener(a -> {
+			try {
+				//GestorCliente.get().getClientes() o consultaClientes
+				Cliente cliente = GestorCliente.get().getCliente(123456l);
+				obtenerCliente(cliente);
+						
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
+		btnAltaCliente.addActionListener(a -> {
+			try {				
+				//GestorCliente.get().getClientes() o consultaClientes
+				Cliente cliente = GestorCliente.get().getCliente(123456l);								
+				obtenerCliente(cliente);				
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		
+		btnAgregarHijo.addActionListener(a -> {
+			try {				
+
+				
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+
+		btnQuitarHijo.addActionListener(a -> {
+			try {				
+			
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+
+		 
+		btnConfirmarDatos.addActionListener(a -> {
+			try {				
+			
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+		 
+		btnCancelar.addActionListener(a -> {
+			try {				
+				
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		});
+	}
+	
+	public void comportamientoComboBox() {
+		cmbProvincia.addActionListener (a -> {
+			
+			Provincia provincia = cmbProvincia.getItemAt(cmbProvincia.getSelectedIndex());
+			
+			cmbCiudad.removeAllItems();
+			
+			Iterator<Ciudad> iteratorCiudad = provincia.getCiudades().iterator();
+			while(iteratorCiudad.hasNext()){
+				cmbCiudad.addItem(iteratorCiudad.next());
+			}
+		});		
+		
+		cmbMarca.addActionListener (a -> {
+			if(cmbMarca.getSelectedIndex()!=0) {
+				
+				List <Modelo> modelos = cmbMarca.getItemAt(cmbMarca.getSelectedIndex()).getModelos();
+				
+				cmbModelo.setEnabled(false);
+				cmbModelo.removeAllItems();
+
+				//TODO fijarse se poner el seleccionar modelo
+				//cmbModelo.addItem(new Modelo("Seleccionar modelo"));
+				
+				//TODO ordernar
+				//Collections.sort(modelos);
+				
+				Iterator<Modelo> iteratorModelo = modelos.iterator();
+				while(iteratorModelo.hasNext()){
+					cmbModelo.addItem(iteratorModelo.next());
+				}				
+				cmbModelo.setEnabled(true);		
+				//cmbModelo.setSelectedIndex(0);
+			}
+			else {
+				cmbModelo.setEnabled(false);
+				tsumaAsegurada.setText("");
+				cmbAnio.setEnabled(false);
+			}			
+		});
+		
+		cmbModelo.addActionListener (a -> {
+			if(cmbModelo.isEnabled()) {
+				
+					Modelo modelo = cmbModelo.getItemAt(cmbModelo.getSelectedIndex());
+					
+					cmbAnio.setEnabled(false);	
+					tsumaAsegurada.setText("");
+					cmbAnio.removeAllItems();
+										
+					Iterator<AnioModelo> iteratorAnioModelo = modelo.getAnios().iterator();
+					while(iteratorAnioModelo.hasNext()){
+						cmbAnio.addItem(iteratorAnioModelo.next());
+					}
+					
+					cmbAnio.setEnabled(true);
+					tsumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
+			}
+			else {
+				cmbAnio.setEnabled(false);
+			}
+
+		});			
+		
+		cmbAnio.addActionListener (a -> {
+			if(cmbAnio.isEnabled()) {
+				tsumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
+		}
+			else {
+				tsumaAsegurada.setText("");
+			}
+		});
+	}
+	
+	private void obtenerCliente(Cliente cliente){
+		Color borde = (Color) tema[4];
+		Color colorFondoPantalla = (Color) tema[1];
+		Color colorFondoTexto = (Color) tema[2];
+		//cambiar
+		//SETEAR CAMPOS CLIENTES
 		tnumeroCliente.setText(cliente.getNumeroCliente().toString());
 		ttipoDocumento.setText(cliente.getTipoDocumento().toString());
 		tnumeroDocumento.setText(cliente.getNumeroDocumento().toString());
@@ -636,18 +761,11 @@ public class AltaPoliza1 extends JPanel {
 		tmotor.setEnabled(true);
 		tchasis.setEnabled(true);
 		tpatente.setEnabled(true);
-		
-		tmotor.setBorder(new LineBorder(borde));
-		tchasis.setBorder(new LineBorder(borde));
-		tpatente.setBorder(new LineBorder(borde));
-		tablaHijos.setBorder(new LineBorder(borde));
-		
 		cmbProvincia.setEnabled(true);
 		cmbCiudad.setEnabled(true);
 		cmbMarca.setEnabled(true);
 		cmbKm.setEnabled(true);
 		cmbSiniestros.setEnabled(true);
-		
 		rgarageSi.setEnabled(true);
 		rgarageNo.setEnabled(true);
 		ralarmaSi.setEnabled(true);
@@ -656,27 +774,50 @@ public class AltaPoliza1 extends JPanel {
 		rrastreoSi.setEnabled(true);
 		rtuercasSi.setEnabled(true);
 		rtuercasNo.setEnabled(true);
-		
 		tablaHijos.setEnabled(true);
-		
 		btnAgregarHijo.setEnabled(true);
 		
+		tnumeroCliente.setBackground(colorFondoPantalla);
+		ttipoDocumento.setBackground(colorFondoPantalla);
+		tnumeroDocumento.setBackground(colorFondoPantalla);
+		tapellido.setBackground(colorFondoPantalla);
+		tnombres.setBackground(colorFondoPantalla);
+		tcalle.setBackground(colorFondoPantalla);
+		tnumeroDomicilio.setBackground(colorFondoPantalla);
+		tdepartamento.setBackground(colorFondoPantalla);
+				
+		tmotor.setBackground(colorFondoTexto);
+		tchasis.setBackground(colorFondoTexto);
+		tpatente.setBackground(colorFondoTexto);
+		tsumaAsegurada.setBackground(colorFondoTexto);
+		
+		tmotor.setBorder(new LineBorder(borde));
+		tchasis.setBorder(new LineBorder(borde));
+		tpatente.setBorder(new LineBorder(borde));
+		tablaHijos.setBorder(new LineBorder(borde));
 		
 		
 		
+		//TODO determinar que provincias elegir primero
 		ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.get().getProvincias(null);
 		
-		cmbProvincia.addItem(provincias.get(0));
-		cmbProvincia.addItem(provincias.get(1));
-		//TODO cambiar como elegit ciudades
-		cmbCiudad.addItem(provincias.get(0).getCiudades().get(0));
-		
+		Iterator<Provincia> iteradorProvincias = provincias.iterator();
+		while(iteradorProvincias.hasNext()){
+			cmbProvincia.addItem(iteradorProvincias.next());
+		}
+				
+		Iterator<Ciudad> iteratorCiudad = provincias.get(0).getCiudades().iterator();
+		while(iteratorCiudad.hasNext()){
+			cmbCiudad.addItem(iteratorCiudad.next());
+		}
 		
 		ArrayList<Marca> marcas = (ArrayList<Marca>) GestorParametrosVehiculo.get().getMarcas();
-		cmbMarca.addItem(marcas.get(0));
-		cmbMarca.addItem(marcas.get(1));
 		
-
+		Iterator<Marca> marcasIterator = marcas.iterator();
+		while(marcasIterator.hasNext()){
+			cmbMarca.addItem(marcasIterator.next());
+		}
+		
 		/* TODO cargar los combos
 		cmbKm
 		cmbSiniestros;

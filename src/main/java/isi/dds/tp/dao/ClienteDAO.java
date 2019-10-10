@@ -38,7 +38,7 @@ public class ClienteDAO {
     
     public Cliente getCliente(Long numeroCliente) {
     	Cliente c = null;
-    	/*
+    	
     	Session session = HibernateUtil.getSessionFactory().openSession();
         
         try {
@@ -47,19 +47,8 @@ public class ClienteDAO {
         }
         catch (HibernateException e) {
             e.printStackTrace();
-        }*/
-    	
-    	Session session = HibernateUtil.getSessionFactory().openSession();
-        
-        try {
-            session.beginTransaction();
-            c = (Cliente) session.createQuery("SELECT c FROM Cliente c WHERE numero_cliente="+numeroCliente);
-            
         }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
-    	
+    	    	
     	return c;
     }
     
