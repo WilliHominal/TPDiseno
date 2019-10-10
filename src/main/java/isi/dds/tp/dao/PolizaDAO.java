@@ -1,7 +1,6 @@
 package isi.dds.tp.dao;
 
 import java.util.List;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import isi.dds.tp.hibernate.HibernateUtil;
@@ -9,6 +8,8 @@ import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.SolicitudPoliza;
+
+
 
 public class PolizaDAO {
 	

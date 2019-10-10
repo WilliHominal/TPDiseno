@@ -101,7 +101,6 @@ public class DomicilioDAO {
         catch (HibernateException e) {
             e.printStackTrace();
         }
-
         return paises;
     }
     
@@ -136,7 +135,6 @@ public class DomicilioDAO {
         }
         catch (HibernateException e) {
             e.printStackTrace();
-
         }
 
     	return  ciudades;
@@ -152,7 +150,6 @@ public class DomicilioDAO {
         try {
             session.beginTransaction();
             riesgosCiudad = session.createQuery("SELECT p FROM RiesgoCiudad p where id_ciudad="+id_ciudad).list();
-            
         }
         catch (HibernateException e) {
             e.printStackTrace();

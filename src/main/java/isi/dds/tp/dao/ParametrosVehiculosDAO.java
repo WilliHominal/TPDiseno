@@ -2,6 +2,8 @@ package isi.dds.tp.dao;
 
 import java.util.List;
 
+import javax.persistence.NamedNativeQuery;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -10,6 +12,13 @@ import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Modelo;
 import isi.dds.tp.modelo.Marca;
+
+/*
+@NamedNativeQueries({
+    @NamedNativeQuery(name = "selectAuthorNames", query = "SELECT a.firstname, a.lastname FROM Author a"),
+    @NamedNativeQuery(name = "selectAuthorEntities", query = "SELECT a.id, a.version, a.firstname, a.lastname FROM Author a", resultClass = Author.class),
+    @NamedNativeQuery(name = "selectAuthorValue", query = "SELECT a.id, a.firstname, a.lastname, count(b.id) as numBooks FROM Author a JOIN BookAuthor ba on a.id = ba.authorid JOIN Book b ON b.id = ba.bookid GROUP BY a.id", resultSetMapping = "AuthorValueMapping")
+}*/
 
 @SuppressWarnings({ "deprecation", "unused" })
 public class ParametrosVehiculosDAO {
@@ -27,6 +36,7 @@ public class ParametrosVehiculosDAO {
         return instanciaDAO;
     }
 
+    
     public void addRiesgoModelo(RiesgoModelo r) {
     	       
     	Session session = HibernateUtil.getSessionFactory().openSession();
@@ -102,7 +112,6 @@ public class ParametrosVehiculosDAO {
         catch (HibernateException e) {
             e.printStackTrace();
         }
-        
         return marcas;
     }
     
@@ -123,7 +132,6 @@ public class ParametrosVehiculosDAO {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-        
     	return modelos;
     }
     
@@ -143,7 +151,6 @@ public class ParametrosVehiculosDAO {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-
     	return aniosModelo;
     }
     
@@ -163,7 +170,7 @@ public class ParametrosVehiculosDAO {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-
+        
     	return riesgosModelo;
     }
 	
@@ -181,7 +188,7 @@ public class ParametrosVehiculosDAO {
         catch (HibernateException e) {
             e.printStackTrace();
         }
-    	
+            	
     	return riesgo;
     }
 }

@@ -724,13 +724,29 @@ public class AltaPoliza1 extends JPanel {
 				while(iteratorModelo.hasNext()){
 					cmbModelo.addItem(iteratorModelo.next());
 				}				
-				cmbModelo.setEnabled(true);		
+				
+				cmbAnio.setEnabled(false);	
+				tsumaAsegurada.setText("");
+				cmbAnio.removeAllItems();
+									
+				Iterator<AnioModelo> iteratorAnioModelo = cmbModelo.getItemAt(0).getAnios().iterator();
+				while(iteratorAnioModelo.hasNext()){
+					cmbAnio.addItem(iteratorAnioModelo.next());
+				}
+				
+				cmbModelo.setEnabled(true);
+				cmbAnio.setEnabled(true);
+				tsumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
 				//cmbModelo.setSelectedIndex(0);
 			}
 			else {
 				cmbModelo.setEnabled(false);
-				tsumaAsegurada.setText("");
 				cmbAnio.setEnabled(false);
+				cmbModelo.removeAllItems();
+				tsumaAsegurada.setText("");	
+				cmbAnio.removeAllItems();
+				
+
 			}			
 		});
 		

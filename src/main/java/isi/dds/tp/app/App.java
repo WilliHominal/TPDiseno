@@ -41,7 +41,7 @@ public class App {
 	public App() {		
 		Boolean conectoBase = conectarBaseDatos();//TODO agregar condicion si da falso
 		if(!conectoBase) {
-			//HibernateUtil.cargarBase();
+			HibernateUtil.cargarBase();
 			inicializar();
 		}	
 	}
@@ -120,7 +120,7 @@ public class App {
 	public Boolean conectarBaseDatos() {
 		//desactiva que se abra la consola cada vez que se inicia
 		Logger log = Logger.getLogger("org.hibernate");
-	    log.setLevel(Level.OFF); 
+		log.setLevel(Level.OFF); 
 	    
 		if(HibernateUtil.getSessionFactory() != null) {
 			return false;
