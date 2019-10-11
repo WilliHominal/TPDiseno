@@ -658,7 +658,10 @@ public class AltaPoliza2 extends JPanel  {
 		tablaPagos.getColumnModel().getColumn(1).setPreferredWidth(100);
 		tablaPagos.getColumnModel().getColumn(0).setHeaderValue("Último día de pago");
 		tablaPagos.getColumnModel().getColumn(1).setHeaderValue("Monto");
-		
+	}
+	
+	private void comportamientoBotones() {
 		
 	}
+	
 }

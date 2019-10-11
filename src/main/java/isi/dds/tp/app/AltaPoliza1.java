@@ -10,7 +10,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import isi.dds.tp.enums.*;
+
+import isi.dds.tp.enums.EnumSiniestros;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
@@ -25,6 +26,8 @@ public class AltaPoliza1 extends JPanel {
 	private Object[] tema;
 	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra;
 	private Font letra;
+	
+	private Poliza poliza = new Poliza();;
 	
 	
 	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
@@ -66,6 +69,7 @@ public class AltaPoliza1 extends JPanel {
 	private JTextField tchasis = new JTextField(8);
 	private JTextField tpatente = new JTextField(7);
 	private JTextField tsumaAsegurada = new JTextField(15);
+	private JTextField tnumerosSiniestros = new JTextField(10); 
 	
 	private JButton btnBuscarCliente = new JButton("BUSCAR CLIENTES");
 	private JButton btnAltaCliente = new JButton("DAR ALTA CLIENTES");
@@ -80,7 +84,6 @@ public class AltaPoliza1 extends JPanel {
 	private JComboBox<Modelo> cmbModelo = new JComboBox<Modelo>();
 	private JComboBox<AnioModelo> cmbAnio = new JComboBox<AnioModelo>();
 	private JComboBox<String> cmbKm = new JComboBox<String>();
-	private JComboBox<EnumSiniestros> cmbSiniestros = new JComboBox<EnumSiniestros>();
 
 	private ButtonGroup garage = new ButtonGroup(), alarma = new ButtonGroup(), rastreo = new ButtonGroup(), tuercas = new ButtonGroup(); 
 	private JRadioButton rgarageSi = new JRadioButton("SI");
@@ -114,8 +117,7 @@ public class AltaPoliza1 extends JPanel {
 		inicializarTema();
 
 		comportamientoBotones();
-		comportamientoComboBox();
-		
+		comportamientoComboBox();		
 		ventana.setBounds(0,0,1024,600);
 		ventana.setLocationRelativeTo(null);
 		ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");
@@ -303,8 +305,8 @@ public class AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 5, 5, 5);
 		add(lsiniestros, constraints);
 		constraints.insets.set(5, 247, 5, 5);
-		add(cmbSiniestros, constraints);
-		
+		add(tnumerosSiniestros, constraints);
+	
 		//FILA 11
 		constraints.gridy = 10;
 		constraints.insets.set(5, 5, 5, 5);
@@ -438,7 +440,11 @@ public class AltaPoliza1 extends JPanel {
 		tsumaAsegurada.setBackground(colorFondoPantalla);
 		tsumaAsegurada.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		tsumaAsegurada.setDisabledTextColor(colorLetraBloqueado);
-
+		tnumerosSiniestros.setFont(letra);
+		tnumerosSiniestros.setBackground(colorFondoPantalla);
+		tnumerosSiniestros.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tnumerosSiniestros.setDisabledTextColor(colorLetraBloqueado);
+		
 		
 		tmotor.setFont(letra);
 		tmotor.setBackground(colorFondoPantalla);
@@ -478,8 +484,6 @@ public class AltaPoliza1 extends JPanel {
 		cmbAnio.setFont(letra);
 		cmbKm.setBackground(colorFondoTexto);
 		cmbKm.setFont(letra);
-		cmbSiniestros.setBackground(colorFondoTexto);
-		cmbSiniestros.setFont(letra);	
 		
 		rgarageSi.setBackground(colorFondoPantalla);
 		rgarageSi.setFont(letra);
@@ -520,6 +524,7 @@ public class AltaPoliza1 extends JPanel {
 		tdepartamento.setEnabled(false);
 		tsumaAsegurada.setEnabled(false);
 		tsumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
+		tnumerosSiniestros.setEnabled(false);
 		tmotor.setEnabled(false);
 		tchasis.setEnabled(false);
 		tpatente.setEnabled(false);
@@ -530,7 +535,6 @@ public class AltaPoliza1 extends JPanel {
 		cmbModelo.setEnabled(false);
 		cmbAnio.setEnabled(false);
 		cmbKm.setEnabled(false);
-		cmbSiniestros.setEnabled(false);
 		
 		rgarageSi.setEnabled(false);
 		rgarageNo.setEnabled(false);
@@ -567,7 +571,6 @@ public class AltaPoliza1 extends JPanel {
 		cmbModelo.setPreferredSize(new Dimension(145, 25));
 		cmbAnio.setPreferredSize(new Dimension(130, 25));
 		cmbKm.setPreferredSize(new Dimension(220, 25));
-		cmbSiniestros.setPreferredSize(new Dimension(220, 25));
 		
 		btnBuscarCliente.setPreferredSize(new Dimension(160, 25));
 		btnAltaCliente.setPreferredSize(new Dimension(160, 25));
@@ -642,7 +645,8 @@ public class AltaPoliza1 extends JPanel {
 		
 		btnAgregarHijo.addActionListener(a -> {
 			try {				
-
+				List hijo = new ArrayList();
+				new DeclararHijo(tema, this, hijo);
 				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -659,20 +663,51 @@ public class AltaPoliza1 extends JPanel {
 
 		 
 		btnConfirmarDatos.addActionListener(a -> {
-			try {			
-				
-				if (cmbMarca.getSelectedIndex() == 0) {
-					cmbMarca.setForeground(Color.red);
-					JOptionPane.showConfirmDialog(ventana, "Seleccione un marca.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-					return;
+			try {		
+				condicionesConfirmacion();
+
+				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
+					
+					HibernateUtil.shutdown();
+					
+					poliza.setCiudad(cmbCiudad.getItemAt(cmbCiudad.getSelectedIndex()));
+					poliza.setAnioModelo(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()));
+					poliza.setMotor(tmotor.getText());
+					poliza.setChasis(tchasis.getText());
+					poliza.setPatente(tpatente.getText());
+					poliza.setSumaAsegurada(Float.parseFloat(tsumaAsegurada.getText()));
+					poliza.setKmRealizadosPorAnio(cmbKm.getItemAt(cmbKm.getSelectedIndex()));
+					//TODO modificar como ver los sinietros
+					poliza.setNumerosSiniestrosUltimoAnios(EnumSiniestros.valueOf(tnumerosSiniestros.getText()));
+					
+					if(rgarageSi.isSelected()) {
+						poliza.setGuardaGarage(true);
+					}else {
+						poliza.setGuardaGarage(false);
+					}
+					
+					if(ralarmaSi.isSelected()) {
+						poliza.setTieneAlarma(true);
+					}else {
+						poliza.setTieneAlarma(false);
+					}
+					
+					if(rrastreoSi.isSelected()) {
+						poliza.setTieneRastreoVehicular(true);
+					}else {
+						poliza.setTieneRastreoVehicular(false);
+					}
+					
+					if(rtuercasSi.isSelected()) {
+						poliza.setTieneTuercasAntirobo(true);
+					}else {
+						poliza.setTieneTuercasAntirobo(false);
+					}
+										
+					this.setVisible(false);
+					ventana.remove(this);
+					ventana.setContentPane(new AltaPoliza2(ventana, tema, poliza));
 				}
-				
-				this.setVisible(false);
-				ventana.remove(this);
-				
-				ventana.setContentPane(new AltaPoliza2(ventana, tema, new Poliza(123l)));
-				
-				HibernateUtil.shutdown();
 				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -707,7 +742,10 @@ public class AltaPoliza1 extends JPanel {
 		});		
 		
 		cmbMarca.addActionListener (a -> {
+			
 			if(cmbMarca.getSelectedIndex()!=0) {
+				//para cuando es seleccionado luego de clickear el confirmar datos
+				cmbMarca.setForeground(colorLetra);
 				
 				List <Modelo> modelos = cmbMarca.getItemAt(cmbMarca.getSelectedIndex()).getModelos();
 				
@@ -751,10 +789,6 @@ public class AltaPoliza1 extends JPanel {
 		});
 		
 		cmbModelo.addActionListener (a -> {
-			
-			//para cuando es seleccionado luego de clickear el confirmar datos
-			cmbMarca.setForeground(colorLetra);
-			
 			if(cmbModelo.isEnabled()) {
 				
 					Modelo modelo = cmbModelo.getItemAt(cmbModelo.getSelectedIndex());
@@ -780,13 +814,16 @@ public class AltaPoliza1 extends JPanel {
 		cmbAnio.addActionListener (a -> {
 			if(cmbAnio.isEnabled()) {
 				tsumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
-		}
+			}
 			else {
 				tsumaAsegurada.setText("");
 			}
 		});
+		
+		cmbKm.addActionListener (a -> {
+			cmbKm.setForeground(colorLetra);			
+		});
 	}
-	
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void obtenerCliente(Cliente cliente){
@@ -802,6 +839,8 @@ public class AltaPoliza1 extends JPanel {
 		tnumeroDomicilio.setText(cliente.getNumeroCalle().toString());
 		tdepartamento.setText(cliente.getDepartamento());
 		
+		tnumerosSiniestros.setText("CONSULTAR siniestros");
+		
 		tmotor.setEnabled(true);
 		tchasis.setEnabled(true);
 		tpatente.setEnabled(true);
@@ -809,7 +848,6 @@ public class AltaPoliza1 extends JPanel {
 		cmbCiudad.setEnabled(true);
 		cmbMarca.setEnabled(true);
 		cmbKm.setEnabled(true);
-		cmbSiniestros.setEnabled(true);
 		rgarageSi.setEnabled(true);
 		rgarageNo.setEnabled(true);
 		ralarmaSi.setEnabled(true);
@@ -861,17 +899,69 @@ public class AltaPoliza1 extends JPanel {
 		}
 		
 		
-		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Selecionar km"}));
-		cmbSiniestros.setModel(new DefaultComboBoxModel(new String[] {"cambiar combobox por opcion fija"}));
-		/* TODO cargar los combos
-		cmbKm
-		cmbSiniestros;
-		 */
+		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Selecionar kilometraje",
+				"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
+				"50.000 - 59.999", "60.000 - 69.999", "70.000 - 79.999", "80.000 - 89.999", "90.000 - 99.999",
+				"100.00 - 109.999", "110.000 - 119.999", "120.000 - 129.999", "130.000 - 139.999", "140.000 - 149.999",
+				"150.000 - 159.999", "160.000 - 169.999", "170.000 - 179.999", "180.000 - 189.999", "190.000 - 199.999",
+				"200.000 - 209.999", "210.000 - 219.999", "220.000 - 229.999", "230.000 - 239.999", "240.000 - 249.999",
+				"250.000 - 259.999", "260.000 - 269.999", "270.000 - 279.999", "280.000 - 289.999", "290.000 - 299.999",
+				"Mayor a 300.000 km"
+		}));
+		
+
 		//TODO QUTIARRRRR
 		btnConfirmarDatos.setEnabled(true);
 			
 		
 	}
+
+	private void condicionesConfirmacion() {
+		//TODO enumerar errores, usar case
+		
+		if (cmbMarca.getSelectedIndex() == 0) {
+			cmbMarca.setForeground(Color.red);
+			JOptionPane.showConfirmDialog(ventana, "Seleccione un marca.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+			return;
+		}
+		
+		if(tmotor.getText().isBlank()) {
+			//TODO fijarse que al declaracion del campo se corresponda con la de un motor
+			tmotor.setBackground(new Color(255,102,102));
+			JOptionPane.showConfirmDialog(ventana, "Introduzca un número de motor", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+			return;					
+		}
+		else {
+			tmotor.setBackground(colorFondoTexto);
+		}
+		
+		if(tchasis.getText().isBlank()) {
+			//TODO fijarse que al declaracion del campo se corresponda con la de un chasis
+			tchasis.setBackground(new Color(255,102,102));
+			JOptionPane.showConfirmDialog(ventana, "Introduzca un número de chasis", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+			return;	
+		}
+		else {
+			tchasis.setBackground(colorFondoTexto);	
+		}
+		
+		if(tpatente.getText().isBlank()) {
+			//TODO fijarse que al declaracion del campo se corresponda con la de una patente
+			tpatente.setBackground(new Color(255,102,102));
+			JOptionPane.showConfirmDialog(ventana, "Introduzca un número de patente", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+			return;	
+		}
+		else {
+			tpatente.setBackground(colorFondoTexto);
+		}
+		
+		if (cmbKm.getSelectedIndex() == 0) {
+			cmbKm.setForeground(Color.red);
+			JOptionPane.showConfirmDialog(ventana, "Seleccione un kilometraje.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+			return;
+		}	
+	}
+	
 }
 
 

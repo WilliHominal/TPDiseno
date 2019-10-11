@@ -17,9 +17,7 @@ public class App {
 	private AltaPoliza1 altaPoliza1;
 	private AltaPoliza2 altaPoliza2;
 	private BuscarCliente buscarCliente;
-	private DeclararHijo declararHijo;
-	private MenuPrincipal menu;
-	
+	private MenuPrincipal menu;	
 	
 							//  colorBoton     			colorFondoPantalla     colorFondoTexto         borde		colorLetraBloqueado  colorLetra			letra
 	private Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK, new Color(71,71,71), Color.BLACK, new Font("Open Sans", Font.PLAIN, 13)};
@@ -41,7 +39,7 @@ public class App {
 	public App() {		
 		Boolean conectoBase = conectarBaseDatos();//TODO agregar condicion si da falso
 		if(!conectoBase) {
-			HibernateUtil.cargarBase();
+			//HibernateUtil.cargarBase();
 			inicializar();
 		}	
 	}
@@ -97,15 +95,6 @@ public class App {
 	public void setBuscarCliente( ) {
 		this.buscarCliente = new BuscarCliente(frame);
 		frame.setContentPane(buscarCliente);
-	}
-
-	public DeclararHijo getDeclararHijo() {
-		return declararHijo;
-	}
-
-	public void setDeclararHijo() {
-		this.declararHijo = new DeclararHijo(frame);
-		frame.setContentPane(declararHijo);
 	}
 
 	public MenuPrincipal getMenu() {

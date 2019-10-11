@@ -19,7 +19,7 @@ public class AnioModelo {
 	@Column(nullable = false)
 	private Integer anio;
 	
-	@Column(nullable = false)
+	@Column(name="suma_asegurada", nullable = false)
 	private Float sumaAsegurada;
 
 	public AnioModelo() {
