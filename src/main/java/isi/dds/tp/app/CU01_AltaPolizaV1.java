@@ -1,6 +1,8 @@
 package isi.dds.tp.app;
 
 import java.awt.*;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -10,8 +12,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
-import isi.dds.tp.enums.EnumSiniestros;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
@@ -20,11 +20,11 @@ import isi.dds.tp.modelo.*;
 
 
 @SuppressWarnings("serial")
-public class AltaPoliza1 extends JPanel {
-	
+public class CU01_AltaPolizaV1 extends JPanel {
+		
 	private JFrame ventana;
 	private Object[] tema;
-	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra;
+	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra, colorErroneo;
 	private Font letra;
 	
 	private Poliza poliza = new Poliza();;
@@ -57,19 +57,19 @@ public class AltaPoliza1 extends JPanel {
 	private JLabel lcantidadHijos = new JLabel("Cantidad de hijos entre 18 y 30 a\u00f1os:");
 	private JLabel ldatosObligatorios = new JLabel("(*) datos obligatios)");
 		
-	private JTextField tnumeroCliente = new JTextField(10);
-	private JTextField ttipoDocumento = new JTextField(15);
-	private JTextField tnumeroDocumento = new JTextField(8);
-	private JTextField tapellido = new JTextField(15);
-	private JTextField tnombres = new JTextField(15);
-	private JTextField tcalle = new JTextField(15);
-	private JTextField tnumeroDomicilio = new JTextField(8);
-	private JTextField tdepartamento = new JTextField(3);
-	private JTextField tmotor = new JTextField(15);
-	private JTextField tchasis = new JTextField(8);
-	private JTextField tpatente = new JTextField(7);
-	private JTextField tsumaAsegurada = new JTextField(15);
-	private JTextField tnumerosSiniestros = new JTextField(10); 
+	private JTextField campoNumeroCliente = new JTextField(10);
+	private JTextField campoTipoDocumento = new JTextField(15);
+	private JTextField campoNumeroDocumento = new JTextField(8);
+	private JTextField campoApellido = new JTextField(15);
+	private JTextField campoNombres = new JTextField(15);
+	private JTextField campoCalle = new JTextField(15);
+	private JTextField campoNumeroDomicilio = new JTextField(8);
+	private JTextField campoDepartamento = new JTextField(3);
+	private JTextField campoMotor = new JTextField(15);
+	private JTextField campoChasis = new JTextField(8);
+	private JTextField campoPatente = new JTextField(7);
+	private JTextField campoSumaAsegurada = new JTextField(15);
+	private JTextField campoNumerosSiniestros = new JTextField(10); 
 	
 	private JButton btnBuscarCliente = new JButton("BUSCAR CLIENTES");
 	private JButton btnAltaCliente = new JButton("DAR ALTA CLIENTES");
@@ -86,30 +86,31 @@ public class AltaPoliza1 extends JPanel {
 	private JComboBox<String> cmbKm = new JComboBox<String>();
 
 	private ButtonGroup garage = new ButtonGroup(), alarma = new ButtonGroup(), rastreo = new ButtonGroup(), tuercas = new ButtonGroup(); 
-	private JRadioButton rgarageSi = new JRadioButton("SI");
-	private JRadioButton rgarageNo = new JRadioButton("NO");
-	private JRadioButton ralarmaSi = new JRadioButton("SI");
-	private JRadioButton ralarmaNo = new JRadioButton("NO");
-	private JRadioButton rrastreoSi = new JRadioButton("SI");
-	private JRadioButton rrastreoNo = new JRadioButton("NO");
-	private JRadioButton rtuercasSi = new JRadioButton("SI");
-	private JRadioButton rtuercasNo = new JRadioButton("NO");
+	private JRadioButton rbtnGarageSi = new JRadioButton("SI");
+	private JRadioButton rbtnGarageNo = new JRadioButton("NO");
+	private JRadioButton rbtnAlarmaSi = new JRadioButton("SI");
+	private JRadioButton rbtnAlarmaNo = new JRadioButton("NO");
+	private JRadioButton rbtnRastreoSi = new JRadioButton("SI");
+	private JRadioButton rbtnRastreoNo = new JRadioButton("NO");
+	private JRadioButton rbtnTuercasSi = new JRadioButton("SI");
+	private JRadioButton rbtnTuercasNo = new JRadioButton("NO");
 	
 	private JTable tablaHijos = new JTable(6, 4);
 	private JScrollPane tablaHijosScroll = new JScrollPane(tablaHijos,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 	private Object[][] datosTabla = {{""},{""},{""},{""}};
 
 	
-	public AltaPoliza1(JFrame ventana, Object[] tema) {
+	public CU01_AltaPolizaV1(JFrame ventana, Object[] tema) {
 		this.ventana = ventana;
 		this.tema = tema;
 			
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
-
+		
 		comportamientoBotones();
 		comportamientoComboBox();		
+		comportamientoCampos();
 		ventana.setBounds(0,0,1024,600);
 		ventana.setLocationRelativeTo(null);
 		ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");
@@ -140,7 +141,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 15);
-		add(tnumeroCliente, constraints);
+		add(campoNumeroCliente, constraints);
 		
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.EAST;
@@ -150,7 +151,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridx = 5;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 15);
-		add(ttipoDocumento, constraints);
+		add(campoTipoDocumento, constraints);
 		
 		constraints.gridx = 6;
 		constraints.anchor = GridBagConstraints.EAST;
@@ -161,7 +162,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridwidth = 1;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 0);
-		add(tnumeroDocumento, constraints);
+		add(campoNumeroDocumento, constraints);
 		
 		//FILA 2
 		constraints.gridx = 0;
@@ -180,7 +181,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 15);
-		add(tapellido, constraints);
+		add(campoApellido, constraints);
 		
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.EAST;
@@ -190,7 +191,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridx = 5;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 0);
-		add(tnombres, constraints);
+		add(campoNombres, constraints);
 		
 		//FILA 3
 		constraints.gridy = 2;
@@ -202,7 +203,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 15);
-		add(tcalle, constraints);
+		add(campoCalle, constraints);
 		
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.EAST;
@@ -212,7 +213,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridx = 5;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 15);
-		add(tnumeroDomicilio, constraints);
+		add(campoNumeroDomicilio, constraints);
 		
 		constraints.gridx = 6;
 		constraints.anchor = GridBagConstraints.EAST;
@@ -222,7 +223,7 @@ public class AltaPoliza1 extends JPanel {
 		constraints.gridx = 7;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 0);
-		add(tdepartamento, constraints);
+		add(campoDepartamento, constraints);
 		
 		//FILA 4
 		constraints.gridy = 3;
@@ -266,22 +267,22 @@ public class AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 5, 5, 5);
 		add(lmotor, constraints);
 		constraints.insets.set(5, 60, 5, 5);
-		add(tmotor, constraints);
+		add(campoMotor, constraints);
 		constraints.insets.set(5, 295, 5, 5);
 		add(lchasis, constraints);
 		constraints.insets.set(5, 349, 5, 5);
-		add(tchasis, constraints);
+		add(campoChasis, constraints);
 		constraints.insets.set(5, 575, 5, 5);
 		add(lpatente, constraints);
 		constraints.insets.set(5, 638, 5, 5);
-		add(tpatente, constraints);
+		add(campoPatente, constraints);
 		
 		//FILA 8
 		constraints.gridy = 7;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lsumaAseg, constraints);
 		constraints.insets.set(5, 113, 5, 5);
-		add(tsumaAsegurada, constraints);
+		add(campoSumaAsegurada, constraints);
 		constraints.insets.set(5, 298, 5, 5);
 		add(lmoneda, constraints);
 
@@ -297,39 +298,39 @@ public class AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 5, 5, 5);
 		add(lsiniestros, constraints);
 		constraints.insets.set(5, 247, 5, 5);
-		add(tnumerosSiniestros, constraints);
+		add(campoNumerosSiniestros, constraints);
 	
 		//FILA 11
 		constraints.gridy = 10;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lgarage, constraints);
 		constraints.insets.set(5, 140, 0, 5);
-		add(rgarageSi, constraints);
+		add(rbtnGarageSi, constraints);
 		constraints.insets.set(5, 175, 0, 5);
-		add(rgarageNo, constraints);
+		add(rbtnGarageNo, constraints);
 		
 		constraints.insets.set(5, 250, 0, 5);
 		add(lalarma, constraints);
 		constraints.insets.set(5, 340, 0, 5);
-		add(ralarmaSi, constraints);
+		add(rbtnAlarmaSi, constraints);
 		constraints.insets.set(5, 375, 0, 5);
-		add(ralarmaNo, constraints);
+		add(rbtnAlarmaNo, constraints);
 		
 		//FILA 11
 		constraints.gridy = 11;
 		constraints.insets.set(2, 5, 5, 5);
 		add(lrastreo, constraints);
 		constraints.insets.set(2, 245, 3, 5);
-		add(rrastreoSi, constraints);
+		add(rbtnRastreoSi, constraints);
 		constraints.insets.set(2, 280, 3, 5);
-		add(rrastreoNo, constraints);
+		add(rbtnRastreoNo, constraints);
 		
 		constraints.insets.set(2, 355, 5, 5);
 		add(ltuercas, constraints);
 		constraints.insets.set(2, 515, 3, 5);
-		add(rtuercasSi, constraints);
+		add(rbtnTuercasSi, constraints);
 		constraints.insets.set(2, 550, 3, 5);
-		add(rtuercasNo, constraints);
+		add(rbtnTuercasNo, constraints);
 		
 		//FILA 12
 		constraints.gridy = 12;
@@ -370,6 +371,7 @@ public class AltaPoliza1 extends JPanel {
 		colorLetraBloqueado = (Color) tema[4];
 		colorLetra = (Color) tema[5];
 		letra = (Font) tema[6];
+		colorErroneo = (Color) tema[7];
 		
 		setBounds(0,0,1024,600);
 		setFont(letra);
@@ -405,57 +407,57 @@ public class AltaPoliza1 extends JPanel {
 		lcantidadHijos.setFont(letra);
 		ldatosObligatorios.setFont(new Font("Open Sans", Font.ITALIC, 9));
 			
-		tnumeroCliente.setFont(letra);
-		tnumeroCliente.setBackground(colorFondoTexto);
-		tnumeroCliente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tnumeroCliente.setDisabledTextColor(colorLetraBloqueado);
-		ttipoDocumento.setFont(letra);
-		ttipoDocumento.setBackground(colorFondoTexto);
-		ttipoDocumento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		ttipoDocumento.setDisabledTextColor(colorLetraBloqueado);
-		tnumeroDocumento.setFont(letra);
-		tnumeroDocumento.setBackground(colorFondoTexto);
-		tnumeroDocumento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tnumeroDocumento.setDisabledTextColor(colorLetraBloqueado);
-		tapellido.setFont(letra);
-		tapellido.setBackground(colorFondoTexto);
-		tapellido.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tapellido.setDisabledTextColor(colorLetraBloqueado);
-		tnombres.setFont(letra);
-		tnombres.setBackground(colorFondoTexto);
-		tnombres.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tnombres.setDisabledTextColor(colorLetraBloqueado);
-		tcalle.setFont(letra);
-		tcalle.setBackground(colorFondoTexto);
-		tcalle.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tcalle.setDisabledTextColor(colorLetraBloqueado);
-		tnumeroDomicilio.setFont(letra);
-		tnumeroDomicilio.setBackground(colorFondoTexto);
-		tnumeroDomicilio.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tnumeroDomicilio.setDisabledTextColor(colorLetraBloqueado);
-		tdepartamento.setFont(letra);
-		tdepartamento.setBackground(colorFondoTexto);
-		tdepartamento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tdepartamento.setDisabledTextColor(colorLetraBloqueado);
-		tsumaAsegurada.setFont(letra);
-		tsumaAsegurada.setBackground(colorFondoPantalla);
-		tsumaAsegurada.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tsumaAsegurada.setDisabledTextColor(colorLetraBloqueado);
-		tnumerosSiniestros.setFont(letra);
-		tnumerosSiniestros.setBackground(colorFondoPantalla);
-		tnumerosSiniestros.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tnumerosSiniestros.setDisabledTextColor(colorLetraBloqueado);
+		campoNumeroCliente.setFont(letra);
+		campoNumeroCliente.setBackground(colorFondoTexto);
+		campoNumeroCliente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoNumeroCliente.setDisabledTextColor(colorLetraBloqueado);
+		campoTipoDocumento.setFont(letra);
+		campoTipoDocumento.setBackground(colorFondoTexto);
+		campoTipoDocumento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoTipoDocumento.setDisabledTextColor(colorLetraBloqueado);
+		campoNumeroDocumento.setFont(letra);
+		campoNumeroDocumento.setBackground(colorFondoTexto);
+		campoNumeroDocumento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoNumeroDocumento.setDisabledTextColor(colorLetraBloqueado);
+		campoApellido.setFont(letra);
+		campoApellido.setBackground(colorFondoTexto);
+		campoApellido.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoApellido.setDisabledTextColor(colorLetraBloqueado);
+		campoNombres.setFont(letra);
+		campoNombres.setBackground(colorFondoTexto);
+		campoNombres.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoNombres.setDisabledTextColor(colorLetraBloqueado);
+		campoCalle.setFont(letra);
+		campoCalle.setBackground(colorFondoTexto);
+		campoCalle.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoCalle.setDisabledTextColor(colorLetraBloqueado);
+		campoNumeroDomicilio.setFont(letra);
+		campoNumeroDomicilio.setBackground(colorFondoTexto);
+		campoNumeroDomicilio.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoNumeroDomicilio.setDisabledTextColor(colorLetraBloqueado);
+		campoDepartamento.setFont(letra);
+		campoDepartamento.setBackground(colorFondoTexto);
+		campoDepartamento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoDepartamento.setDisabledTextColor(colorLetraBloqueado);
+		campoSumaAsegurada.setFont(letra);
+		campoSumaAsegurada.setBackground(colorFondoPantalla);
+		campoSumaAsegurada.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoSumaAsegurada.setDisabledTextColor(colorLetraBloqueado);
+		campoNumerosSiniestros.setFont(letra);
+		campoNumerosSiniestros.setBackground(colorFondoPantalla);
+		campoNumerosSiniestros.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoNumerosSiniestros.setDisabledTextColor(colorLetraBloqueado);
 		
 		
-		tmotor.setFont(letra);
-		tmotor.setBackground(colorFondoPantalla);
-		tmotor.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tchasis.setFont(letra);
-		tchasis.setBackground(colorFondoPantalla);
-		tchasis.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tpatente.setFont(letra);
-		tpatente.setBackground(colorFondoPantalla);
-		tpatente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoMotor.setFont(letra);
+		campoMotor.setBackground(colorFondoPantalla);
+		campoMotor.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoChasis.setFont(letra);
+		campoChasis.setBackground(colorFondoPantalla);
+		campoChasis.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoPatente.setFont(letra);
+		campoPatente.setBackground(colorFondoPantalla);
+		campoPatente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
 		
 		btnBuscarCliente.setBackground(colorBoton);
@@ -484,22 +486,22 @@ public class AltaPoliza1 extends JPanel {
 		cmbKm.setBackground(colorFondoTexto);
 		cmbKm.setFont(letra);
 		
-		rgarageSi.setBackground(colorFondoPantalla);
-		rgarageSi.setFont(letra);
-		rgarageNo.setBackground(colorFondoPantalla);
-		rgarageNo.setFont(letra);
-		ralarmaSi.setBackground(colorFondoPantalla);
-		ralarmaSi.setFont(letra);
-		ralarmaNo.setBackground(colorFondoPantalla);
-		ralarmaNo.setFont(letra);
-		rrastreoSi.setBackground(colorFondoPantalla);
-		rrastreoSi.setFont(letra);
-		rrastreoNo.setBackground(colorFondoPantalla);
-		rrastreoNo.setFont(letra);
-		rtuercasSi.setBackground(colorFondoPantalla);
-		rtuercasSi.setFont(letra);
-		rtuercasNo.setBackground(colorFondoPantalla);
-		rtuercasNo.setFont(letra);
+		rbtnGarageSi.setBackground(colorFondoPantalla);
+		rbtnGarageSi.setFont(letra);
+		rbtnGarageNo.setBackground(colorFondoPantalla);
+		rbtnGarageNo.setFont(letra);
+		rbtnAlarmaSi.setBackground(colorFondoPantalla);
+		rbtnAlarmaSi.setFont(letra);
+		rbtnAlarmaNo.setBackground(colorFondoPantalla);
+		rbtnAlarmaNo.setFont(letra);
+		rbtnRastreoSi.setBackground(colorFondoPantalla);
+		rbtnRastreoSi.setFont(letra);
+		rbtnRastreoNo.setBackground(colorFondoPantalla);
+		rbtnRastreoNo.setFont(letra);
+		rbtnTuercasSi.setBackground(colorFondoPantalla);
+		rbtnTuercasSi.setFont(letra);
+		rbtnTuercasNo.setBackground(colorFondoPantalla);
+		rbtnTuercasNo.setFont(letra);
 		
 		
 		tablaHijos.setBackground(colorFondoTexto);
@@ -513,20 +515,20 @@ public class AltaPoliza1 extends JPanel {
 	private void inicializarComponentes() {
 		
 		//deshabilitar componentes
-		tnumeroCliente.setEnabled(false);
-		ttipoDocumento.setEnabled(false);
-		tnumeroDocumento.setEnabled(false);
-		tapellido.setEnabled(false);
-		tnombres.setEnabled(false);
-		tcalle.setEnabled(false);
-		tnumeroDomicilio.setEnabled(false);
-		tdepartamento.setEnabled(false);
-		tsumaAsegurada.setEnabled(false);
-		tsumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
-		tnumerosSiniestros.setEnabled(false);
-		tmotor.setEnabled(false);
-		tchasis.setEnabled(false);
-		tpatente.setEnabled(false);
+		campoNumeroCliente.setEnabled(false);
+		campoTipoDocumento.setEnabled(false);
+		campoNumeroDocumento.setEnabled(false);
+		campoApellido.setEnabled(false);
+		campoNombres.setEnabled(false);
+		campoCalle.setEnabled(false);
+		campoNumeroDomicilio.setEnabled(false);
+		campoDepartamento.setEnabled(false);
+		campoSumaAsegurada.setEnabled(false);
+		campoSumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
+		campoNumerosSiniestros.setEnabled(false);
+		campoMotor.setEnabled(false);
+		campoChasis.setEnabled(false);
+		campoPatente.setEnabled(false);
 		
 		cmbProvincia.setEnabled(false);
 		cmbCiudad.setEnabled(false);
@@ -535,14 +537,14 @@ public class AltaPoliza1 extends JPanel {
 		cmbAnio.setEnabled(false);
 		cmbKm.setEnabled(false);
 		
-		rgarageSi.setEnabled(false);
-		rgarageNo.setEnabled(false);
-		ralarmaSi.setEnabled(false);
-		ralarmaNo.setEnabled(false);
-		rrastreoNo.setEnabled(false);
-		rrastreoSi.setEnabled(false);
-		rtuercasSi.setEnabled(false);
-		rtuercasNo.setEnabled(false);
+		rbtnGarageSi.setEnabled(false);
+		rbtnGarageNo.setEnabled(false);
+		rbtnAlarmaSi.setEnabled(false);
+		rbtnAlarmaNo.setEnabled(false);
+		rbtnRastreoNo.setEnabled(false);
+		rbtnRastreoSi.setEnabled(false);
+		rbtnTuercasSi.setEnabled(false);
+		rbtnTuercasNo.setEnabled(false);
 		
 		tablaHijos.setEnabled(false);
 		
@@ -550,18 +552,18 @@ public class AltaPoliza1 extends JPanel {
 		btnConfirmarDatos.setEnabled(false);
 		btnAgregarHijo.setEnabled(false);
 		
-		garage.add(rgarageSi);
-		garage.add(rgarageNo);
-		rgarageNo.setSelected(true);
-		alarma.add(ralarmaSi);
-		alarma.add(ralarmaNo);
-		ralarmaNo.setSelected(true);
-		rastreo.add(rrastreoSi);
-		rastreo.add(rrastreoNo);
-		rrastreoNo.setSelected(true);
-		tuercas.add(rtuercasSi);
-		tuercas.add(rtuercasNo);
-		rtuercasNo.setSelected(true);
+		garage.add(rbtnGarageSi);
+		garage.add(rbtnGarageNo);
+		rbtnGarageNo.setSelected(true);
+		alarma.add(rbtnAlarmaSi);
+		alarma.add(rbtnAlarmaNo);
+		rbtnAlarmaNo.setSelected(true);
+		rastreo.add(rbtnRastreoSi);
+		rastreo.add(rbtnRastreoNo);
+		rbtnRastreoNo.setSelected(true);
+		tuercas.add(rbtnTuercasSi);
+		tuercas.add(rbtnTuercasNo);
+		rbtnTuercasNo.setSelected(true);
 		
 		//dar cierto tamaño
 		cmbProvincia.setPreferredSize(new Dimension(199, 25));
@@ -645,15 +647,20 @@ public class AltaPoliza1 extends JPanel {
 		btnAgregarHijo.addActionListener(a -> {
 			try {				
 				List hijo = new ArrayList();
-				new DeclararHijo(tema, this, hijo);
+				//componentesParaPoliza(false);
+				new CU01_DeclararHijo(tema, this, hijo);
+				
+				
+				
 				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		});
-
+		
 		btnQuitarHijo.addActionListener(a -> {
 			try {				
+				
 			
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -663,7 +670,11 @@ public class AltaPoliza1 extends JPanel {
 		 
 		btnConfirmarDatos.addActionListener(a -> {
 			try {		
-				condicionesConfirmacion();
+				
+				if(!condicionesConfirmacion()) {
+					return;
+				}
+				
 
 				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 					
@@ -671,41 +682,40 @@ public class AltaPoliza1 extends JPanel {
 					
 					poliza.setCiudad(cmbCiudad.getItemAt(cmbCiudad.getSelectedIndex()));
 					poliza.setAnioModelo(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()));
-					poliza.setMotor(tmotor.getText());
-					poliza.setChasis(tchasis.getText());
-					poliza.setPatente(tpatente.getText());
-					poliza.setSumaAsegurada(Float.parseFloat(tsumaAsegurada.getText()));
+					poliza.setMotor(campoMotor.getText());
+					poliza.setChasis(campoChasis.getText());
+					poliza.setPatente(campoPatente.getText());
+					poliza.setSumaAsegurada(Float.parseFloat(campoSumaAsegurada.getText()));
 					poliza.setKmRealizadosPorAnio(cmbKm.getItemAt(cmbKm.getSelectedIndex()));
-					//TODO modificar como ver los sinietros
-					poliza.setNumerosSiniestrosUltimoAnios(EnumSiniestros.valueOf(tnumerosSiniestros.getText()));
+
 					
-					if(rgarageSi.isSelected()) {
+					if(rbtnGarageSi.isSelected()) {
 						poliza.setGuardaGarage(true);
 					}else {
 						poliza.setGuardaGarage(false);
 					}
 					
-					if(ralarmaSi.isSelected()) {
+					if(rbtnAlarmaSi.isSelected()) {
 						poliza.setTieneAlarma(true);
 					}else {
 						poliza.setTieneAlarma(false);
 					}
 					
-					if(rrastreoSi.isSelected()) {
+					if(rbtnRastreoSi.isSelected()) {
 						poliza.setTieneRastreoVehicular(true);
 					}else {
 						poliza.setTieneRastreoVehicular(false);
 					}
 					
-					if(rtuercasSi.isSelected()) {
+					if(rbtnTuercasSi.isSelected()) {
 						poliza.setTieneTuercasAntirobo(true);
 					}else {
 						poliza.setTieneTuercasAntirobo(false);
 					}
-										
+					
 					this.setVisible(false);
 					ventana.remove(this);
-					ventana.setContentPane(new AltaPoliza2(ventana, tema, poliza));
+					ventana.setContentPane(new CU01_AltaPolizaV2(ventana, tema, poliza));
 				}
 				
 			}catch(Exception ex) {
@@ -717,7 +727,7 @@ public class AltaPoliza1 extends JPanel {
 			try {			
 				this.setVisible(false);
 				ventana.remove(this);				
-				ventana.setContentPane(new AltaPoliza1(ventana, tema));
+				ventana.setContentPane(new CU01_AltaPolizaV1(ventana, tema));
 				
 				HibernateUtil.shutdown();
 				
@@ -763,7 +773,7 @@ public class AltaPoliza1 extends JPanel {
 				}				
 				
 				cmbAnio.setEnabled(false);	
-				tsumaAsegurada.setText("");
+				campoSumaAsegurada.setText("");
 				cmbAnio.removeAllItems();
 									
 				Iterator<AnioModelo> iteratorAnioModelo = cmbModelo.getItemAt(0).getAnios().iterator();
@@ -773,14 +783,14 @@ public class AltaPoliza1 extends JPanel {
 				
 				cmbModelo.setEnabled(true);
 				cmbAnio.setEnabled(true);
-				tsumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
+				campoSumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
 				//cmbModelo.setSelectedIndex(0);
 			}
 			else {
 				cmbModelo.setEnabled(false);
 				cmbAnio.setEnabled(false);
 				cmbModelo.removeAllItems();
-				tsumaAsegurada.setText("");	
+				campoSumaAsegurada.setText("");	
 				cmbAnio.removeAllItems();
 				
 
@@ -793,7 +803,7 @@ public class AltaPoliza1 extends JPanel {
 					Modelo modelo = cmbModelo.getItemAt(cmbModelo.getSelectedIndex());
 					
 					cmbAnio.setEnabled(false);	
-					tsumaAsegurada.setText("");
+					campoSumaAsegurada.setText("");
 					cmbAnio.removeAllItems();
 										
 					Iterator<AnioModelo> iteratorAnioModelo = modelo.getAnios().iterator();
@@ -802,7 +812,7 @@ public class AltaPoliza1 extends JPanel {
 					}
 					
 					cmbAnio.setEnabled(true);
-					tsumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
+					campoSumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
 			}
 			else {
 				cmbAnio.setEnabled(false);
@@ -812,10 +822,10 @@ public class AltaPoliza1 extends JPanel {
 		
 		cmbAnio.addActionListener (a -> {
 			if(cmbAnio.isEnabled()) {
-				tsumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
+				campoSumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
 			}
 			else {
-				tsumaAsegurada.setText("");
+				campoSumaAsegurada.setText("");
 			}
 		});
 		
@@ -824,57 +834,100 @@ public class AltaPoliza1 extends JPanel {
 		});
 	}
 
+	public void comportamientoCampos() {
+		
+		campoMotor.addKeyListener(new KeyAdapter(){
+			public void keyTyped(KeyEvent e){
+				char caracter = e.getKeyChar();
+				if( ( Character.isLetter(caracter) || Character.isDigit(caracter) ) && campoMotor.getText().length() < 17 ){
+					
+				}
+				else{
+					e.consume();  // ignorar el evento de teclado
+					getToolkit().beep();
+				}
+			}
+		}); 
+
+	    campoChasis.addKeyListener(new KeyAdapter(){ 
+	    	public void keyTyped(KeyEvent e){
+				char caracter = e.getKeyChar();
+				if( ( Character.isLetter(caracter) || Character.isDigit(caracter) ) && campoChasis.getText().length() < 8 ){
+					
+				}
+				else{
+					e.consume();  // ignorar el evento de teclado
+					getToolkit().beep();
+				}
+	    	}
+	    });
+
+	    campoPatente.addKeyListener(new KeyAdapter(){
+	    	public void keyTyped(KeyEvent e){
+				char caracter = e.getKeyChar();
+				if( ( Character.isLetter(caracter) || Character.isDigit(caracter) ) && campoPatente.getText().length() < 7 ){
+					
+				}
+				else{
+					e.consume();  // ignorar el evento de teclado
+					getToolkit().beep();
+				}
+	    	}
+	    }); 
+
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void obtenerCliente(Cliente cliente){
 		
 		//cambiar
 		//SETEAR CAMPOS CLIENTES
-		tnumeroCliente.setText(cliente.getNumeroCliente().toString());
-		ttipoDocumento.setText(cliente.getTipoDocumento().toString());
-		tnumeroDocumento.setText(cliente.getNumeroDocumento().toString());
-		tapellido.setText(cliente.getApellido());
-		tnombres.setText(cliente.getNombre());
-		tcalle.setText(cliente.getCalle());
-		tnumeroDomicilio.setText(cliente.getNumeroCalle().toString());
-		tdepartamento.setText(cliente.getDepartamento());
+		campoNumeroCliente.setText(cliente.getNumeroCliente().toString());
+		campoTipoDocumento.setText(cliente.getTipoDocumento().toString());
+		campoNumeroDocumento.setText(cliente.getNumeroDocumento().toString());
+		campoApellido.setText(cliente.getApellido());
+		campoNombres.setText(cliente.getNombre());
+		campoCalle.setText(cliente.getCalle());
+		campoNumeroDomicilio.setText(cliente.getNumeroCalle().toString());
+		campoDepartamento.setText(cliente.getDepartamento());
 		
-		tnumerosSiniestros.setText("CONSULTAR siniestros");
+		campoNumerosSiniestros.setText("CONSULTAR siniestros");
 		
-		tmotor.setEnabled(true);
-		tchasis.setEnabled(true);
-		tpatente.setEnabled(true);
+		campoMotor.setEnabled(true);
+		campoChasis.setEnabled(true);
+		campoPatente.setEnabled(true);
 		cmbProvincia.setEnabled(true);
 		cmbCiudad.setEnabled(true);
 		cmbMarca.setEnabled(true);
 		cmbKm.setEnabled(true);
-		rgarageSi.setEnabled(true);
-		rgarageNo.setEnabled(true);
-		ralarmaSi.setEnabled(true);
-		ralarmaNo.setEnabled(true);
-		rrastreoNo.setEnabled(true);
-		rrastreoSi.setEnabled(true);
-		rtuercasSi.setEnabled(true);
-		rtuercasNo.setEnabled(true);
+		rbtnGarageSi.setEnabled(true);
+		rbtnGarageNo.setEnabled(true);
+		rbtnAlarmaSi.setEnabled(true);
+		rbtnAlarmaNo.setEnabled(true);
+		rbtnRastreoNo.setEnabled(true);
+		rbtnRastreoSi.setEnabled(true);
+		rbtnTuercasSi.setEnabled(true);
+		rbtnTuercasNo.setEnabled(true);
 		tablaHijos.setEnabled(true);
 		btnAgregarHijo.setEnabled(true);
 		
-		tnumeroCliente.setBackground(colorFondoPantalla);
-		ttipoDocumento.setBackground(colorFondoPantalla);
-		tnumeroDocumento.setBackground(colorFondoPantalla);
-		tapellido.setBackground(colorFondoPantalla);
-		tnombres.setBackground(colorFondoPantalla);
-		tcalle.setBackground(colorFondoPantalla);
-		tnumeroDomicilio.setBackground(colorFondoPantalla);
-		tdepartamento.setBackground(colorFondoPantalla);
+		campoNumeroCliente.setBackground(colorFondoPantalla);
+		campoTipoDocumento.setBackground(colorFondoPantalla);
+		campoNumeroDocumento.setBackground(colorFondoPantalla);
+		campoApellido.setBackground(colorFondoPantalla);
+		campoNombres.setBackground(colorFondoPantalla);
+		campoCalle.setBackground(colorFondoPantalla);
+		campoNumeroDomicilio.setBackground(colorFondoPantalla);
+		campoDepartamento.setBackground(colorFondoPantalla);
 				
-		tmotor.setBackground(colorFondoTexto);
-		tchasis.setBackground(colorFondoTexto);
-		tpatente.setBackground(colorFondoTexto);
+		campoMotor.setBackground(colorFondoTexto);
+		campoChasis.setBackground(colorFondoTexto);
+		campoPatente.setBackground(colorFondoTexto);
 		//tsumaAsegurada.setBackground(colorFondoTexto);
 		
-		tmotor.setBorder(new LineBorder(borde));
-		tchasis.setBorder(new LineBorder(borde));
-		tpatente.setBorder(new LineBorder(borde));
+		campoMotor.setBorder(new LineBorder(borde));
+		campoChasis.setBorder(new LineBorder(borde));
+		campoPatente.setBorder(new LineBorder(borde));
 		tablaHijos.setBorder(new LineBorder(borde));
 
 		
@@ -915,52 +968,227 @@ public class AltaPoliza1 extends JPanel {
 		
 	}
 
-	private void condicionesConfirmacion() {
+	@SuppressWarnings("unused")
+	private Boolean condicionesConfirmacion() {
 		//TODO enumerar errores, usar case
 		
 		if (cmbMarca.getSelectedIndex() == 0) {
-			cmbMarca.setForeground(Color.red);
+			cmbMarca.setForeground(colorErroneo);
 			JOptionPane.showConfirmDialog(ventana, "Seleccione un marca.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return;
+			return false;
 		}
 		
-		if(tmotor.getText().isBlank()) {
-			//TODO fijarse que al declaracion del campo se corresponda con la de un motor
-			tmotor.setBackground(new Color(255,102,102));
+		String textoMotor = campoMotor.getText();
+		String textoChasis = campoChasis.getText();
+		String textoPatente = campoPatente.getText();
+		
+		if(textoMotor.isBlank()) {
+			campoMotor.setBackground(colorErroneo);
 			JOptionPane.showConfirmDialog(ventana, "Introduzca un número de motor", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return;					
+			return false;					
 		}
 		else {
-			tmotor.setBackground(colorFondoTexto);
+			if(textoMotor.length() == 17) {
+
+				for(int i = 10; i < 17; i++) {
+					if(Character.isLetter(textoMotor.charAt(i))) {
+						campoMotor.setBackground(colorErroneo);
+						JOptionPane.showConfirmDialog(ventana, "Formate de chasis incorrecto.\n"
+								+ "El formato de un número de chasis es CCCCCCCCCC9999999, donde\n"
+								+ "las C debe indican que debe escribirse un dígito o una letra y\n"
+								+ "los 9 indican que deb escrirse un dígito.", 
+								"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+						return false;	
+					}
+				}
+				campoMotor.setBackground(colorFondoTexto);
+				
+			}
+			else {
+				campoMotor.setBackground(colorErroneo);
+				JOptionPane.showConfirmDialog(ventana, "La definición de un número de motor debe ser de longitud 17.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+				return false;	
+			}	
 		}
 		
-		if(tchasis.getText().isBlank()) {
-			//TODO fijarse que al declaracion del campo se corresponda con la de un chasis
-			tchasis.setBackground(new Color(255,102,102));
+		
+		
+		if(textoChasis.isBlank()) {
+			campoChasis.setBackground(colorErroneo);
 			JOptionPane.showConfirmDialog(ventana, "Introduzca un número de chasis", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return;	
+			return false;	
 		}
-		else {
-			tchasis.setBackground(colorFondoTexto);	
+		else{
+			if(textoChasis.length() == 8) {
+
+				for(int i = 1; i < 8; i++) {
+					
+					if(!Character.isDigit(textoChasis.charAt(i))) {
+						campoChasis.setBackground(colorErroneo);
+						JOptionPane.showConfirmDialog(ventana, "Formate de chasis incorrecto.\n"
+								+ "El formato de un número de chasis es C9999999, donde C indica\n"
+								+ "que debe escribirse un dígito o una letra y los 9 indican que\n"
+								+ "debe escribirse un dígito.", 
+								"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+						return false;	
+					}
+					
+					
+				}
+				campoChasis.setBackground(colorFondoTexto);
+				
+			}
+			else {
+				campoChasis.setBackground(colorErroneo);
+				JOptionPane.showConfirmDialog(ventana, "La definición de un número de chasis debe ser de longitud 8.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+				return false;	
+			}			
 		}
 		
-		if(tpatente.getText().isBlank()) {
-			//TODO fijarse que al declaracion del campo se corresponda con la de una patente
-			tpatente.setBackground(new Color(255,102,102));
-			JOptionPane.showConfirmDialog(ventana, "Introduzca un número de patente", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return;	
+		if(!textoPatente.isBlank()) {
+			switch (textoPatente.length()) {
+			
+			//para patente longitud 6
+	        case 6:
+	        	for(int i = 0; i < 6; i++) {
+	        		
+		        	switch(i) {
+		        		case 0:
+		        		case 1:
+		        		case 2:
+		    				if(!Character.isLetter(textoPatente.charAt(i))) {
+		    					campoPatente.setBackground(colorErroneo);
+		    					JOptionPane.showConfirmDialog(ventana, "Formate de patente incorrecto.\n"
+		    							+ "El formato de una patente con longitud 6 es LLL999, donde\n"
+		    							+ "las L indican que debe escribirse un letra y los 9 indican\n"
+		    							+ "que debe escribirse un dígito.", 
+		    							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+		    					return false;	
+		    				}
+		        		break;
+		        		
+		        		case 3:
+		        		case 4:
+		        		case 5:
+		    				if(!Character.isDigit(textoPatente.charAt(i))) {
+		    					campoPatente.setBackground(colorErroneo);
+		    					JOptionPane.showConfirmDialog(ventana, "Formate de patente incorrecto.\n"
+		    							+ "El formato de una patente con longitud 6 es LLL999, donde\n"
+		    							+ "las L indican que debe escribirse un letra y los 9 indican\n"
+		    							+ "que debe escribirse un dígito.", 
+		    							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+		    					return false;	
+		    				}
+		        		break;
+		        	}
+	        		
+	        	}
+	        	campoPatente.setBackground(colorFondoTexto);
+	        break;     
+
+	        //para patente longitud 7
+	        case 7:
+	        	for(int j = 0; j < 7; j++) {
+	        		
+		        	switch(j) {
+		        		case 0:
+		        		case 1:
+		        		case 5:
+		        		case 6:
+		    				if(Character.isDigit(textoPatente.charAt(j))) {
+		    					campoPatente.setBackground(colorErroneo);
+		    					JOptionPane.showConfirmDialog(ventana, "Formate de patente incorrecto.\n"
+		    							+ "El formato de una patente con longitud 7 es LL999LL, donde\n"
+		    							+ "las L indican que debe escribirse un letra y los 9 indican\n"
+		    							+ "que debe escribirse un dígito.", 
+		    							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+		    					return false;	
+		    				}
+		        		break;
+		        
+		        		case 2:
+		        		case 3:
+		        		case 4:
+		    				if(Character.isLetter(textoPatente.charAt(j))) {
+		    					campoPatente.setBackground(colorErroneo);
+		    					JOptionPane.showConfirmDialog(ventana, "Formato de patente incorrecto.\n"
+		    							+ "El formato de una patente con longitud 7 es LL999LL, donde\n"
+		    							+ "las L indican que debe escribirse un letra y los 9 indican\n"
+		    							+ "que debe escribirse un dígito.", 
+		    							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+		    					return false;	
+		    				}
+		        		break;
+		        	}
+	        		
+	        	}
+	        	campoPatente.setBackground(colorFondoTexto);
+	        break;
+	        	
+
+	        default:
+	        	campoPatente.setBackground(colorErroneo);
+				JOptionPane.showConfirmDialog(ventana, "La definición de una patente debe ser de longitud 6 o 7.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+			return false;	
+
+			}		
 		}
 		else {
-			tpatente.setBackground(colorFondoTexto);
+			campoPatente.setBackground(colorFondoTexto);
 		}
 		
 		if (cmbKm.getSelectedIndex() == 0) {
-			cmbKm.setForeground(Color.red);
+			cmbKm.setForeground(colorErroneo);
 			JOptionPane.showConfirmDialog(ventana, "Seleccione un kilometraje.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return;
-		}	
+			return false;
+		}
+
+		return true;
 	}
 	
+	public void componentesParaPoliza(Boolean val) {
+		cmbProvincia.setEnabled(val);
+		cmbCiudad.setEnabled(val);
+		cmbMarca.setEnabled(val);
+		if(cmbMarca.getSelectedIndex()!=0) {
+			cmbModelo.setEnabled(val);
+			cmbAnio.setEnabled(val);
+		}
+
+		cmbKm.setEnabled(val);
+		
+		campoMotor.setEnabled(val);
+		campoChasis.setEnabled(val);		
+		campoPatente.setEnabled(val);
+		
+		if(!val) {
+			campoMotor.setBackground(colorFondoPantalla);
+			campoChasis.setBackground(colorFondoPantalla);
+			campoPatente.setBackground(colorFondoPantalla);
+		}
+		else {
+			campoMotor.setBackground(colorFondoTexto);
+			campoChasis.setBackground(colorFondoTexto);
+			campoPatente.setBackground(colorFondoTexto);
+		}
+		
+		rbtnGarageSi.setEnabled(val);
+		rbtnGarageNo.setEnabled(val);
+		rbtnAlarmaSi.setEnabled(val);
+		rbtnAlarmaNo.setEnabled(val);
+		rbtnRastreoNo.setEnabled(val);
+		rbtnRastreoSi.setEnabled(val);
+		rbtnTuercasSi.setEnabled(val);
+		rbtnTuercasNo.setEnabled(val);
+		
+		tablaHijos.setEnabled(val);
+		
+		//si se agregan hijos
+		//btnQuitarHijo.setEnabled(val);
+		
+		btnConfirmarDatos.setEnabled(val);
+		btnAgregarHijo.setEnabled(val);
+	}
 }
 
 

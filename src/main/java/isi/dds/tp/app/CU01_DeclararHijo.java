@@ -6,25 +6,20 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Iterator;
 import java.util.List;
 import javax.swing.*;
-import javax.swing.border.LineBorder;
-
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
-import isi.dds.tp.modelo.AnioModelo;
-
 @SuppressWarnings("serial")
-public class DeclararHijo extends JFrame  {
+public class CU01_DeclararHijo extends JFrame  {
 	
 	private Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK, new Color(71,71,71), Color.BLACK, new Font("Open Sans", Font.PLAIN, 13)};
 	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra;
 	private Font letra;
 	private JPanel panel;
 	
-	private	AltaPoliza1 alta;
+	private	CU01_AltaPolizaV1 alta;
 	private List hijo;
 	
 	private JLabel lfechaNacimiento = new JLabel("Fecha nacimiento*");
@@ -45,7 +40,7 @@ public class DeclararHijo extends JFrame  {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new DeclararHijo();
+					new CU01_DeclararHijo();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -54,17 +49,20 @@ public class DeclararHijo extends JFrame  {
 	}
 	
 	
-	public DeclararHijo(Object[] tema, AltaPoliza1 alta, List hijo) {
-		this.alta = alta;
+	public CU01_DeclararHijo(Object[] tema, CU01_AltaPolizaV1 alta, List hijo) {
+	
+        this.alta = alta;
 		this.tema = tema;
 		this.hijo = hijo;
 		
-		new DeclararHijo();
+		new CU01_DeclararHijo();
+		
+
 	}
 	
 	//void app
-	public DeclararHijo() {
-	
+	public CU01_DeclararHijo() {
+		
 		panel = new JPanel();
 		this.setContentPane(panel);
 		
@@ -201,8 +199,6 @@ public class DeclararHijo extends JFrame  {
 		btnCancelar.setFont(letra);
 	}
 
-
-
 	private void comportamiento() {
 		
 		cmbSexo.addActionListener (a -> {
@@ -252,6 +248,7 @@ public class DeclararHijo extends JFrame  {
 		
 		btnCancelar.addActionListener(a -> {
 			
+			//alta.componentesParaPoliza(true);
 			this.setVisible(false);
 			
 		});

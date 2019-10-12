@@ -20,7 +20,7 @@ import isi.dds.tp.gestor.*;
 import isi.dds.tp.modelo.*;
 
 @SuppressWarnings("serial")
-public class AltaPoliza2 extends JPanel  {
+public class CU01_AltaPolizaV2 extends JPanel  {
 	
 	/////////////////////////////////////////////////////////////////BORRAR CLIENTE + POLIZA Y USAR LOS DATOS QUE LE PASA LA OTRA INTERFAZ
 	public Cliente cliente = new Cliente(new Ciudad(new Provincia(new Pais("PA1"), "PR1"), "C1", 0), 123456l, EnumCondicion.NORMAL, "APE", "NOM", EnumTipoDocumento.DNI, 11111111, 
@@ -32,7 +32,7 @@ public class AltaPoliza2 extends JPanel  {
 	/////////////////////////////////////////////////////////////////
 	
 	private Object tema[];
-	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra;
+	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra, colorErroneo;
 	private Font letra;
 	
 	private JLabel lTipoCobertura = new JLabel("Tipo de cobertura");
@@ -88,7 +88,7 @@ public class AltaPoliza2 extends JPanel  {
 	
 	//QUITAR UNA VEZ CREADO BIEN LA POLIZA
 
-	public AltaPoliza2(JFrame ventana, Object[] tema, Poliza poliza) {
+	public CU01_AltaPolizaV2(JFrame ventana, Object[] tema, Poliza poliza) {
 
 		/////////////////////////////////////////////////////////////////BORRAR
 		polizas.add(poliza);
@@ -280,7 +280,7 @@ public class AltaPoliza2 extends JPanel  {
 		btnVolver.addActionListener(a -> {
 			if(JOptionPane.showConfirmDialog(ventana, "¿Desea corregir algún dato ingresado?","Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 				//VOLVER A VENTANA ANTERIOR
-				new AltaPoliza2(ventana, tema, new Poliza(123123l)); //CAMBIAR POR VENTANA ANTERIOR
+				new CU01_AltaPolizaV2(ventana, tema, new Poliza(123123l)); //CAMBIAR POR VENTANA ANTERIOR
 			}
 		});
 
@@ -488,6 +488,7 @@ public class AltaPoliza2 extends JPanel  {
 		colorLetraBloqueado = (Color) tema[4];
 		colorLetra = (Color) tema[5];
 		letra = (Font) tema[6];
+		colorErroneo = (Color) tema[7];
 		
 		setBounds(0,0,1024,600);
 		setFont(letra);

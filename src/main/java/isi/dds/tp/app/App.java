@@ -13,14 +13,16 @@ import isi.dds.tp.modelo.*;
 public class App {
 
 	private JFrame frame;
-	private AltaClientes altaClientes;
-	private AltaPoliza1 altaPoliza1;
-	private AltaPoliza2 altaPoliza2;
-	private BuscarCliente buscarCliente;
+	private CU04_AltaClientes altaClientes;
+	private CU01_AltaPolizaV1 altaPoliza1;
+	private CU01_AltaPolizaV2 altaPoliza2;
+	private CU17_BuscarCliente buscarCliente;
 	private MenuPrincipal menu;	
 	
-							//  colorBoton     			colorFondoPantalla     colorFondoTexto         borde		colorLetraBloqueado  colorLetra			letra
-	private Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK, new Color(71,71,71), Color.BLACK, new Font("Open Sans", Font.PLAIN, 13)};
+							//  colorBoton     			colorFondoPantalla     colorFondoTexto         borde		colorLetraBloqueado  
+	private Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK, new Color(71,71,71), 
+			//colorLetra			letra							colorErroneo
+			Color.BLACK, new Font("Open Sans", Font.PLAIN, 13), new Color(255,102,102)};
 	
 
 	public static void main(String[] args) {
@@ -61,39 +63,39 @@ public class App {
 		this.frame = frame;
 	}
 
-	public AltaClientes getAltaClientes() {
+	public CU04_AltaClientes getAltaClientes() {
 		return altaClientes;
 	}
 
 	public void setAltaClientes() {
-		this.altaClientes = new AltaClientes(frame);
+		this.altaClientes = new CU04_AltaClientes(frame);
 		frame.setContentPane(altaClientes);
 	}
 
-	public AltaPoliza1 getAltaPoliza1() {
+	public CU01_AltaPolizaV1 getAltaPoliza1() {
 		return altaPoliza1;
 	}
 
 	public void setAltaPoliza1() {
-		this.altaPoliza1 = new AltaPoliza1(frame, tema);
+		this.altaPoliza1 = new CU01_AltaPolizaV1(frame, tema);
 		frame.setContentPane(altaPoliza1);
 	}
 
-	public AltaPoliza2 getAltaPoliza2() {
+	public CU01_AltaPolizaV2 getAltaPoliza2() {
 		return altaPoliza2;
 	}
 
 	public void setAltaPoliza2( ) {
-		this.altaPoliza2 = new AltaPoliza2(frame, tema, new Poliza());
+		this.altaPoliza2 = new CU01_AltaPolizaV2(frame, tema, new Poliza());
 		frame.setContentPane(altaPoliza2);
 	}
 
-	public BuscarCliente getBuscarCliente() {
+	public CU17_BuscarCliente getBuscarCliente() {
 		return buscarCliente;
 	}
 
 	public void setBuscarCliente( ) {
-		this.buscarCliente = new BuscarCliente(frame);
+		this.buscarCliente = new CU17_BuscarCliente(frame);
 		frame.setContentPane(buscarCliente);
 	}
 

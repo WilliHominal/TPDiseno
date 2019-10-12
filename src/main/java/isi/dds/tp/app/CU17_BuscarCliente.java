@@ -5,9 +5,9 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
-public class BuscarCliente extends JPanel {
+public class CU17_BuscarCliente extends JPanel {
 
-	public BuscarCliente(JFrame principal) {
+	public CU17_BuscarCliente(JFrame principal) {
 		principal.add(this);
 		setBackground(Color.LIGHT_GRAY);
 		setBounds(0,0,1024,600);
