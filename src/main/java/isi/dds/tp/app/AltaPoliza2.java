@@ -32,6 +32,8 @@ public class AltaPoliza2 extends JPanel  {
 	/////////////////////////////////////////////////////////////////
 	
 	private Object tema[];
+	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra;
+	private Font letra;
 	
 	private JLabel lTipoCobertura = new JLabel("Tipo de cobertura");
 	private JLabel lFechaInicioVigencia = new JLabel("Fecha de inicio de vigencia de la póliza");
@@ -71,9 +73,9 @@ public class AltaPoliza2 extends JPanel  {
 	private JTextField tfDescuentos = new JTextField(10);
 	private JTextField tfMontoTotal = new JTextField(10);
 	
-	private JButton confirmarDatos = new JButton("CONFIRMAR DATOS");
-	private JButton generarPoliza = new JButton("GENERAR PÓLIZA");
-	private JButton volver = new JButton("VOLVER");
+	private JButton btnConfirmarDatos = new JButton("CONFIRMAR DATOS");
+	private JButton btnGenerarPoliza = new JButton("GENERAR PÓLIZA");
+	private JButton btnVolver = new JButton("VOLVER");
 	
 	private JComboBox<String> seleccionTipoCobertura = new JComboBox<String>();
 	
@@ -132,7 +134,7 @@ public class AltaPoliza2 extends JPanel  {
 		
 		
 		//Listener Botones
-		confirmarDatos.addActionListener(a -> {
+		btnConfirmarDatos.addActionListener(a -> {
 			//verifico datos
 			if (seleccionTipoCobertura.getSelectedIndex() == 0) {
 				seleccionTipoCobertura.setForeground(Color.red);
@@ -159,14 +161,14 @@ public class AltaPoliza2 extends JPanel  {
 				lDesc2.setVisible(true);
 			}
 			//deshabilito parte superior
-			confirmarDatos.setEnabled(false);
+			btnConfirmarDatos.setEnabled(false);
 			dcInicioVigencia.setEnabled(false);
 			seleccionTipoCobertura.setEnabled(false);
 			mensual.setEnabled(false);
 			semestral.setEnabled(false);
 			
 			//cargo datos parte inferior
-			generarPoliza.setEnabled(true);
+			btnGenerarPoliza.setEnabled(true);
 
 			tfApellido.setText(poliza.getCliente().getApellido());
 			tfNombre.setText(poliza.getCliente().getNombre());
@@ -238,11 +240,11 @@ public class AltaPoliza2 extends JPanel  {
 
 		//listener para sacar color rojo cuando lo selecciona
 		seleccionTipoCobertura.addActionListener (a -> {
-			seleccionTipoCobertura.setForeground(Color.black);
+			seleccionTipoCobertura.setForeground(colorLetra);
 		});
 		//TODO VER ESTO DE SELECCIONAR COMBOBOXC
 
-		generarPoliza.addActionListener(a -> {
+		btnGenerarPoliza.addActionListener(a -> {
 
 			if(JOptionPane.showConfirmDialog(ventana, "¿Desea generar la póliza?","Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 				GestorPoliza gp = GestorPoliza.get();
@@ -275,7 +277,7 @@ public class AltaPoliza2 extends JPanel  {
 			}
 		});
 
-		volver.addActionListener(a -> {
+		btnVolver.addActionListener(a -> {
 			if(JOptionPane.showConfirmDialog(ventana, "¿Desea corregir algún dato ingresado?","Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 				//VOLVER A VENTANA ANTERIOR
 				new AltaPoliza2(ventana, tema, new Poliza(123123l)); //CAMBIAR POR VENTANA ANTERIOR
@@ -319,7 +321,7 @@ public class AltaPoliza2 extends JPanel  {
 		constraints.gridx=3;
 		constraints.insets.set(5, 0, 5, 10);
 		constraints.gridheight=2;
-		add(confirmarDatos, constraints);
+		add(btnConfirmarDatos, constraints);
 		constraints.insets.set(5, 5, 5, 55);
 		constraints.gridheight=1;
 		
@@ -327,12 +329,6 @@ public class AltaPoliza2 extends JPanel  {
 		constraints.gridy=1;
 		constraints.gridx=0;
 		constraints.insets.set(5, 5, 0, 55);
-		seleccionTipoCobertura.addItem("SELECCIONAR TIPO DE COBERTURA");
-		seleccionTipoCobertura.addItem("RESPONSABILIDAD CIVIL");
-		seleccionTipoCobertura.addItem("RESP. CIVIL, ROBO O INCENDIO TOTAL");
-		seleccionTipoCobertura.addItem("TODO TOTAL");
-		seleccionTipoCobertura.addItem("TERCEROS COMPLETOS");
-		seleccionTipoCobertura.addItem("TODO RIESGO CON FRANQUICIA");
 		constraints.fill=GridBagConstraints.HORIZONTAL;
 		add(seleccionTipoCobertura, constraints);
 		constraints.fill=GridBagConstraints.NONE;
@@ -478,15 +474,20 @@ public class AltaPoliza2 extends JPanel  {
 		constraints.insets.set(15, 215, 5, 5);
 		add(tfMontoTotal, constraints);
 		constraints.insets.set(15, 645, 5, 5);
-		add(generarPoliza, constraints);
+		add(btnGenerarPoliza, constraints);
 		constraints.insets.set(15, 815, 5, 5);
-		add(volver, constraints);
+		add(btnVolver, constraints);
 	}
 	
 	private void inicializarTema() {
-		Color colorBoton = (Color) tema[0], colorFondoPantalla = (Color) tema[1], colorFondoTexto = (Color)tema[2];
-		Color borde = (Color)tema[3], colorLetraBloqueado = (Color) tema[4]; 
-		Font letra = (Font) tema[6];
+
+		colorBoton = (Color) tema[0];
+		colorFondoPantalla = (Color) tema[1];
+		colorFondoTexto = (Color)tema[2];
+		borde = (Color)tema[3];
+		colorLetraBloqueado = (Color) tema[4];
+		colorLetra = (Color) tema[5];
+		letra = (Font) tema[6];
 		
 		setBounds(0,0,1024,600);
 		setFont(letra);
@@ -576,12 +577,12 @@ public class AltaPoliza2 extends JPanel  {
 		tfMontoTotal.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
 		
-		confirmarDatos.setBackground(colorBoton);
-		confirmarDatos.setFont(letra);
-		generarPoliza.setBackground(colorBoton);
-		generarPoliza.setFont(letra);
-		volver.setBackground(colorBoton);
-		volver.setFont(letra);
+		btnConfirmarDatos.setBackground(colorBoton);
+		btnConfirmarDatos.setFont(letra);
+		btnGenerarPoliza.setBackground(colorBoton);
+		btnGenerarPoliza.setFont(letra);
+		btnVolver.setBackground(colorBoton);
+		btnVolver.setFont(letra);
 		
 		seleccionTipoCobertura.setBackground(colorFondoTexto);
 		seleccionTipoCobertura.setFont(letra);
@@ -609,16 +610,24 @@ public class AltaPoliza2 extends JPanel  {
 	}
 	
 	private void inicializarComponentes() {
+		
+		seleccionTipoCobertura.addItem("SELECCIONAR TIPO DE COBERTURA");
+		seleccionTipoCobertura.addItem("RESPONSABILIDAD CIVIL");
+		seleccionTipoCobertura.addItem("RESP. CIVIL, ROBO O INCENDIO TOTAL");
+		seleccionTipoCobertura.addItem("TODO TOTAL");
+		seleccionTipoCobertura.addItem("TERCEROS COMPLETOS");
+		seleccionTipoCobertura.addItem("TODO RIESGO CON FRANQUICIA");
+		
 		rbFormaPago.add(mensual);
 		rbFormaPago.add(semestral);
-		
-		
+				
 		dcInicioVigencia.setPreferredSize(new Dimension(100, 20));
 		dcInicio.setPreferredSize(new Dimension(100, 20));
 		dcFin.setPreferredSize(new Dimension(100, 20));
-		confirmarDatos.setPreferredSize(new Dimension(160, 25));
-		generarPoliza.setPreferredSize(new Dimension(160, 25));
-		volver.setPreferredSize(new Dimension(160, 25));
+		
+		btnConfirmarDatos.setPreferredSize(new Dimension(160, 25));
+		btnGenerarPoliza.setPreferredSize(new Dimension(160, 25));
+		btnVolver.setPreferredSize(new Dimension(160, 25));
 				
 		//deshabilitar campos
 		tfApellido.setEnabled(false);
@@ -632,7 +641,7 @@ public class AltaPoliza2 extends JPanel  {
 		tfPremio.setEnabled(false);
 		tfDescuentos.setEnabled(false);
 		tfMontoTotal.setEnabled(false);
-		generarPoliza.setEnabled(false);
+		btnGenerarPoliza.setEnabled(false);
 		dcInicio.setEnabled(false);
 		dcFin.setEnabled(false);
 		tablaPagos.setEnabled(false);

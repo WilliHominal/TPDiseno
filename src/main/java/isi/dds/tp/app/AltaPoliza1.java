@@ -103,15 +103,7 @@ public class AltaPoliza1 extends JPanel {
 	public AltaPoliza1(JFrame ventana, Object[] tema) {
 		this.ventana = ventana;
 		this.tema = tema;
-		
-		colorBoton = (Color) tema[0];
-		colorFondoPantalla = (Color) tema[1];
-		colorFondoTexto = (Color)tema[2];
-		borde = (Color)tema[3];
-		colorLetraBloqueado = (Color) tema[4];
-		colorLetra = (Color) tema[5];
-		letra = (Font) tema[6];
-	
+			
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
@@ -369,7 +361,16 @@ public class AltaPoliza1 extends JPanel {
 
 	}
 		
-	private void inicializarTema() {		
+	private void inicializarTema() {	
+		
+		colorBoton = (Color) tema[0];
+		colorFondoPantalla = (Color) tema[1];
+		colorFondoTexto = (Color)tema[2];
+		borde = (Color)tema[3];
+		colorLetraBloqueado = (Color) tema[4];
+		colorLetra = (Color) tema[5];
+		letra = (Font) tema[6];
+		
 		setBounds(0,0,1024,600);
 		setFont(letra);
 		setBackground(colorFondoPantalla);
@@ -476,10 +477,8 @@ public class AltaPoliza1 extends JPanel {
 		cmbCiudad.setFont(letra);
 		cmbMarca.setBackground(colorFondoTexto);
 		cmbMarca.setFont(letra);
-		cmbMarca.setOpaque(true);
 		cmbModelo.setBackground(colorFondoTexto);
 		cmbModelo.setFont(letra);
-		cmbModelo.setOpaque(true);
 		cmbAnio.setBackground(colorFondoTexto);
 		cmbAnio.setFont(letra);
 		cmbKm.setBackground(colorFondoTexto);
