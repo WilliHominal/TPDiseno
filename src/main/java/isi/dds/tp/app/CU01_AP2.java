@@ -3,6 +3,7 @@ package isi.dds.tp.app;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -13,12 +14,37 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
+import isi.dds.tp.app.CU01_DH.DeclararHijoAbierto;
 import isi.dds.tp.enums.*;
 import isi.dds.tp.gestor.*;
 import isi.dds.tp.modelo.*;
 
 @SuppressWarnings("serial")
 public class CU01_AP2 extends JPanel  {
+	
+	/* PARA PROBAR
+	 public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					new CU01_AP2();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	
+	public CU01_AP2() {
+		Cliente cliente1 = new Cliente(null, 123456l, EnumCondicion.NORMAL, "APELLIDO", "NOMBRES", EnumTipoDocumento.DNI, 99999999, 
+				2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM", EnumEstadoCivil.CASADO, "PROFESOR", 2019);
+
+		Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK, new Color(71,71,71), 
+				//colorLetra			letra							colorErroneo
+				Color.BLACK, new Font("Open Sans", Font.PLAIN, 13), new Color(255,102,102)};
+		new CU01_AP2(new JFrame(), tema, null);
+	}*/
 	
 	private Poliza poliza;
 	private JFrame ventana;
@@ -98,7 +124,7 @@ public class CU01_AP2 extends JPanel  {
 		inicializarTema();
 		ubicarComponentes();
 		
-		comportamientoBotones();
+		comportamiento();
 
 		ventana.setContentPane(this);
 		ventana.pack();
@@ -143,7 +169,7 @@ public class CU01_AP2 extends JPanel  {
 		//FILA 1
 		constraints.gridy=1;
 		constraints.gridx=0;
-		constraints.insets.set(5, 5, 0, 55);
+		constraints.insets.set(5, 5, 0, 30);
 		constraints.fill=GridBagConstraints.HORIZONTAL;
 		add(seleccionTipoCobertura, constraints);
 		constraints.fill=GridBagConstraints.NONE;
@@ -151,11 +177,12 @@ public class CU01_AP2 extends JPanel  {
 		constraints.gridx=1;
 		add(dcInicioVigencia, constraints);
 		
+		constraints.insets.set(5, 5, 0, 60);
 		constraints.gridx=2;
 		add(mensual, constraints);
 		constraints.anchor=GridBagConstraints.EAST;
 		add(semestral, constraints);
-		constraints.anchor=GridBagConstraints.WEST;
+		constraints.anchor=GridBagConstraints.EAST;
 		
 		//FILA 2
 		constraints.gridy=2;
@@ -169,20 +196,17 @@ public class CU01_AP2 extends JPanel  {
 		//FILA 3
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.gridy=3;
-		constraints.gridx=0;
-		constraints.gridwidth=4;
+		constraints.gridwidth=5;
 		lInfoPoliza.setFont(new Font(lInfoPoliza.getFont().getName(), lInfoPoliza.getFont().getStyle(), 20));
 		add(lInfoPoliza, constraints);
 		constraints.gridwidth=1;
 		
 		//FILA 4
 		constraints.gridy=4;
-		constraints.gridx=0;
 		add(lTitularSeguro, constraints);
 		
 		//FILA 5
 		constraints.gridy=5;
-		constraints.gridx=0;
 		constraints.gridwidth=3;
 		add(lApellido, constraints);
 		constraints.insets.set(5, 65, 5, 5);
@@ -195,12 +219,10 @@ public class CU01_AP2 extends JPanel  {
 		
 		//FILA 6
 		constraints.gridy=6;
-		constraints.gridx=0;
 		add(lDatosVehiculo, constraints);
 		
 		//FILA 7
 		constraints.gridy=7;
-		constraints.gridx=0;
 		constraints.gridwidth=3;
 		add(lMarca, constraints);
 		constraints.insets.set(5, 65, 5, 5);
@@ -213,7 +235,6 @@ public class CU01_AP2 extends JPanel  {
 		
 		//FILA 8
 		constraints.gridy=8;
-		constraints.gridx=0;
 		constraints.gridwidth=3;
 		add(lMotor, constraints);
 		constraints.insets.set(5, 65, 5, 5);
@@ -230,7 +251,6 @@ public class CU01_AP2 extends JPanel  {
 		
 		//FILA 9
 		constraints.gridy=9;
-		constraints.gridx=0;
 		constraints.gridwidth=3;
 		add(lFechaInicio, constraints);
 		constraints.insets.set(5, 275, 5, 5);
@@ -239,7 +259,6 @@ public class CU01_AP2 extends JPanel  {
 		
 		//FILA 10
 		constraints.gridy=10;
-		constraints.gridx=0;
 		constraints.gridwidth=3;
 		add(dcInicio, constraints);
 		constraints.insets.set(5, 275, 5, 5);
@@ -248,7 +267,6 @@ public class CU01_AP2 extends JPanel  {
 		
 		//FILA 11
 		constraints.gridy=11;
-		constraints.gridx=0;
 		constraints.gridwidth=4;
 		add(lSumaAsegurada, constraints);
 		constraints.insets.set(5, 120, 5, 5);
@@ -268,7 +286,6 @@ public class CU01_AP2 extends JPanel  {
 		
 		//FILA 12
 		constraints.gridy=12;
-		constraints.gridx=0;
 		constraints.gridwidth=4;
 		constraints.insets.set(5, 770, 5, 5);
 		add(lDescSemestral, constraints);
@@ -276,13 +293,11 @@ public class CU01_AP2 extends JPanel  {
 		
 		//FILA 13
 		constraints.gridy=13;
-		constraints.gridx=0;
 		constraints.gridwidth=2;
 		add(scrollTablaPagos, constraints);
 		
 		//FILA 14
 		constraints.gridy=14;
-		constraints.gridx=0;
 		constraints.gridwidth=4;
 		constraints.insets.set(15, 135, 5, 5);
 		add(lMontoTotal, constraints);
@@ -293,6 +308,7 @@ public class CU01_AP2 extends JPanel  {
 		constraints.insets.set(15, 815, 5, 5);
 		add(btnVolver, constraints);
 	}
+	
 	
 	private void inicializarTema() {
 
@@ -425,6 +441,7 @@ public class CU01_AP2 extends JPanel  {
 		((JTextFieldDateEditor)dcFin.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 	}
 	
+
 	private void inicializarComponentes() {
 
 		ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) GestorTipoCobertura.get().getTiposCobertura();
@@ -492,11 +509,38 @@ public class CU01_AP2 extends JPanel  {
 		editor.setClickCountToStart(10000);
 	}
 	
-	private void comportamientoBotones() {
+	
+	private void comportamiento() {
 		
 		btnConfirmarDatos.addActionListener(a -> {
 			
 			condicionesConfirmarDatos();
+			
+			//verifico datos
+			if (seleccionTipoCobertura.getSelectedIndex() == 0) {
+				seleccionTipoCobertura.setForeground(colorErroneo);
+				JOptionPane.showConfirmDialog(ventana, "Seleccione un tipo de cobertura.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+				return;
+			}		
+			
+			int anioInicioVigencia = dcInicioVigencia.getCalendar().get(Calendar.YEAR);
+			int mesInicioVigencia = dcInicioVigencia.getCalendar().get(Calendar.MONTH);
+			int diaInicioVigencia = dcInicioVigencia.getCalendar().get(Calendar.DAY_OF_MONTH);
+			
+			if ((anioInicioVigencia < anioActual1) || (anioInicioVigencia == anioActual1 && mesInicioVigencia < mesDelAnio1) || (anioInicioVigencia == anioActual1 && mesInicioVigencia == mesDelAnio1 && diaInicioVigencia < diaDelMes1)) {
+				((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setForeground(colorErroneo);
+				JOptionPane.showConfirmDialog(ventana, "La fecha de inicio de vigencia debe estar dentro del mes próximo respecto a la fecha actual.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			
+			if ((anioInicioVigencia > anioActual2) || (anioInicioVigencia == anioActual2 && mesInicioVigencia > mesDelAnio2) || (anioInicioVigencia == anioActual2 && mesInicioVigencia == mesDelAnio2 && diaInicioVigencia > diaDelMes1)) {
+				((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setForeground(colorErroneo);
+				JOptionPane.showConfirmDialog(ventana, "La fecha de inicio de vigencia debe estar dentro del mes próximo respecto a la fecha actual.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+				return;
+			}
+			if (semestral.isSelected()) {
+				lDescSemestral.setVisible(true);
+			}
 			
 			//deshabilito parte superior
 			btnConfirmarDatos.setEnabled(false);
@@ -594,9 +638,11 @@ public class CU01_AP2 extends JPanel  {
 				}
 
 				GestorCliente gc = GestorCliente.get();
+				//TODO implementar calcularTiempoActivo
 				if (gc.calcularTiempoActivo(poliza.getCliente()) < 365*2)
 					esPlata = false;
 
+				//TODO implementar actualizarCondicion
 				if (esPlata)
 					gc.actualizarCondicion(poliza.getCliente(), EnumCondicion.PLATA);
 				else
@@ -623,33 +669,10 @@ public class CU01_AP2 extends JPanel  {
 		});
 	}
 	
+	
 	public void condicionesConfirmarDatos(){
 
-		//verifico datos
-		if (seleccionTipoCobertura.getSelectedIndex() == 0) {
-			seleccionTipoCobertura.setForeground(colorErroneo);
-			JOptionPane.showConfirmDialog(ventana, "Seleccione un tipo de cobertura.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return;
-		}		
-		
-		int anioInicioVigencia = dcInicioVigencia.getCalendar().get(Calendar.YEAR);
-		int mesInicioVigencia = dcInicioVigencia.getCalendar().get(Calendar.MONTH);
-		int diaInicioVigencia = dcInicioVigencia.getCalendar().get(Calendar.DAY_OF_MONTH);
-		
-		if ((anioInicioVigencia < anioActual1) || (anioInicioVigencia == anioActual1 && mesInicioVigencia < mesDelAnio1) || (anioInicioVigencia == anioActual1 && mesInicioVigencia == mesDelAnio1 && diaInicioVigencia < diaDelMes1)) {
-			((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setForeground(colorErroneo);
-			JOptionPane.showConfirmDialog(ventana, "La fecha de inicio de vigencia debe estar dentro del mes próximo respecto a la fecha actual.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-		
-		if ((anioInicioVigencia > anioActual2) || (anioInicioVigencia == anioActual2 && mesInicioVigencia > mesDelAnio2) || (anioInicioVigencia == anioActual2 && mesInicioVigencia == mesDelAnio2 && diaInicioVigencia > diaDelMes1)) {
-			((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setForeground(colorErroneo);
-			JOptionPane.showConfirmDialog(ventana, "La fecha de inicio de vigencia debe estar dentro del mes próximo respecto a la fecha actual.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return;
-		}
-		if (semestral.isSelected()) {
-			lDescSemestral.setVisible(true);
-		}
+
 	}
 	
 }

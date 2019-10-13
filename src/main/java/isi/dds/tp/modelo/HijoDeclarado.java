@@ -2,6 +2,8 @@ package isi.dds.tp.modelo;
 
 import java.time.LocalDate;
 import isi.dds.tp.enums.EnumEstadoCivil;
+import isi.dds.tp.enums.EnumSexo;
+
 import javax.persistence.*;
 
 @Entity
@@ -21,9 +23,11 @@ public class HijoDeclarado {
 	@Column(nullable = false, name = "fecha_nacimiento")
 	private LocalDate fechaNacimiento; 
 	
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = false)
-	private String sexo; 
+	private EnumSexo sexo; 
 	
+	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, name = "estado_civil")
 	private EnumEstadoCivil estadoCivil;
 	
@@ -37,7 +41,7 @@ public class HijoDeclarado {
 	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
-	public String getSexo() {
+	public EnumSexo getSexo() {
 		return sexo;
 	}
 	public EnumEstadoCivil getEstadoCivil() {
@@ -49,7 +53,7 @@ public class HijoDeclarado {
 	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
-	public void setSexo(String sexo) {
+	public void setSexo(EnumSexo sexo) {
 		this.sexo = sexo;
 	}
 	public void setEstadoCivil(EnumEstadoCivil estadoCivil) {

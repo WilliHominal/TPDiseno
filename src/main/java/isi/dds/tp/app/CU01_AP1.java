@@ -31,13 +31,13 @@ public class CU01_AP1 extends JPanel {
 	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra, colorErroneo;
 	private Font letra;
 	
-	public Poliza poliza = null;
+	public Poliza poliza = new Poliza();
 	public Cliente cliente = null;
 	
 	private Boolean estaDeclarandoHijo = false;
 	private Boolean mouseActivo = false;
 	
-	private List<Object> hijo = new ArrayList<Object>();
+	private HijoDeclarado hijo = null;
 	
 	
 	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
@@ -459,7 +459,6 @@ public class CU01_AP1 extends JPanel {
 		campoNumerosSiniestros.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		campoNumerosSiniestros.setDisabledTextColor(colorLetraBloqueado);
 		
-		
 		campoMotor.setFont(letra);
 		campoMotor.setBackground(colorFondoPantalla);
 		campoMotor.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -470,7 +469,6 @@ public class CU01_AP1 extends JPanel {
 		campoPatente.setBackground(colorFondoPantalla);
 		campoPatente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
-		
 		btnBuscarCliente.setBackground(colorBoton);
 		btnBuscarCliente.setFont(letra);
 		btnAltaCliente.setBackground(colorBoton);
@@ -486,16 +484,22 @@ public class CU01_AP1 extends JPanel {
 		
 		seleccionProvincia.setBackground(colorFondoTexto);
 		seleccionProvincia.setFont(letra);
+		seleccionProvincia.setForeground(colorLetra);
 		seleccionCiudad.setBackground(colorFondoTexto);
 		seleccionCiudad.setFont(letra);
+		seleccionCiudad.setForeground(colorLetra);
 		seleccionMarca.setBackground(colorFondoTexto);
 		seleccionMarca.setFont(letra);
+		seleccionMarca.setForeground(colorLetra);
 		seleccionModelo.setBackground(colorFondoTexto);
 		seleccionModelo.setFont(letra);
+		seleccionModelo.setForeground(colorLetra);
 		seleccionAnio.setBackground(colorFondoTexto);
 		seleccionAnio.setFont(letra);
+		seleccionAnio.setForeground(colorLetra);
 		seleccionKm.setBackground(colorFondoTexto);
 		seleccionKm.setFont(letra);
+		seleccionKm.setForeground(colorLetra);
 		
 		rbtnGarageSi.setBackground(colorFondoPantalla);
 		rbtnGarageSi.setFont(letra);
@@ -514,10 +518,10 @@ public class CU01_AP1 extends JPanel {
 		rbtnTuercasNo.setBackground(colorFondoPantalla);
 		rbtnTuercasNo.setFont(letra);
 		
-		
 		tablaHijos.setBackground(colorFondoTexto);
 		tablaHijos.setFont(letra);
 		tablaHijos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		tablaHijos.setForeground(colorLetra);
 		tablaHijosScroll.getViewport().setBackground(colorFondoTexto);
 		//tablaHijosScroll.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 
@@ -683,8 +687,6 @@ public class CU01_AP1 extends JPanel {
 				if(!condicionesGenerarPoliza()) {
 					return;
 				}
-				
-				poliza = new Poliza();
 				
 				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 					
@@ -893,7 +895,14 @@ public class CU01_AP1 extends JPanel {
 		        		componentesParaPoliza(!estaDeclarandoHijo);
 		        		if(!DeclararHijoAbierto.declararHijoAbierto) {
 		        			estaDeclarandoHijo = false;
-		        			hijo = DeclararHijoAbierto.hijo;
+		        			
+		        			if(DeclararHijoAbierto.hijoDeclarado) {
+			        			hijo = DeclararHijoAbierto.hijo;
+			        			hijo.setPoliza(poliza);
+			        			poliza.getHijosDeclarado().add(hijo);
+			        			DeclararHijoAbierto.hijo = null;
+		        			}
+		        			
 		        		}
 		        		return;
 		        	}
@@ -997,13 +1006,22 @@ public class CU01_AP1 extends JPanel {
 		
 	}
 
+	@SuppressWarnings("unused")
 	private Boolean condicionesGenerarPoliza() {
-		//TODO enumerar errores, usar case
+		String patenteLargo = "", patenteFormato6 = "", patenteFormato7 = "";
+		String chasisBlanco = "", chasisLargo = "", chasisFormato = "";
+		String motorBlanco = "", motorLargo = "", motorFormato = "";
+		String marcaSelecciono = "", kmSelecciono = "";
 		
+		Boolean valido = true;
+		
+		int errorNumero = 1;
+	
 		if (seleccionMarca.getSelectedIndex() == 0) {
 			seleccionMarca.setForeground(colorErroneo);
-			JOptionPane.showConfirmDialog(ventana, "Seleccione un marca.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return false;
+			marcaSelecciono = errorNumero+") No se ha seleccionado un valor del campo marca.\n";
+			errorNumero++;
+			valido = false;
 		}
 		
 		String textoMotor = campoMotor.getText();
@@ -1012,39 +1030,40 @@ public class CU01_AP1 extends JPanel {
 		
 		if(textoMotor.isBlank()) {
 			campoMotor.setBackground(colorErroneo);
-			JOptionPane.showConfirmDialog(ventana, "Introduzca un número de motor", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return false;					
+			motorBlanco = errorNumero+") No se ha introducido un número de motor\n";
+			errorNumero++;
+			valido = false;
 		}
 		else {
 			if(textoMotor.length() == 17) {
-
 				for(int i = 10; i < 17; i++) {
 					if(Character.isLetter(textoMotor.charAt(i))) {
 						campoMotor.setBackground(colorErroneo);
-						JOptionPane.showConfirmDialog(ventana, "Formate de chasis incorrecto.\n"
-								+ "El formato de un número de chasis es CCCCCCCCCC9999999, donde\n"
-								+ "las C debe indican que debe escribirse un dígito o una letra y\n"
-								+ "los 9 indican que deb escrirse un dígito.", 
-								"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-						return false;	
+						motorFormato = errorNumero+") Formato de motor incorrecto. El formato de un número de chasis es CCCCCCCCCC9999999, donde\n"
+								+ "las C debe indican que debe escribirse un dígito o una letra los 9 indican que deb escrirse un dígito.\n";
+						errorNumero++;
+						valido = false;
+						i = 17;
+					}
+					else {
+						campoMotor.setBackground(colorFondoTexto);
 					}
 				}
-				campoMotor.setBackground(colorFondoTexto);
-				
+						
 			}
 			else {
 				campoMotor.setBackground(colorErroneo);
-				JOptionPane.showConfirmDialog(ventana, "La definición de un número de motor debe ser de longitud 17.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-				return false;	
+				motorLargo = errorNumero+") La definición de un número de motor debe ser de longitud 17.\n";
+				errorNumero++;
+				valido = false;
 			}	
 		}
 		
-		
-		
 		if(textoChasis.isBlank()) {
 			campoChasis.setBackground(colorErroneo);
-			JOptionPane.showConfirmDialog(ventana, "Introduzca un número de chasis", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return false;	
+			chasisBlanco = errorNumero+") No se ha introducido un número de chasis.\n";
+			errorNumero++;
+			valido = false;
 		}
 		else{
 			if(textoChasis.length() == 8) {
@@ -1053,23 +1072,24 @@ public class CU01_AP1 extends JPanel {
 					
 					if(!Character.isDigit(textoChasis.charAt(i))) {
 						campoChasis.setBackground(colorErroneo);
-						JOptionPane.showConfirmDialog(ventana, "Formate de chasis incorrecto.\n"
-								+ "El formato de un número de chasis es C9999999, donde C indica\n"
-								+ "que debe escribirse un dígito o una letra y los 9 indican que\n"
-								+ "debe escribirse un dígito.", 
-								"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-						return false;	
+						chasisFormato = errorNumero+") Formato de chasis incorrecto. El formato de un número de chasis es C9999999, donde C indica\n"
+								+ "que debe escribirse un dígito o una letra y los 9 indican quedebe escribirse un dígito.\n";
+						errorNumero++;
+						valido = false;
+						i = 8;
 					}
-					
-					
+					else {
+						campoChasis.setBackground(colorFondoTexto);
+					}
 				}
-				campoChasis.setBackground(colorFondoTexto);
+				
 				
 			}
 			else {
 				campoChasis.setBackground(colorErroneo);
-				JOptionPane.showConfirmDialog(ventana, "La definición de un número de chasis debe ser de longitud 8.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-				return false;	
+				chasisLargo = errorNumero+") La definición de un número de chasis debe ser de longitud 8.\n";
+				errorNumero++;
+				valido = false;
 			}			
 		}
 		
@@ -1086,12 +1106,14 @@ public class CU01_AP1 extends JPanel {
 		        		case 2:
 		    				if(!Character.isLetter(textoPatente.charAt(i))) {
 		    					campoPatente.setBackground(colorErroneo);
-		    					JOptionPane.showConfirmDialog(ventana, "Formate de patente incorrecto.\n"
-		    							+ "El formato de una patente con longitud 6 es LLL999, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican\n"
-		    							+ "que debe escribirse un dígito.", 
-		    							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-		    					return false;	
+		    					patenteFormato6 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 6 es LLL999, donde\n"
+		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
+		    					errorNumero++;
+		    					valido = false;
+		    					i = 6;
+		    				}
+		    				else {
+		    					campoPatente.setBackground(colorFondoTexto);
 		    				}
 		        		break;
 		        		
@@ -1100,18 +1122,21 @@ public class CU01_AP1 extends JPanel {
 		        		case 5:
 		    				if(!Character.isDigit(textoPatente.charAt(i))) {
 		    					campoPatente.setBackground(colorErroneo);
-		    					JOptionPane.showConfirmDialog(ventana, "Formate de patente incorrecto.\n"
-		    							+ "El formato de una patente con longitud 6 es LLL999, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican\n"
-		    							+ "que debe escribirse un dígito.", 
-		    							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-		    					return false;	
+		    					patenteFormato6 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 6 es LLL999, donde\n"
+		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
+		    					errorNumero++;
+		    					valido = false;
+		    					i = 6;
 		    				}
+		    				else {
+		    					campoPatente.setBackground(colorFondoTexto);
+		    				}
+		    		
 		        		break;
 		        	}
 	        		
 	        	}
-	        	campoPatente.setBackground(colorFondoTexto);
+	        	
 	        break;     
 
 	        //para patente longitud 7
@@ -1125,12 +1150,13 @@ public class CU01_AP1 extends JPanel {
 		        		case 6:
 		    				if(Character.isDigit(textoPatente.charAt(j))) {
 		    					campoPatente.setBackground(colorErroneo);
-		    					JOptionPane.showConfirmDialog(ventana, "Formate de patente incorrecto.\n"
-		    							+ "El formato de una patente con longitud 7 es LL999LL, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican\n"
-		    							+ "que debe escribirse un dígito.", 
-		    							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-		    					return false;	
+		    					patenteFormato7 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 7 es LL999LL, donde\n"
+		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
+		    					errorNumero++;
+		    					valido = false;
+		    					j = 7;
+		    				}else {
+		    					campoPatente.setBackground(colorFondoTexto);
 		    				}
 		        		break;
 		        
@@ -1139,25 +1165,26 @@ public class CU01_AP1 extends JPanel {
 		        		case 4:
 		    				if(Character.isLetter(textoPatente.charAt(j))) {
 		    					campoPatente.setBackground(colorErroneo);
-		    					JOptionPane.showConfirmDialog(ventana, "Formato de patente incorrecto.\n"
-		    							+ "El formato de una patente con longitud 7 es LL999LL, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican\n"
-		    							+ "que debe escribirse un dígito.", 
-		    							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-		    					return false;	
+		    					patenteFormato7 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 7 es LL999LL, donde\n"
+		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";	
+		    					errorNumero++;
+		    					valido = false;
+		    					j = 7;
+		    				}else {
+		    					campoPatente.setBackground(colorFondoTexto);
 		    				}
 		        		break;
 		        	}
 	        		
 	        	}
-	        	campoPatente.setBackground(colorFondoTexto);
 	        break;
-	        	
 
 	        default:
 	        	campoPatente.setBackground(colorErroneo);
-				JOptionPane.showConfirmDialog(ventana, "La definición de una patente debe ser de longitud 6 o 7.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return false;	
+				patenteLargo = errorNumero+") La definición de una patente debe ser de longitud 6 o 7.\n";
+				errorNumero++;
+				valido = false;
+			break;
 
 			}		
 		}
@@ -1167,11 +1194,17 @@ public class CU01_AP1 extends JPanel {
 		
 		if (seleccionKm.getSelectedIndex() == 0) {
 			seleccionKm.setForeground(colorErroneo);
-			JOptionPane.showConfirmDialog(ventana, "Seleccione un kilometraje.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			return false;
+			kmSelecciono = errorNumero+") No se ha seleccionado un valor del campo km realizados por año.\n";
+			valido = false;
 		}
 
-		return true;
+		String mensajeError = marcaSelecciono + motorBlanco + motorFormato + motorLargo + chasisBlanco + chasisFormato + chasisLargo + patenteFormato6 + patenteFormato7 + patenteLargo + kmSelecciono;
+		
+		if(!valido) {
+			JOptionPane.showConfirmDialog(ventana, mensajeError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+		}
+		
+		return valido;
 	}
 
 	public void componentesParaPoliza(Boolean val) {

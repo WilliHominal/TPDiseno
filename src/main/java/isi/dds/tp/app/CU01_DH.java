@@ -2,15 +2,20 @@ package isi.dds.tp.app;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.ArrayList;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Date;
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
+import isi.dds.tp.enums.EnumEstadoCivil;
+import isi.dds.tp.enums.EnumSexo;
+import isi.dds.tp.modelo.HijoDeclarado;
 
 @SuppressWarnings("serial")
 public class CU01_DH extends JFrame  {
@@ -18,11 +23,16 @@ public class CU01_DH extends JFrame  {
 	public final static class DeclararHijoAbierto {
 	    private DeclararHijoAbierto(){}
 	    public static Boolean declararHijoAbierto = false;
-	    public static List<Object> hijo;
+	    public static HijoDeclarado hijo;
+	    public static Boolean hijoDeclarado = false;
 	}
 	
-	private Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK, new Color(71,71,71), Color.BLACK, new Font("Open Sans", Font.PLAIN, 13)};
-	private Color colorBoton, colorFondoPantalla, colorFondoTexto, colorLetra;
+	Boolean seleccionoFechaNac = true;
+	Boolean seleccionoSexo = true;
+	Boolean seleccionoEstadoCivil = true;
+	
+	private Object[] tema;
+	private Color colorBoton, colorFondoPantalla, colorFondoTexto, colorLetra, colorErroneo;
 	private Font letra;
 	private JPanel panel;
 	
@@ -39,18 +49,20 @@ public class CU01_DH extends JFrame  {
 	private JButton btnAgregarHijo = new JButton("AGREGAR HIJO");
 	private JButton btnCancelar = new JButton("CANCELAR");
 
-	
+	/* PARA PROBAR
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new CU01_DH();
+					Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK, new Color(71,71,71),
+							Color.BLACK, new Font("Open Sans", Font.PLAIN, 13), new Color(255,102,102)};
+					new CU01_DH(tema);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
+	}*/
 
 	
 	public CU01_DH(Object[] tema) {
@@ -58,13 +70,12 @@ public class CU01_DH extends JFrame  {
 		
 		if(DeclararHijoAbierto.declararHijoAbierto == false) {
 			DeclararHijoAbierto.declararHijoAbierto = true;
-			DeclararHijoAbierto.hijo = new ArrayList<Object>();
+			DeclararHijoAbierto.hijo = new HijoDeclarado();
 		}
 		
 		new CU01_DH();
 	}
 	
-	//void app
 	public CU01_DH() {
 		
 		panel = new JPanel();
@@ -164,6 +175,15 @@ public class CU01_DH extends JFrame  {
 		seleccionEstadoCivil.addItem("Separado");
 		seleccionEstadoCivil.addItem("En relación");
 
+		try {
+			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
+			dcFechaNacimiento.setDate(fechaParseada);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		
 		dcFechaNacimiento.setPreferredSize(new Dimension(105, 25));
 		
 		btnAgregarHijo.setPreferredSize(new Dimension(130, 25));
@@ -178,6 +198,7 @@ public class CU01_DH extends JFrame  {
 		colorFondoTexto = (Color)tema[2];
 		colorLetra = (Color) tema[5];
 		letra = (Font) tema[6];
+		colorErroneo = (Color) tema[7];
 		
 		panel.setFont(letra);
 		panel.setBackground(colorFondoPantalla);
@@ -204,7 +225,7 @@ public class CU01_DH extends JFrame  {
 	private void comportamiento() {
 		
 		seleccionSexo.addActionListener (a -> {
-			seleccionSexo.setForeground(colorLetra);
+			
 			if(seleccionSexo.getSelectedIndex() == 1) {
 				
 				seleccionEstadoCivil.setEnabled(false);
@@ -225,43 +246,184 @@ public class CU01_DH extends JFrame  {
 				
 				seleccionEstadoCivil.setEnabled(true);
 			}
+			if(seleccionSexo.getSelectedIndex()>0) {
+				seleccionSexo.setForeground(colorLetra);
+			}
 		});
 		
 		seleccionEstadoCivil.addActionListener (a -> {
-			seleccionEstadoCivil.setForeground(colorLetra);
+			if(seleccionEstadoCivil.getSelectedIndex() > 0){
+				seleccionEstadoCivil.setForeground(colorLetra);
+			}
 		});
 		
 		btnAgregarHijo.addActionListener(a -> {
+
+			
+			SimpleDateFormat formato = new SimpleDateFormat("dd MMM yyyy");
+			
+			Date fechaNacDate = null;
+	
+			try {
+				fechaNacDate = formato.parse(formato.format(dcFechaNacimiento.getDate()));
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			LocalDate fechaNacLocalDate = fechaNacDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+			seleccionoFechaNac = validarEdad(fechaNacLocalDate);
 			
 			if (seleccionSexo.getSelectedIndex() == 0) {
-				seleccionSexo.setForeground(Color.red);
-				JOptionPane.showConfirmDialog(seleccionSexo, "Seleccione un sexo.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-				return;
+				seleccionSexo.setForeground(colorErroneo);
+				seleccionoSexo = false;
+			}
+			else {
+				seleccionoSexo = true;
 			}
 			
 			if (seleccionEstadoCivil.getSelectedIndex() == 0) {
-				seleccionEstadoCivil.setForeground(Color.red);
-				JOptionPane.showConfirmDialog(seleccionSexo, "Seleccione un estado civil.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+				seleccionEstadoCivil.setForeground(colorErroneo);
+				seleccionoEstadoCivil = false;
+			}
+			else {
+				seleccionoEstadoCivil = true;
+			}
+			
+			if( !(seleccionoEstadoCivil && seleccionoSexo && seleccionoFechaNac) ) {
+				avisos();	
 				return;
 			}
-			
-
-			if(DeclararHijoAbierto.declararHijoAbierto == true) {
-				DeclararHijoAbierto.declararHijoAbierto = false;
-				//DeclararHijoAbierto.hijo.add(dcFechaNacimiento); //TODO agregar fecha
-				DeclararHijoAbierto.hijo.add(seleccionSexo.getItemAt(seleccionSexo.getSelectedIndex()).strip());
-				DeclararHijoAbierto.hijo.add(seleccionEstadoCivil.getItemAt(seleccionEstadoCivil.getSelectedIndex()).strip());
-				
+			else {
+				if(DeclararHijoAbierto.declararHijoAbierto == true) {
+					
+					DeclararHijoAbierto.declararHijoAbierto = false;
+					
+					DeclararHijoAbierto.hijo.setFechaNacimiento(fechaNacLocalDate);
+					
+					switch(seleccionSexo.getSelectedIndex()) {
+						case 1:
+							DeclararHijoAbierto.hijo.setSexo(EnumSexo.FEMENINO);
+						break;
+						
+						case 2:
+							DeclararHijoAbierto.hijo.setSexo(EnumSexo.MASCULINO);
+						break;
+					}
+					
+					switch(seleccionEstadoCivil.getSelectedIndex()) {
+						case 1:
+							DeclararHijoAbierto.hijo.setEstadoCivil(EnumEstadoCivil.SOLTERO);
+						break;
+						
+						case 2:
+							DeclararHijoAbierto.hijo.setEstadoCivil(EnumEstadoCivil.CASADO);
+						break;
+						
+						case 3:
+							DeclararHijoAbierto.hijo.setEstadoCivil(EnumEstadoCivil.VIUDO);
+						break;
+						
+						case 4:
+							DeclararHijoAbierto.hijo.setEstadoCivil(EnumEstadoCivil.DIVORCIADO);
+						break;
+						
+						case 5:
+							DeclararHijoAbierto.hijo.setEstadoCivil(EnumEstadoCivil.SEPARADO);
+						break;
+						
+						case 6:
+							DeclararHijoAbierto.hijo.setEstadoCivil(EnumEstadoCivil.EN_RELACION);
+						break;
+					}
+					DeclararHijoAbierto.hijoDeclarado = true;
+				}
 			}
-			
+			this.setVisible(false);
 		});
 		
 		btnCancelar.addActionListener(a -> {
-			this.setVisible(false);
 			if(DeclararHijoAbierto.declararHijoAbierto == true) {
 				DeclararHijoAbierto.declararHijoAbierto = false;
+				DeclararHijoAbierto.hijo = null;
+				DeclararHijoAbierto.hijoDeclarado = false;
 			}
-			//alta.componentesParaPoliza(true);
+			this.setVisible(false);
 		});
+	}
+
+	private Boolean validarEdad(LocalDate fechaNacLocalDate) {
+		
+		int anioHoy = LocalDate.now().getYear();
+		int diaDelAnioHoy = LocalDate.now().getDayOfYear();
+		int anioDeclarado = fechaNacLocalDate.getYear();
+		int diaDelAnioDeclarado = fechaNacLocalDate.getDayOfYear();
+		
+		Boolean valido1 = false;
+		Boolean valido2 = false;
+		
+		if(anioHoy > (anioDeclarado+18)) {
+			valido1 = true;
+		}
+		else {
+			if(anioHoy < (anioDeclarado+18)) {
+				valido1 = false;
+			}
+			else {
+				if(diaDelAnioHoy >= diaDelAnioDeclarado) {
+					valido1 = true;
+				}
+				else {
+					valido1 = false;
+				}
+			}
+		}
+		
+		if(anioHoy < (anioDeclarado+30)) {
+			valido2 = true;
+		}
+		else {
+			if(anioHoy > (anioDeclarado+30)) {
+				valido2 = false;
+			}
+			else {
+				if(diaDelAnioHoy < diaDelAnioDeclarado) {
+					valido2 = true;
+				}
+				else {
+					valido2 = false;
+				}
+			}
+		}
+		
+		if(valido1&&valido2){
+			((JTextFieldDateEditor)dcFechaNacimiento.getDateEditor()).setForeground(colorLetra);
+			return true;
+		}
+		else {
+			((JTextFieldDateEditor)dcFechaNacimiento.getDateEditor()).setForeground(colorErroneo);
+			return false;
+		}
+	}
+	
+	public void avisos() {
+		String fechaNac = "";
+		String sexo = "";
+		String estadoCivil = "";
+		
+		if(!seleccionoFechaNac) {
+			fechaNac = "La fecha de nacimiento que se introdujo dicta una edad que no se encuentra en el rango adecuado (18 a 30 años).\n";
+		}
+		
+		if(!seleccionoSexo) {
+			sexo = "No ha seleccionado un valor del campo sexo.\n";
+		}
+		
+		if(!seleccionoEstadoCivil) {
+			estadoCivil = "No ha seleccionado un valor del campo estado civil.";
+		}
+		
+		JOptionPane.showConfirmDialog(this, fechaNac + sexo + estadoCivil , "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 	}
 }

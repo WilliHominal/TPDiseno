@@ -199,11 +199,9 @@ public class HibernateUtil {
 		
 		Cliente cliente1 = new Cliente(ciudad1, 123456l, EnumCondicion.NORMAL, "APELLIDO", "NOMBRES", EnumTipoDocumento.DNI, 99999999, 
 				2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM", EnumEstadoCivil.CASADO, "PROFESOR", 2019);
-		  
-		System.out.println("no todabbia");
+
 		//PARA RECREAR LA BASE, BORRA Y LA RECARGA DE NUEVO
 		HibernateUtil.getSessionFactoryBis();
-		System.out.println("dasd sasdada");
 		GestorDomicilio.get().addPais(pais1);
 			
 		GestorParametrosVehiculo.get().addMarca(marca);
