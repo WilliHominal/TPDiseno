@@ -41,21 +41,6 @@ public class PolizaDAO {
         }
     }
     
-    public void addCuota(Cuota c) {
-
-    	Session session = HibernateUtil.getSessionFactory().openSession();
-        
-        try {
-            session.beginTransaction();
-            session.save(c);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-    
     public void addSolicitudPoliza(SolicitudPoliza s) {
 
     	Session session = HibernateUtil.getSessionFactory().openSession();
@@ -70,21 +55,7 @@ public class PolizaDAO {
             session.getTransaction().rollback();
         }
     }
-    
-    public void addHijoDeclarado(HijoDeclarado h) {
 
-    	Session session = HibernateUtil.getSessionFactory().openSession();
-        
-        try {
-            session.beginTransaction();
-            session.save(h);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
     
     @SuppressWarnings("unchecked")
 	public List<Poliza> getPolizas(Long numeroCliente) {

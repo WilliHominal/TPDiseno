@@ -3,6 +3,8 @@ package isi.dds.tp.app;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -12,6 +14,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import isi.dds.tp.app.CU01_DH.DeclararHijoAbierto;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
@@ -20,14 +24,20 @@ import isi.dds.tp.modelo.*;
 
 
 @SuppressWarnings("serial")
-public class CU01_AltaPolizaV1 extends JPanel {
+public class CU01_AP1 extends JPanel {
 		
 	private JFrame ventana;
 	private Object[] tema;
 	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra, colorErroneo;
 	private Font letra;
 	
-	private Poliza poliza = new Poliza();;
+	public Poliza poliza = null;
+	public Cliente cliente = null;
+	
+	private Boolean estaDeclarandoHijo = false;
+	private Boolean mouseActivo = false;
+	
+	private List<Object> hijo = new ArrayList<Object>();
 	
 	
 	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
@@ -78,12 +88,12 @@ public class CU01_AltaPolizaV1 extends JPanel {
 	private JButton btnConfirmarDatos = new JButton("Confirmar datos");
 	private JButton btnCancelar = new JButton("Cancelar");
 	
-	private JComboBox<Provincia> cmbProvincia = new JComboBox<Provincia>();
-	private JComboBox<Ciudad> cmbCiudad = new JComboBox<Ciudad>();
-	private JComboBox<Marca> cmbMarca = new JComboBox<Marca>();
-	private JComboBox<Modelo> cmbModelo = new JComboBox<Modelo>();
-	private JComboBox<AnioModelo> cmbAnio = new JComboBox<AnioModelo>();
-	private JComboBox<String> cmbKm = new JComboBox<String>();
+	private JComboBox<Provincia> seleccionProvincia = new JComboBox<Provincia>();
+	private JComboBox<Ciudad> seleccionCiudad = new JComboBox<Ciudad>();
+	private JComboBox<Marca> seleccionMarca = new JComboBox<Marca>();
+	private JComboBox<Modelo> seleccionModelo = new JComboBox<Modelo>();
+	private JComboBox<AnioModelo> seleccionAnio = new JComboBox<AnioModelo>();
+	private JComboBox<String> seleccionKm = new JComboBox<String>();
 
 	private ButtonGroup garage = new ButtonGroup(), alarma = new ButtonGroup(), rastreo = new ButtonGroup(), tuercas = new ButtonGroup(); 
 	private JRadioButton rbtnGarageSi = new JRadioButton("SI");
@@ -100,7 +110,7 @@ public class CU01_AltaPolizaV1 extends JPanel {
 	private Object[][] datosTabla = {{""},{""},{""},{""}};
 
 	
-	public CU01_AltaPolizaV1(JFrame ventana, Object[] tema) {
+	public CU01_AP1(JFrame ventana, Object[] tema) {
 		this.ventana = ventana;
 		this.tema = tema;
 			
@@ -108,6 +118,7 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		ubicarComponentes();
 		inicializarTema();
 		
+		comportamientoMouse();
 		comportamientoBotones();
 		comportamientoComboBox();		
 		comportamientoCampos();
@@ -241,26 +252,26 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		constraints.insets.set(5, 5, 5, 5);
 		add(lprovincia, constraints);
 		constraints.insets.set(5, 75, 5, 5);
-		add(cmbProvincia, constraints);
+		add(seleccionProvincia, constraints);
 		constraints.insets.set(5, 295, 5, 5);
 		add(lciudad, constraints);
 		constraints.insets.set(5, 355, 5, 5);
-		add(cmbCiudad, constraints);
+		add(seleccionCiudad, constraints);
 		
 		//FILA 6
 		constraints.gridy = 5;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lmarca, constraints);
 		constraints.insets.set(5, 111, 5, 5);
-		add(cmbMarca, constraints);
+		add(seleccionMarca, constraints);
 		constraints.insets.set(5, 295, 5, 5);
 		add(lmodelo, constraints);
 		constraints.insets.set(5, 410, 5, 5);
-		add(cmbModelo, constraints);
+		add(seleccionModelo, constraints);
 		constraints.insets.set(5, 575, 5, 5);
 		add(lanio, constraints);
 		constraints.insets.set(5, 664, 5, 5);
-		add(cmbAnio, constraints);
+		add(seleccionAnio, constraints);
 
 		//FILA 7
 		constraints.gridy = 6;
@@ -291,7 +302,7 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		constraints.insets.set(5, 5, 5, 5);
 		add(lkm, constraints);
 		constraints.insets.set(5, 145, 5, 5);
-		add(cmbKm, constraints);
+		add(seleccionKm, constraints);
 		
 		//FILA 10
 		constraints.gridy = 9;
@@ -473,18 +484,18 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		btnCancelar.setBackground(colorBoton);
 		btnCancelar.setFont(letra);
 		
-		cmbProvincia.setBackground(colorFondoTexto);
-		cmbProvincia.setFont(letra);
-		cmbCiudad.setBackground(colorFondoTexto);
-		cmbCiudad.setFont(letra);
-		cmbMarca.setBackground(colorFondoTexto);
-		cmbMarca.setFont(letra);
-		cmbModelo.setBackground(colorFondoTexto);
-		cmbModelo.setFont(letra);
-		cmbAnio.setBackground(colorFondoTexto);
-		cmbAnio.setFont(letra);
-		cmbKm.setBackground(colorFondoTexto);
-		cmbKm.setFont(letra);
+		seleccionProvincia.setBackground(colorFondoTexto);
+		seleccionProvincia.setFont(letra);
+		seleccionCiudad.setBackground(colorFondoTexto);
+		seleccionCiudad.setFont(letra);
+		seleccionMarca.setBackground(colorFondoTexto);
+		seleccionMarca.setFont(letra);
+		seleccionModelo.setBackground(colorFondoTexto);
+		seleccionModelo.setFont(letra);
+		seleccionAnio.setBackground(colorFondoTexto);
+		seleccionAnio.setFont(letra);
+		seleccionKm.setBackground(colorFondoTexto);
+		seleccionKm.setFont(letra);
 		
 		rbtnGarageSi.setBackground(colorFondoPantalla);
 		rbtnGarageSi.setFont(letra);
@@ -530,12 +541,12 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		campoChasis.setEnabled(false);
 		campoPatente.setEnabled(false);
 		
-		cmbProvincia.setEnabled(false);
-		cmbCiudad.setEnabled(false);
-		cmbMarca.setEnabled(false);
-		cmbModelo.setEnabled(false);
-		cmbAnio.setEnabled(false);
-		cmbKm.setEnabled(false);
+		seleccionProvincia.setEnabled(false);
+		seleccionCiudad.setEnabled(false);
+		seleccionMarca.setEnabled(false);
+		seleccionModelo.setEnabled(false);
+		seleccionAnio.setEnabled(false);
+		seleccionKm.setEnabled(false);
 		
 		rbtnGarageSi.setEnabled(false);
 		rbtnGarageNo.setEnabled(false);
@@ -566,12 +577,12 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		rbtnTuercasNo.setSelected(true);
 		
 		//dar cierto tamaño
-		cmbProvincia.setPreferredSize(new Dimension(199, 25));
-		cmbCiudad.setPreferredSize(new Dimension(199, 25));
-		cmbMarca.setPreferredSize(new Dimension(163, 25));
-		cmbModelo.setPreferredSize(new Dimension(145, 25));
-		cmbAnio.setPreferredSize(new Dimension(130, 25));
-		cmbKm.setPreferredSize(new Dimension(220, 25));
+		seleccionProvincia.setPreferredSize(new Dimension(199, 25));
+		seleccionCiudad.setPreferredSize(new Dimension(199, 25));
+		seleccionMarca.setPreferredSize(new Dimension(163, 25));
+		seleccionModelo.setPreferredSize(new Dimension(145, 25));
+		seleccionAnio.setPreferredSize(new Dimension(130, 25));
+		seleccionKm.setPreferredSize(new Dimension(220, 25));
 		
 		btnBuscarCliente.setPreferredSize(new Dimension(160, 25));
 		btnAltaCliente.setPreferredSize(new Dimension(160, 25));
@@ -620,8 +631,8 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		btnBuscarCliente.addActionListener(a -> {
 			try {
 				//GestorCliente.get().getClientes() o consultaClientes
-				Cliente cliente = GestorCliente.get().getCliente(123456l);
-				obtenerCliente(cliente);
+				cliente = GestorCliente.get().getCliente(123456l);
+				obteniendoCliente(cliente);
 				btnBuscarCliente.setEnabled(false);
 				btnAltaCliente.setEnabled(false);
 						
@@ -634,8 +645,8 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		btnAltaCliente.addActionListener(a -> {
 			try {				
 				//GestorCliente.get().getClientes() o consultaClientes
-				Cliente cliente = GestorCliente.get().getCliente(123456l);								
-				obtenerCliente(cliente);			
+				cliente = GestorCliente.get().getCliente(123456l);								
+				obteniendoCliente(cliente);			
 				btnBuscarCliente.setEnabled(false);
 				btnAltaCliente.setEnabled(false);
 			}catch(Exception ex) {
@@ -646,21 +657,20 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		
 		btnAgregarHijo.addActionListener(a -> {
 			try {				
-				List hijo = new ArrayList();
-				//componentesParaPoliza(false);
-				new CU01_DeclararHijo(tema, this, hijo);
 				
+				componentesParaPoliza(false);
+				mouseActivo = true;
+				estaDeclarandoHijo = true;
+				new CU01_DH(tema);
 				
-				
-				
+	
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		});
 		
 		btnQuitarHijo.addActionListener(a -> {
-			try {				
-				
+			try {			
 			
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -670,23 +680,23 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		 
 		btnConfirmarDatos.addActionListener(a -> {
 			try {		
-				
-				if(!condicionesConfirmacion()) {
+				if(!condicionesGenerarPoliza()) {
 					return;
 				}
 				
-
+				poliza = new Poliza();
+				
 				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 					
 					HibernateUtil.shutdown();
 					
-					poliza.setCiudad(cmbCiudad.getItemAt(cmbCiudad.getSelectedIndex()));
-					poliza.setAnioModelo(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()));
+					poliza.setCiudad(seleccionCiudad.getItemAt(seleccionCiudad.getSelectedIndex()));
+					poliza.setAnioModelo(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()));
 					poliza.setMotor(campoMotor.getText());
 					poliza.setChasis(campoChasis.getText());
 					poliza.setPatente(campoPatente.getText());
 					poliza.setSumaAsegurada(Float.parseFloat(campoSumaAsegurada.getText()));
-					poliza.setKmRealizadosPorAnio(cmbKm.getItemAt(cmbKm.getSelectedIndex()));
+					poliza.setKmRealizadosPorAnio(seleccionKm.getItemAt(seleccionKm.getSelectedIndex()));
 
 					
 					if(rbtnGarageSi.isSelected()) {
@@ -713,9 +723,9 @@ public class CU01_AltaPolizaV1 extends JPanel {
 						poliza.setTieneTuercasAntirobo(false);
 					}
 					
-					this.setVisible(false);
-					ventana.remove(this);
-					ventana.setContentPane(new CU01_AltaPolizaV2(ventana, tema, poliza));
+					//this.setVisible(false);
+					//ventana.remove(this);
+					ventana.setContentPane(new CU01_AP2(ventana, tema, this));
 				}
 				
 			}catch(Exception ex) {
@@ -727,7 +737,7 @@ public class CU01_AltaPolizaV1 extends JPanel {
 			try {			
 				this.setVisible(false);
 				ventana.remove(this);				
-				ventana.setContentPane(new CU01_AltaPolizaV1(ventana, tema));
+				ventana.setContentPane(new CU01_AP1(ventana, tema));
 				
 				HibernateUtil.shutdown();
 				
@@ -738,28 +748,26 @@ public class CU01_AltaPolizaV1 extends JPanel {
 	}
 	
 	public void comportamientoComboBox() {
-		cmbProvincia.addActionListener (a -> {
+		seleccionProvincia.addActionListener (a -> {
+			Provincia provincia = seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex());
 			
-			Provincia provincia = cmbProvincia.getItemAt(cmbProvincia.getSelectedIndex());
-			
-			cmbCiudad.removeAllItems();
+			seleccionCiudad.removeAllItems();
 			
 			Iterator<Ciudad> iteratorCiudad = provincia.getCiudades().iterator();
 			while(iteratorCiudad.hasNext()){
-				cmbCiudad.addItem(iteratorCiudad.next());
+				seleccionCiudad.addItem(iteratorCiudad.next());
 			}
 		});		
 		
-		cmbMarca.addActionListener (a -> {
-			
-			if(cmbMarca.getSelectedIndex()!=0) {
+		seleccionMarca.addActionListener (a -> {
+			if(seleccionMarca.getSelectedIndex()!=0) {
 				//para cuando es seleccionado luego de clickear el confirmar datos
-				cmbMarca.setForeground(colorLetra);
+				seleccionMarca.setForeground(colorLetra);
 				
-				List <Modelo> modelos = cmbMarca.getItemAt(cmbMarca.getSelectedIndex()).getModelos();
+				List <Modelo> modelos = seleccionMarca.getItemAt(seleccionMarca.getSelectedIndex()).getModelos();
 				
-				cmbModelo.setEnabled(false);
-				cmbModelo.removeAllItems();
+				seleccionModelo.setEnabled(false);
+				seleccionModelo.removeAllItems();
 
 				//TODO fijarse se poner el seleccionar modelo
 				//cmbModelo.addItem(new Modelo("Seleccionar modelo"));
@@ -769,68 +777,68 @@ public class CU01_AltaPolizaV1 extends JPanel {
 				
 				Iterator<Modelo> iteratorModelo = modelos.iterator();
 				while(iteratorModelo.hasNext()){
-					cmbModelo.addItem(iteratorModelo.next());
+					seleccionModelo.addItem(iteratorModelo.next());
 				}				
 				
-				cmbAnio.setEnabled(false);	
+				seleccionAnio.setEnabled(false);	
 				campoSumaAsegurada.setText("");
-				cmbAnio.removeAllItems();
+				seleccionAnio.removeAllItems();
 									
-				Iterator<AnioModelo> iteratorAnioModelo = cmbModelo.getItemAt(0).getAnios().iterator();
+				Iterator<AnioModelo> iteratorAnioModelo = seleccionModelo.getItemAt(0).getAnios().iterator();
 				while(iteratorAnioModelo.hasNext()){
-					cmbAnio.addItem(iteratorAnioModelo.next());
+					seleccionAnio.addItem(iteratorAnioModelo.next());
 				}
 				
-				cmbModelo.setEnabled(true);
-				cmbAnio.setEnabled(true);
-				campoSumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
+				seleccionModelo.setEnabled(true);
+				seleccionAnio.setEnabled(true);
+				campoSumaAsegurada.setText(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()).getSumaAsegurada().toString());
 				//cmbModelo.setSelectedIndex(0);
 			}
 			else {
-				cmbModelo.setEnabled(false);
-				cmbAnio.setEnabled(false);
-				cmbModelo.removeAllItems();
+				seleccionModelo.setEnabled(false);
+				seleccionAnio.setEnabled(false);
+				seleccionModelo.removeAllItems();
 				campoSumaAsegurada.setText("");	
-				cmbAnio.removeAllItems();
+				seleccionAnio.removeAllItems();
 				
 
 			}			
 		});
 		
-		cmbModelo.addActionListener (a -> {
-			if(cmbModelo.isEnabled()) {
+		seleccionModelo.addActionListener (a -> {
+			if(seleccionModelo.isEnabled()) {
 				
-					Modelo modelo = cmbModelo.getItemAt(cmbModelo.getSelectedIndex());
+					Modelo modelo = seleccionModelo.getItemAt(seleccionModelo.getSelectedIndex());
 					
-					cmbAnio.setEnabled(false);	
+					seleccionAnio.setEnabled(false);	
 					campoSumaAsegurada.setText("");
-					cmbAnio.removeAllItems();
+					seleccionAnio.removeAllItems();
 										
 					Iterator<AnioModelo> iteratorAnioModelo = modelo.getAnios().iterator();
 					while(iteratorAnioModelo.hasNext()){
-						cmbAnio.addItem(iteratorAnioModelo.next());
+						seleccionAnio.addItem(iteratorAnioModelo.next());
 					}
 					
-					cmbAnio.setEnabled(true);
-					campoSumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
+					seleccionAnio.setEnabled(true);
+					campoSumaAsegurada.setText(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()).getSumaAsegurada().toString());
 			}
 			else {
-				cmbAnio.setEnabled(false);
+				seleccionAnio.setEnabled(false);
 			}
 
 		});			
 		
-		cmbAnio.addActionListener (a -> {
-			if(cmbAnio.isEnabled()) {
-				campoSumaAsegurada.setText(cmbAnio.getItemAt(cmbAnio.getSelectedIndex()).getSumaAsegurada().toString());
+		seleccionAnio.addActionListener (a -> {
+			if(seleccionAnio.isEnabled()) {
+				campoSumaAsegurada.setText(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()).getSumaAsegurada().toString());
 			}
 			else {
 				campoSumaAsegurada.setText("");
 			}
 		});
 		
-		cmbKm.addActionListener (a -> {
-			cmbKm.setForeground(colorLetra);			
+		seleccionKm.addActionListener (a -> {
+			seleccionKm.setForeground(colorLetra);			
 		});
 	}
 
@@ -877,8 +885,29 @@ public class CU01_AltaPolizaV1 extends JPanel {
 
 	}
 	
+	public void comportamientoMouse() {
+        addMouseListener(new MouseAdapter() {
+	        public void mouseEntered(MouseEvent event) {
+	        	if(mouseActivo) {
+		        	if(estaDeclarandoHijo) {
+		        		componentesParaPoliza(!estaDeclarandoHijo);
+		        		if(!DeclararHijoAbierto.declararHijoAbierto) {
+		        			estaDeclarandoHijo = false;
+		        			hijo = DeclararHijoAbierto.hijo;
+		        		}
+		        		return;
+		        	}
+		        	else {
+		        		componentesParaPoliza(!estaDeclarandoHijo);
+		        		return;
+		        	}
+	        	}
+	        }
+        });
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void obtenerCliente(Cliente cliente){
+	private void obteniendoCliente(Cliente cliente){
 		
 		//cambiar
 		//SETEAR CAMPOS CLIENTES
@@ -896,10 +925,10 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		campoMotor.setEnabled(true);
 		campoChasis.setEnabled(true);
 		campoPatente.setEnabled(true);
-		cmbProvincia.setEnabled(true);
-		cmbCiudad.setEnabled(true);
-		cmbMarca.setEnabled(true);
-		cmbKm.setEnabled(true);
+		seleccionProvincia.setEnabled(true);
+		seleccionCiudad.setEnabled(true);
+		seleccionMarca.setEnabled(true);
+		seleccionKm.setEnabled(true);
 		rbtnGarageSi.setEnabled(true);
 		rbtnGarageNo.setEnabled(true);
 		rbtnAlarmaSi.setEnabled(true);
@@ -935,23 +964,23 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.get().getProvincias(100);
 		Iterator<Provincia> iteradorProvincias = provincias.iterator();
 		while(iteradorProvincias.hasNext()){
-			cmbProvincia.addItem(iteradorProvincias.next());
+			seleccionProvincia.addItem(iteradorProvincias.next());
 		}
 				
 		Iterator<Ciudad> iteratorCiudad = provincias.get(0).getCiudades().iterator();
 		while(iteratorCiudad.hasNext()){
-			cmbCiudad.addItem(iteratorCiudad.next());
+			seleccionCiudad.addItem(iteratorCiudad.next());
 		}
 		
 		ArrayList<Marca> marcas = (ArrayList<Marca>) GestorParametrosVehiculo.get().getMarcas();
-		cmbMarca.addItem(new Marca("Seleccionar marca"));
+		seleccionMarca.addItem(new Marca("Seleccionar marca"));
 		Iterator<Marca> marcasIterator = marcas.iterator();
 		while(marcasIterator.hasNext()){
-			cmbMarca.addItem(marcasIterator.next());
+			seleccionMarca.addItem(marcasIterator.next());
 		}
 		
 		
-		cmbKm.setModel(new DefaultComboBoxModel(new String[] {"Selecionar kilometraje",
+		seleccionKm.setModel(new DefaultComboBoxModel(new String[] {"Selecionar kilometraje",
 				"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
 				"50.000 - 59.999", "60.000 - 69.999", "70.000 - 79.999", "80.000 - 89.999", "90.000 - 99.999",
 				"100.00 - 109.999", "110.000 - 119.999", "120.000 - 129.999", "130.000 - 139.999", "140.000 - 149.999",
@@ -968,12 +997,11 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		
 	}
 
-	@SuppressWarnings("unused")
-	private Boolean condicionesConfirmacion() {
+	private Boolean condicionesGenerarPoliza() {
 		//TODO enumerar errores, usar case
 		
-		if (cmbMarca.getSelectedIndex() == 0) {
-			cmbMarca.setForeground(colorErroneo);
+		if (seleccionMarca.getSelectedIndex() == 0) {
+			seleccionMarca.setForeground(colorErroneo);
 			JOptionPane.showConfirmDialog(ventana, "Seleccione un marca.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
@@ -1137,25 +1165,25 @@ public class CU01_AltaPolizaV1 extends JPanel {
 			campoPatente.setBackground(colorFondoTexto);
 		}
 		
-		if (cmbKm.getSelectedIndex() == 0) {
-			cmbKm.setForeground(colorErroneo);
+		if (seleccionKm.getSelectedIndex() == 0) {
+			seleccionKm.setForeground(colorErroneo);
 			JOptionPane.showConfirmDialog(ventana, "Seleccione un kilometraje.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 
 		return true;
 	}
-	
+
 	public void componentesParaPoliza(Boolean val) {
-		cmbProvincia.setEnabled(val);
-		cmbCiudad.setEnabled(val);
-		cmbMarca.setEnabled(val);
-		if(cmbMarca.getSelectedIndex()!=0) {
-			cmbModelo.setEnabled(val);
-			cmbAnio.setEnabled(val);
+		seleccionProvincia.setEnabled(val);
+		seleccionCiudad.setEnabled(val);
+		seleccionMarca.setEnabled(val);
+		if(seleccionMarca.getSelectedIndex()!=0) {
+			seleccionModelo.setEnabled(val);
+			seleccionAnio.setEnabled(val);
 		}
 
-		cmbKm.setEnabled(val);
+		seleccionKm.setEnabled(val);
 		
 		campoMotor.setEnabled(val);
 		campoChasis.setEnabled(val);		
@@ -1188,6 +1216,8 @@ public class CU01_AltaPolizaV1 extends JPanel {
 		
 		btnConfirmarDatos.setEnabled(val);
 		btnAgregarHijo.setEnabled(val);
+		
+		mouseActivo = !val;
 	}
 }
 

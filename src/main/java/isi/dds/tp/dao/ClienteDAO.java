@@ -1,10 +1,13 @@
 package isi.dds.tp.dao;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Cliente;
+import isi.dds.tp.modelo.Poliza;
 
 public class ClienteDAO {
 	
@@ -35,7 +38,6 @@ public class ClienteDAO {
         }
     }
     
-    
     public Cliente getCliente(Long numeroCliente) {
     	Cliente c = null;
     	
@@ -51,6 +53,5 @@ public class ClienteDAO {
     	    	
     	return c;
     }
-    
     
 }

@@ -3,20 +3,15 @@ package isi.dds.tp.app;
 import java.awt.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.swing.*;
-
 import isi.dds.tp.hibernate.HibernateUtil;
-import isi.dds.tp.modelo.*;
 
 
 public class App {
 
 	private JFrame frame;
-	private CU04_AltaClientes altaClientes;
-	private CU01_AltaPolizaV1 altaPoliza1;
-	private CU01_AltaPolizaV2 altaPoliza2;
-	private CU17_BuscarCliente buscarCliente;
+	private CU01_AP1 altaPoliza1;
+	private CU01_AP2 altaPoliza2;
 	private MenuPrincipal menu;	
 	
 							//  colorBoton     			colorFondoPantalla     colorFondoTexto         borde		colorLetraBloqueado  
@@ -52,7 +47,6 @@ public class App {
 		setAltaPoliza1();
 		frame.setVisible(true);
 		
-	
 	}
 
 	public JFrame getFrame() {
@@ -63,41 +57,19 @@ public class App {
 		this.frame = frame;
 	}
 
-	public CU04_AltaClientes getAltaClientes() {
-		return altaClientes;
-	}
-
-	public void setAltaClientes() {
-		this.altaClientes = new CU04_AltaClientes(frame);
-		frame.setContentPane(altaClientes);
-	}
-
-	public CU01_AltaPolizaV1 getAltaPoliza1() {
+	public CU01_AP1 getAltaPoliza1() {
 		return altaPoliza1;
 	}
 
 	public void setAltaPoliza1() {
-		this.altaPoliza1 = new CU01_AltaPolizaV1(frame, tema);
+		this.altaPoliza1 = new CU01_AP1(frame, tema);
 		frame.setContentPane(altaPoliza1);
 	}
 
-	public CU01_AltaPolizaV2 getAltaPoliza2() {
+	public CU01_AP2 getAltaPoliza2() {
 		return altaPoliza2;
 	}
 
-	public void setAltaPoliza2( ) {
-		this.altaPoliza2 = new CU01_AltaPolizaV2(frame, tema, new Poliza());
-		frame.setContentPane(altaPoliza2);
-	}
-
-	public CU17_BuscarCliente getBuscarCliente() {
-		return buscarCliente;
-	}
-
-	public void setBuscarCliente( ) {
-		this.buscarCliente = new CU17_BuscarCliente(frame);
-		frame.setContentPane(buscarCliente);
-	}
 
 	public MenuPrincipal getMenu() {
 		return menu;

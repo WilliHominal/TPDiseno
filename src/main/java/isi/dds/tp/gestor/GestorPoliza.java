@@ -28,32 +28,15 @@ public class GestorPoliza {
     	PolizaDAO.getDAO().addPoliza(p);
     }
     
-    public void addCuota(Cuota c) {
-
-    	PolizaDAO.getDAO().addCuota(c);
-
-    }
-    
     public void addSolicitudPoliza(SolicitudPoliza s) {
 
     	PolizaDAO.getDAO().addSolicitudPoliza(s);
     }
     
-    public void addHijoDeclarado(HijoDeclarado h) {
-
-    	PolizaDAO.getDAO().addHijoDeclarado(h);
-    }
-    
     public void generarNumeroPoliza(Poliza P) {
     	
     }
-    public void declararHijo(Poliza P, LocalDate fechaNac, String sexo, String estadoCivil) {
-    	
-    }
-    public Boolean verificarEdadHijo(HijoDeclarado h) {
-    	return null;
-    }
-    
+       
     public Boolean agregarDeclaracionHijo(Poliza p, HijoDeclarado h) {
     	return null;
     }
@@ -73,14 +56,6 @@ public class GestorPoliza {
     public void actualizarSolictud(SolicitudPoliza s){
     	
     }
-       
-	public List<Poliza> getPolizas(Long numeroCliente) {
-    	
-    	List<Poliza> polizas = PolizaDAO.getDAO().getPolizas(numeroCliente);
-        
-        return polizas;
-    }
-
 
 	public List<Cuota> getCuotas(Long numeroPoliza) {
 
@@ -95,7 +70,6 @@ public class GestorPoliza {
     	
         return solicitud;
     }
-    
     
 	public List<HijoDeclarado> getHijosDeclarados(Long numeroPoliza) {
 
@@ -115,7 +89,5 @@ public class GestorPoliza {
     public SolicitudPoliza getSolicitud(Long numeroPoliza) {
     	return null;
     }
-    
-    //AGREGAR LOS DE CUOTA
 
 }

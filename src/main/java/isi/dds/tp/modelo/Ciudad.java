@@ -35,11 +35,11 @@ public class Ciudad {
 		
 	}
 	
-	public Ciudad(Provincia pr, String nombre, float f) {
+	public Ciudad(Provincia pr, String nombre, Float riesgo) {
 		this.provincia = pr;
 		this.nombre = nombre;
 		this.riesgos = new ArrayList<RiesgoCiudad>();
-		this.riesgos.add(new RiesgoCiudad(this, f));
+		this.riesgos.add(new RiesgoCiudad(this, riesgo));
 		pr.getCiudades().add(this);
 	}
 

@@ -97,6 +97,29 @@ public class HibernateUtil {
     @Transactional
     @SuppressWarnings("unused")
 	public static void cargarBase() {
+    	
+		/*
+		 TODO 2 MANERAS DE INSERTAR
+		 	- MEDIANTE CODIGO JAVA (como ciudad prov y)
+		 	- CARGANDO UN FILE SCRIPT
+		*/
+    	
+    	
+    	/* CARGAR POR SCRIPT
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/scriptSQL.sql");
+		Session session = HibernateUtil.getSessionFactory().openSession();
+		session.beginTransaction();
+		
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
+
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+
+		}
+		session.close();
+		*/
+    	
+    	//las prov capaz conviene ingresarlas por sql con algun script que haya en la web
     	Pais pais1 = new Pais("Argentina");
 		
 		Provincia prov1 = new Provincia(pais1, "Santa Fe");
@@ -110,80 +133,90 @@ public class HibernateUtil {
 		Ciudad ciudad5 = new Ciudad(prov3, "Paraná", 5f);
 		Ciudad ciudad6 = new Ciudad(prov3, "Diamante", 6f);
 
+		Marca marca = new Marca("Volskwagen");
+			Modelo modelo = new Modelo(marca, "Passat", 0.6f);
+				new AnioModelo(modelo, 2018, 158231f);
+				new AnioModelo(modelo, 2019, 170200f);
+			Modelo modelo1 = new Modelo(marca, "Golf", 0.3f);
+				new AnioModelo(modelo1, 2017, 54120f);
+				new AnioModelo(modelo1, 2019, 67210f);
+			Modelo modelo2 = new Modelo(marca, "Scirocco", 0.8f);
+				new AnioModelo(modelo2, 2018, 187800f);
+				new AnioModelo(modelo2, 2019, 210630f);
+				
+		Marca marca1 = new Marca("Fiat");
+			Modelo modelo3 = new Modelo(marca1, "Argo", 0.21f);
+				new AnioModelo(modelo3, 2014, 45800f);
+				new AnioModelo(modelo3, 2015, 51222f);
+				new AnioModelo(modelo3, 2016, 58120f);
+			Modelo modelo4 = new Modelo(marca1, "Cronos", 0.73f);
+				new AnioModelo(modelo4, 2017, 184010f);
+				new AnioModelo(modelo4, 2018, 199800f);
+				new AnioModelo(modelo4, 2015, 149800f);
+			Modelo modelo5 = new Modelo(marca1, "500X", 0.52f);
+				new AnioModelo(modelo5, 2017, 101928f);
+				new AnioModelo(modelo5, 2019, 142000f);
+			Modelo modelo6 = new Modelo(marca1, "Uno",  0.11f);
+				new AnioModelo(modelo6, 2010, 28200f);
+				new AnioModelo(modelo6, 2012, 34500f);
+				new AnioModelo(modelo6, 2013, 35712f);
+					
+		Marca marca2 = new Marca("Ford");
+			Modelo modelo7 = new Modelo(marca2, "Focus", 0.24f);
+				new AnioModelo(modelo7, 2016, 58213f);
+				new AnioModelo(modelo7, 2019, 69123f);
+			Modelo modelo8 = new Modelo(marca2, "Mondeo", 0.65f);
+				new AnioModelo(modelo8, 2015, 167521f);
+				new AnioModelo(modelo8, 2016, 172921f);
+				new AnioModelo(modelo8, 2017, 173552f);
+				new AnioModelo(modelo8, 2018, 182083f);
+			Modelo modelo9 = new Modelo(marca2, "Ka", 0.08f);
+				new AnioModelo(modelo9, 2014, 29100f);
+				new AnioModelo(modelo9, 2015, 23182f);
+			Modelo modelo14 = new Modelo(marca2, "Ecosport", 0.571f);
+				new AnioModelo(modelo14, 2018, 134020f);
+				new AnioModelo(modelo14, 2019, 146818f);					
+
+		Marca marca3 = new Marca("Reanult");
+			Modelo modelo10 = new Modelo(marca3, "Kwid", 0.52f);
+				new AnioModelo(modelo10, 2017, 89267f);
+				new AnioModelo(modelo10, 2018, 94566f);
+				new AnioModelo(modelo10, 2019, 99350f);
+			Modelo modelo11 = new Modelo(marca3, "Duster", 0.87f);
+				new AnioModelo(modelo11, 2017, 267991f);
+				new AnioModelo(modelo11, 2019, 289312f);
+			Modelo modelo12 = new Modelo(marca3, "Koleos", 0.81f);
+				new AnioModelo(modelo12, 2018, 216737f);
+				new AnioModelo(modelo12, 2019, 230093f);
+			Modelo modelo13 = new Modelo(marca3, "Kangoo II", 0.47f);
+				new AnioModelo(modelo13, 2019, 92630f);
+						
+		TipoCobertura cobertura = new TipoCobertura(EnumTipoCobertura.RESPONSABILIDAD_CIVIL, "Responsabilidad civil", "Descripcion uno", 0.23f);
+		TipoCobertura cobertura1 = new TipoCobertura(EnumTipoCobertura.RESP_CIVIL_ROBO_O_INCENDIO_TOTAL, "Responsabilidad civil, robo o incendio total", "Descripcion dos", 0.39f);
+		TipoCobertura cobertura2 = new TipoCobertura(EnumTipoCobertura.TODO_TOTAL, "Todo total", "Descripcion tres", 0.65f);
+		TipoCobertura cobertura3 = new TipoCobertura(EnumTipoCobertura.TERCEROS_COMPLETOS, "Terceros completos", "Descripcion seis", 0.51f);
+		TipoCobertura cobertura4 = new TipoCobertura(EnumTipoCobertura.TODO_RIESGO_CON_FRANQUICIA, "Todo riesgo con franquiia", "Descripcion cinco", 0.48f);
 		
 		Cliente cliente1 = new Cliente(ciudad1, 123456l, EnumCondicion.NORMAL, "APELLIDO", "NOMBRES", EnumTipoDocumento.DNI, 99999999, 
 				2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM", EnumEstadoCivil.CASADO, "PROFESOR", 2019);
-		
-		//recrea la base de vuelta
+		  
+		System.out.println("no todabbia");
+		//PARA RECREAR LA BASE, BORRA Y LA RECARGA DE NUEVO
 		HibernateUtil.getSessionFactoryBis();
-		
+		System.out.println("dasd sasdada");
 		GestorDomicilio.get().addPais(pais1);
+			
+		GestorParametrosVehiculo.get().addMarca(marca);
+		GestorParametrosVehiculo.get().addMarca(marca1);
+		GestorParametrosVehiculo.get().addMarca(marca2);
+		GestorParametrosVehiculo.get().addMarca(marca3);
+
+		GestorTipoCobertura.get().addTipoCobertura(cobertura);
+		GestorTipoCobertura.get().addTipoCobertura(cobertura1);
+		GestorTipoCobertura.get().addTipoCobertura(cobertura2);
+		GestorTipoCobertura.get().addTipoCobertura(cobertura3);
+		GestorTipoCobertura.get().addTipoCobertura(cobertura4);
 		
 		GestorCliente.get().AltaCliente(cliente1);
-
-		//PARA RECREAR LA BASE, BORRA Y LA RECARGA DE NUEVO
-
-
-		/*
-		 TODO 3 MANERAS DE INSERTAR
-		 	- MEDIANTE CODIGO JAVA (como ciudad prov y)
-		 	- CARGANDO UN FILE SCRIPT
-		 	- PONIENDO EL SCRIPT POR CODIGO
-		*/
-		
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/scriptSQL.sql");
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		
-		Iterator<String> iteradorqueries = queries.iterator();
-		while(iteradorqueries.hasNext()){
-
-			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
-
-		}
-		session.close();
-		
-		/*
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-
-		
-		String sql = String.format(
-				//marcas
-				"INSERT INTO marca VALUES(1,'Renault');"
-				+"INSERT INTO marca VALUES(2,'Volskwagen');"
-				+"INSERT INTO marca VALUES(3,'Ford');"
-				+"INSERT INTO marca VALUES(4,'Porsche');"
-				+"INSERT INTO modelo VALUES(1, 'Clio', 1, 0);"
-				+"INSERT INTO modelo VALUES(2, 'Kwid', 1, 1);"
-				+"INSERT INTO modelo VALUES(3, 'Koleos', 1, 2);"
-				+"INSERT INTO modelo VALUES(4, 'Polo', 2, 0);"
-				+"INSERT INTO modelo VALUES(5, 'Golf', 2, 1);"
-				+"INSERT INTO modelo VALUES(6, 'Passat', 2, 2);"
-				+"INSERT INTO modelo VALUES(7, 'Focus', 3, 0);"
-				+"INSERT INTO modelo VALUES(8, 'Fiesta', 3, 1);"
-				+"INSERT INTO modelo VALUES(9, 'Panamera', 4, 0);"
-				+"INSERT INTO modelo VALUES(10, 'Macan', 4, 1);"
-				+"insert into anio_modelo values(1, 2017, 90000, 1, 0);"
-				+"insert into anio_modelo values(2, 2018, 92000, 1, 1);"
-				+"insert into anio_modelo values(3, 2019, 112000, 2, 0);"
-				+"insert into anio_modelo values(4, 2019, 150000, 3, 0);"
-				+"insert into anio_modelo values(5, 2016, 87000, 4, 0);"
-				+"insert into anio_modelo values(6, 2015, 93500, 5, 0);"
-				+"insert into anio_modelo values(7, 2017, 230000, 6, 0);"
-				+"insert into anio_modelo values(8, 2019, 98900, 7, 0);"
-				+"insert into anio_modelo values(9, 2019, 76000, 8, 0);"
-				+"insert into anio_modelo values(10, 2019, 105900, 10, 0);"
-				+"insert into anio_modelo values(11, 2018, 124230, 10, 1);"
-				+"insert into anio_modelo values(12, 2019, 134890, 11, 0);"
-				+"insert into anio_modelo values(13, 2018, 158020, 11, 1);"
-				);
-		session.createSQLQuery(sql).executeUpdate();
-		session.close();*/
-		
-		
-		
-	
-		
     }
 }

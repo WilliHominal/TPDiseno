@@ -20,22 +20,24 @@ public class TipoCobertura {
 	@Enumerated(EnumType.STRING)
 	@Column(name = "tipo_cobertura")
 	private EnumTipoCobertura tipoCobertura;
-	
-	@Column(nullable = false)
-	private String nombre;
-	
+
 	@Column(nullable = false)
 	private String descripcion;
-	
+		
+	@Column(nullable = false)
+	private String nombre;
+
 	public TipoCobertura() {
 		
 	}
 	
-	public TipoCobertura(EnumTipoCobertura tipoCobertura, Float riesgo) {
+	public TipoCobertura(EnumTipoCobertura tipoCobertura, String nombre, String descripcion, Float riesgo) {
 		this.riesgo =  new  ArrayList<RiesgoTipoCobertura>();
 		this.riesgo.add(new RiesgoTipoCobertura(this, riesgo));
 		this.tipoCobertura = tipoCobertura;
-	}	
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		}	
 
 	public List<RiesgoTipoCobertura> getRiesgo() {
 		return riesgo;

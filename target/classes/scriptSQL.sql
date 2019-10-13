@@ -49,19 +49,19 @@ insert into marca values(4,'Reanult');
 		insert into anio_modelo values(22, 2019, 178290, 10, 0);
 			#insert into riesgo_modelo values();
 
-#TIPOS COBERTURA | columnas = enumTipoCobertura, nombre, descripcion
+#TIPOS COBERTURA | columnas = enumTipoCobertura, descripcion, nombre
 #RIESGOS TIPO COBERTURA | columnas = id, fin_vigencia, inicio_vigencia, ultimo, valor_porcentual, codigo_bitacora, tipo_cobertura, idx
-insert into tipo_cobertura values('RESPONSABILIDAD_CIVIL','Responsabilidad civil', 'Descripcion uno');
+insert into tipo_cobertura values('RESPONSABILIDAD_CIVIL', 'Descripcion uno', 'Responsabilidad civil');
 	insert into riesgo_tipo_cobertura values(1, '29-08-2019', '21-05-2019', false, 0.2, null, 'RESPONSABILIDAD_CIVIL', 0);
 	insert into riesgo_tipo_cobertura values(2, null, '30-08-2019', true, 0.23, null, 'RESPONSABILIDAD_CIVIL', 1);
-insert into tipo_cobertura values('RESP_CIVIL_ROBO_O_INCENDIO_TOTAL', 'Responsabilidad civil, robo o incendio total', 'Descripcion dos');
+insert into tipo_cobertura values('RESP_CIVIL_ROBO_O_INCENDIO_TOTAL', 'Descripcion dos', 'Responsabilidad civil, robo o incendio total');
 	insert into riesgo_tipo_cobertura values(3, '14-06-2019', '01-04-2018', false, 0.41, null, 'RESP_CIVIL_ROBO_O_INCENDIO_TOTAL', 0);
 	insert into riesgo_tipo_cobertura values(4, null, '15-06-2019', true, 0.39,  null, 'RESP_CIVIL_ROBO_O_INCENDIO_TOTAL', 1);
-insert into tipo_cobertura values('TODO_TOTAL', 'Todo total', 'Descripcion tres');
+insert into tipo_cobertura values('TODO_TOTAL', 'Descripcion tres', 'Todo total');
 	insert into riesgo_tipo_cobertura values(5, '29-09-2019', '11-07-2018', false, 0.72, null, 'TODO_TOTAL', 0);
 	insert into riesgo_tipo_cobertura values(6, null, '30-09-2019', true, 0.65, null, 'TODO_TOTAL', 1);
-insert into tipo_cobertura values('TERCEROS_COMPLETOS', 'Terceros completos', 'Descripcion cuatro');
+insert into tipo_cobertura values('TERCEROS_COMPLETOS', 'Descripcion cuatro', 'Terceros completos');
 	insert into riesgo_tipo_cobertura values(7, null,'05-02-2018',  true, 0.51, null, 'TERCEROS_COMPLETOS', 0);
-insert into tipo_cobertura values('TODO_RIESGO_CON_FRANQUICIA', 'Todo riesgo con franquiia', 'Descripcion cinco');	
+insert into tipo_cobertura values('TODO_RIESGO_CON_FRANQUICIA', 'Descripcion cinco', 'Todo riesgo con franquiia');	
 	insert into riesgo_tipo_cobertura values(8, '02-03-2019', '28-12-2018', false, 0.48, null, 'TODO_RIESGO_CON_FRANQUICIA', 0);
 	insert into riesgo_tipo_cobertura values(9, null, '03-03-2019', true, 0.44, null, 'TODO_RIESGO_CON_FRANQUICIA', 1);
