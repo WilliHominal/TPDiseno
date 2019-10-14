@@ -29,7 +29,7 @@ public class CU01_AP1 extends JPanel {
 		
 	private JFrame ventana;
 	private Object[] tema;
-	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra, colorErroneo;
+	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetra, colorErroneo;
 	private Font letra;
 	
 	public Poliza poliza = new Poliza();
@@ -379,17 +379,15 @@ public class CU01_AP1 extends JPanel {
 		colorFondoPantalla = (Color) tema[1];
 		colorFondoTexto = (Color)tema[2];
 		borde = (Color)tema[3];
-		colorLetraBloqueado = (Color) tema[4];
-		colorLetra = (Color) tema[5];
-		letra = (Font) tema[6];
-		colorErroneo = (Color) tema[7];
+		colorLetra = (Color) tema[4];
+		letra = (Font) tema[5];
+		colorErroneo = (Color) tema[6];
 		
 		setBounds(0,0,1024,600);
 		setFont(letra);
 		setBackground(colorFondoPantalla);
 		
-		UIManager.put( "ComboBox.disabledBackground", colorFondoPantalla );
-		UIManager.put( "ComboBox.disabledForeground", colorLetraBloqueado);
+
 		
 		lnumeroCliente.setFont(letra);
 		ltipoDocumento.setFont(letra);
@@ -421,43 +419,42 @@ public class CU01_AP1 extends JPanel {
 		campoNumeroCliente.setFont(letra);
 		campoNumeroCliente.setBackground(colorFondoTexto);
 		campoNumeroCliente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoNumeroCliente.setDisabledTextColor(colorLetraBloqueado);
+		campoNumeroCliente.setDisabledTextColor(colorLetra);
 		campoTipoDocumento.setFont(letra);
 		campoTipoDocumento.setBackground(colorFondoTexto);
 		campoTipoDocumento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoTipoDocumento.setDisabledTextColor(colorLetraBloqueado);
 		campoNumeroDocumento.setFont(letra);
 		campoNumeroDocumento.setBackground(colorFondoTexto);
 		campoNumeroDocumento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoNumeroDocumento.setDisabledTextColor(colorLetraBloqueado);
+		campoNumeroDocumento.setDisabledTextColor(colorLetra);
 		campoApellido.setFont(letra);
 		campoApellido.setBackground(colorFondoTexto);
 		campoApellido.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoApellido.setDisabledTextColor(colorLetraBloqueado);
+		campoApellido.setDisabledTextColor(colorLetra);
 		campoNombres.setFont(letra);
 		campoNombres.setBackground(colorFondoTexto);
 		campoNombres.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoNombres.setDisabledTextColor(colorLetraBloqueado);
+		campoNombres.setDisabledTextColor(colorLetra);
 		campoCalle.setFont(letra);
 		campoCalle.setBackground(colorFondoTexto);
 		campoCalle.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoCalle.setDisabledTextColor(colorLetraBloqueado);
+		campoCalle.setDisabledTextColor(colorLetra);
 		campoNumeroDomicilio.setFont(letra);
 		campoNumeroDomicilio.setBackground(colorFondoTexto);
 		campoNumeroDomicilio.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoNumeroDomicilio.setDisabledTextColor(colorLetraBloqueado);
+		campoNumeroDomicilio.setDisabledTextColor(colorLetra);
 		campoDepartamento.setFont(letra);
 		campoDepartamento.setBackground(colorFondoTexto);
 		campoDepartamento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoDepartamento.setDisabledTextColor(colorLetraBloqueado);
+		campoDepartamento.setDisabledTextColor(colorLetra);
 		campoSumaAsegurada.setFont(letra);
 		campoSumaAsegurada.setBackground(colorFondoPantalla);
 		campoSumaAsegurada.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoSumaAsegurada.setDisabledTextColor(colorLetraBloqueado);
+		campoSumaAsegurada.setDisabledTextColor(colorLetra);
 		campoNumerosSiniestros.setFont(letra);
 		campoNumerosSiniestros.setBackground(colorFondoPantalla);
 		campoNumerosSiniestros.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoNumerosSiniestros.setDisabledTextColor(colorLetraBloqueado);
+		campoNumerosSiniestros.setDisabledTextColor(colorLetra);
 		
 		campoMotor.setFont(letra);
 		campoMotor.setBackground(colorFondoPantalla);
@@ -482,22 +479,25 @@ public class CU01_AP1 extends JPanel {
 		btnCancelar.setBackground(colorBoton);
 		btnCancelar.setFont(letra);
 		
-		seleccionProvincia.setBackground(colorFondoTexto);
+		
+		UIManager.put( "ComboBox.disabledBackground", colorFondoPantalla );
+		UIManager.put( "ComboBox.disabledForeground", colorLetra );
+		seleccionProvincia.setBackground(colorFondoPantalla);
 		seleccionProvincia.setFont(letra);
 		seleccionProvincia.setForeground(colorLetra);
-		seleccionCiudad.setBackground(colorFondoTexto);
+		seleccionCiudad.setBackground(colorFondoPantalla);
 		seleccionCiudad.setFont(letra);
 		seleccionCiudad.setForeground(colorLetra);
-		seleccionMarca.setBackground(colorFondoTexto);
+		seleccionMarca.setBackground(colorFondoPantalla);
 		seleccionMarca.setFont(letra);
 		seleccionMarca.setForeground(colorLetra);
-		seleccionModelo.setBackground(colorFondoTexto);
+		seleccionModelo.setBackground(colorFondoPantalla);
 		seleccionModelo.setFont(letra);
 		seleccionModelo.setForeground(colorLetra);
-		seleccionAnio.setBackground(colorFondoTexto);
+		seleccionAnio.setBackground(colorFondoPantalla);
 		seleccionAnio.setFont(letra);
 		seleccionAnio.setForeground(colorLetra);
-		seleccionKm.setBackground(colorFondoTexto);
+		seleccionKm.setBackground(colorFondoPantalla);
 		seleccionKm.setFont(letra);
 		seleccionKm.setForeground(colorLetra);
 		
@@ -639,6 +639,10 @@ public class CU01_AP1 extends JPanel {
 				//GestorCliente.get().getClientes() o consultaClientes
 				cliente = GestorCliente.get().getCliente(123456l);
 				obteniendoCliente(cliente);
+				
+				poliza.setCliente(cliente);
+				cliente.getPolizas().add(poliza);
+				
 				btnBuscarCliente.setEnabled(false);
 				btnAltaCliente.setEnabled(false);
 						
@@ -652,7 +656,10 @@ public class CU01_AP1 extends JPanel {
 			try {				
 				//GestorCliente.get().getClientes() o consultaClientes
 				cliente = GestorCliente.get().getCliente(123456l);								
-				obteniendoCliente(cliente);			
+				obteniendoCliente(cliente);	
+				poliza.setCliente(cliente);
+				cliente.getPolizas().add(poliza);
+				
 				btnBuscarCliente.setEnabled(false);
 				btnAltaCliente.setEnabled(false);
 			}catch(Exception ex) {
@@ -665,7 +672,7 @@ public class CU01_AP1 extends JPanel {
 			try {				
 				mouseActivo = true;
 				
-				componentesParaPoliza(false);
+				componentesAlDeclararHijos(false);
 				estaDeclarandoHijo = true;
 				
 				new CU01_DH(tema);
@@ -753,7 +760,7 @@ public class CU01_AP1 extends JPanel {
 					
 					poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().getEnumSiniestros(campoNumerosSiniestros.getText()));
 
-					ventana.setContentPane(new CU01_AP2(ventana, tema, this));
+					ventana.setContentPane(new CU01_AP2(ventana, tema, this, poliza));
 				}
 				
 			}catch(Exception ex) {
@@ -763,9 +770,9 @@ public class CU01_AP1 extends JPanel {
 		 
 		btnCancelar.addActionListener(a -> {
 			try {			
-				this.setVisible(false);
-				ventana.remove(this);				
-				ventana.setContentPane(new CU01_AP1(ventana, tema));
+				
+				ventana.setVisible(false);				
+				//ventana.setContentPane(new CU01_AP1(ventana, tema));
 				
 				HibernateUtil.shutdown();
 				
@@ -796,9 +803,6 @@ public class CU01_AP1 extends JPanel {
 				
 				seleccionModelo.setEnabled(false);
 				seleccionModelo.removeAllItems();
-
-				//TODO fijarse se poner el seleccionar modelo
-				//cmbModelo.addItem(new Modelo("Seleccionar modelo"));
 				
 				//TODO ordernar
 				//Collections.sort(modelos);
@@ -866,7 +870,7 @@ public class CU01_AP1 extends JPanel {
 		});
 		
 		seleccionKm.addActionListener (a -> {
-			seleccionKm.setForeground(colorLetra);			
+			seleccionKm.setBackground(colorFondoTexto);			
 		});
 	}
 
@@ -875,8 +879,8 @@ public class CU01_AP1 extends JPanel {
 		campoMotor.addKeyListener(new KeyAdapter(){
 			public void keyTyped(KeyEvent e){
 				char caracter = e.getKeyChar();
-				if( ( Character.isLetter(caracter) || Character.isDigit(caracter) ) && campoMotor.getText().length() < 17 ){
-					
+				if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+						&& campoMotor.getText().length() < 17 ){
 				}
 				else{
 					e.consume();  // ignorar el evento de teclado
@@ -888,7 +892,8 @@ public class CU01_AP1 extends JPanel {
 	    campoChasis.addKeyListener(new KeyAdapter(){ 
 	    	public void keyTyped(KeyEvent e){
 				char caracter = e.getKeyChar();
-				if( ( Character.isLetter(caracter) || Character.isDigit(caracter) ) && campoChasis.getText().length() < 8 ){
+				if(( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+						&& campoChasis.getText().length() < 8 ){
 					
 				}
 				else{
@@ -901,7 +906,8 @@ public class CU01_AP1 extends JPanel {
 	    campoPatente.addKeyListener(new KeyAdapter(){
 	    	public void keyTyped(KeyEvent e){
 				char caracter = e.getKeyChar();
-				if( ( Character.isLetter(caracter) || Character.isDigit(caracter) ) && campoPatente.getText().length() < 7 ){
+				if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+						&& campoPatente.getText().length() < 7 ){
 					
 				}
 				else{
@@ -919,7 +925,7 @@ public class CU01_AP1 extends JPanel {
 	        	
 	        	if(mouseActivo) {
 		        	if(estaDeclarandoHijo) {
-		        		componentesParaPoliza(!estaDeclarandoHijo);
+		        		componentesAlDeclararHijos(!estaDeclarandoHijo);
 		        		if(!DeclararHijoAbierto.declararHijoAbierto) {
 		        			estaDeclarandoHijo = false;
 		        			
@@ -940,7 +946,7 @@ public class CU01_AP1 extends JPanel {
 		        		return;
 		        	}
 		        	else {
-		        		componentesParaPoliza(!estaDeclarandoHijo);
+		        		componentesAlDeclararHijos(!estaDeclarandoHijo);
 		        		return;
 		        	}
 	        	}
@@ -951,6 +957,15 @@ public class CU01_AP1 extends JPanel {
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void obteniendoCliente(Cliente cliente){
+		UIManager.put( "ComboBox.disabledBackground", colorFondoTexto );
+		seleccionProvincia.setBackground(colorFondoTexto);
+		seleccionCiudad.setBackground(colorFondoTexto);
+		seleccionMarca.setBackground(colorFondoTexto);
+		seleccionModelo.setBackground(colorFondoTexto);
+		seleccionAnio.setBackground(colorFondoTexto);
+		seleccionKm.setBackground(colorFondoTexto);
+		
+		
 		campoNumeroCliente.setText(cliente.getNumeroCliente().toString());
 		campoTipoDocumento.setText(cliente.getTipoDocumento().toString());
 		campoNumeroDocumento.setText(cliente.getNumeroDocumento().toString());
@@ -1030,7 +1045,6 @@ public class CU01_AP1 extends JPanel {
 		btnConfirmarDatos.setEnabled(true);		
 	}
 
-	@SuppressWarnings("unused")
 	private Boolean condicionesGenerarPoliza() {
 		String patenteLargo = "", patenteFormato6 = "", patenteFormato7 = "";
 		String chasisBlanco = "", chasisLargo = "", chasisFormato = "";
@@ -1217,7 +1231,7 @@ public class CU01_AP1 extends JPanel {
 		}
 		
 		if (seleccionKm.getSelectedIndex() == 0) {
-			seleccionKm.setForeground(colorErroneo);
+			seleccionKm.setBackground(colorErroneo);
 			kmSelecciono = errorNumero+") No se ha seleccionado un valor del campo km realizados por año.\n";
 			valido = false;
 		}
@@ -1231,7 +1245,7 @@ public class CU01_AP1 extends JPanel {
 		return valido;
 	}
 
-	public void componentesParaPoliza(Boolean val) {
+	public void componentesAlDeclararHijos(Boolean val) {
 		seleccionProvincia.setEnabled(val);
 		seleccionCiudad.setEnabled(val);
 		seleccionMarca.setEnabled(val);

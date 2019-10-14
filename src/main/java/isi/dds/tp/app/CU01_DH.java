@@ -271,9 +271,6 @@ public class CU01_DH extends JFrame  {
 				fechaNac = "La fecha de nacimiento que se introdujo dicta una edad que no se encuentra en el rango adecuado (18 a 30 años).\n";
 				huboError = true;
 			}
-			else {
-				
-			}
 			
 			if (seleccionSexo.getSelectedIndex() == 0) {
 				seleccionSexo.setBackground(colorErroneo);

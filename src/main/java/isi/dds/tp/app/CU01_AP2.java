@@ -2,11 +2,15 @@ package isi.dds.tp.app;
 
 import java.awt.*;
 import java.awt.font.TextAttribute;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
+import javax.swing.plaf.ColorUIResource;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,14 +18,15 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 import isi.dds.tp.enums.EnumCondicion;
-import isi.dds.tp.enums.EnumEstadoCuota;
+import isi.dds.tp.enums.*;
+import isi.dds.tp.enums.EnumTipoDocumento;
 import isi.dds.tp.gestor.*;
 import isi.dds.tp.modelo.*;
 
 @SuppressWarnings("serial")
 public class CU01_AP2 extends JPanel  {
 	
-	/* PARA PROBAR
+	
 	 public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -37,20 +42,23 @@ public class CU01_AP2 extends JPanel  {
 	
 	public CU01_AP2() {
 		Cliente cliente1 = new Cliente(null, 123456l, EnumCondicion.NORMAL, "APELLIDO", "NOMBRES", EnumTipoDocumento.DNI, 99999999, 
-				2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM", EnumEstadoCivil.CASADO, "PROFESOR", 2019);
+				2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM", EnumEstadoCivil.CASADO, "PROFESOR", 2019, EnumSiniestros.MAS_DE_DOS);
 
-		Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK, new Color(71,71,71), 
+		Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK,
 				//colorLetra			letra							colorErroneo
 				Color.BLACK, new Font("Open Sans", Font.PLAIN, 13), new Color(255,102,102)};
-		new CU01_AP2(new JFrame(), tema, null);
-	}*/
+		altaPoliza = new CU01_AP1(new JFrame(), tema);
+		altaPoliza.poliza = new Poliza();
+		altaPoliza.poliza.setCliente(cliente1);
+		new CU01_AP2(new JFrame(), tema, altaPoliza, poliza);
+	}
 	
 	private Poliza poliza;
 	private JFrame ventana;
 	public CU01_AP1 altaPoliza;
 	
 	private Object tema[];
-	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetraBloqueado, colorLetra, colorErroneo;
+	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetra, colorErroneo;
 	private Font letra;
 	
 	private JLabel lTipoCobertura = new JLabel("Tipo de cobertura");
@@ -101,23 +109,14 @@ public class CU01_AP2 extends JPanel  {
 	private JRadioButton mensual = new JRadioButton("Mensual");
 	private JRadioButton semestral = new JRadioButton("Semestral");
 	
-	private Date diaActual = new Date();
-	private Calendar diaManana = Calendar.getInstance(); 
-	private Calendar diaMesProximo = Calendar.getInstance(); 
-	private Integer diaDelMes1 = diaManana.get(Calendar.DAY_OF_MONTH);
-	private Integer mesDelAnio1 = diaManana.get(Calendar.MONTH);
-	private Integer anioActual1 = diaManana.get(Calendar.YEAR);
-	private Integer mesDelAnio2 = diaMesProximo.get(Calendar.MONTH);
-	private Integer anioActual2 = diaMesProximo.get(Calendar.YEAR);
-	
 	private JTable tablaPagos = new JTable(6,2);
 	private JScrollPane scrollTablaPagos;
 
-	public CU01_AP2(JFrame ventana, Object[] tema, CU01_AP1 altaPoliza) {
+	public CU01_AP2(JFrame ventana, Object[] tema, CU01_AP1 altaPoliza, Poliza poliza) {
 		this.altaPoliza = altaPoliza;
 		this.ventana = ventana;
 		this.tema = tema;
-		this.poliza = altaPoliza.poliza;
+		this.poliza = poliza;
 
 		inicializarComponentes();
 		inicializarTema();
@@ -314,17 +313,17 @@ public class CU01_AP2 extends JPanel  {
 		colorFondoPantalla = (Color) tema[1];
 		colorFondoTexto = (Color)tema[2];
 		borde = (Color)tema[3];
-		colorLetraBloqueado = (Color) tema[4];
-		colorLetra = (Color) tema[5];
-		letra = (Font) tema[6];
-		colorErroneo = (Color) tema[7];
+		colorLetra = (Color) tema[4];
+		letra = (Font) tema[5];
+		colorErroneo = (Color) tema[6];
 		
 		setBounds(0,0,1024,600);
 		setFont(letra);
+		setForeground(colorLetra);
 		setBackground(colorFondoPantalla);
 		
-		UIManager.put( "ComboBox.disabledBackground", colorFondoPantalla );
-		UIManager.put( "ComboBox.disabledForeground", colorLetraBloqueado);
+		UIManager.put( "ComboBox.disabledBackground", colorFondoTexto );
+		UIManager.put( "ComboBox.disabledForeground", colorLetra );		
 		
 		//subrayado
 		Font font = lTipoCobertura.getFont();
@@ -361,49 +360,50 @@ public class CU01_AP2 extends JPanel  {
 		lDescuento.setFont(letra);
 		lMontoTotal.setFont(letra);
 			
-		campoApellido.setDisabledTextColor(colorLetraBloqueado);
+		
+		campoApellido.setDisabledTextColor(colorLetra);
 		campoApellido.setFont(letra);
-		campoApellido.setBackground(colorFondoTexto);
+		campoApellido.setBackground(colorFondoPantalla);
 		campoApellido.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoNombre.setDisabledTextColor(colorLetraBloqueado);
+		campoNombre.setDisabledTextColor(colorLetra);
 		campoNombre.setFont(letra);
-		campoNombre.setBackground(colorFondoTexto);
+		campoNombre.setBackground(colorFondoPantalla);
 		campoNombre.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoMarca.setDisabledTextColor(colorLetraBloqueado);
+		campoMarca.setDisabledTextColor(colorLetra);
 		campoMarca.setFont(letra);
-		campoMarca.setBackground(colorFondoTexto);
+		campoMarca.setBackground(colorFondoPantalla);
 		campoMarca.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoMotor.setDisabledTextColor(colorLetraBloqueado);
+		campoMotor.setDisabledTextColor(colorLetra);
 		campoMotor.setFont(letra);
-		campoMotor.setBackground(colorFondoTexto);
+		campoMotor.setBackground(colorFondoPantalla);
 		campoMotor.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoModelo.setDisabledTextColor(colorLetraBloqueado);
+		campoModelo.setDisabledTextColor(colorLetra);
 		campoModelo.setFont(letra);
-		campoModelo.setBackground(colorFondoTexto);
+		campoModelo.setBackground(colorFondoPantalla);
 		campoModelo.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoChasis.setDisabledTextColor(colorLetraBloqueado);
+		campoChasis.setDisabledTextColor(colorLetra);
 		campoChasis.setFont(letra);
-		campoChasis.setBackground(colorFondoTexto);
+		campoChasis.setBackground(colorFondoPantalla);
 		campoChasis.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoPatente.setDisabledTextColor(colorLetraBloqueado);
+		campoPatente.setDisabledTextColor(colorLetra);
 		campoPatente.setFont(letra);
-		campoPatente.setBackground(colorFondoTexto);
+		campoPatente.setBackground(colorFondoPantalla);
 		campoPatente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoSumaAsegurada.setDisabledTextColor(colorLetraBloqueado);
+		campoSumaAsegurada.setDisabledTextColor(colorLetra);
 		campoSumaAsegurada.setFont(letra);
-		campoSumaAsegurada.setBackground(colorFondoTexto);
+		campoSumaAsegurada.setBackground(colorFondoPantalla);
 		campoSumaAsegurada.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoPremio.setDisabledTextColor(colorLetraBloqueado);
+		campoPremio.setDisabledTextColor(colorLetra);
 		campoPremio.setFont(letra);
-		campoPremio.setBackground(colorFondoTexto);
+		campoPremio.setBackground(colorFondoPantalla);
 		campoPremio.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoDescuentos.setDisabledTextColor(colorLetraBloqueado);
+		campoDescuentos.setDisabledTextColor(colorLetra);
 		campoDescuentos.setFont(letra);
-		campoDescuentos.setBackground(colorFondoTexto);
+		campoDescuentos.setBackground(colorFondoPantalla);
 		campoDescuentos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoMontoTotal.setDisabledTextColor(colorLetraBloqueado);
+		campoMontoTotal.setDisabledTextColor(colorLetra);
 		campoMontoTotal.setFont(letra);
-		campoMontoTotal.setBackground(colorFondoTexto);
+		campoMontoTotal.setBackground(colorFondoPantalla);
 		campoMontoTotal.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
 		
@@ -416,27 +416,31 @@ public class CU01_AP2 extends JPanel  {
 		
 		seleccionTipoCobertura.setBackground(colorFondoTexto);
 		seleccionTipoCobertura.setFont(letra);
+		seleccionTipoCobertura.setForeground(colorLetra);
 		mensual.setBackground(colorFondoPantalla);
 		mensual.setFont(letra);
 		semestral.setBackground(colorFondoPantalla);
 		semestral.setFont(letra);
 		
-		tablaPagos.setBackground(colorFondoTexto);
+		tablaPagos.setBackground(colorFondoPantalla);
 		tablaPagos.setFont(letra);
 		
 		tablaPagos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		scrollTablaPagos.getViewport().setBackground(colorFondoTexto);
-		//scrollTablaPagos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		scrollTablaPagos.getViewport().setBackground(colorFondoPantalla);
+		scrollTablaPagos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		
 		((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setBackground(colorFondoTexto);
 		((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setFont(letra);
 		((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setBorder(new LineBorder(borde));
-		((JTextFieldDateEditor)dcInicio.getDateEditor()).setBackground(colorFondoTexto);
+		((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setForeground(colorLetra);
+		((JTextFieldDateEditor)dcInicio.getDateEditor()).setBackground(colorFondoPantalla);
 		((JTextFieldDateEditor)dcInicio.getDateEditor()).setFont(letra);
 		((JTextFieldDateEditor)dcInicio.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		((JTextFieldDateEditor)dcFin.getDateEditor()).setBackground(colorFondoTexto);
+		((JTextFieldDateEditor)dcInicio.getDateEditor()).setForeground(colorLetra);
+		((JTextFieldDateEditor)dcFin.getDateEditor()).setBackground(colorFondoPantalla);
 		((JTextFieldDateEditor)dcFin.getDateEditor()).setFont(letra);
 		((JTextFieldDateEditor)dcFin.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		((JTextFieldDateEditor)dcFin.getDateEditor()).setForeground(colorLetra);
 	}
 
 	private void inicializarComponentes() {
@@ -446,20 +450,25 @@ public class CU01_AP2 extends JPanel  {
 		while(iteradorTipoCoberturas.hasNext()){
 			seleccionTipoCobertura.addItem(iteradorTipoCoberturas.next());
 		}
-
 		
 		rbFormaPago.add(mensual);
 		rbFormaPago.add(semestral);
-				
-		diaManana.setTime(diaActual); 
-		diaMesProximo.setTime(diaManana.getTime()); 
-		diaManana.add(Calendar.DATE, 1);
-		diaMesProximo.add(Calendar.MONTH, 1);
-		dcInicioVigencia.setDate(diaManana.getTime());
 		
-		dcInicioVigencia.setPreferredSize(new Dimension(100, 20));
-		dcInicio.setPreferredSize(new Dimension(100, 20));
-		dcFin.setPreferredSize(new Dimension(100, 20));
+		try {
+			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
+		      Calendar calendar = Calendar.getInstance();
+		      calendar.setTime(fechaParseada); 
+		      calendar.add(Calendar.DAY_OF_YEAR, 1);  
+		      calendar.getTime(); 
+			dcInicioVigencia.setDate(calendar.getTime());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		dcInicioVigencia.setPreferredSize(new Dimension(105, 20));
+		dcInicio.setPreferredSize(new Dimension(105, 20));
+		dcFin.setPreferredSize(new Dimension(105, 20));
 		
 		btnConfirmarDatos.setPreferredSize(new Dimension(160, 25));
 		btnGenerarPoliza.setPreferredSize(new Dimension(160, 25));
@@ -510,53 +519,17 @@ public class CU01_AP2 extends JPanel  {
 		
 		btnConfirmarDatos.addActionListener(a -> {
 			
-			condicionesConfirmarDatos();
-			
-			//verifico datos
-			if (seleccionTipoCobertura.getSelectedIndex() == 0) {
-				seleccionTipoCobertura.setForeground(colorErroneo);
-				JOptionPane.showConfirmDialog(ventana, "Seleccione un tipo de cobertura.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-				return;
-			}		
-			
-			int anioInicioVigencia = dcInicioVigencia.getCalendar().get(Calendar.YEAR);
-			int mesInicioVigencia = dcInicioVigencia.getCalendar().get(Calendar.MONTH);
-			int diaInicioVigencia = dcInicioVigencia.getCalendar().get(Calendar.DAY_OF_MONTH);
-			
-			if ((anioInicioVigencia < anioActual1) || (anioInicioVigencia == anioActual1 && mesInicioVigencia < mesDelAnio1) || (anioInicioVigencia == anioActual1 && mesInicioVigencia == mesDelAnio1 && diaInicioVigencia < diaDelMes1)) {
-				((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setForeground(colorErroneo);
-				JOptionPane.showConfirmDialog(ventana, "La fecha de inicio de vigencia debe estar dentro del mes próximo respecto a la fecha actual.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+			if(!condicionesConfirmarDatos()) {
 				return;
 			}
 			
-			if ((anioInicioVigencia > anioActual2) || (anioInicioVigencia == anioActual2 && mesInicioVigencia > mesDelAnio2) || (anioInicioVigencia == anioActual2 && mesInicioVigencia == mesDelAnio2 && diaInicioVigencia > diaDelMes1)) {
-				((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setForeground(colorErroneo);
-				JOptionPane.showConfirmDialog(ventana, "La fecha de inicio de vigencia debe estar dentro del mes próximo respecto a la fecha actual.", "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-			if (semestral.isSelected()) {
-				lDescSemestral.setVisible(true);
-			}
-			
-			//deshabilito parte superior
-			btnConfirmarDatos.setEnabled(false);
-			dcInicioVigencia.setEnabled(false);
-			seleccionTipoCobertura.setEnabled(false);
-			mensual.setEnabled(false);
-			semestral.setEnabled(false);
-			
-			//cargo datos parte inferior
-			btnGenerarPoliza.setEnabled(true);
 			campoApellido.setText(poliza.getCliente().getApellido());
 			campoNombre.setText(poliza.getCliente().getNombre());
 			campoModelo.setText(poliza.getAnioModelo().getModelo().getNombre());
 			campoMarca.setText(poliza.getAnioModelo().getModelo().getMarca().getNombre());
 			campoMotor.setText(poliza.getMotor());
 			campoChasis.setText(poliza.getChasis());
-
-			if (poliza.getCliente().getPolizas().size() > 1)
-				lDescUnidad.setVisible(true);
-			
+			//deshabilito parte superior		
 			/*
 			//calculo premio, prima derechoEmision y descuento
 			GestorParametroPoliza gpp = GestorParametroPoliza.getGestorParametroPoliza();
@@ -578,6 +551,7 @@ public class CU01_AP2 extends JPanel  {
 			tfPremio.setText(Float.toString(premio));
 			tfDescuentos.setText(Float.toString(descuento));*/
 
+			
 			//seteo datos tabla
 			dcInicio.setDate(dcInicioVigencia.getDate());
 			Calendar fechaFinVigencia = Calendar.getInstance();
@@ -652,8 +626,6 @@ public class CU01_AP2 extends JPanel  {
 
 		btnVolver.addActionListener(a -> {
 			if(JOptionPane.showConfirmDialog(ventana, "¿Desea corregir algún dato ingresado?","Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
-				//VOLVER A VENTANA ANTERIOR
-				//new CU01_AP1(ventana, tema, poliza, cliente); //CAMBIAR POR VENTANA ANTERIOR
 				ventana.setContentPane(altaPoliza);
 				this.setVisible(false);
 			}
@@ -661,14 +633,97 @@ public class CU01_AP2 extends JPanel  {
 		
 		//listener para sacar color rojo cuando lo selecciona
 		seleccionTipoCobertura.addActionListener (a -> {
-			seleccionTipoCobertura.setForeground(colorLetra);
+			seleccionTipoCobertura.setBackground(colorFondoTexto);
 		});
 	}
-	
-	
-	public void condicionesConfirmarDatos(){
+		
+	public Boolean condicionesConfirmarDatos(){
+		
+		String errorTipoCobertura = "";
+		String errorFechaVigencia = "";
+		Boolean valido = true;
+		
+		//verifico datos
+		if (seleccionTipoCobertura.getSelectedIndex() == 0) {
+			seleccionTipoCobertura.setBackground(colorErroneo);
+			errorTipoCobertura = "Seleccione un tipo de cobertura.\n";
+			valido = false;
+		}		
+		
+		
+		SimpleDateFormat formato = new SimpleDateFormat("dd MMM yyyy");
+		
+		Date fechaInicioVigenciaDate = null;
 
+		try {
+			fechaInicioVigenciaDate = formato.parse(formato.format(dcInicioVigencia.getDate()));
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
+		LocalDate fechaInicioVigenciaLocalDate = fechaInicioVigenciaDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		int anioActual = LocalDate.now().getYear();
+		int mesActual = LocalDate.now().getMonthValue();
+		int diaActual = LocalDate.now().getDayOfMonth();
+		
+		int anioInicioVigencia = fechaInicioVigenciaLocalDate.getYear();
+		int mesInicioVigencia = fechaInicioVigenciaLocalDate.getMonthValue();
+		int diaInicioVigencia = fechaInicioVigenciaLocalDate.getDayOfMonth();
+		
+		if (!((anioActual == anioInicioVigencia && mesActual == mesInicioVigencia && diaActual < diaInicioVigencia)
+			|| (anioActual == anioInicioVigencia && mesActual == mesInicioVigencia-1 && diaActual > diaInicioVigencia)
+			|| (anioActual == anioInicioVigencia-1 && mesActual == 12 && mesInicioVigencia == 1 && diaActual >= diaInicioVigencia)
+			)){
+			errorFechaVigencia = "La fecha de inicio de vigencia debe estar dentro del mes próximo respecto a la fecha actual.\n";
+			((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setBackground(colorErroneo);
+			valido = false;
+		}
+		else {
+			((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setBackground(colorFondoTexto);
+		}
+		
+		if(!valido) {
+			JOptionPane.showConfirmDialog(this, errorTipoCobertura + errorFechaVigencia , "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+		}
+		else {			
+			btnConfirmarDatos.setEnabled(false);
+			seleccionTipoCobertura.setEnabled(false);
+			dcInicioVigencia.setEnabled(false);
+			mensual.setEnabled(false);
+			semestral.setEnabled(false);
+			btnGenerarPoliza.setEnabled(true);
+			if (semestral.isSelected()) {
+				lDescSemestral.setVisible(true);
+			}
+			if (poliza.getCliente().getPolizas().size() > 1) {
+				lDescUnidad.setVisible(true);
+			}
+			
+			UIManager.put( "ComboBox.disabledBackground", colorFondoPantalla );
+			seleccionTipoCobertura.setBackground(colorFondoPantalla);
+			campoApellido.setBackground(colorFondoTexto);
+			campoNombre.setBackground(colorFondoTexto);
+			campoMarca.setBackground(colorFondoTexto);
+			campoMotor.setBackground(colorFondoTexto);
+			campoModelo.setBackground(colorFondoTexto);
+			campoChasis.setBackground(colorFondoTexto);
+			campoPatente.setBackground(colorFondoTexto);
+			campoSumaAsegurada.setBackground(colorFondoTexto);
+			campoPremio.setBackground(colorFondoTexto);
+			campoDescuentos.setBackground(colorFondoTexto);
+			campoMontoTotal.setBackground(colorFondoTexto);
+			tablaPagos.setBackground(colorFondoTexto);
+			scrollTablaPagos.getViewport().setBackground(colorFondoTexto);
+
+			((JTextFieldDateEditor)dcInicio.getDateEditor()).setBackground(colorFondoTexto);
+			((JTextFieldDateEditor)dcFin.getDateEditor()).setBackground(colorFondoTexto);
+			((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+			((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setDisabledTextColor(colorLetra);;
+			((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setBackground(colorFondoPantalla);	
+		}
+		return valido;
 	}
 	
 }
