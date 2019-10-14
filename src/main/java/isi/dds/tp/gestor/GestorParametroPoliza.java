@@ -1,7 +1,9 @@
 package isi.dds.tp.gestor;
 
 import isi.dds.tp.dao.BitacoraDAO;
+import isi.dds.tp.dao.ParametrosPolizaDAO;
 import isi.dds.tp.modelo.BitacoraSolicitudPoliza;
+import isi.dds.tp.modelo.ParametrosPoliza;
 import isi.dds.tp.modelo.BitacoraParametrosPoliza;
 
 public class GestorParametroPoliza {
@@ -43,4 +45,7 @@ public class GestorParametroPoliza {
     	return null;
     }
 	
+    public void addParametrosPoliza(ParametrosPoliza p) {
+    	ParametrosPolizaDAO.getDAO().addParametrosPoliza(p);
+    }
 }

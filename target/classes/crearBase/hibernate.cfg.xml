@@ -23,7 +23,7 @@
         <mapping class="isi.dds.tp.modelo.Modelo"/>
         <mapping class="isi.dds.tp.modelo.Pago"/>
         <mapping class="isi.dds.tp.modelo.Pais"/>
-        <mapping class="isi.dds.tp.modelo.ParametroPoliza"/>
+        <mapping class="isi.dds.tp.modelo.ParametrosPoliza"/>
         <mapping class="isi.dds.tp.modelo.Poliza"/>
         <mapping class="isi.dds.tp.modelo.Provincia"/>
         <mapping class="isi.dds.tp.modelo.RiesgoCiudad"/>

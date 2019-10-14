@@ -5,7 +5,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "parametros_poliza")
-public class ParametroPoliza {
+public class ParametrosPoliza {
 	
 	//optional permita que la relacion pueda ser nual, que seria el caso cuando se crea por primera vez una ciudad
 	@ManyToOne (optional = true, fetch = FetchType.LAZY)
@@ -60,11 +60,11 @@ public class ParametroPoliza {
 	@Column(nullable = false, name = "valor_derecho_emision")
 	private Float valorDerechoEmision;
 	
-	public ParametroPoliza (){
+	public ParametrosPoliza (){
 		
 	}
 	
-	public ParametroPoliza(Integer codigoParametroPoliza, Float porcentajeTuercasAntirobo, 
+	public ParametrosPoliza(Integer codigoParametroPoliza, Float porcentajeTuercasAntirobo, 
 			Float porcentajeGuardaEnGarage, Float porcentajeAlarma, Float porcentajeRastreoVehicular,
 			Float porcentajeAjusteKm, Float porcentajeNingunSiniestro, Float porcentajeUnSiniestro,
 			Float porcentajeDosSiniestro, Float porcentajeMayorADosSiniestro, Float porcentajePorHijoRegistrado,

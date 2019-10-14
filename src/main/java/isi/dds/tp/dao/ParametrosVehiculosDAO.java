@@ -106,7 +106,7 @@ public class ParametrosVehiculosDAO {
                   
         try {
             session.beginTransaction();
-            marcas = session.createQuery("SELECT m FROM Marca m").list();
+            marcas = session.createQuery("SELECT m FROM Marca m order by nombre").list();
             
         }
         catch (HibernateException e) {
@@ -144,7 +144,7 @@ public class ParametrosVehiculosDAO {
                   
         try {
             session.beginTransaction();
-            aniosModelo = session.createQuery("SELECT a FROM AnioModelo a where id_modelo="+id_modelo).list();
+            aniosModelo = session.createQuery("SELECT a FROM AnioModelo a where id_modelo="+id_modelo+" order by anio").list();
             
         }
         catch (HibernateException e) {
@@ -182,7 +182,7 @@ public class ParametrosVehiculosDAO {
         try {
             session.beginTransaction();
             //TODO HACER SUBCONSULTA PARA OBTENER EL ULTIMO RIESGO
-            riesgo = (RiesgoModelo) session.createQuery("SELECT p FROM RiesgoModelo p where id_modelo="+id_modelo).uniqueResult();
+            riesgo = (RiesgoModelo) session.createQuery("SELECT p FROM RiesgoModelo p where id_modelo="+id_modelo+" and ultimo=true").uniqueResult();
             
         }
         catch (HibernateException e) {

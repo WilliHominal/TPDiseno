@@ -2,17 +2,8 @@ package isi.dds.tp.hibernate;
 
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Iterator;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Query;
 import javax.swing.JOptionPane;
 import javax.transaction.Transactional;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
@@ -198,7 +189,8 @@ public class HibernateUtil {
 		TipoCobertura cobertura4 = new TipoCobertura(EnumTipoCobertura.TODO_RIESGO_CON_FRANQUICIA, "Todo riesgo con franquiia", "Descripcion cinco", 0.48f);
 		
 		Cliente cliente1 = new Cliente(ciudad1, 123456l, EnumCondicion.NORMAL, "APELLIDO", "NOMBRES", EnumTipoDocumento.DNI, 99999999, 
-				2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM", EnumEstadoCivil.CASADO, "PROFESOR", 2019);
+				2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM",
+				EnumEstadoCivil.CASADO, "PROFESOR", 2019, EnumSiniestros.MAS_DE_DOS);
 
 		//PARA RECREAR LA BASE, BORRA Y LA RECARGA DE NUEVO
 		HibernateUtil.getSessionFactoryBis();

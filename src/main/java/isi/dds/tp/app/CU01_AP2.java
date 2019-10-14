@@ -3,7 +3,6 @@ package isi.dds.tp.app;
 import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
@@ -14,8 +13,8 @@ import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
-import isi.dds.tp.app.CU01_DH.DeclararHijoAbierto;
-import isi.dds.tp.enums.*;
+import isi.dds.tp.enums.EnumCondicion;
+import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.gestor.*;
 import isi.dds.tp.modelo.*;
 
@@ -309,7 +308,6 @@ public class CU01_AP2 extends JPanel  {
 		add(btnVolver, constraints);
 	}
 	
-	
 	private void inicializarTema() {
 
 		colorBoton = (Color) tema[0];
@@ -440,7 +438,6 @@ public class CU01_AP2 extends JPanel  {
 		((JTextFieldDateEditor)dcFin.getDateEditor()).setFont(letra);
 		((JTextFieldDateEditor)dcFin.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 	}
-	
 
 	private void inicializarComponentes() {
 
@@ -508,7 +505,6 @@ public class CU01_AP2 extends JPanel  {
 		DefaultCellEditor editor = (DefaultCellEditor) tablaPagos.getDefaultEditor(Object.class);
 		editor.setClickCountToStart(10000);
 	}
-	
 	
 	private void comportamiento() {
 		

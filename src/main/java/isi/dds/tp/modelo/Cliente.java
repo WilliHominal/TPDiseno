@@ -87,6 +87,10 @@ public class Cliente {
 	@Column(name = "anio_registro")
 	private Integer anioRegistro;
 	
+	@Column(nullable = false, name = "numeros_siniestros_ultimo_anios")
+	@Enumerated(EnumType.STRING)
+	private EnumSiniestros numerosSiniestrosUltimoAnios;
+	
 	public Cliente() {
 
 	}
@@ -95,7 +99,7 @@ public class Cliente {
 			String nombre, EnumTipoDocumento tipoDocumento, Integer numeroDocumento, Long numeroCuil, EnumSexo sexo,
 			LocalDate fechaNacimiento, String calle, Integer numeroCalle, Integer piso, String departamento,
 			Integer codigoPostal, EnumCondicionIVA condicionIva, String correoElectronico, EnumEstadoCivil estadoCivil,
-			String profesion, Integer anioRegistro) {
+			String profesion, Integer anioRegistro, EnumSiniestros siniestros) {
 		this.ciudad = ciudad;
 		this.polizas = new ArrayList<Poliza>();
 		
@@ -118,6 +122,7 @@ public class Cliente {
 		this.estadoCivil = estadoCivil;
 		this.profesion = profesion;
 		this.anioRegistro = anioRegistro;
+		this.numerosSiniestrosUltimoAnios = siniestros;
 	}
 	
 	public Ciudad getCiudad() {
@@ -246,4 +251,11 @@ public class Cliente {
 	public void setAnioRegistro(Integer anioRegistro) {
 		this.anioRegistro = anioRegistro;
 	} 
+	public EnumSiniestros getNumerosSiniestrosUltimoAnios() {
+		return numerosSiniestrosUltimoAnios;
+	}
+
+	public void setNumerosSiniestrosUltimoAnios(EnumSiniestros numeroSiniestros) {
+		this.numerosSiniestrosUltimoAnios = numeroSiniestros;
+	}
 }

@@ -33,7 +33,7 @@ public class BitacoraParametrosPoliza {
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name ="codigo_bitacora")
 	@IndexColumn(name ="idx")
-	private List<ParametroPoliza> parametrosPoliza;
+	private List<ParametrosPoliza> parametrosPoliza;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codigo_bitacora_parametro")
@@ -69,7 +69,7 @@ public class BitacoraParametrosPoliza {
 	public List<RiesgoCiudad> getRiesgosCiudad() {
 		return riesgosCiudad;
 	}
-	public List<ParametroPoliza> getParametrosPoliza() {
+	public List<ParametrosPoliza> getParametrosPoliza() {
 		return parametrosPoliza;
 	}
 	public Integer getCodigoBitacora() {
@@ -90,7 +90,7 @@ public class BitacoraParametrosPoliza {
 	public void setRiesgosCiudad(List<RiesgoCiudad> riesgosCiudad) {
 		this.riesgosCiudad = riesgosCiudad;
 	}
-	public void setParametrosPoliza(List<ParametroPoliza> parametrosPoliza) {
+	public void setParametrosPoliza(List<ParametrosPoliza> parametrosPoliza) {
 		this.parametrosPoliza = parametrosPoliza;
 	}
 	public void setCodigoBitacora(Integer codigoBitacora) {

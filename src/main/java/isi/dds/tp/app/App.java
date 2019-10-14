@@ -36,7 +36,7 @@ public class App {
 	public App() {		
 		Boolean conectoBase = conectarBaseDatos();//TODO agregar condicion si da falso
 		if(!conectoBase) {
-			//HibernateUtil.cargarBase();
+			HibernateUtil.cargarBase();
 			inicializar();
 		}	
 	}

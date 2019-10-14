@@ -44,7 +44,7 @@ public class Poliza {
 	
 	@JoinColumn(name = "parametros_poliza")
     @OneToOne
-	private ParametroPoliza parametroPoliza;
+	private ParametrosPoliza parametroPoliza;
     
 	@JoinColumn(name = "solicitud_poliza")
     @OneToOne(cascade=CascadeType.ALL)
@@ -153,7 +153,7 @@ public class Poliza {
 		this.tipoCobertura = new TipoCobertura();
 		this.anioModelo = new AnioModelo();
 		this.ciudad = new Ciudad();
-		this.parametroPoliza = new ParametroPoliza();
+		this.parametroPoliza = new ParametrosPoliza();
 		this.solicitudPoliza = new SolicitudPoliza();
 		this.numeroPoliza = l;
 		this.sumaAsegurada = 45f;
@@ -185,7 +185,7 @@ public class Poliza {
 		this.porcentajeValorAsegurado = 45f;
 	}
 
-	public Poliza(Cliente cliente, TipoCobertura tc, AnioModelo am, Ciudad ciudad, ParametroPoliza p, SolicitudPoliza sp,
+	public Poliza(Cliente cliente, TipoCobertura tc, AnioModelo am, Ciudad ciudad, ParametrosPoliza p, SolicitudPoliza sp,
 			Long numeroPoliza, Float sumaAsegurada, EnumEstadoPoliza estado, String motor, String chasis,
 			String patente, String kmRealizadosPorAnio, Boolean guardaGarage, Boolean tieneAlarma,
 			Boolean tieneRastreoVehicular, Boolean tt, EnumSiniestros ns) {
@@ -237,7 +237,7 @@ public class Poliza {
 	public Ciudad getCiudad() {
 		return ciudad;
 	}
-	public ParametroPoliza getParametroPoliza() {
+	public ParametrosPoliza getParametroPoliza() {
 		return parametroPoliza;
 	}
 	public Long getNumeroPoliza() {
@@ -339,7 +339,7 @@ public class Poliza {
 	public void setCiudad(Ciudad ciudad) {
 		this.ciudad = ciudad;
 	}
-	public void setParametroPoliza(ParametroPoliza parametroPoliza) {
+	public void setParametroPoliza(ParametrosPoliza parametroPoliza) {
 		this.parametroPoliza = parametroPoliza;
 	}
 	public void setNumeroPoliza(Long numeroPoliza) {

@@ -5,17 +5,18 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.swing.*;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 import isi.dds.tp.app.CU01_DH.DeclararHijoAbierto;
+import isi.dds.tp.enums.GestorEnum;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
@@ -36,9 +37,6 @@ public class CU01_AP1 extends JPanel {
 	
 	private Boolean estaDeclarandoHijo = false;
 	private Boolean mouseActivo = false;
-	
-	private HijoDeclarado hijo = null;
-	
 	
 	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
@@ -106,19 +104,21 @@ public class CU01_AP1 extends JPanel {
 	private JRadioButton rbtnTuercasNo = new JRadioButton("NO");
 	
 	private JTable tablaHijos = new JTable(6, 4);
-	private JScrollPane tablaHijosScroll = new JScrollPane(tablaHijos,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+	private JScrollPane tablaHijosScroll = new JScrollPane(tablaHijos);
 	private Object[][] datosTabla = {{""},{""},{""},{""}};
+	private DefaultTableModel model;
 
-	
 	public CU01_AP1(JFrame ventana, Object[] tema) {
 		this.ventana = ventana;
 		this.tema = tema;
-			
+		
+		poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
+		
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
 		
-		comportamientoMouse();
+		compMouseParaDeclaracionHijos();
 		comportamientoBotones();
 		comportamientoComboBox();		
 		comportamientoCampos();
@@ -353,10 +353,10 @@ public class CU01_AP1 extends JPanel {
 		constraints.insets.set(3, 5, 2, 5);
 		add(tablaHijosScroll, constraints);
 		
-		constraints.insets.set(0, 425, 40, 5);
+		constraints.insets.set(0, 375, 40, 5);
 		add(btnAgregarHijo, constraints);
 		
-		constraints.insets.set(40, 425, 2, 5);
+		constraints.insets.set(40, 375, 2, 5);
 		add(btnQuitarHijo, constraints);
 		
 		
@@ -597,7 +597,7 @@ public class CU01_AP1 extends JPanel {
 		
 
 		//definir tabla
-		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 6) {
+		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 15) {
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
 		       //all cells false
@@ -618,16 +618,18 @@ public class CU01_AP1 extends JPanel {
 		tablaHijos.getColumnModel().getColumn(3).setCellRenderer(centrado);
 		
 		tablaHijos.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tablaHijos.getColumnModel().getColumn(1).setPreferredWidth(155);
-		tablaHijos.getColumnModel().getColumn(2).setPreferredWidth(150);
-		tablaHijos.getColumnModel().getColumn(3).setPreferredWidth(200);
+		tablaHijos.getColumnModel().getColumn(1).setPreferredWidth(130);
+		tablaHijos.getColumnModel().getColumn(2).setPreferredWidth(85);
+		tablaHijos.getColumnModel().getColumn(3).setPreferredWidth(85);
 		
 		tablaHijos.getColumnModel().getColumn(0).setHeaderValue("Hijo");
 		tablaHijos.getColumnModel().getColumn(1).setHeaderValue("Fecha nacimiento");
 		tablaHijos.getColumnModel().getColumn(2).setHeaderValue("Sexo");
 		tablaHijos.getColumnModel().getColumn(3).setHeaderValue("Estado civil");
 		
-		tablaHijosScroll.setPreferredSize(new Dimension(400, 100));
+		tablaHijosScroll.setPreferredSize(new Dimension(350, 100));
+		
+		model = (DefaultTableModel) tablaHijos.getModel();
 		
 	}
 	
@@ -661,11 +663,13 @@ public class CU01_AP1 extends JPanel {
 		
 		btnAgregarHijo.addActionListener(a -> {
 			try {				
+				mouseActivo = true;
 				
 				componentesParaPoliza(false);
-				mouseActivo = true;
 				estaDeclarandoHijo = true;
+				
 				new CU01_DH(tema);
+				
 				
 	
 			}catch(Exception ex) {
@@ -675,7 +679,28 @@ public class CU01_AP1 extends JPanel {
 		
 		btnQuitarHijo.addActionListener(a -> {
 			try {			
-			
+				if(poliza.getHijosDeclarado().size() > 0) {
+					int hijoSeleccionado = tablaHijos.getSelectedRow();
+					poliza.getHijosDeclarado().remove(hijoSeleccionado);
+					
+					if(poliza.getHijosDeclarado().size() == 0) {
+						btnQuitarHijo.setEnabled(false);
+					}
+					else{
+	
+						int tamanioTablaActual = poliza.getHijosDeclarado().size();
+						
+						model.setValueAt(null, tamanioTablaActual, 0);
+						model.setValueAt(null, tamanioTablaActual, 1);
+						model.setValueAt(null, tamanioTablaActual, 2);
+						model.setValueAt(null, tamanioTablaActual, 3);
+
+						for(int fila = 0; fila < tamanioTablaActual; fila++) {
+							cargarTabla(poliza.getHijosDeclarado().get(fila), fila);
+						}
+					}
+					return;
+				}
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -684,6 +709,7 @@ public class CU01_AP1 extends JPanel {
 		 
 		btnConfirmarDatos.addActionListener(a -> {
 			try {		
+				
 				if(!condicionesGenerarPoliza()) {
 					return;
 				}
@@ -725,8 +751,8 @@ public class CU01_AP1 extends JPanel {
 						poliza.setTieneTuercasAntirobo(false);
 					}
 					
-					//this.setVisible(false);
-					//ventana.remove(this);
+					poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().getEnumSiniestros(campoNumerosSiniestros.getText()));
+
 					ventana.setContentPane(new CU01_AP2(ventana, tema, this));
 				}
 				
@@ -748,7 +774,7 @@ public class CU01_AP1 extends JPanel {
 			}
 		});
 	}
-	
+
 	public void comportamientoComboBox() {
 		seleccionProvincia.addActionListener (a -> {
 			Provincia provincia = seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex());
@@ -887,9 +913,10 @@ public class CU01_AP1 extends JPanel {
 
 	}
 	
-	public void comportamientoMouse() {
+	public void compMouseParaDeclaracionHijos() {
         addMouseListener(new MouseAdapter() {
 	        public void mouseEntered(MouseEvent event) {
+	        	
 	        	if(mouseActivo) {
 		        	if(estaDeclarandoHijo) {
 		        		componentesParaPoliza(!estaDeclarandoHijo);
@@ -897,10 +924,16 @@ public class CU01_AP1 extends JPanel {
 		        			estaDeclarandoHijo = false;
 		        			
 		        			if(DeclararHijoAbierto.hijoDeclarado) {
-			        			hijo = DeclararHijoAbierto.hijo;
+		        				HijoDeclarado hijo = DeclararHijoAbierto.hijo;
 			        			hijo.setPoliza(poliza);
 			        			poliza.getHijosDeclarado().add(hijo);
+			        			
+			        			cargarTabla(hijo, poliza.getHijosDeclarado().size()-1);
+			        			
+			        			btnQuitarHijo.setEnabled(true);
+			        			
 			        			DeclararHijoAbierto.hijo = null;
+			        			return;
 		        			}
 		        			
 		        		}
@@ -913,13 +946,11 @@ public class CU01_AP1 extends JPanel {
 	        	}
 	        }
         });
+
 	}
-	
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void obteniendoCliente(Cliente cliente){
-		
-		//cambiar
-		//SETEAR CAMPOS CLIENTES
 		campoNumeroCliente.setText(cliente.getNumeroCliente().toString());
 		campoTipoDocumento.setText(cliente.getTipoDocumento().toString());
 		campoNumeroDocumento.setText(cliente.getNumeroDocumento().toString());
@@ -928,8 +959,6 @@ public class CU01_AP1 extends JPanel {
 		campoCalle.setText(cliente.getCalle());
 		campoNumeroDomicilio.setText(cliente.getNumeroCalle().toString());
 		campoDepartamento.setText(cliente.getDepartamento());
-		
-		campoNumerosSiniestros.setText("CONSULTAR siniestros");
 		
 		campoMotor.setEnabled(true);
 		campoChasis.setEnabled(true);
@@ -961,14 +990,12 @@ public class CU01_AP1 extends JPanel {
 		campoMotor.setBackground(colorFondoTexto);
 		campoChasis.setBackground(colorFondoTexto);
 		campoPatente.setBackground(colorFondoTexto);
-		//tsumaAsegurada.setBackground(colorFondoTexto);
 		
 		campoMotor.setBorder(new LineBorder(borde));
 		campoChasis.setBorder(new LineBorder(borde));
 		campoPatente.setBorder(new LineBorder(borde));
 		tablaHijos.setBorder(new LineBorder(borde));
 
-		
 		//TODO determinar que provincias elegir primero
 		ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.get().getProvincias(100);
 		Iterator<Provincia> iteradorProvincias = provincias.iterator();
@@ -988,6 +1015,7 @@ public class CU01_AP1 extends JPanel {
 			seleccionMarca.addItem(marcasIterator.next());
 		}
 		
+		campoNumerosSiniestros.setText(GestorEnum.get().getStringSiniestros(cliente.getNumerosSiniestrosUltimoAnios()));
 		
 		seleccionKm.setModel(new DefaultComboBoxModel(new String[] {"Selecionar kilometraje",
 				"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
@@ -999,11 +1027,7 @@ public class CU01_AP1 extends JPanel {
 				"Mayor a 300.000 km"
 		}));
 		
-
-		//TODO QUTIARRRRR
-		btnConfirmarDatos.setEnabled(true);
-			
-		
+		btnConfirmarDatos.setEnabled(true);		
 	}
 
 	@SuppressWarnings("unused")
@@ -1018,7 +1042,7 @@ public class CU01_AP1 extends JPanel {
 		int errorNumero = 1;
 	
 		if (seleccionMarca.getSelectedIndex() == 0) {
-			seleccionMarca.setForeground(colorErroneo);
+			seleccionMarca.setBackground(colorErroneo);
 			marcaSelecciono = errorNumero+") No se ha seleccionado un valor del campo marca.\n";
 			errorNumero++;
 			valido = false;
@@ -1251,6 +1275,28 @@ public class CU01_AP1 extends JPanel {
 		btnAgregarHijo.setEnabled(val);
 		
 		mouseActivo = !val;
+	}
+
+	private void cargarTabla(HijoDeclarado hijoDeclarado, int fila) {
+		model.setValueAt(fila+1, fila, 0);
+		
+		LocalDate date = hijoDeclarado.getFechaNacimiento();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
+		String formattedString = date.format(formatter);
+		
+		model.setValueAt(formattedString, fila, 1);
+		
+		String sexo = GestorEnum.get().getStringSexo(hijoDeclarado.getSexo());
+		
+		model.setValueAt(sexo, fila, 2);
+		
+		if(sexo.equals("Femenino")) {
+			model.setValueAt(GestorEnum.get().getStringEstadoCivilFem(hijoDeclarado.getEstadoCivil()), fila, 3);
+		}
+		else {
+			model.setValueAt(GestorEnum.get().getStringEstadoCivilMasc(hijoDeclarado.getEstadoCivil()), fila, 3);
+		}
+		
 	}
 }
 
