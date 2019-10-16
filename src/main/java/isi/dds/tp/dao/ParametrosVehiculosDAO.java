@@ -6,7 +6,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import isi.dds.tp.modelo.RiesgoModelo;
-import isi.dds.tp.conectar.HibernateUtil;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.modelo.Modelo;
@@ -31,7 +31,7 @@ public class ParametrosVehiculosDAO {
     
     public void addRiesgoModelo(RiesgoModelo r) {
     	       
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -46,7 +46,7 @@ public class ParametrosVehiculosDAO {
     
     public void addModelo(Modelo m) {
 
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -61,7 +61,7 @@ public class ParametrosVehiculosDAO {
     
     public void addMarca(Marca m){
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
     	
         try {
             session.beginTransaction();
@@ -76,7 +76,7 @@ public class ParametrosVehiculosDAO {
     
     public void addAnioModelo(AnioModelo a) {
 
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -99,7 +99,7 @@ public class ParametrosVehiculosDAO {
     	
     	List<Marca> marcas = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -118,7 +118,7 @@ public class ParametrosVehiculosDAO {
     	
     	List<Modelo> modelos = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -137,7 +137,7 @@ public class ParametrosVehiculosDAO {
 		
     	List<AnioModelo> aniosModelo = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -157,7 +157,7 @@ public class ParametrosVehiculosDAO {
 		
     	List<RiesgoModelo> riesgosModelo = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -174,7 +174,7 @@ public class ParametrosVehiculosDAO {
     public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
     	RiesgoModelo riesgo = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
@@ -192,7 +192,7 @@ public class ParametrosVehiculosDAO {
     public Marca getMarca(Integer id_marca) {
     	Marca marca = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();

@@ -20,8 +20,9 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
 import javax.swing.border.LineBorder;
-import isi.dds.tp.conectar.CargarBase;
-import isi.dds.tp.conectar.HibernateUtil;
+
+import isi.dds.tp.hibernate.CargarBase;
+import isi.dds.tp.hibernate.HibernateUtil;
 
 @SuppressWarnings("serial")
 public class AppMenu extends JPanel {
@@ -47,7 +48,7 @@ public class AppMenu extends JPanel {
 	private Color colorFondoTexto = new Color(204, 204, 153); 
 	private Color borde = Color.BLACK;
 	private Color colorLetra = Color.BLACK;
-	private Font letra = new Font(Font.SANS_SERIF, Font.PLAIN, 13);
+	private Font letra = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 	private Color colorErroneo = new Color(255,102,102);
 	
 	private Object[] tema = {colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetra, letra, colorErroneo};
@@ -141,14 +142,14 @@ public class AppMenu extends JPanel {
 					+ "cuyo nombre sea \"grupo5a\".\n"
 					+ "En  caso  de  tener  un user/password\n"
 					+ "distintos  y  no  poder  cambiarlos se \n"
-					+ "deben modificar los archivos \"hibernate.\n"
-					+ "cfg.xml\", ubicados en los paths /src/\n"
-					+ "main/resources y /src/main/resources/\n"
-					+ "crearBase, y sobreescribir los  campos\n"
+					+ "deben modificar los archivos \"hibernate\n"
+					+ "Validate.cfg.xml\" y \"hibernateCreate.\n"
+					+ "cfg.xml\",ubicados en los paths \"/src/main/\n"
+					+ "resources\" y sobreescribir los  campos\n"
 					+ "\"hibernate.connection.password\"  y\n"
 					+ "\"hibernate.connection.username\"  con\n"
-					+ "el user/contraseña que se posean\n"
-					+ "configurads.");
+					+ "el user/password que se posean\n"
+					+ "configurados.");
 			configurarBaseDatos.setEditable(false);
 		}
 		
@@ -361,6 +362,7 @@ public class AppMenu extends JPanel {
 		checkCargarBase.setBackground(colorFondoPantalla);
 		checkCargarBase.setFont(letra);
 		checkCargarBase.setForeground(colorLetra);
+		checkCargarBase.setToolTipText("Habilita la recarga de la propia base de datos");
 		
 	}
 
@@ -369,6 +371,10 @@ public class AppMenu extends JPanel {
 		btnDarAltaPoliza.addActionListener(a -> {
 			try {			
 				
+				if(checkCargarBase.isSelected()) {
+					recargarBaseDatos();
+					checkCargarBase.setSelected(false);
+				}
 				darAltaPoliza();
 				
 			}catch(Exception ex) {
@@ -416,7 +422,6 @@ public class AppMenu extends JPanel {
 			try {			
 				ventana.setVisible(false);	
 				HibernateUtil.shutdown();
-				HibernateUtil.shutdownBis();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -425,21 +430,21 @@ public class AppMenu extends JPanel {
 	}
 	
 	public Boolean conectarBaseDatos() {
-		//desactiva que se abra la consola cada vez que se inicia
-		Logger log = Logger.getLogger("org.hibernate");
-		log.setLevel(Level.OFF); 
-	    
-		if(checkCargarBase.isSelected()) {
-			CargarBase.load();
-		}
-		
-		if(HibernateUtil.getSessionFactoryParaUsarBD() != null) {
+		if(HibernateUtil.getSessionFactoryValidate() != null) {
 			return true;
 		}
 		else {
 			return false;
 		}
 	}
+	
+	public void recargarBaseDatos() {
+		HibernateUtil.shutdown();
+		Logger log = Logger.getLogger("org.hibernate");
+		log.setLevel(Level.OFF); 
+		CargarBase.load();
+	}
+	
 		
 	public void darAltaPoliza() {
 		new CU01_AP1(ventana, tema);

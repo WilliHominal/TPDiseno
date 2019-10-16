@@ -35,7 +35,6 @@ import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import isi.dds.tp.app.CU01_DH.DeclararHijoAbierto;
-import isi.dds.tp.conectar.HibernateUtil;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorEnum;
@@ -613,25 +612,34 @@ public class CU01_AP1 extends JPanel {
 		campoMotor.setFont(letra);
 		campoMotor.setBackground(colorFondoPantalla);
 		campoMotor.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoMotor.setForeground(colorLetra);
 		campoChasis.setFont(letra);
 		campoChasis.setBackground(colorFondoPantalla);
 		campoChasis.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		campoChasis.setForeground(colorLetra);
 		campoPatente.setFont(letra);
 		campoPatente.setBackground(colorFondoPantalla);
 		campoPatente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-
+		campoPatente.setForeground(colorLetra);
+		
 		btnBuscarCliente.setBackground(colorBoton);
 		btnBuscarCliente.setFont(letra);
+		btnBuscarCliente.setForeground(colorLetra);
 		btnAltaCliente.setBackground(colorBoton);
 		btnAltaCliente.setFont(letra);
+		btnAltaCliente.setForeground(colorLetra);
 		btnAgregarHijo.setBackground(colorBoton);
 		btnAgregarHijo.setFont(letra);
+		btnAgregarHijo.setForeground(colorLetra);
 		btnQuitarHijo.setBackground(colorBoton);
 		btnQuitarHijo.setFont(letra);
+		btnQuitarHijo.setForeground(colorLetra);
 		btnConfirmarDatos.setBackground(colorBoton);
 		btnConfirmarDatos.setFont(letra);
+		btnConfirmarDatos.setForeground(colorLetra);
 		btnCancelar.setBackground(colorBoton);
 		btnCancelar.setFont(letra);
+		btnCancelar.setForeground(colorLetra);
 		
 		UIManager.put( "ComboBox.disabledBackground", colorFondoPantalla );
 		UIManager.put( "ComboBox.disabledForeground", colorLetra );
@@ -656,20 +664,28 @@ public class CU01_AP1 extends JPanel {
 		
 		rbtnGarageSi.setBackground(colorFondoPantalla);
 		rbtnGarageSi.setFont(letra);
+		rbtnGarageSi.setForeground(colorLetra);
 		rbtnGarageNo.setBackground(colorFondoPantalla);
 		rbtnGarageNo.setFont(letra);
+		rbtnGarageNo.setForeground(colorLetra);
 		rbtnAlarmaSi.setBackground(colorFondoPantalla);
 		rbtnAlarmaSi.setFont(letra);
+		rbtnAlarmaSi.setForeground(colorLetra);
 		rbtnAlarmaNo.setBackground(colorFondoPantalla);
 		rbtnAlarmaNo.setFont(letra);
+		rbtnAlarmaNo.setForeground(colorLetra);
 		rbtnRastreoSi.setBackground(colorFondoPantalla);
 		rbtnRastreoSi.setFont(letra);
+		rbtnRastreoSi.setForeground(colorLetra);
 		rbtnRastreoNo.setBackground(colorFondoPantalla);
 		rbtnRastreoNo.setFont(letra);
+		rbtnRastreoNo.setForeground(colorLetra);
 		rbtnTuercasSi.setBackground(colorFondoPantalla);
 		rbtnTuercasSi.setFont(letra);
+		rbtnTuercasSi.setForeground(colorLetra);
 		rbtnTuercasNo.setBackground(colorFondoPantalla);
 		rbtnTuercasNo.setFont(letra);
+		rbtnTuercasNo.setForeground(colorLetra);
 		
 		tablaHijos.setBackground(colorFondoTexto);
 		tablaHijos.setFont(letra);
@@ -684,7 +700,7 @@ public class CU01_AP1 extends JPanel {
 			try {
 				//GestorCliente.get().getClientes() o consultaClientes
 				cliente = GestorCliente.get().getCliente(123456l);
-				obteniendoCliente(cliente);
+				obtenidoCliente(cliente);
 				
 				poliza.setCliente(cliente);
 				cliente.getPolizas().add(poliza);
@@ -702,7 +718,7 @@ public class CU01_AP1 extends JPanel {
 			try {				
 				//GestorCliente.get().getClientes() o consultaClientes
 				cliente = GestorCliente.get().getCliente(123456l);								
-				obteniendoCliente(cliente);	
+				obtenidoCliente(cliente);	
 				poliza.setCliente(cliente);
 				cliente.getPolizas().add(poliza);
 				
@@ -769,7 +785,6 @@ public class CU01_AP1 extends JPanel {
 				
 				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 					
-					HibernateUtil.shutdown();
 					
 					poliza.setCiudad(seleccionCiudad.getItemAt(seleccionCiudad.getSelectedIndex()));
 					poliza.setAnioModelo(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()));
@@ -819,11 +834,7 @@ public class CU01_AP1 extends JPanel {
 		btnCancelar.addActionListener(a -> {
 			try {			
 				this.setVisible(false);
-				ventana.setContentPane(menu);			
-				//ventana.setContentPane(new CU01_AP1(ventana, tema));
-				
-				HibernateUtil.shutdown();
-				
+				ventana.setContentPane(menu);				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -998,7 +1009,7 @@ public class CU01_AP1 extends JPanel {
 	}
 
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void obteniendoCliente(Cliente cliente){
+	private void obtenidoCliente(Cliente cliente){
 		UIManager.put( "ComboBox.disabledBackground", colorFondoTexto );
 		seleccionProvincia.setBackground(colorFondoTexto);
 		seleccionCiudad.setBackground(colorFondoTexto);
@@ -1006,7 +1017,6 @@ public class CU01_AP1 extends JPanel {
 		seleccionModelo.setBackground(colorFondoTexto);
 		seleccionAnio.setBackground(colorFondoTexto);
 		seleccionKm.setBackground(colorFondoTexto);
-		
 		
 		campoNumeroCliente.setText(cliente.getNumeroCliente().toString());
 		campoTipoDocumento.setText(cliente.getTipoDocumento().toString());

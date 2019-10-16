@@ -1,4 +1,4 @@
-package isi.dds.tp.conectar;
+package isi.dds.tp.hibernate;
 
 import java.time.LocalDate;
 import isi.dds.tp.enums.EnumCondicion;
@@ -135,7 +135,7 @@ public class CargarBase {
 
 		//---------------------------------------------------------------------------
 		//PARA RECREAR LA BASE, BORRA Y LA RECARGA DE NUEVO
-		HibernateUtil.getSessionFactoryParaCrearBD();
+		HibernateUtil.getSessionFactoryCreate();
 		//---------------------------------------------------------------------------
 		//PERSISTE LOS DATOS CREADOS
 		GestorDomicilio.get().addPais(pais1);
@@ -155,8 +155,6 @@ public class CargarBase {
 		
 		GestorCliente.get().AltaCliente(cliente1);
 		//---------------------------------------------------------------------------
-		//CERRAMOS DICHA INSTANCIA
-		HibernateUtil.shutdownBis();
 		
 		
     }

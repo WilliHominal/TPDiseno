@@ -2,7 +2,8 @@ package isi.dds.tp.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import isi.dds.tp.conectar.HibernateUtil;
+
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.ParametrosPoliza;
 
 public class ParametrosPolizaDAO {
@@ -21,7 +22,7 @@ public class ParametrosPolizaDAO {
     }
 
     public void addParametrosPoliza(ParametrosPoliza p) {
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
@@ -37,7 +38,7 @@ public class ParametrosPolizaDAO {
     public ParametrosPoliza getParametrosPoliza(Integer codigoParametroPoliza) {
     	ParametrosPoliza p = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
@@ -54,7 +55,7 @@ public class ParametrosPolizaDAO {
     	ParametrosPoliza p = null;
     	
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();

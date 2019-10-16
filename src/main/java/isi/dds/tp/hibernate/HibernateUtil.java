@@ -1,4 +1,7 @@
-package isi.dds.tp.conectar;
+package isi.dds.tp.hibernate;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
@@ -14,11 +17,14 @@ public class HibernateUtil {
 	private static StandardServiceRegistry registryBis;
     private static SessionFactory sessionFactoryBis;
     
-    public static SessionFactory getSessionFactoryParaUsarBD() {
+    public static SessionFactory getSessionFactoryValidate() {
+		//desactiva que se abra la consola cada vez que se inicia
+		Logger log = Logger.getLogger("org.hibernate");
+		log.setLevel(Level.OFF); 
         if (sessionFactory == null) {
             try {
             	
-                registry = new StandardServiceRegistryBuilder().configure().build();
+                registry = new StandardServiceRegistryBuilder().configure("hibernateValidate.cfg.xml").build();
 
                 MetadataSources sources = new MetadataSources(registry);
 
@@ -27,30 +33,27 @@ public class HibernateUtil {
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
                 
             } catch (Exception e) {
-            	sessionFactory = HibernateUtil.getSessionFactoryParaCrearBD();
+            	sessionFactory = HibernateUtil.getSessionFactoryCreate();
             }
         }
         return sessionFactory;
     }
     
-    public static void shutdown() {
-        if (registry != null) {
-        	sessionFactory = null;
-            StandardServiceRegistryBuilder.destroy(registry);
-        }
-    }
-    
-    public static SessionFactory getSessionFactoryParaCrearBD() {
+    public static SessionFactory getSessionFactoryCreate() {
+		//desactiva que se abra la consola cada vez que se inicia
+		Logger log = Logger.getLogger("org.hibernate");
+		log.setLevel(Level.OFF); 
         if (sessionFactoryBis == null) {
             try {
             	
-            	registryBis = new StandardServiceRegistryBuilder().configure("/crearBase/hibernate.cfg.xml").build();
+            	registryBis = new StandardServiceRegistryBuilder().configure("hibernateCreate.cfg.xml").build();
             	
                 MetadataSources sources = new MetadataSources(registryBis);
 
                 Metadata metadata = sources.getMetadataBuilder().build();
 
                 sessionFactoryBis = metadata.getSessionFactoryBuilder().build();
+                sessionFactory = sessionFactoryBis;
             } catch (Exception e) {
                 return null;
             }
@@ -58,8 +61,13 @@ public class HibernateUtil {
         return sessionFactoryBis;
     }
     
-    public static void shutdownBis() {
+    public static void shutdown() {
+        if (registry != null) {
+        	sessionFactory = null;
+            StandardServiceRegistryBuilder.destroy(registry);
+        }
         if (registryBis != null) {
+        	sessionFactoryBis = null;
             StandardServiceRegistryBuilder.destroy(registryBis);
         }
     }

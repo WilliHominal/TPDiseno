@@ -4,7 +4,7 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
-import isi.dds.tp.conectar.HibernateUtil;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.Poliza;
@@ -29,7 +29,7 @@ public class PolizaDAO {
 
     public void addPoliza(Poliza p) {
 
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
@@ -44,7 +44,7 @@ public class PolizaDAO {
     
     public void addSolicitudPoliza(SolicitudPoliza s) {
 
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
@@ -63,7 +63,7 @@ public class PolizaDAO {
     	
     	List<Poliza> polizas = null;
 
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
@@ -82,7 +82,7 @@ public class PolizaDAO {
 
     	List<Cuota> cuotas = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
@@ -100,7 +100,7 @@ public class PolizaDAO {
 
     	SolicitudPoliza solicitud = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
@@ -119,7 +119,7 @@ public class PolizaDAO {
 
     	List<HijoDeclarado> hijos = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();

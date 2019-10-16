@@ -40,14 +40,22 @@ public class CU01_AP2 extends JPanel  {
 	}
 
 	public CU01_AP2() {
+		//TODO para probar marcar como comentario la linea
+			//this.cu01_ap1 = (CU01_AP1) ventana.getContentPane(); ubicada en  CU01_AP2(JFrame ventana, Object[] tema, Poliza poliza)
+				
+		poliza = new Poliza(2222222111l);
 		Cliente cliente1 = GestorCliente.get().getCliente(123456l);
+		poliza.setCliente(cliente1);
 
-		Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK,
-				Color.BLACK, new Font("Open Sans", Font.PLAIN, 13), new Color(255,102,102)};
+		Color colorBoton = new Color(0, 128, 128);
+		Color colorFondoPantalla = new Color(204,204,204);
+		Color colorFondoTexto = new Color(204, 204, 153); 
+		Color borde = Color.BLACK;
+		Color colorLetra = Color.BLACK;
+		Font letra = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+		Color colorErroneo = new Color(255,102,102);
+		Object[] tema = {colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetra, letra, colorErroneo};
 		
-		cu01_ap1 = new CU01_AP1(new JFrame(), tema);
-		cu01_ap1.poliza = new Poliza();
-		cu01_ap1.poliza.setCliente(cliente1);
 		
 		JFrame frame = new JFrame();
 		frame.pack();
@@ -118,7 +126,8 @@ public class CU01_AP2 extends JPanel  {
 	private JScrollPane scrollTablaPagos;
 
 	public CU01_AP2(JFrame ventana, Object[] tema, Poliza poliza) {
-		this.cu01_ap1 = (CU01_AP1) ventana.getContentPane();
+		//para probar marcar como comentario la siguiente linea
+		//this.cu01_ap1 = (CU01_AP1) ventana.getContentPane();
 		this.ventana = ventana;
 		this.tema = tema;
 		this.poliza = poliza;
@@ -339,27 +348,40 @@ public class CU01_AP2 extends JPanel  {
 		lFechaInicio.setFont(font.deriveFont(attributes));
 		lFechaFin.setFont(font.deriveFont(attributes));
 		
-		lTipoCobertura.setFont(letra);
-		lFechaInicioVigencia.setFont(letra);
-		lFormaPago.setFont(letra);
-		lInfoPoliza .setFont(letra);
-		lTitularSeguro.setFont(letra);
-		lDatosVehiculo.setFont(letra);
-		lFechaInicio.setFont(letra);
-		lFechaFin.setFont(letra);
+		lTipoCobertura.setForeground(colorLetra);
+		lFechaInicioVigencia.setForeground(colorLetra);
+		lFormaPago.setForeground(colorLetra);
+		lInfoPoliza.setForeground(colorLetra);
+		lTitularSeguro.setForeground(colorLetra);
+		lDatosVehiculo.setForeground(colorLetra);
+		lFechaInicio.setForeground(colorLetra);
+		lFechaFin.setForeground(colorLetra);
 		lDescUnidad.setFont(letra);
+		lDescUnidad.setForeground(colorLetra);
 		lDescSemestral.setFont(letra);
+		lDescSemestral.setForeground(colorLetra);
 		lApellido.setFont(letra);
+		lApellido.setForeground(colorLetra);
 		lNombre.setFont(letra);
+		lNombre.setForeground(colorLetra);
 		lModelo.setFont(letra);
+		lModelo.setForeground(colorLetra);
 		lMarca.setFont(letra);
+		lMarca.setForeground(colorLetra);
 		lMotor.setFont(letra);
+		lMotor.setForeground(colorLetra);
 		lChasis.setFont(letra);
+		lChasis.setForeground(colorLetra);
 		lPatente.setFont(letra);
+		lPatente.setForeground(colorLetra);
 		lSumaAsegurada.setFont(letra);
+		lSumaAsegurada.setForeground(colorLetra);
 		lPremio.setFont(letra);
+		lPremio.setForeground(colorLetra);
 		lDescuento.setFont(letra);
+		lDescuento.setForeground(colorLetra);
 		lMontoTotal.setFont(letra);
+		lMontoTotal.setForeground(colorLetra);
 		
 		campoApellido.setDisabledTextColor(colorLetra);
 		campoApellido.setFont(letra);
@@ -405,9 +427,9 @@ public class CU01_AP2 extends JPanel  {
 		campoMontoTotal.setFont(letra);
 		campoMontoTotal.setBackground(colorFondoPantalla);
 		campoMontoTotal.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		
-		
+
 		btnConfirmarDatos.setBackground(colorBoton);
+		btnConfirmarDatos.setForeground(colorLetra);
 		btnConfirmarDatos.setFont(letra);
 		btnGenerarPoliza.setBackground(colorBoton);
 		btnGenerarPoliza.setFont(letra);
@@ -419,15 +441,18 @@ public class CU01_AP2 extends JPanel  {
 		seleccionTipoCobertura.setForeground(colorLetra);
 		mensual.setBackground(colorFondoPantalla);
 		mensual.setFont(letra);
+		mensual.setForeground(colorLetra);
 		semestral.setBackground(colorFondoPantalla);
 		semestral.setFont(letra);
+		semestral.setForeground(colorLetra);
 		
 		tablaPagos.setBackground(colorFondoPantalla);
 		tablaPagos.setFont(letra);
-		
+		tablaPagos.setForeground(colorLetra);		
 		tablaPagos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		scrollTablaPagos.getViewport().setBackground(colorFondoPantalla);
 		scrollTablaPagos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		scrollTablaPagos.setForeground(colorLetra);
 		
 		((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setBackground(colorFondoTexto);
 		((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()).setFont(letra);

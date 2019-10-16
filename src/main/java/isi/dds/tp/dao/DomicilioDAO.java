@@ -5,7 +5,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 
-import isi.dds.tp.conectar.HibernateUtil;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Pais;
 import isi.dds.tp.modelo.Provincia;
@@ -29,7 +29,7 @@ public class DomicilioDAO {
     
     public void addPais(Pais p) {
 
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -44,7 +44,7 @@ public class DomicilioDAO {
     
     public void addProvincia(Provincia p) {
 
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -59,7 +59,7 @@ public class DomicilioDAO {
 	
     public void addCiudad(Ciudad c) {
 
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -74,7 +74,7 @@ public class DomicilioDAO {
     
     public void addRiesgoCiudad(RiesgoCiudad r) {
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -93,7 +93,7 @@ public class DomicilioDAO {
     	
     	List<Pais> paises = null;
 
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -110,7 +110,7 @@ public class DomicilioDAO {
     	
     	List<Provincia> provincias = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -128,7 +128,7 @@ public class DomicilioDAO {
     	
     	List<Ciudad> ciudades = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
         	session.beginTransaction();
@@ -146,7 +146,7 @@ public class DomicilioDAO {
     	
     	List<RiesgoCiudad> riesgosCiudad = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
                   
         try {
             session.beginTransaction();
@@ -162,7 +162,7 @@ public class DomicilioDAO {
     public RiesgoCiudad getUltimoRiesgoCiudad(Integer id_ciudad) {
     	RiesgoCiudad riesgo = null;
     	
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();

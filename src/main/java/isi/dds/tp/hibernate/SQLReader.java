@@ -1,4 +1,4 @@
-package isi.dds.tp.conectar;
+package isi.dds.tp.hibernate;
 
 import java.io.BufferedReader;  
 

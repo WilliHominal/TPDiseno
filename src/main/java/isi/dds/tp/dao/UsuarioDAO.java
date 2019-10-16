@@ -2,7 +2,8 @@ package isi.dds.tp.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import isi.dds.tp.conectar.HibernateUtil;
+
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Usuario;
 
 public class UsuarioDAO {
@@ -22,7 +23,7 @@ public class UsuarioDAO {
 
 
 	public void addUsuario(Usuario u) {
-    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
