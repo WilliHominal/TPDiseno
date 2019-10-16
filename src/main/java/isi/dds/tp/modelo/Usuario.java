@@ -2,9 +2,17 @@ package isi.dds.tp.modelo;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import isi.dds.tp.enums.EnumTipoUsuario;
-import javax.persistence.*;
-
 import org.hibernate.annotations.IndexColumn;
 
 @SuppressWarnings("deprecation")
@@ -21,6 +29,7 @@ public class Usuario {
 	@JoinColumn(name ="id_usuario")
 	@IndexColumn(name ="idx")
 	private List <BitacoraParametrosPoliza> bitacoraParametrosPoliza;
+	
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_usuario")
@@ -42,6 +51,13 @@ public class Usuario {
 
 	public Usuario() {
 		
+	}
+	
+	public Usuario(String nombre) {
+		this.nombre = nombre;
+		this.bitacoraParametrosPoliza = null;
+		this.contrasenia = "julio berme";
+		this.apellido = "vernete";
 	}
 	
 	public Usuario(String contrasenia, EnumTipoUsuario tipoUsuario) {

@@ -17,4 +17,10 @@ public class GestorUsuario {
         }    
         return instanciaGestor;
     }
+    
+    public void addUsuario(Usuario u) {
+    	
+    	UsuarioDAO.getDAO().addUsuario(u);
+    	
+    }
 }

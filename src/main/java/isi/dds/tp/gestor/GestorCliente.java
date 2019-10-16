@@ -2,9 +2,7 @@ package isi.dds.tp.gestor;
 
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.modelo.Poliza;
-
 import java.util.List;
-
 import isi.dds.tp.dao.ClienteDAO;
 import isi.dds.tp.enums.EnumCondicion;
 
@@ -69,5 +67,4 @@ public class GestorCliente {
     public List<Poliza> getPoliza(Long numeroCliente) {
     	return null;
     }
-    
 }

@@ -4,24 +4,24 @@ import java.awt.*;
 import java.awt.font.TextAttribute;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
+import java.time.*;
 import java.util.*;
 import javax.swing.*;
-import javax.swing.border.EtchedBorder;
-import javax.swing.border.LineBorder;
-import javax.swing.plaf.ColorUIResource;
+import javax.swing.border.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
-import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.*;
-import isi.dds.tp.enums.EnumTipoDocumento;
-import isi.dds.tp.gestor.*;
-import isi.dds.tp.modelo.*;
+import isi.dds.tp.gestor.GestorCliente;
+import isi.dds.tp.gestor.GestorPoliza;
+import isi.dds.tp.gestor.GestorTipoCobertura;
+import isi.dds.tp.modelo.Cliente;
+import isi.dds.tp.modelo.Cuota;
+import isi.dds.tp.modelo.Poliza;
+import isi.dds.tp.modelo.TipoCobertura;
 
 @SuppressWarnings("serial")
 public class CU01_AP2 extends JPanel  {
@@ -39,23 +39,28 @@ public class CU01_AP2 extends JPanel  {
 		});
 	}
 
-	
 	public CU01_AP2() {
-		Cliente cliente1 = new Cliente(null, 123456l, EnumCondicion.NORMAL, "APELLIDO", "NOMBRES", EnumTipoDocumento.DNI, 99999999, 
-				2011111118l, EnumSexo.MASCULINO, LocalDate.now(), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM", EnumEstadoCivil.CASADO, "PROFESOR", 2019, EnumSiniestros.MAS_DE_DOS);
+		Cliente cliente1 = GestorCliente.get().getCliente(123456l);
 
 		Object[] tema = {new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK,
-				//colorLetra			letra							colorErroneo
 				Color.BLACK, new Font("Open Sans", Font.PLAIN, 13), new Color(255,102,102)};
-		altaPoliza = new CU01_AP1(new JFrame(), tema);
-		altaPoliza.poliza = new Poliza();
-		altaPoliza.poliza.setCliente(cliente1);
-		new CU01_AP2(new JFrame(), tema, altaPoliza, poliza);
+		
+		cu01_ap1 = new CU01_AP1(new JFrame(), tema);
+		cu01_ap1.poliza = new Poliza();
+		cu01_ap1.poliza.setCliente(cliente1);
+		
+		JFrame frame = new JFrame();
+		frame.pack();
+		frame.setBounds(0,0,1024,600);
+		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);	
+		frame.setLocationRelativeTo(null);
+		new CU01_AP2(frame, tema, poliza);
+		frame.setVisible(true);
 	}
 	
 	private Poliza poliza;
 	private JFrame ventana;
-	public CU01_AP1 altaPoliza;
+	public CU01_AP1 cu01_ap1;
 	
 	private Object tema[];
 	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetra, colorErroneo;
@@ -112,11 +117,13 @@ public class CU01_AP2 extends JPanel  {
 	private JTable tablaPagos = new JTable(6,2);
 	private JScrollPane scrollTablaPagos;
 
-	public CU01_AP2(JFrame ventana, Object[] tema, CU01_AP1 altaPoliza, Poliza poliza) {
-		this.altaPoliza = altaPoliza;
+	public CU01_AP2(JFrame ventana, Object[] tema, Poliza poliza) {
+		this.cu01_ap1 = (CU01_AP1) ventana.getContentPane();
 		this.ventana = ventana;
 		this.tema = tema;
 		this.poliza = poliza;
+		
+		ventana.setContentPane(this);
 
 		inicializarComponentes();
 		inicializarTema();
@@ -124,13 +131,7 @@ public class CU01_AP2 extends JPanel  {
 		
 		comportamiento();
 
-		ventana.setContentPane(this);
-		ventana.pack();
-		ventana.setSize(1024, 600);
-		ventana.setLocationRelativeTo(null);
 		ventana.setTitle("Dar de alta póliza: GENERAR PÓLIZA");
-		ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		ventana.setVisible(true);
 	}
 	
 	private void ubicarComponentes() {
@@ -359,7 +360,6 @@ public class CU01_AP2 extends JPanel  {
 		lPremio.setFont(letra);
 		lDescuento.setFont(letra);
 		lMontoTotal.setFont(letra);
-			
 		
 		campoApellido.setDisabledTextColor(colorLetra);
 		campoApellido.setFont(letra);
@@ -598,8 +598,8 @@ public class CU01_AP2 extends JPanel  {
 				//veo si es cliente Plata o Activo
 				Boolean esPlata = true;
 
-				GestorSubsistemaSiniestros gss = GestorSubsistemaSiniestros.get();
-				if (gss.getSiniestrosUltimosAnios(poliza.getCliente().getNumeroDocumento()) > 0)
+				
+				if (!poliza.getCliente().getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO))
 					esPlata = false;
 
 				for (Cuota cuota : poliza.getCuotas()) {
@@ -614,6 +614,7 @@ public class CU01_AP2 extends JPanel  {
 
 				//TODO implementar actualizarCondicion
 				if (esPlata)
+					//diria que si modificas el cliente de la poliza, se actualiza el cliente de la base de datos al persistir la poliza
 					gc.actualizarCondicion(poliza.getCliente(), EnumCondicion.PLATA);
 				else
 					gc.actualizarCondicion(poliza.getCliente(), EnumCondicion.ACTIVO);
@@ -625,8 +626,8 @@ public class CU01_AP2 extends JPanel  {
 		});
 
 		btnVolver.addActionListener(a -> {
-			if(JOptionPane.showConfirmDialog(ventana, "¿Desea corregir algún dato ingresado?","Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
-				ventana.setContentPane(altaPoliza);
+			if(JOptionPane.showConfirmDialog(ventana, "¿Desea corregir algún dato ingresado?", "Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
+				ventana.setContentPane(cu01_ap1);
 				this.setVisible(false);
 			}
 		});

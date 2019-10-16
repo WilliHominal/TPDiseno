@@ -16,7 +16,9 @@ public class GestorSubsistemaSiniestros {
     }
 
 	public int getSiniestrosUltimosAnios(Integer numeroDocumento) {
-		// TODO Auto-generated method stub
+		// TODO se usa para cuando se da de alta un cliente y se actualiza cada tanto o hay que generar una tabla por dni de los clientes
 		return 0;
 	}
+	
+	
 }

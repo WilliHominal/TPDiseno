@@ -1,6 +1,5 @@
 package isi.dds.tp.gestor;
 
-import java.time.LocalDate;
 import java.util.List;
 import isi.dds.tp.dao.PolizaDAO;
 import isi.dds.tp.modelo.Poliza;

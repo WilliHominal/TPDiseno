@@ -1,5 +1,7 @@
 package isi.dds.tp.gestor;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import isi.dds.tp.dao.DomicilioDAO;
@@ -63,4 +65,14 @@ public class GestorDomicilio {
     	return DomicilioDAO.getDAO().getUltimoRiesgoCiudad(id_ciudad);
     }
     
+    public List<Ciudad> sortCiudades(List<Ciudad> lista){
+    	lista.sort(Comparator.comparing(Ciudad::getNombre));
+	    Collections.sort(lista, new Comparator<Ciudad>() {
+	    	@Override
+	    	public int compare(Ciudad c1, Ciudad c2) {
+	    		return c1.getNombre().compareTo(c2.getNombre());
+	    	}
+	    });
+	    return lista;
+    }
 }

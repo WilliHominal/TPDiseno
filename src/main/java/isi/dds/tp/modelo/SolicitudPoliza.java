@@ -36,7 +36,7 @@ public class SolicitudPoliza {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "numero_solicitud")
 	@SequenceGenerator(name="numero_solicitud", sequenceName = "numero_solicitud_seq", initialValue = 100, allocationSize = 1)
 	@Column(name = "numero_solicitud")
-	/*TODO generar numero solicitud, CAMBIAR en el new*/
+	/*TODO definir NUMERO_SOLICITUD*/
 	private Integer numeroSolicitud;
 	
 	@Column

@@ -2,7 +2,8 @@ package isi.dds.tp.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import isi.dds.tp.hibernate.HibernateUtil;
+
+import isi.dds.tp.conectar.HibernateUtil;
 import isi.dds.tp.modelo.Cliente;
 
 public class ClienteDAO {
@@ -21,7 +22,7 @@ public class ClienteDAO {
     }
 
     public void addCliente(Cliente c) {
-    	Session session = HibernateUtil.getSessionFactory().openSession();
+    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
         
         try {
             session.beginTransaction();
@@ -37,7 +38,7 @@ public class ClienteDAO {
     public Cliente getCliente(Long numeroCliente) {
     	Cliente c = null;
     	
-    	Session session = HibernateUtil.getSessionFactory().openSession();
+    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
         
         try {
             session.beginTransaction();

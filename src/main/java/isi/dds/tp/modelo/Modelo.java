@@ -87,20 +87,24 @@ public class Modelo {
 		return nombre;
 	}
 
-	public Object compareTo(Modelo m2) {
+	public int compareTo(Modelo m2) {
 		if (this.nombre.compareTo(m2.getNombre()) == 0) {
+			//si son iguales
 			   return 0;
 		}
 		else {
 			if (this.nombre.compareTo(m2.getNombre()) < 0) {
+				//si el primero es más grande que el segundo
 			  return -1;
 			}
 			else {
 				if (this.nombre.compareTo(m2.getNombre()) > 0) {
+					//si el primero es más chico que el segundo
 				  return 1;
 				}
 			}
 		}
 		return 0;
 	}
+
 }	

@@ -14,7 +14,8 @@ import java.util.Date;
 import javax.swing.*;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
-import isi.dds.tp.enums.GestorEnum;
+
+import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.modelo.HijoDeclarado;
 
 @SuppressWarnings("serial")
@@ -167,7 +168,6 @@ public class CU01_DH extends JFrame  {
 			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
 			dcFechaNacimiento.setDate(fechaParseada);
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -261,7 +261,6 @@ public class CU01_DH extends JFrame  {
 			try {
 				fechaNacDate = formato.parse(formato.format(dcFechaNacimiento.getDate()));
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 

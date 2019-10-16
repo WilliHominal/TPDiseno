@@ -1,8 +1,9 @@
 package isi.dds.tp.gestor;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
 import isi.dds.tp.dao.ParametrosVehiculosDAO;
@@ -54,7 +55,6 @@ public class GestorParametrosVehiculo {
         return marcas;
     }
     
-
 	public List<Modelo> getModelos(Integer id_marca) {
     	
     	List<Modelo> modelos = ParametrosVehiculosDAO.getDAO().getModelos(id_marca);
@@ -69,7 +69,6 @@ public class GestorParametrosVehiculo {
     	return aniosModelo;
     }
     
-
 	public List<RiesgoModelo> getRiesgosModelo(Integer id_modelo) {
 		
     	List<RiesgoModelo> riesgosModelo = ParametrosVehiculosDAO.getDAO().getRiesgosModelo(id_modelo);
@@ -82,5 +81,38 @@ public class GestorParametrosVehiculo {
     	RiesgoModelo riesgo = ParametrosVehiculosDAO.getDAO().getUltimoRiesgoModelo(id_modelo);
 
     	return riesgo;
+    }
+    
+    public List<Modelo> sortModelos(List<Modelo> lista){
+    	lista.sort(Comparator.comparing(Modelo::getNombre));
+	    Collections.sort(lista, new Comparator<Modelo>() {
+	    	@Override
+	    	public int compare(Modelo m1, Modelo m2) {
+	    		return m1.getNombre().compareTo(m2.getNombre());
+	    	}
+	    });
+	    return lista;
+    }
+    
+    public List<Marca> sortMarca(List<Marca> lista){
+    	lista.sort(Comparator.comparing(Marca::getNombre));
+	    Collections.sort(lista, new Comparator<Marca>() {
+	    	@Override
+	    	public int compare(Marca o1, Marca o2) {
+	    		return o1.getNombre().compareTo(o2.getNombre());
+	    	}
+	    });
+	    return lista;
+    }
+    
+    public List<AnioModelo> sortAniosModelo(List<AnioModelo> lista){
+    	lista.sort(Comparator.comparing(AnioModelo::getAnio));
+	    Collections.sort(lista, new Comparator<AnioModelo>() {
+	    	@Override
+	    	public int compare(AnioModelo o1, AnioModelo o2) {
+	    		return o1.getAnio().compareTo(o2.getAnio());
+	    	}
+	    });
+	    return lista;
     }
 }

@@ -5,8 +5,8 @@ import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import isi.dds.tp.conectar.HibernateUtil;
 import isi.dds.tp.enums.EnumTipoCobertura;
-import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.RiesgoTipoCobertura;
 import isi.dds.tp.modelo.TipoCobertura;
 
@@ -27,7 +27,7 @@ public class TipoCoberturaDAO {
     
     public void addTipoCobertura(TipoCobertura t) {
     	
-    	Session session = HibernateUtil.getSessionFactory().openSession();
+    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
         
         try {
             session.beginTransaction();
@@ -44,7 +44,7 @@ public class TipoCoberturaDAO {
     
     public void addRiesgoCobertura(RiesgoTipoCobertura r) {
     
-    	Session session = HibernateUtil.getSessionFactory().openSession();
+    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
         
         try {
             session.beginTransaction();
@@ -63,7 +63,7 @@ public class TipoCoberturaDAO {
     	
     	List<TipoCobertura> tiposCoberturas = null;
     	
-    	Session session = HibernateUtil.getSessionFactory().openSession();
+    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
         
         try {
             session.beginTransaction();
@@ -81,7 +81,7 @@ public class TipoCoberturaDAO {
 	public List<RiesgoTipoCobertura> getRiesgosCobertura(EnumTipoCobertura tipo) {
     	List<RiesgoTipoCobertura> riesgos = null;
     	
-    	Session session = HibernateUtil.getSessionFactory().openSession();
+    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
         
         try {
             session.beginTransaction();
@@ -98,7 +98,7 @@ public class TipoCoberturaDAO {
     public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipo) {
     	RiesgoTipoCobertura riesgo = null;
     	
-    	Session session = HibernateUtil.getSessionFactory().openSession();
+    	Session session = HibernateUtil.getSessionFactoryParaUsarBD().openSession();
         
         try {
             session.beginTransaction();

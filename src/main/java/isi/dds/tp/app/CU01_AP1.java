@@ -1,6 +1,11 @@
 package isi.dds.tp.app;
 
-import java.awt.*;
+
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
@@ -9,25 +14,47 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-import javax.swing.*;
+import javax.swing.BorderFactory;
+import javax.swing.ButtonGroup;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import isi.dds.tp.app.CU01_DH.DeclararHijoAbierto;
-import isi.dds.tp.enums.GestorEnum;
+import isi.dds.tp.conectar.HibernateUtil;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
+import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
-import isi.dds.tp.hibernate.HibernateUtil;
-import isi.dds.tp.modelo.*;
+import isi.dds.tp.modelo.AnioModelo;
+import isi.dds.tp.modelo.Ciudad;
+import isi.dds.tp.modelo.Cliente;
+import isi.dds.tp.modelo.HijoDeclarado;
+import isi.dds.tp.modelo.Marca;
+import isi.dds.tp.modelo.Modelo;
+import isi.dds.tp.modelo.Poliza;
+import isi.dds.tp.modelo.Provincia;
 
 
 @SuppressWarnings("serial")
 public class CU01_AP1 extends JPanel {
 		
 	private JFrame ventana;
+	private AppMenu menu;
 	private Object[] tema;
 	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetra, colorErroneo;
 	private Font letra;
@@ -80,11 +107,11 @@ public class CU01_AP1 extends JPanel {
 	private JTextField campoNumerosSiniestros = new JTextField(10); 
 	
 	private JButton btnBuscarCliente = new JButton("BUSCAR CLIENTES");
-	private JButton btnAltaCliente = new JButton("DAR ALTA CLIENTES");
+	private JButton btnAltaCliente = new JButton("ALTA CLIENTES");
 	private JButton btnAgregarHijo = new JButton("Agregar datos hijo");
 	private JButton btnQuitarHijo = new JButton("Quitar datos hijo");
-	private JButton btnConfirmarDatos = new JButton("Confirmar datos");
-	private JButton btnCancelar = new JButton("Cancelar");
+	private JButton btnConfirmarDatos = new JButton("CONFIRMAR DATOS");
+	private JButton btnCancelar = new JButton("CANCELAR");
 	
 	private JComboBox<Provincia> seleccionProvincia = new JComboBox<Provincia>();
 	private JComboBox<Ciudad> seleccionCiudad = new JComboBox<Ciudad>();
@@ -107,10 +134,15 @@ public class CU01_AP1 extends JPanel {
 	private JScrollPane tablaHijosScroll = new JScrollPane(tablaHijos);
 	private Object[][] datosTabla = {{""},{""},{""},{""}};
 	private DefaultTableModel model;
-
+	
 	public CU01_AP1(JFrame ventana, Object[] tema) {
 		this.ventana = ventana;
 		this.tema = tema;
+		
+		menu = (AppMenu) ventana.getContentPane();
+
+		ventana.setContentPane(this);
+		
 		
 		poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
 		
@@ -122,13 +154,111 @@ public class CU01_AP1 extends JPanel {
 		comportamientoBotones();
 		comportamientoComboBox();		
 		comportamientoCampos();
-		ventana.setBounds(0,0,1024,600);
-		ventana.setLocationRelativeTo(null);
-		ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");
-		ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		
+
+		ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");		
 	}
 
+	private void inicializarComponentes() {
+		setSize(1024,600);
+		
+		campoNumeroCliente.setEnabled(false);
+		campoTipoDocumento.setEnabled(false);
+		campoNumeroDocumento.setEnabled(false);
+		campoApellido.setEnabled(false);
+		campoNombres.setEnabled(false);
+		campoCalle.setEnabled(false);
+		campoNumeroDomicilio.setEnabled(false);
+		campoDepartamento.setEnabled(false);
+		campoSumaAsegurada.setEnabled(false);
+		campoSumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
+		campoNumerosSiniestros.setEnabled(false);
+		campoMotor.setEnabled(false);
+		campoChasis.setEnabled(false);
+		campoPatente.setEnabled(false);
+		
+		seleccionProvincia.setEnabled(false);
+		seleccionCiudad.setEnabled(false);
+		seleccionMarca.setEnabled(false);
+		seleccionModelo.setEnabled(false);
+		seleccionAnio.setEnabled(false);
+		seleccionKm.setEnabled(false);
+		
+		rbtnGarageSi.setEnabled(false);
+		rbtnGarageNo.setEnabled(false);
+		rbtnAlarmaSi.setEnabled(false);
+		rbtnAlarmaNo.setEnabled(false);
+		rbtnRastreoNo.setEnabled(false);
+		rbtnRastreoSi.setEnabled(false);
+		rbtnTuercasSi.setEnabled(false);
+		rbtnTuercasNo.setEnabled(false);
+		
+		tablaHijos.setEnabled(false);
+		
+		btnQuitarHijo.setEnabled(false);
+		btnConfirmarDatos.setEnabled(false);
+		btnAgregarHijo.setEnabled(false);
+		
+		garage.add(rbtnGarageSi);
+		garage.add(rbtnGarageNo);
+		rbtnGarageNo.setSelected(true);
+		alarma.add(rbtnAlarmaSi);
+		alarma.add(rbtnAlarmaNo);
+		rbtnAlarmaNo.setSelected(true);
+		rastreo.add(rbtnRastreoSi);
+		rastreo.add(rbtnRastreoNo);
+		rbtnRastreoNo.setSelected(true);
+		tuercas.add(rbtnTuercasSi);
+		tuercas.add(rbtnTuercasNo);
+		rbtnTuercasNo.setSelected(true);
+		
+		seleccionProvincia.setPreferredSize(new Dimension(199, 25));
+		seleccionCiudad.setPreferredSize(new Dimension(199, 25));
+		seleccionMarca.setPreferredSize(new Dimension(163, 25));
+		seleccionModelo.setPreferredSize(new Dimension(145, 25));
+		seleccionAnio.setPreferredSize(new Dimension(130, 25));
+		seleccionKm.setPreferredSize(new Dimension(220, 25));
+		
+		btnBuscarCliente.setPreferredSize(new Dimension(160, 25));
+		btnAltaCliente.setPreferredSize(new Dimension(160, 25));
+		btnAgregarHijo.setPreferredSize(new Dimension(160, 25));
+		btnQuitarHijo.setPreferredSize(new Dimension(160, 25));
+		btnConfirmarDatos.setPreferredSize(new Dimension(170, 25));
+		btnCancelar.setPreferredSize(new Dimension(170, 25));
+		
+		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 15) {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		};
+		
+		tablaHijos.setModel(tableModel);
+		
+		tablaHijos.setFillsViewportHeight(true);
+		tablaHijos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
+		centrado.setHorizontalAlignment( JLabel.CENTER );
+		
+		tablaHijos.getColumnModel().getColumn(0).setCellRenderer(centrado);
+		tablaHijos.getColumnModel().getColumn(1).setCellRenderer(centrado);
+		tablaHijos.getColumnModel().getColumn(2).setCellRenderer(centrado);
+		tablaHijos.getColumnModel().getColumn(3).setCellRenderer(centrado);
+		
+		tablaHijos.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tablaHijos.getColumnModel().getColumn(1).setPreferredWidth(130);
+		tablaHijos.getColumnModel().getColumn(2).setPreferredWidth(85);
+		tablaHijos.getColumnModel().getColumn(3).setPreferredWidth(85);
+		
+		tablaHijos.getColumnModel().getColumn(0).setHeaderValue("Hijo");
+		tablaHijos.getColumnModel().getColumn(1).setHeaderValue("Fecha nacimiento");
+		tablaHijos.getColumnModel().getColumn(2).setHeaderValue("Sexo");
+		tablaHijos.getColumnModel().getColumn(3).setHeaderValue("Estado civil");
+		
+		tablaHijosScroll.setPreferredSize(new Dimension(350, 100));
+		
+		model = (DefaultTableModel) tablaHijos.getModel();
+	}
+	
 	private void ubicarComponentes() {
 		
 		setLayout (new GridBagLayout());
@@ -383,38 +513,62 @@ public class CU01_AP1 extends JPanel {
 		letra = (Font) tema[5];
 		colorErroneo = (Color) tema[6];
 		
-		setBounds(0,0,1024,600);
 		setFont(letra);
 		setBackground(colorFondoPantalla);
-		
-
+		setForeground(colorLetra);
 		
 		lnumeroCliente.setFont(letra);
+		lnumeroCliente.setForeground(colorLetra);
 		ltipoDocumento.setFont(letra);
+		ltipoDocumento.setForeground(colorLetra);
 		ldocumento.setFont(letra);
+		ldocumento.setForeground(colorLetra);
 		lapellido .setFont(letra);
+		lapellido.setForeground(colorLetra);
 		lnombres.setFont(letra);
+		lnombres.setForeground(colorLetra);
 		lcalle.setFont(letra);
+		lcalle.setForeground(colorLetra);
 		lnumeroDom.setFont(letra);
+		lnumeroDom.setForeground(colorLetra);
 		ldepartamento.setFont(letra);
+		ldepartamento.setForeground(colorLetra);
 		lprovincia.setFont(letra);
+		lprovincia.setForeground(colorLetra);
 		lciudad.setFont(letra);
+		lciudad.setForeground(colorLetra);
 		lmarca.setFont(letra);
+		lmarca.setForeground(colorLetra);
 		lmodelo.setFont(letra);
+		lmodelo.setForeground(colorLetra);
 		lanio.setFont(letra);
+		lanio.setForeground(colorLetra);
 		lmotor.setFont(letra);
+		lmotor.setForeground(colorLetra);
 		lchasis.setFont(letra);
+		lchasis.setForeground(colorLetra);
 		lpatente.setFont(letra);
+		lpatente.setForeground(colorLetra);
 		lsumaAseg.setFont(letra);
+		lsumaAseg.setForeground(colorLetra);
 		lmoneda.setFont(letra);
+		lmoneda.setForeground(colorLetra);
 		lkm.setFont(letra);
+		lkm.setForeground(colorLetra);
 		lsiniestros.setFont(letra);
+		lgarage.setForeground(colorLetra);
 		lgarage.setFont(letra);
+		lgarage.setForeground(colorLetra);
 		lalarma.setFont(letra);
+		lalarma.setForeground(colorLetra);
 		lrastreo.setFont(letra);
+		lrastreo.setForeground(colorLetra);
 		ltuercas.setFont(letra);
+		ltuercas.setForeground(colorLetra);
 		lcantidadHijos.setFont(letra);
+		lcantidadHijos.setForeground(colorLetra);
 		ldatosObligatorios.setFont(new Font("Open Sans", Font.ITALIC, 9));
+		ldatosObligatorios.setForeground(colorLetra);
 			
 		campoNumeroCliente.setFont(letra);
 		campoNumeroCliente.setBackground(colorFondoTexto);
@@ -479,7 +633,6 @@ public class CU01_AP1 extends JPanel {
 		btnCancelar.setBackground(colorBoton);
 		btnCancelar.setFont(letra);
 		
-		
 		UIManager.put( "ComboBox.disabledBackground", colorFondoPantalla );
 		UIManager.put( "ComboBox.disabledForeground", colorLetra );
 		seleccionProvincia.setBackground(colorFondoPantalla);
@@ -524,115 +677,8 @@ public class CU01_AP1 extends JPanel {
 		tablaHijos.setForeground(colorLetra);
 		tablaHijosScroll.getViewport().setBackground(colorFondoTexto);
 		//tablaHijosScroll.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-
 	}
-	
-	private void inicializarComponentes() {
-		
-		//deshabilitar componentes
-		campoNumeroCliente.setEnabled(false);
-		campoTipoDocumento.setEnabled(false);
-		campoNumeroDocumento.setEnabled(false);
-		campoApellido.setEnabled(false);
-		campoNombres.setEnabled(false);
-		campoCalle.setEnabled(false);
-		campoNumeroDomicilio.setEnabled(false);
-		campoDepartamento.setEnabled(false);
-		campoSumaAsegurada.setEnabled(false);
-		campoSumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
-		campoNumerosSiniestros.setEnabled(false);
-		campoMotor.setEnabled(false);
-		campoChasis.setEnabled(false);
-		campoPatente.setEnabled(false);
-		
-		seleccionProvincia.setEnabled(false);
-		seleccionCiudad.setEnabled(false);
-		seleccionMarca.setEnabled(false);
-		seleccionModelo.setEnabled(false);
-		seleccionAnio.setEnabled(false);
-		seleccionKm.setEnabled(false);
-		
-		rbtnGarageSi.setEnabled(false);
-		rbtnGarageNo.setEnabled(false);
-		rbtnAlarmaSi.setEnabled(false);
-		rbtnAlarmaNo.setEnabled(false);
-		rbtnRastreoNo.setEnabled(false);
-		rbtnRastreoSi.setEnabled(false);
-		rbtnTuercasSi.setEnabled(false);
-		rbtnTuercasNo.setEnabled(false);
-		
-		tablaHijos.setEnabled(false);
-		
-		btnQuitarHijo.setEnabled(false);
-		btnConfirmarDatos.setEnabled(false);
-		btnAgregarHijo.setEnabled(false);
-		
-		garage.add(rbtnGarageSi);
-		garage.add(rbtnGarageNo);
-		rbtnGarageNo.setSelected(true);
-		alarma.add(rbtnAlarmaSi);
-		alarma.add(rbtnAlarmaNo);
-		rbtnAlarmaNo.setSelected(true);
-		rastreo.add(rbtnRastreoSi);
-		rastreo.add(rbtnRastreoNo);
-		rbtnRastreoNo.setSelected(true);
-		tuercas.add(rbtnTuercasSi);
-		tuercas.add(rbtnTuercasNo);
-		rbtnTuercasNo.setSelected(true);
-		
-		//dar cierto tamaño
-		seleccionProvincia.setPreferredSize(new Dimension(199, 25));
-		seleccionCiudad.setPreferredSize(new Dimension(199, 25));
-		seleccionMarca.setPreferredSize(new Dimension(163, 25));
-		seleccionModelo.setPreferredSize(new Dimension(145, 25));
-		seleccionAnio.setPreferredSize(new Dimension(130, 25));
-		seleccionKm.setPreferredSize(new Dimension(220, 25));
-		
-		btnBuscarCliente.setPreferredSize(new Dimension(160, 25));
-		btnAltaCliente.setPreferredSize(new Dimension(160, 25));
-		btnAgregarHijo.setPreferredSize(new Dimension(160, 25));
-		btnQuitarHijo.setPreferredSize(new Dimension(160, 25));
-		btnConfirmarDatos.setPreferredSize(new Dimension(160, 25));
-		btnCancelar.setPreferredSize(new Dimension(160, 25));
-		
 
-		//definir tabla
-		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 15) {
-		    @Override
-		    public boolean isCellEditable(int row, int column) {
-		       //all cells false
-		       return false;
-		    }
-		};
-		
-		tablaHijos.setModel(tableModel);
-		
-		tablaHijos.setFillsViewportHeight(true);
-		tablaHijos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
-		centrado.setHorizontalAlignment( JLabel.CENTER );
-		
-		tablaHijos.getColumnModel().getColumn(0).setCellRenderer(centrado);
-		tablaHijos.getColumnModel().getColumn(1).setCellRenderer(centrado);
-		tablaHijos.getColumnModel().getColumn(2).setCellRenderer(centrado);
-		tablaHijos.getColumnModel().getColumn(3).setCellRenderer(centrado);
-		
-		tablaHijos.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tablaHijos.getColumnModel().getColumn(1).setPreferredWidth(130);
-		tablaHijos.getColumnModel().getColumn(2).setPreferredWidth(85);
-		tablaHijos.getColumnModel().getColumn(3).setPreferredWidth(85);
-		
-		tablaHijos.getColumnModel().getColumn(0).setHeaderValue("Hijo");
-		tablaHijos.getColumnModel().getColumn(1).setHeaderValue("Fecha nacimiento");
-		tablaHijos.getColumnModel().getColumn(2).setHeaderValue("Sexo");
-		tablaHijos.getColumnModel().getColumn(3).setHeaderValue("Estado civil");
-		
-		tablaHijosScroll.setPreferredSize(new Dimension(350, 100));
-		
-		model = (DefaultTableModel) tablaHijos.getModel();
-		
-	}
-	
 	public void comportamientoBotones() {
 		btnBuscarCliente.addActionListener(a -> {
 			try {
@@ -760,7 +806,9 @@ public class CU01_AP1 extends JPanel {
 					
 					poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().getEnumSiniestros(campoNumerosSiniestros.getText()));
 
-					ventana.setContentPane(new CU01_AP2(ventana, tema, this, poliza));
+					//this.setVisible(false);
+					new CU01_AP2(ventana, tema, poliza);
+					//ventana.setContentPane();
 				}
 				
 			}catch(Exception ex) {
@@ -770,8 +818,8 @@ public class CU01_AP1 extends JPanel {
 		 
 		btnCancelar.addActionListener(a -> {
 			try {			
-				
-				ventana.setVisible(false);				
+				this.setVisible(false);
+				ventana.setContentPane(menu);			
 				//ventana.setContentPane(new CU01_AP1(ventana, tema));
 				
 				HibernateUtil.shutdown();
@@ -797,17 +845,13 @@ public class CU01_AP1 extends JPanel {
 		seleccionMarca.addActionListener (a -> {
 			if(seleccionMarca.getSelectedIndex()!=0) {
 				//para cuando es seleccionado luego de clickear el confirmar datos
-				seleccionMarca.setForeground(colorLetra);
 				
-				List <Modelo> modelos = seleccionMarca.getItemAt(seleccionMarca.getSelectedIndex()).getModelos();
-				
-				seleccionModelo.setEnabled(false);
+				seleccionModelo.setEnabled(false);	
 				seleccionModelo.removeAllItems();
 				
-				//TODO ordernar
-				//Collections.sort(modelos);
-				
-				Iterator<Modelo> iteratorModelo = modelos.iterator();
+				GestorParametrosVehiculo g = GestorParametrosVehiculo.get();
+
+				Iterator<Modelo> iteratorModelo = g.sortModelos(seleccionMarca.getItemAt(seleccionMarca.getSelectedIndex()).getModelos()).iterator();
 				while(iteratorModelo.hasNext()){
 					seleccionModelo.addItem(iteratorModelo.next());
 				}				
@@ -816,7 +860,7 @@ public class CU01_AP1 extends JPanel {
 				campoSumaAsegurada.setText("");
 				seleccionAnio.removeAllItems();
 									
-				Iterator<AnioModelo> iteratorAnioModelo = seleccionModelo.getItemAt(0).getAnios().iterator();
+				Iterator<AnioModelo> iteratorAnioModelo = g.sortAniosModelo(seleccionModelo.getItemAt(seleccionModelo.getSelectedIndex()).getAnios()).iterator();
 				while(iteratorAnioModelo.hasNext()){
 					seleccionAnio.addItem(iteratorAnioModelo.next());
 				}
@@ -832,8 +876,6 @@ public class CU01_AP1 extends JPanel {
 				seleccionModelo.removeAllItems();
 				campoSumaAsegurada.setText("");	
 				seleccionAnio.removeAllItems();
-				
-
 			}			
 		});
 		
@@ -1017,8 +1059,9 @@ public class CU01_AP1 extends JPanel {
 		while(iteradorProvincias.hasNext()){
 			seleccionProvincia.addItem(iteradorProvincias.next());
 		}
-				
-		Iterator<Ciudad> iteratorCiudad = provincias.get(0).getCiudades().iterator();
+			
+		seleccionCiudad.removeAllItems();
+		Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(provincias.get(0).getCiudades()).iterator();
 		while(iteratorCiudad.hasNext()){
 			seleccionCiudad.addItem(iteratorCiudad.next());
 		}
