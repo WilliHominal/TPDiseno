@@ -1,13 +1,8 @@
 package isi.dds.tp.app;
 
-import java.awt.Color;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.font.TextAttribute;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -19,8 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.WindowConstants;
-import javax.swing.border.LineBorder;
-
+import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.CargarBase;
 import isi.dds.tp.hibernate.HibernateUtil;
 
@@ -40,18 +34,9 @@ public class AppMenu extends JPanel {
 	}
 	
 	private JFrame ventana;
-	
+	private GestorTema tema = GestorTema.get();
+
 	private Boolean existeBase = true;
-		
-	private Color colorBoton = new Color(0, 128, 128);
-	private Color colorFondoPantalla = new Color(204,204,204);
-	private Color colorFondoTexto = new Color(204, 204, 153); 
-	private Color borde = Color.BLACK;
-	private Color colorLetra = Color.BLACK;
-	private Font letra = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-	private Color colorErroneo = new Color(255,102,102);
-	
-	private Object[] tema = {colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetra, letra, colorErroneo};
 	
 	private JLabel ltitulo = new JLabel("GRUPO 5A");
 	private JLabel lintegrantes = new JLabel("Integrantes:");
@@ -96,7 +81,13 @@ public class AppMenu extends JPanel {
 	}
 	
 	private void inicializarComponentes() {
-		setSize(1024,600);
+		this.ventana = new JFrame();
+		ventana.setContentPane(this);
+		ventana.setTitle("Menú");
+		ventana.pack();
+		ventana.setSize(1024,600);
+		ventana.setLocationRelativeTo(null);
+		ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);	
 		
 		btnDarAltaPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));
 		btnConsultarPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));
@@ -260,110 +251,35 @@ public class AppMenu extends JPanel {
 	}
 		
 	private void inicializarTema() {
-		this.ventana = new JFrame();
-		ventana.setContentPane(this);
-		ventana.setTitle("Menú");
-		ventana.pack();
-		ventana.setSize(1024,600);
-		ventana.setLocationRelativeTo(null);
-		ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);	
-		
-		colorBoton = (Color) tema[0];
-		colorFondoPantalla = (Color) tema[1];
-		colorLetra = (Color) tema[4];
-		letra = (Font) tema[5];
-		
-		setBounds(0,0,1024,600);
-		setFont(letra);
-		setForeground(colorLetra);
-		setBackground(colorFondoPantalla);	
-		
+		tema.panel(this);		
 
 		if(!existeBase) {
-			configurarBaseDatos.setBackground(colorFondoPantalla);
-			configurarBaseDatos.setFont(letra);
-			configurarBaseDatos.setForeground(colorErroneo.darker());
+			tema.textArea(configurarBaseDatos);
 		}
-		
-		ltitulo.setFont(new Font("Open Sans", Font.BOLD, 14));
-		
-		Font font2 = lgestionClientes.getFont();
-		Map<TextAttribute, Object> titulo = new HashMap<>(font2.getAttributes());
-		titulo.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
-		ltitulo.setFont(font2.deriveFont(titulo));
-		
-		
-		ltitulo.setForeground(colorLetra);
-		lintegrantes.setFont(letra);
-		lintegrantes.setForeground(colorLetra);
-		lmilton.setFont(letra);
-		lmilton.setForeground(colorLetra);
-		lexe.setFont(letra);
-		lexe.setForeground(colorLetra);
-		lwilly.setFont(letra);
-		lwilly.setForeground(colorLetra);
-		ljuan.setFont(letra);
-		ljuan.setForeground(colorLetra);
-		
-		lgestionPoliza.setFont(letra);
-		lgestionPoliza.setForeground(colorLetra);
-		lgestionClientes.setFont(letra);
-		lgestionClientes.setForeground(colorLetra);
-		lgestionParametros.setFont(letra);
-		lgestionParametros.setForeground(colorLetra);
-		lreportes.setFont(letra);
-		lreportes.setForeground(colorLetra);
-		
-		Font font = lgestionClientes.getFont();
-		Map<TextAttribute, Object> subrayado = new HashMap<>(font.getAttributes());
-		subrayado.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
 
-		btnDarAltaPoliza.setBackground(colorFondoPantalla);
-		btnDarAltaPoliza.setFont(font.deriveFont(subrayado));
-		btnDarAltaPoliza.setForeground(colorLetra);
-		btnDarAltaPoliza.setBorder(new LineBorder(colorFondoPantalla));
-		btnConsultarPoliza.setBackground(colorFondoPantalla);
-		btnConsultarPoliza.setFont(font.deriveFont(subrayado));
-		btnConsultarPoliza.setForeground(colorLetra);
-		btnConsultarPoliza.setBorder(new LineBorder(colorFondoPantalla));
-		btnGenerarPropuestas.setBackground(colorFondoPantalla);
-		btnGenerarPropuestas.setFont(font.deriveFont(subrayado));
-		btnGenerarPropuestas.setForeground(colorLetra);
-		btnGenerarPropuestas.setBorder(new LineBorder(colorFondoPantalla));
-		btnRegistrarPagoPoliza.setBackground(colorFondoPantalla);
-		btnRegistrarPagoPoliza.setFont(font.deriveFont(subrayado));
-		btnRegistrarPagoPoliza.setForeground(colorLetra);
-		btnRegistrarPagoPoliza.setBorder(new LineBorder(colorFondoPantalla));
-		btnDarAltaCliente.setBackground(colorFondoPantalla);
-		btnDarAltaCliente.setFont(font.deriveFont(subrayado));
-		btnDarAltaCliente.setForeground(colorLetra);
-		btnDarAltaCliente.setBorder(new LineBorder(colorFondoPantalla));
-		btnConsultarCliente.setBackground(colorFondoPantalla);
-		btnConsultarCliente.setFont(font.deriveFont(subrayado));
-		btnConsultarCliente.setForeground(colorLetra);
-		btnConsultarCliente.setBorder(new LineBorder(colorFondoPantalla));
-		btnActualizarFactores.setBackground(colorFondoPantalla);
-		btnActualizarFactores.setFont(font.deriveFont(subrayado));
-		btnActualizarFactores.setForeground(colorLetra);
-		btnActualizarFactores.setBorder(new LineBorder(colorFondoPantalla));
-		btnGenerarListado.setBackground(colorFondoPantalla);
-		btnGenerarListado.setFont(font.deriveFont(subrayado));
-		btnGenerarListado.setForeground(colorLetra);
-		btnGenerarListado.setBorder(new LineBorder(colorFondoPantalla));
-		btnGenerarInforme.setBackground(colorFondoPantalla);
-		btnGenerarInforme.setFont(font.deriveFont(subrayado));
-		btnGenerarInforme.setForeground(colorLetra);
-		btnGenerarInforme.setBorder(new LineBorder(colorFondoPantalla));
+		tema.labelTituloSubrayada(ltitulo);
+		tema.label(lintegrantes);
+		tema.label(lmilton);
+		tema.label(lexe);
+		tema.label(lwilly);
+		tema.label(ljuan);
+		tema.label(lgestionPoliza);
+		tema.label(lgestionClientes);
+		tema.label(lgestionParametros);
+		tema.label(lreportes);
 		
-		btnSalir.setBackground(colorBoton);
-		btnSalir.setFont(letra);
-		btnSalir.setForeground(colorLetra);
+		tema.botonSubrayado(btnDarAltaPoliza);
+		tema.botonSubrayado(btnConsultarPoliza);
+		tema.botonSubrayado(btnGenerarPropuestas);
+		tema.botonSubrayado(btnRegistrarPagoPoliza);
+		tema.botonSubrayado(btnDarAltaCliente);
+		tema.botonSubrayado(btnConsultarCliente);
+		tema.botonSubrayado(btnActualizarFactores);
+		tema.botonSubrayado(btnGenerarListado);
+		tema.botonSubrayado(btnGenerarInforme);
+		tema.boton(btnSalir);
 		
-		checkCargarBase.setBackground(colorFondoPantalla);
-		checkCargarBase.setFont(letra);
-		checkCargarBase.setForeground(colorLetra);
-		checkCargarBase.setToolTipText("Habilita la recarga de la propia base de datos");
-		
+		tema.check(checkCargarBase, "Habilita la recarga de la propia base de datos");
 	}
 
 	private void comportamiento() {
@@ -434,7 +350,7 @@ public class AppMenu extends JPanel {
 	}
 	
 	private void consultarCliente() {
-		new CU17_BuscarCliente(ventana, tema);
+		new CU17_BuscarCliente(ventana);
 	}
 
 	public Boolean conectarBaseDatos() {
@@ -455,6 +371,6 @@ public class AppMenu extends JPanel {
 	
 		
 	public void darAltaPoliza() {
-		new CU01_AP1(ventana, tema);
+		new CU01_AP1(ventana);
 	}
 }

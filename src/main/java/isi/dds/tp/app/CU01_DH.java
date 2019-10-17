@@ -1,9 +1,7 @@
 package isi.dds.tp.app;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.text.ParseException;
@@ -11,15 +9,24 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import javax.swing.*;
+
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.WindowConstants;
+
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 import isi.dds.tp.gestor.GestorEnum;
+import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.HijoDeclarado;
 
 @SuppressWarnings("serial")
-public class CU01_DH extends JFrame  {
+public class CU01_DH extends JPanel  {
 	
 	public final static class DeclararHijoAbierto {
 	    private DeclararHijoAbierto(){}
@@ -28,13 +35,8 @@ public class CU01_DH extends JFrame  {
 	    public static Boolean hijoDeclarado = false;
 	}
 	
-	Boolean seleccionoFechaNac = true;
-	Boolean seleccionoSexo = true;
-	Boolean seleccionoEstadoCivil = true;
-	
-	private Object[] tema;
-	private Color colorBoton, colorFondoPantalla, colorFondoTexto, colorLetra, colorErroneo;
-	private Font letra;
+	private JFrame ventana =  new JFrame();
+	private GestorTema tema = GestorTema.get();
 	
 	private JLabel lfechaNacimiento = new JLabel("Fecha nacimiento*");
 	private JLabel lsexo = new JLabel("Sexo*");
@@ -55,8 +57,7 @@ public class CU01_DH extends JFrame  {
 			public void run() {
 				try {
 
-					new CU01_DH(new Object[]{new Color(0, 128, 128), new Color(204,204,204), new Color(204, 204, 153), Color.BLACK, new Color(71,71,71),
-							Color.BLACK, new Font("Open Sans", Font.PLAIN, 13), new Color(255,102,102)});
+					new CU01_DH();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -65,10 +66,7 @@ public class CU01_DH extends JFrame  {
 	}
 
 	
-	public CU01_DH(Object[] tema) {
-		
-		this.tema = tema;
-		
+	public CU01_DH() {
 		if(DeclararHijoAbierto.declararHijoAbierto == false) {
 			DeclararHijoAbierto.declararHijoAbierto = true;
 			DeclararHijoAbierto.hijo = new HijoDeclarado();
@@ -80,12 +78,7 @@ public class CU01_DH extends JFrame  {
 		
 		comportamiento();
 		
-		setResizable(false);
-		setBounds(0, 0, 420, 250);
-		setLocationRelativeTo(null);
-		setTitle("Dar de alta póliza: AGREGAR DATOS HIJOS");
-		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
-		setVisible(true);		
+		ventana.setVisible(true);		
 	}
 
 	private void ubicarComponentes() {
@@ -149,6 +142,13 @@ public class CU01_DH extends JFrame  {
 	}
 	
 	private void inicializarComponentes() {
+		ventana.setContentPane(this);
+		ventana.setResizable(false);
+		ventana.setBounds(0, 0, 420, 250);
+		ventana.setLocationRelativeTo(null);
+		ventana.setTitle("Dar de alta póliza: AGREGAR DATOS HIJOS");
+		ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		
 		seleccionEstadoCivil.setPreferredSize(new Dimension(105, 25));
 		seleccionSexo.setPreferredSize(new Dimension(105, 25));
 		
@@ -177,39 +177,17 @@ public class CU01_DH extends JFrame  {
 		btnCancelar.setPreferredSize(new Dimension(130, 25));
 	}
 	
-	private void inicializarTema() {		
-		
-		colorBoton = (Color) tema[0];
-		colorFondoPantalla = (Color) tema[1];
-		colorFondoTexto = (Color)tema[2];
-		colorLetra = (Color) tema[5];
-		letra = (Font) tema[6];
-		colorErroneo = (Color) tema[7];
-		
-		
-		setFont(letra);
-		setBackground(colorFondoPantalla);
-
-		lfechaNacimiento.setFont(letra);
-		lsexo.setFont(letra);
-		lestadocivil.setFont(letra);
-		ldatosObligatorios.setFont(new Font("Open Sans", Font.ITALIC, 9));
-
-		((JTextFieldDateEditor)dcFechaNacimiento.getDateEditor()).setBackground(colorFondoTexto);
-		((JTextFieldDateEditor)dcFechaNacimiento.getDateEditor()).setFont(letra);
-		((JTextFieldDateEditor)dcFechaNacimiento.getDateEditor()).setForeground(colorLetra);
-		
-		seleccionSexo.setBackground(colorFondoTexto);
-		seleccionSexo.setFont(letra);
-		seleccionSexo.setForeground(colorLetra);
-		seleccionEstadoCivil.setBackground(colorFondoTexto);
-		seleccionEstadoCivil.setFont(letra);
-		seleccionEstadoCivil.setForeground(colorLetra);
-
-		btnAgregarHijo.setBackground(colorBoton);
-		btnAgregarHijo.setFont(letra);
-		btnCancelar.setBackground(colorBoton);
-		btnCancelar.setFont(letra);
+	private void inicializarTema() {	
+		tema.panel(this);
+		tema.label(lfechaNacimiento);
+		tema.label(lsexo);
+		tema.label(lestadocivil);
+		tema.label(ldatosObligatorios);
+		tema.calendario(dcFechaNacimiento, true);
+		tema.seleccion(seleccionEstadoCivil, true);
+		tema.seleccion(seleccionEstadoCivil, true);
+		tema.boton(btnAgregarHijo);
+		tema.boton(btnCancelar);
 	}
 
 	private void comportamiento() {
@@ -237,13 +215,13 @@ public class CU01_DH extends JFrame  {
 				seleccionEstadoCivil.setEnabled(true);
 			}
 			if(seleccionSexo.getSelectedIndex()>0) {
-				seleccionSexo.setBackground(colorFondoTexto);
+				tema.seleccion(seleccionSexo, true);
 			}
 		});
 		
 		seleccionEstadoCivil.addActionListener (a -> {
 			if(seleccionEstadoCivil.getSelectedIndex() > 0){
-				seleccionEstadoCivil.setBackground(colorFondoTexto);
+				tema.seleccion(seleccionEstadoCivil, true);
 			}
 		});
 		
@@ -272,13 +250,13 @@ public class CU01_DH extends JFrame  {
 			}
 			
 			if (seleccionSexo.getSelectedIndex() == 0) {
-				seleccionSexo.setBackground(colorErroneo);
+				tema.erroneo(seleccionSexo);
 				sexo = "No ha seleccionado un valor del campo sexo.\n";
 				huboError = true;
 			}
 			
 			if (seleccionEstadoCivil.getSelectedIndex() == 0) {
-				seleccionEstadoCivil.setBackground(colorErroneo);
+				tema.erroneo(seleccionEstadoCivil);
 				estadoCivil = "No ha seleccionado un valor del campo estado civil.";
 				huboError = true;
 			}
@@ -287,6 +265,7 @@ public class CU01_DH extends JFrame  {
 				JOptionPane.showConfirmDialog(this, fechaNac + sexo + estadoCivil , "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 			}
 			else {
+				
 				if(DeclararHijoAbierto.declararHijoAbierto == true) {
 					
 					DeclararHijoAbierto.declararHijoAbierto = false;
@@ -299,9 +278,9 @@ public class CU01_DH extends JFrame  {
 						
 					DeclararHijoAbierto.hijoDeclarado = true;
 					
-					this.setVisible(false);
+					ventana.setVisible(false);
 				}
-				
+				//ventana.setVisible(false);
 			}
 			
 		});
@@ -312,7 +291,7 @@ public class CU01_DH extends JFrame  {
 				DeclararHijoAbierto.hijo = null;
 				DeclararHijoAbierto.hijoDeclarado = false;
 			}
-			this.setVisible(false);
+			ventana.setVisible(false);
 		});
 	}
 
@@ -361,11 +340,11 @@ public class CU01_DH extends JFrame  {
 		}
 		
 		if(valido1&&valido2){
-			((JTextFieldDateEditor)dcFechaNacimiento.getDateEditor()).setBackground(colorFondoTexto);
+			tema.calendario(dcFechaNacimiento, true);
 			return true;
 		}
 		else {
-			((JTextFieldDateEditor)dcFechaNacimiento.getDateEditor()).setBackground(colorErroneo);
+			tema.erroneo(((JTextFieldDateEditor)dcFechaNacimiento.getDateEditor()));
 			return false;
 		}
 	}

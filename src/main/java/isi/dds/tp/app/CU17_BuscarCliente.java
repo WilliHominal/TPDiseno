@@ -1,14 +1,13 @@
 package isi.dds.tp.app;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.EventQueue;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import javax.swing.BorderFactory;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -19,12 +18,10 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-import javax.swing.UIManager;
 import javax.swing.WindowConstants;
-import javax.swing.border.EtchedBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import isi.dds.tp.gestor.GestorCliente;
+import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.Cliente;
 
 
@@ -43,33 +40,21 @@ public class CU17_BuscarCliente extends JPanel {
 		});
 	}
 
-	public CU17_BuscarCliente() {
-		Color colorBoton = new Color(0, 128, 128);
-		Color colorFondoPantalla = new Color(204,204,204);
-		Color colorFondoTexto = new Color(204, 204, 153); 
-		Color borde = Color.BLACK;
-		Color colorLetra = Color.BLACK;
-		Font letra = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-		Color colorErroneo = new Color(255,102,102);
-		Object[] tema = {colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetra, letra, colorErroneo};
-		
+	public CU17_BuscarCliente() {		
 		JFrame frame = new JFrame();
 		frame.pack();
 		frame.setBounds(0,0,1024,600);
 		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);	
 		frame.setLocationRelativeTo(null);
-		new CU17_BuscarCliente(frame, tema);
-		frame.setVisible(true);
-		
+		new CU17_BuscarCliente(frame);
+		frame.setVisible(true);		
 	}
 	
 	private JFrame ventana;
-	private AppMenu menu;
-	private Object[] tema;
-	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetra, colorErroneo;
-	private Font letra;
+	private JPanel panelAnterior;
+	private GestorTema tema = GestorTema.get();
 	
-	public Cliente cliente = null;
+	private List<Cliente> clientes = new ArrayList<Cliente>();
 	
 	private JLabel lnumeroCliente = new JLabel("Número cliente:");
 	private JLabel lapellido = new JLabel("Apellido:");
@@ -94,15 +79,14 @@ public class CU17_BuscarCliente extends JPanel {
 	private Object[][] datosTabla = {{""},{""},{""},{""},{""}};
 	private DefaultTableModel model;
 	
-	public CU17_BuscarCliente(JFrame ventana, Object[] tema) {
+	public CU17_BuscarCliente(JFrame ventana) {
 		this.ventana = ventana;
-		this.tema = tema;
 		
 		try {			
-			menu = (AppMenu) ventana.getContentPane();
+			panelAnterior = (JPanel) ventana.getContentPane();
 			
 		}catch(Exception ex) {
-		    menu = null;
+		    panelAnterior = null;
 		}
 
 		ventana.setContentPane(this);
@@ -133,7 +117,7 @@ public class CU17_BuscarCliente extends JPanel {
 		seleccionTipoDocumento.addItem("Libreta de enrolamiento");
 		
 		
-		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 15) {
+		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 0) {
 		    @Override
 		    public boolean isCellEditable(int row, int column) {
 		       return false;
@@ -258,78 +242,34 @@ public class CU17_BuscarCliente extends JPanel {
 	}
 		
 	private void inicializarTema() {	
+		tema.panel(this);
 		
-		colorBoton = (Color) tema[0];
-		colorFondoPantalla = (Color) tema[1];
-		colorFondoTexto = (Color)tema[2];
-		borde = (Color)tema[3];
-		colorLetra = (Color) tema[4];
-		letra = (Font) tema[5];
-		colorErroneo = (Color) tema[6];
+		tema.label(lnumeroCliente);
+		tema.label(ltipoDocumento);
+		tema.label(lnumeroDocumento);
+		tema.label(lapellido);
+		tema.label(lnombre);
+		tema.label(ltotalFilas);
 		
-		setFont(letra);
-		setBackground(colorFondoPantalla);
-		setForeground(colorLetra);
+		tema.campo(campoNumeroCliente, true);
+		tema.campo(campoApellido, true);
+		tema.campo(campoNumeroDocumento, true);
+		tema.campo(campoNombre, true);
+		tema.campo(campoTotalFilas, true);
 		
-		lnumeroCliente.setFont(letra);
-		lnumeroCliente.setForeground(colorLetra);
-		ltipoDocumento.setFont(letra);
-		ltipoDocumento.setForeground(colorLetra);
-		lnumeroDocumento.setFont(letra);
-		lnumeroDocumento.setForeground(colorLetra);
-		lapellido .setFont(letra);
-		lapellido.setForeground(colorLetra);
-		lnombre.setFont(letra);
-		lnombre.setForeground(colorLetra);
-		ltotalFilas.setFont(letra);
-		ltotalFilas.setForeground(colorLetra);
-			
-		campoNumeroCliente.setFont(letra);
-		campoNumeroCliente.setBackground(colorFondoTexto);
-		campoNumeroCliente.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoNumeroCliente.setDisabledTextColor(colorLetra);
-		campoNumeroDocumento.setFont(letra);
-		campoNumeroDocumento.setBackground(colorFondoTexto);
-		campoNumeroDocumento.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoNumeroDocumento.setDisabledTextColor(colorLetra);
-		campoApellido.setFont(letra);
-		campoApellido.setBackground(colorFondoTexto);
-		campoApellido.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoApellido.setDisabledTextColor(colorLetra);
-		campoNombre.setFont(letra);
-		campoNombre.setBackground(colorFondoTexto);
-		campoNombre.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoNombre.setDisabledTextColor(colorLetra);
-		campoApellido.setFont(letra);
-		campoApellido.setBackground(colorFondoTexto);
-		campoApellido.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		campoApellido.setDisabledTextColor(colorLetra);
+		tema.boton(btnBuscar);
+		tema.boton(btnCancelar);
 		
-		btnBuscar.setBackground(colorBoton);
-		btnBuscar.setFont(letra);
-		btnBuscar.setForeground(colorLetra);
-		btnCancelar.setBackground(colorBoton);
-		btnCancelar.setFont(letra);
-		btnCancelar.setForeground(colorLetra);
-		
-		UIManager.put( "ComboBox.disabledBackground", colorFondoPantalla );
-		UIManager.put( "ComboBox.disabledForeground", colorLetra );
-		seleccionTipoDocumento.setBackground(colorFondoPantalla);
-		seleccionTipoDocumento.setFont(letra);
-		seleccionTipoDocumento.setForeground(colorLetra);
-		
-		tablaClientes.setBackground(colorFondoTexto);
-		tablaClientes.setFont(letra);
-		tablaClientes.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		tablaClientes.setForeground(colorLetra);
-		tablaClientesScroll.getViewport().setBackground(colorFondoTexto);
+		tema.seleccion(seleccionTipoDocumento, true);
+
+		tema.tabla(tablaClientes, true);
+		tema.tablaScroll(tablaClientesScroll, true);
 	}
 
 	public void comportamientos() {
 		btnBuscar.addActionListener(a -> {
 			try {
-				//GestorCliente.get().getClientes() o consultaClientes
-				cliente = GestorCliente.get().getCliente(123456l);
+				cargarTabla(clientes);
 						
 			}catch(Exception ex) {
             	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
@@ -340,7 +280,7 @@ public class CU17_BuscarCliente extends JPanel {
 		btnCancelar.addActionListener(a -> {
 			try {			
 				this.setVisible(false);
-				ventana.setContentPane(menu);				
+				ventana.setContentPane(panelAnterior);				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -390,13 +330,45 @@ public class CU17_BuscarCliente extends JPanel {
 		});		
 	}
 
-
 	@SuppressWarnings("unused")
-	private void cargarTabla() {
-		model.setValueAt(1, 1, 0);
-		model.setValueAt("aa", 1, 1);
-		model.setValueAt("aa", 1, 2);
-	}
+	private void cargarTabla(List<Cliente> clientes) {
+		int tamanioTablaActual = clientes.size();
+		
+		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, tamanioTablaActual) {
+		    @Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		};
+		
+		model = tableModel;		
+		tablaClientes.setModel(tableModel);
+		
+		DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
+		centrado.setHorizontalAlignment( JLabel.CENTER );
+		
+		tablaClientes.getColumnModel().getColumn(0).setCellRenderer(centrado);
+		tablaClientes.getColumnModel().getColumn(1).setCellRenderer(centrado);
+		tablaClientes.getColumnModel().getColumn(2).setCellRenderer(centrado);
+		tablaClientes.getColumnModel().getColumn(3).setCellRenderer(centrado);
+		
+		tablaClientes.getColumnModel().getColumn(0).setPreferredWidth(50);
+		tablaClientes.getColumnModel().getColumn(1).setPreferredWidth(130);
+		tablaClientes.getColumnModel().getColumn(2).setPreferredWidth(85);
+		tablaClientes.getColumnModel().getColumn(3).setPreferredWidth(85);
+		
+		tablaClientes.getColumnModel().getColumn(0).setHeaderValue("Hijo");
+		tablaClientes.getColumnModel().getColumn(1).setHeaderValue("Fecha nacimiento");
+		tablaClientes.getColumnModel().getColumn(2).setHeaderValue("Sexo");
+		tablaClientes.getColumnModel().getColumn(3).setHeaderValue("Estado civil");
+		
+		for(int fila = 0; fila < tamanioTablaActual; fila++) {
+			
+			model.setValueAt(fila+1, fila, 0);
+
+		}
+		
+	}	
 }
 
 

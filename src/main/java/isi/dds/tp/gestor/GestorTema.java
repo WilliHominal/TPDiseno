@@ -123,8 +123,6 @@ public class GestorTema {
     @SuppressWarnings("rawtypes")
 	public void seleccion(JComboBox seleccion, Boolean habilitada) {
     	if(habilitada) {
-    		UIManager.put( "ComboBox.disabledBackground", colorFondoTexto );
-    		UIManager.put( "ComboBox.disabledForeground", colorLetra );
     		seleccion.setBackground(colorFondoTexto);
     		seleccion.setFont(letra);
     		seleccion.setForeground(colorLetra);

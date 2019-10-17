@@ -31,6 +31,10 @@ public class TipoCobertura {
 		
 	}
 	
+	public TipoCobertura(String nombre) {
+		this.nombre = nombre;
+	}
+	
 	public TipoCobertura(EnumTipoCobertura tipoCobertura, String nombre, String descripcion, Float riesgo) {
 		this.riesgo =  new  ArrayList<RiesgoTipoCobertura>();
 		this.riesgo.add(new RiesgoTipoCobertura(this, riesgo));
