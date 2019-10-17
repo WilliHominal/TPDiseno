@@ -68,7 +68,7 @@ public class CU01_AP2 extends JPanel  {
 		JFrame frame = new JFrame();
 		frame.pack();
 		frame.setBounds(0,0,1024,600);
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);	
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
 		frame.setLocationRelativeTo(null);
 		new CU01_AP2(frame, poliza);
 		frame.setVisible(true);
@@ -621,7 +621,7 @@ public class CU01_AP2 extends JPanel  {
 			valido = false;
 		}
 		else {
-			tema.erroneo(((JTextFieldDateEditor)dcInicioVigencia.getDateEditor()));
+			tema.calendario(dcInicioVigencia, true);
 		}
 		
 		if(!valido) {
@@ -637,6 +637,7 @@ public class CU01_AP2 extends JPanel  {
 			tema.seleccion(seleccionTipoCobertura, false);
 			tema.calendario(dcInicioVigencia, false);
 			*/
+			
 			dcInicioVigencia.setEnabled(true);
 			
 			btnGenerarPoliza.setEnabled(true);

@@ -87,7 +87,7 @@ public class AppMenu extends JPanel {
 		ventana.pack();
 		ventana.setSize(1024,600);
 		ventana.setLocationRelativeTo(null);
-		ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);	
+		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
 		
 		btnDarAltaPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));
 		btnConsultarPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));

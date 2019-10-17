@@ -147,7 +147,7 @@ public class CU01_DH extends JPanel  {
 		ventana.setBounds(0, 0, 420, 250);
 		ventana.setLocationRelativeTo(null);
 		ventana.setTitle("Dar de alta póliza: AGREGAR DATOS HIJOS");
-		ventana.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		
 		seleccionEstadoCivil.setPreferredSize(new Dimension(105, 25));
 		seleccionSexo.setPreferredSize(new Dimension(105, 25));

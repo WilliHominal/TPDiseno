@@ -188,7 +188,7 @@ public class GestorTema {
 			((JTextFieldDateEditor)calendario.getDateEditor()).setBackground(colorFondoDeshabilitado);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setFont(letra);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-			((JTextFieldDateEditor)calendario.getDateEditor()).setForeground(colorLetraDeshabilitada);
+			((JTextFieldDateEditor)calendario.getDateEditor()).setDisabledTextColor(colorLetraDeshabilitada);
 		}
 	}
     

@@ -44,7 +44,7 @@ public class CU17_BuscarCliente extends JPanel {
 		JFrame frame = new JFrame();
 		frame.pack();
 		frame.setBounds(0,0,1024,600);
-		frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);	
+		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
 		frame.setLocationRelativeTo(null);
 		new CU17_BuscarCliente(frame);
 		frame.setVisible(true);		
@@ -330,7 +330,6 @@ public class CU17_BuscarCliente extends JPanel {
 		});		
 	}
 
-	@SuppressWarnings("unused")
 	private void cargarTabla(List<Cliente> clientes) {
 		int tamanioTablaActual = clientes.size();
 		
