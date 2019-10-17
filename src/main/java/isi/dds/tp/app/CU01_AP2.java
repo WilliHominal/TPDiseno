@@ -39,10 +39,7 @@ public class CU01_AP2 extends JPanel  {
 		});
 	}
 
-	public CU01_AP2() {
-		//TODO para probar marcar como comentario la linea
-			//this.cu01_ap1 = (CU01_AP1) ventana.getContentPane(); ubicada en  CU01_AP2(JFrame ventana, Object[] tema, Poliza poliza)
-				
+	public CU01_AP2() {				
 		poliza = new Poliza(2222222111l);
 		Cliente cliente1 = GestorCliente.get().getCliente(123456l);
 		poliza.setCliente(cliente1);
@@ -68,7 +65,7 @@ public class CU01_AP2 extends JPanel  {
 	
 	private Poliza poliza;
 	private JFrame ventana;
-	public CU01_AP1 cu01_ap1;
+	private CU01_AP1 cu01_ap1;
 	
 	private Object tema[];
 	private Color colorBoton, colorFondoPantalla, colorFondoTexto, borde, colorLetra, colorErroneo;
@@ -126,11 +123,16 @@ public class CU01_AP2 extends JPanel  {
 	private JScrollPane scrollTablaPagos;
 
 	public CU01_AP2(JFrame ventana, Object[] tema, Poliza poliza) {
-		//para probar marcar como comentario la siguiente linea
-		//this.cu01_ap1 = (CU01_AP1) ventana.getContentPane();
 		this.ventana = ventana;
 		this.tema = tema;
 		this.poliza = poliza;
+		
+		try {			
+			cu01_ap1 = (CU01_AP1) ventana.getContentPane();
+			
+		}catch(Exception ex) {
+			cu01_ap1 = null;
+		}
 		
 		ventana.setContentPane(this);
 
@@ -487,7 +489,6 @@ public class CU01_AP2 extends JPanel  {
 		      calendar.getTime(); 
 			dcInicioVigencia.setDate(calendar.getTime());
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -612,8 +613,6 @@ public class CU01_AP2 extends JPanel  {
 			}
 		});
 		
-		//TODO VER ESTO DE SELECCIONAR COMBOBOXC
-
 		btnGenerarPoliza.addActionListener(a -> {
 
 			if(JOptionPane.showConfirmDialog(ventana, "¿Desea generar la póliza?","Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
@@ -684,7 +683,6 @@ public class CU01_AP2 extends JPanel  {
 		try {
 			fechaInicioVigenciaDate = formato.parse(formato.format(dcInicioVigencia.getDate()));
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

@@ -158,4 +158,36 @@ public class GestorEnum {
     	}
     	return null;
     }
+    
+    public EnumTipoDocumento getEnumTipoDocumento(String tipoDocumento) {
+    	if(tipoDocumento.equals("DNI")) {
+    		return EnumTipoDocumento.DNI;
+    	}
+    	if(tipoDocumento.equals("Pasaporte")) {
+    		return EnumTipoDocumento.PASAPORTE;
+    	}
+    	if(tipoDocumento.equals("Libreta civil")) {
+    		return EnumTipoDocumento.LIBRETA_CIVIL;
+    	}
+    	if(tipoDocumento.equals("Libreta de enrolamiento")) {
+    		return EnumTipoDocumento.LIBRETA_DE_ENROLAMIENTO;
+    	}
+    	return null;    	
+    }
+    
+    public String getStringTipoDocumento(EnumTipoDocumento tipoDocumento) {
+    	if(tipoDocumento.equals(EnumTipoDocumento.DNI)) {
+    		return "DNI";
+    	}
+    	if(tipoDocumento.equals(EnumTipoDocumento.PASAPORTE)) {
+    		return "Pasaporte";
+    	}
+    	if(tipoDocumento.equals(EnumTipoDocumento.LIBRETA_CIVIL)) {
+    		return "Libreta civil";
+    	}
+    	if(tipoDocumento.equals(EnumTipoDocumento.LIBRETA_DE_ENROLAMIENTO)) {
+    		return "Libreta de enrolamiento";
+    	}
+    	return null;
+    }
 }

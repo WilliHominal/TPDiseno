@@ -1,6 +1,8 @@
 package isi.dds.tp.hibernate;
 
 import java.time.LocalDate;
+import java.util.List;
+
 import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.EnumCondicionIVA;
 import isi.dds.tp.enums.EnumEstadoCivil;
@@ -63,16 +65,55 @@ public class CargarBase {
 		Ciudad ciudad5 = new Ciudad(prov3, "Paraná", 5f);
 		Ciudad ciudad6 = new Ciudad(prov3, "Diamante", 6f);
 
-		Marca marca = new Marca("Volskwagen");
-			Modelo modelo = new Modelo(marca, "Passat", 0.6f);
-				new AnioModelo(modelo, 2018, 158231f);
-				new AnioModelo(modelo, 2019, 170200f);
-			Modelo modelo1 = new Modelo(marca, "Golf", 0.3f);
-				new AnioModelo(modelo1, 2017, 54120f);
-				new AnioModelo(modelo1, 2019, 67210f);
-			Modelo modelo2 = new Modelo(marca, "Scirocco", 0.8f);
-				new AnioModelo(modelo2, 2018, 187800f);
-				new AnioModelo(modelo2, 2019, 210630f);
+		Marca marca = new Marca("Volkswagen");
+		/*List<Modelo> m = marca.getModelos(); 
+		
+		m.add(new Modelo(marca, "Amarok", 0.8f));
+		new AnioModelo(m.get(0), 2014, 45800f);
+		new AnioModelo(m.get(0), 2015, 51222f);
+		new AnioModelo(m.get(0), 2016, 58120f);
+
+		Modelo modelo2 = new Modelo(marca, "Bora", 0.8f);
+
+		Modelo modelo3 = new Modelo(marca, "Caddy", 0.8f);
+
+		Modelo modelo4 = new Modelo(marca, "Fox", 0.8f);
+
+		Modelo modelo5 = new Modelo(marca, "Gol", 0.8f);
+
+		Modelo modelo6 = new Modelo(marca, "Golf", 0.8f);
+		
+		Modelo modelo7 = new Modelo(marca, "Multivan", 0.8f);
+
+		Modelo modelo8 = new Modelo(marca, "New Beetle", 0.8f);
+
+		Modelo modelo9 = new Modelo(marca, "Passat", 0.8f);
+
+		Modelo modelo10 = new Modelo(marca, "Polo", 0.8f);
+
+		Modelo modelo11 = new Modelo(marca, "Santana", 0.8f);
+
+		Modelo modelo12 = new Modelo(marca, "Saveiro", 0.8f);
+		
+		Modelo modelo13 = new Modelo(marca, "Voyage", 0.8f);
+
+		Modelo modelo14 = new Modelo(marca, "Vento", 0.8f);
+
+		Modelo modelo15 = new Modelo(marca, "Up", 0.8f);
+
+		Modelo modelo16 = new Modelo(marca, "Transporter", 0.8f);
+
+		Modelo modelo17 = new Modelo(marca, "The Beetle", 0.8f);
+
+		Modelo modelo18 = new Modelo(marca, "T-Cross", 0.8f);
+
+		Modelo modelo19 = new Modelo(marca, "Suran", 0.8f);
+
+		Modelo modelo20 = new Modelo(marca, "Sharan", 0.8f);
+
+		Modelo modelo21 = new Modelo(marca, "Scirocco", 0.8f);
+
+	*/
 				
 		Marca marca1 = new Marca("Fiat");
 			Modelo modelo3 = new Modelo(marca1, "Argo", 0.21f);
@@ -120,8 +161,59 @@ public class CargarBase {
 				new AnioModelo(modelo12, 2019, 230093f);
 			Modelo modelo13 = new Modelo(marca3, "Kangoo II", 0.47f);
 				new AnioModelo(modelo13, 2019, 92630f);
+			
+		/*Marca marca4 = new Marca("Alfa Romeo");
+		
+		Marca marca5 = new Marca("Audi");
+		
+		Marca marca6 = new Marca("MBW");
+		
+		Marca marca7 = new Marca("Chery");
+		
+		Marca marca8 = new Marca("Chevrolet");
+		
+		Marca marca9 = new Marca("Chrysler");
+		
+		Marca marca10 = new Marca("Citroen");
+		
+		Marca marca11 = new Marca("Dodge");
+		
+		Marca marca12 = new Marca("Ferrari");
+		
+		Marca marca13 = new Marca("Honda");
+		
+		Marca marca14 = new Marca("Hyundai");
+		
+		Marca marca15 = new Marca("Jaguar");
+		
+		Marca marca16 = new Marca("Jeep");
+		
+		Marca marca17 = new Marca("Kia");
 				
-		Usuario usuario = new Usuario("Milton");
+		Marca marca18 = new Marca("Land Rover");
+		
+		Marca marca19 = new Marca("Mercedes Benz");
+		
+		Marca marca20 = new Marca("Mitsubishi");
+		
+		Marca marca21 = new Marca("Nissan");
+		
+		Marca marca22 = new Marca("Peugeot");
+		
+		Marca marca23 = new Marca("Porsche");
+		
+		Marca marca24 = new Marca("Seat");
+		
+		Marca marca25 = new Marca("Susuki");
+		
+		Marca marca26 = new Marca("Toyota");
+		
+		Marca marca27 = new Marca("Volvo");*/
+		
+		
+		
+		
+		Usuario usuario = new Usuario("Milto");
 						
 		TipoCobertura cobertura = new TipoCobertura(EnumTipoCobertura.RESPONSABILIDAD_CIVIL, "Responsabilidad civil", "Descripcion uno", 0.23f);
 		TipoCobertura cobertura1 = new TipoCobertura(EnumTipoCobertura.RESP_CIVIL_ROBO_O_INCENDIO_TOTAL, "Responsabilidad civil, robo o incendio total", "Descripcion dos", 0.39f);

@@ -118,7 +118,7 @@ public class AppMenu extends JPanel {
 		btnGenerarInforme.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));*/
 		
 		btnDarAltaPoliza.setEnabled(existeBase);
-		btnConsultarPoliza.setEnabled(false);
+		btnConsultarPoliza.setEnabled(existeBase);
 		btnGenerarPropuestas.setEnabled(false);
 		btnRegistrarPagoPoliza.setEnabled(false);
 		btnDarAltaCliente.setEnabled(false);
@@ -369,8 +369,7 @@ public class AppMenu extends JPanel {
 	private void comportamiento() {
 		
 		btnDarAltaPoliza.addActionListener(a -> {
-			try {			
-				
+			try {		
 				if(checkCargarBase.isSelected()) {
 					recargarBaseDatos();
 					checkCargarBase.setSelected(false);
@@ -383,11 +382,16 @@ public class AppMenu extends JPanel {
 		});
 		
 		btnConsultarPoliza.addActionListener(a -> {
-			    JOptionPane.showMessageDialog(ventana, "Función temporalmente no disponible.\n", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-		});
-		
-		btnConsultarPoliza.addActionListener(a -> {
-		    JOptionPane.showMessageDialog(ventana, "Función temporalmente no disponible.\n", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+			try {			
+				if(checkCargarBase.isSelected()) {
+					recargarBaseDatos();
+					checkCargarBase.setSelected(false);
+				}
+				consultarCliente();
+				
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
 		});
 		
 		btnGenerarPropuestas.addActionListener(a -> {
@@ -429,6 +433,10 @@ public class AppMenu extends JPanel {
 		
 	}
 	
+	private void consultarCliente() {
+		new CU17_BuscarCliente(ventana, tema);
+	}
+
 	public Boolean conectarBaseDatos() {
 		if(HibernateUtil.getSessionFactoryValidate() != null) {
 			return true;
