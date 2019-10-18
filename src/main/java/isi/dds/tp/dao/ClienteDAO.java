@@ -1,8 +1,9 @@
 package isi.dds.tp.dao;
 
+import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Cliente;
 
@@ -46,6 +47,19 @@ public class ClienteDAO {
             e.printStackTrace();
         }
     	    	
+    	return null;
+    }
+    
+	public List<Cliente> getClientes(String consulta) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+
+            return session.createNativeQuery("SELECT * FROM cliente "+consulta+" ORDER BY nombre", Cliente.class).getResultList();
+            
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
     	return null;
     }
     

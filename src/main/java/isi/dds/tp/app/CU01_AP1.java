@@ -547,15 +547,14 @@ public class CU01_AP1 extends JPanel {
 			try {
 				
 				new CU17_BuscarCliente(ventana);
-				
-				//GestorCliente.get().getClientes() o consultaClientes
-				cliente = GestorCliente.get().getCliente(123456l);
-				obtenidoCliente(cliente);
-				
-				poliza.setCliente(cliente);
-				cliente.getPolizas().add(poliza);
-
-
+				/*if(cliente != null) {
+					
+					cliente = GestorCliente.get().getCliente(123456l);
+					obtenidoCliente(cliente);
+					
+					poliza.setCliente(cliente);
+					cliente.getPolizas().add(poliza);
+				}*/
 						
 			}catch(Exception ex) {
             	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
@@ -897,7 +896,7 @@ public class CU01_AP1 extends JPanel {
 	 * @param cliente
 	 */
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-	private void obtenidoCliente(Cliente cliente){
+	public void obtenidoCliente(Cliente cliente){
 		campoNumeroCliente.setText(cliente.getNumeroCliente().toString());
 		campoTipoDocumento.setText(cliente.getTipoDocumento().toString());
 		campoNumeroDocumento.setText(cliente.getNumeroDocumento().toString());

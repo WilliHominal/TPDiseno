@@ -21,6 +21,10 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
+import isi.dds.tp.enums.EnumTipoDocumento;
+import isi.dds.tp.gestor.GestorCliente;
+import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.Cliente;
 
@@ -62,6 +66,7 @@ public class CU17_BuscarCliente extends JPanel {
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
 	private JLabel lnumeroDocumento = new JLabel("Documento:");
 	private JLabel ltotalFilas = new JLabel("Total de filas:");
+	private JLabel lordenarPor = new JLabel("Ordenar por:");
 		
 	private JTextField campoNumeroCliente = new JTextField(18);
 	private JTextField campoNumeroDocumento = new JTextField(18);
@@ -73,7 +78,7 @@ public class CU17_BuscarCliente extends JPanel {
 	private JButton btnCancelar = new JButton("CANCELAR");
 	
 	private JComboBox<String> seleccionTipoDocumento = new JComboBox<String>();
-	
+	private JComboBox<String> seleccionOrdenar = new JComboBox<String>();
 	private JTable tablaClientes = new JTable();
 	private JScrollPane tablaClientesScroll = new JScrollPane(tablaClientes);
 	private Object[][] datosTabla = {{""},{""},{""},{""},{""}};
@@ -116,6 +121,13 @@ public class CU17_BuscarCliente extends JPanel {
 		seleccionTipoDocumento.addItem("Libreta civil");
 		seleccionTipoDocumento.addItem("Libreta de enrolamiento");
 		
+		seleccionOrdenar.addItem("Default");
+		seleccionOrdenar.addItem("Número cliente");
+		seleccionOrdenar.addItem("Apellido");
+		seleccionOrdenar.addItem("Nombre");
+		seleccionOrdenar.addItem("Tipo documento");
+		seleccionOrdenar.addItem("Número documento");
+		
 		
 		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 0) {
 		    @Override
@@ -128,29 +140,8 @@ public class CU17_BuscarCliente extends JPanel {
 		
 		tablaClientes.setFillsViewportHeight(true);
 		tablaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
-		centrado.setHorizontalAlignment( JLabel.CENTER );
-		
-		tablaClientes.getColumnModel().getColumn(0).setCellRenderer(centrado);
-		tablaClientes.getColumnModel().getColumn(1).setCellRenderer(centrado);
-		tablaClientes.getColumnModel().getColumn(2).setCellRenderer(centrado);
-		tablaClientes.getColumnModel().getColumn(3).setCellRenderer(centrado);
-		tablaClientes.getColumnModel().getColumn(4).setCellRenderer(centrado);
-		
-		tablaClientes.getColumnModel().getColumn(0).setPreferredWidth(100);
-		tablaClientes.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tablaClientes.getColumnModel().getColumn(2).setPreferredWidth(100);
-		tablaClientes.getColumnModel().getColumn(3).setPreferredWidth(100);
-		tablaClientes.getColumnModel().getColumn(4).setPreferredWidth(100);
-		
-		tablaClientes.getColumnModel().getColumn(0).setHeaderValue("Número cliente");
-		tablaClientes.getColumnModel().getColumn(1).setHeaderValue("Apellido");
-		tablaClientes.getColumnModel().getColumn(2).setHeaderValue("Nombre");
-		tablaClientes.getColumnModel().getColumn(3).setHeaderValue("Tipo documento");
-		tablaClientes.getColumnModel().getColumn(4).setHeaderValue("Número documento");
-		
+		cargarTabla(null);		
 		tablaClientesScroll.setPreferredSize(new Dimension(600, 500));
-		
 		model = (DefaultTableModel) tablaClientes.getModel();
 	}
 	
@@ -214,6 +205,16 @@ public class CU17_BuscarCliente extends JPanel {
 		
 		constraints.gridx = 0;
 		constraints.gridy = 5;
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets.set(10, 5, 10, 5);
+		add(lordenarPor, constraints);
+		constraints.gridx = 1;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(10, 10, 10, 5);
+		add(seleccionOrdenar, constraints);	
+		
+		constraints.gridx = 0;
+		constraints.gridy = 6;
 		constraints.gridwidth = 2;
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.insets.set(50, 5, 5, 150);
@@ -223,13 +224,13 @@ public class CU17_BuscarCliente extends JPanel {
 		
 		constraints.gridx = 2;
 		constraints.gridy = 0;
-		constraints.gridheight = 7;
+		constraints.gridheight = 8;
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.insets.set(5, 50, 5, 5);
 		add(tablaClientesScroll, constraints);	
 		
 		constraints.gridx = 2;
-		constraints.gridy = 7;
+		constraints.gridy = 8;
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets.set(5, 5, 5, 5);
@@ -250,6 +251,7 @@ public class CU17_BuscarCliente extends JPanel {
 		tema.label(lapellido);
 		tema.label(lnombre);
 		tema.label(ltotalFilas);
+		tema.label(lordenarPor);
 		
 		tema.campo(campoNumeroCliente, true);
 		tema.campo(campoApellido, true);
@@ -261,6 +263,7 @@ public class CU17_BuscarCliente extends JPanel {
 		tema.boton(btnCancelar);
 		
 		tema.seleccion(seleccionTipoDocumento, true);
+		tema.seleccion(seleccionOrdenar, true);
 
 		tema.tabla(tablaClientes, true);
 		tema.tablaScroll(tablaClientesScroll, true);
@@ -269,7 +272,37 @@ public class CU17_BuscarCliente extends JPanel {
 	public void comportamientos() {
 		btnBuscar.addActionListener(a -> {
 			try {
+				Long numeroCliente = null;
+				String apellido = null;
+				String nombre = null;
+				EnumTipoDocumento tipoDocumento= null;
+				Integer numeroDocumento = null; 				
+				
+				if(!campoNumeroCliente.getText().isBlank()) {
+					numeroCliente = Long.parseLong(campoNumeroCliente.getText());
+				}
+				
+				if(!campoApellido.getText().isBlank()) {
+					apellido = campoApellido.getText();
+				}
+				
+				if(!campoNombre.getText().isBlank()) {
+					nombre = campoNombre.getText();
+				}
+				
+				if(seleccionTipoDocumento.getSelectedIndex() != 0) {
+					tipoDocumento = GestorEnum.get().getEnumTipoDocumento(seleccionTipoDocumento.getItemAt(seleccionTipoDocumento.getSelectedIndex()));
+				}
+								
+				if(!campoNumeroDocumento.getText().isBlank()) {
+					numeroDocumento = Integer.parseInt(campoNumeroDocumento.getText());
+				}
+				
+				
+				clientes = GestorCliente.get().buscarClientes(numeroCliente, apellido, nombre, tipoDocumento, numeroDocumento);
+				
 				cargarTabla(clientes);
+				
 						
 			}catch(Exception ex) {
             	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
@@ -286,10 +319,23 @@ public class CU17_BuscarCliente extends JPanel {
 			}
 		});
 		
+		campoNumeroCliente.addKeyListener(new KeyAdapter(){
+			public void keyTyped(KeyEvent e){
+				char caracter = e.getKeyChar();
+				if(Character.isDigit(caracter) && campoApellido.getText().length() < 8){
+					
+				}
+				else{
+					e.consume();  // ignorar el evento de teclado
+					getToolkit().beep();
+				}
+			}
+		}); 
+		
 		campoApellido.addKeyListener(new KeyAdapter(){
 			public void keyTyped(KeyEvent e){
 				char caracter = e.getKeyChar();
-				if(Character.isLetter(caracter) && campoApellido.getText().length() < 8){
+				if(Character.isLetter(caracter) && campoApellido.getText().length() < 30){
 					
 				}
 				else{
@@ -302,7 +348,7 @@ public class CU17_BuscarCliente extends JPanel {
 	    campoNombre.addKeyListener(new KeyAdapter(){ 
 	    	public void keyTyped(KeyEvent e){
 				char caracter = e.getKeyChar();
-				if(Character.isLetter(caracter) && campoNombre.getText().length() < 8){
+				if(Character.isLetter(caracter) && campoNombre.getText().length() < 30){
 					
 				}
 				else{
@@ -315,7 +361,8 @@ public class CU17_BuscarCliente extends JPanel {
 	    campoNumeroDocumento.addKeyListener(new KeyAdapter(){
 	    	public void keyTyped(KeyEvent e){
 				char caracter = e.getKeyChar();
-				if(Character.isDigit(caracter) && campoNumeroDocumento.getText().length() < 7){
+				//TODO poner condiciones de acuerod al tipo de documento
+				if(Character.isDigit(caracter) && campoNumeroDocumento.getText().length() < 10){
 					
 				}
 				else{
@@ -331,7 +378,12 @@ public class CU17_BuscarCliente extends JPanel {
 	}
 
 	private void cargarTabla(List<Cliente> clientes) {
-		int tamanioTablaActual = clientes.size();
+		int tamanioTablaActual = 0; 
+		
+		if(clientes != null) {
+			tamanioTablaActual = clientes.size();
+		}
+		
 		
 		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, tamanioTablaActual) {
 		    @Override
@@ -350,23 +402,30 @@ public class CU17_BuscarCliente extends JPanel {
 		tablaClientes.getColumnModel().getColumn(1).setCellRenderer(centrado);
 		tablaClientes.getColumnModel().getColumn(2).setCellRenderer(centrado);
 		tablaClientes.getColumnModel().getColumn(3).setCellRenderer(centrado);
+		tablaClientes.getColumnModel().getColumn(4).setCellRenderer(centrado);
 		
-		tablaClientes.getColumnModel().getColumn(0).setPreferredWidth(50);
-		tablaClientes.getColumnModel().getColumn(1).setPreferredWidth(130);
-		tablaClientes.getColumnModel().getColumn(2).setPreferredWidth(85);
-		tablaClientes.getColumnModel().getColumn(3).setPreferredWidth(85);
+		tablaClientes.getColumnModel().getColumn(0).setPreferredWidth(70);
+		tablaClientes.getColumnModel().getColumn(1).setPreferredWidth(120);
+		tablaClientes.getColumnModel().getColumn(2).setPreferredWidth(110);
+		tablaClientes.getColumnModel().getColumn(3).setPreferredWidth(120);
+		tablaClientes.getColumnModel().getColumn(4).setPreferredWidth(80);
 		
-		tablaClientes.getColumnModel().getColumn(0).setHeaderValue("Hijo");
-		tablaClientes.getColumnModel().getColumn(1).setHeaderValue("Fecha nacimiento");
-		tablaClientes.getColumnModel().getColumn(2).setHeaderValue("Sexo");
-		tablaClientes.getColumnModel().getColumn(3).setHeaderValue("Estado civil");
+		tablaClientes.getColumnModel().getColumn(0).setHeaderValue("Nro. cliente");
+		tablaClientes.getColumnModel().getColumn(1).setHeaderValue("Apellido");
+		tablaClientes.getColumnModel().getColumn(2).setHeaderValue("Nombre");
+		tablaClientes.getColumnModel().getColumn(3).setHeaderValue("Tipo documento");
+		tablaClientes.getColumnModel().getColumn(4).setHeaderValue("Nro. documento");
 		
-		for(int fila = 0; fila < tamanioTablaActual; fila++) {
-			
-			model.setValueAt(fila+1, fila, 0);
+		if(clientes != null) {			
+			for(int fila = 0; fila < tamanioTablaActual; fila++) {
+				model.setValueAt(clientes.get(fila).getNumeroCliente(), fila, 0);
+				model.setValueAt(clientes.get(fila).getApellido(), fila, 1);
+				model.setValueAt(clientes.get(fila).getNombre(), fila, 2);
+				model.setValueAt(GestorEnum.get().getStringTipoDocumento(clientes.get(fila).getTipoDocumento()), fila, 3);
+				model.setValueAt(clientes.get(fila).getNumeroDocumento(), fila, 4);
 
+			}
 		}
-		
 	}	
 }
 

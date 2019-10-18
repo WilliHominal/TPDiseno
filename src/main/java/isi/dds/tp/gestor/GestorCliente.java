@@ -5,6 +5,7 @@ import isi.dds.tp.modelo.Poliza;
 import java.util.List;
 import isi.dds.tp.dao.ClienteDAO;
 import isi.dds.tp.enums.EnumCondicion;
+import isi.dds.tp.enums.EnumTipoDocumento;
 
 public class GestorCliente {
 	
@@ -67,4 +68,76 @@ public class GestorCliente {
     public List<Poliza> getPoliza(Long numeroCliente) {
     	return null;
     }
+
+	public List<Cliente> buscarClientes(Long numeroCliente, String apellido, String nombre, EnumTipoDocumento tipoDocumento, Integer numeroDocumento) {
+    	//TODO buscar campos por partes, es decir si coincidice alguna parte retonar
+    	String condicionesConsulta = "";
+    	Boolean cantidadParametros = false;
+    	
+    	if(numeroCliente != null) {
+    		if(condicionesConsulta.isEmpty()) {
+    			condicionesConsulta += " where";
+    		}
+    		condicionesConsulta += " numero_cliente="+numeroCliente;
+    		cantidadParametros = true;
+    	}
+    	
+    	if(apellido != null) {
+    		if(condicionesConsulta.isEmpty()) {
+    			condicionesConsulta += " where";
+    		}
+    		
+    		if(cantidadParametros.booleanValue() == true) {
+    			condicionesConsulta += " and apellido = '"+apellido+"' ";
+    		}
+    		else {
+    			condicionesConsulta += " apellido = '"+apellido+"' ";
+    		}
+    		cantidadParametros = true;
+    	}
+    	
+    	if(nombre != null) {
+    		if(condicionesConsulta.isEmpty()) {
+    			condicionesConsulta += " where";
+    		}
+    		
+    		if(cantidadParametros.booleanValue() == true) {
+    			condicionesConsulta += " and nombre = '"+nombre+"'";
+    		}
+    		else {
+    			condicionesConsulta += " nombre = '"+nombre+"'";
+    		}
+    		cantidadParametros = true;
+    	}
+    	
+    	if(tipoDocumento != null) {
+    		if(condicionesConsulta.isEmpty()) {
+    			condicionesConsulta += " where";
+    		}
+    		
+    		if(cantidadParametros.booleanValue() == true) {
+    			condicionesConsulta += " and tipo_documento = '"+tipoDocumento+"' ";
+    		}
+    		else {
+    			condicionesConsulta += " tipo_documento = '"+tipoDocumento+"' ";
+    		}
+    		cantidadParametros = true;
+    	}
+    	
+    	if(numeroDocumento != null) {
+    		if(condicionesConsulta.isEmpty()) {
+    			condicionesConsulta += " where ";
+    		}
+    		
+    		if(cantidadParametros.booleanValue() == true) {
+    			condicionesConsulta += " and numero_documento = "+numeroDocumento;
+    		}
+    		else {
+    			condicionesConsulta += " numero_documento = "+numeroDocumento;
+    		}
+    	}
+    	
+    	return ClienteDAO.getDAO().getClientes(condicionesConsulta);
+    }
+    
 }

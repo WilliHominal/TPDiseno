@@ -95,6 +95,30 @@ public class Cliente {
 
 	}
 	
+	/**
+	 * 
+	 * @param numeroCliente
+	 * @param ciudad
+	 * @param condicion
+	 * @param apellido
+	 * @param nombre
+	 * @param tipoDocumento
+	 * @param numeroDocumento
+	 * @param numeroCuil
+	 * @param sexo
+	 * @param fechaNacimiento
+	 * @param calle
+	 * @param numeroCalle
+	 * @param piso
+	 * @param departamento
+	 * @param codigoPostal
+	 * @param condicionIva
+	 * @param correoElectronico
+	 * @param estadoCivil
+	 * @param profesion
+	 * @param anioRegistro
+	 * @param siniestros
+	 */
 	public Cliente(Long numeroCliente, Ciudad ciudad, EnumCondicion condicion, String apellido,
 			String nombre, EnumTipoDocumento tipoDocumento, Integer numeroDocumento, Long numeroCuil, EnumSexo sexo,
 			LocalDate fechaNacimiento, String calle, Integer numeroCalle, Integer piso, String departamento,

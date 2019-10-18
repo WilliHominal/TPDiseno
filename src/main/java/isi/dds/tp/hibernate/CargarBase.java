@@ -1,8 +1,6 @@
 package isi.dds.tp.hibernate;
 
 import java.time.LocalDate;
-import java.util.List;
-
 import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.EnumCondicionIVA;
 import isi.dds.tp.enums.EnumEstadoCivil;
@@ -221,9 +219,25 @@ public class CargarBase {
 		TipoCobertura cobertura3 = new TipoCobertura(EnumTipoCobertura.TERCEROS_COMPLETOS, "Terceros completos", "Descripcion seis", 0.51f);
 		TipoCobertura cobertura4 = new TipoCobertura(EnumTipoCobertura.TODO_RIESGO_CON_FRANQUICIA, "Todo riesgo con franquiia", "Descripcion cinco", 0.48f);
 		
-		Cliente cliente1 = new Cliente(123456l, ciudad1, EnumCondicion.NORMAL, "APELLIDO", "NOMBRES", EnumTipoDocumento.DNI, 99999999, 
-				2011111118l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM",
-				EnumEstadoCivil.CASADO, "PROFESOR", 2019, EnumSiniestros.MAS_DE_DOS);
+		Cliente cliente1 = new Cliente(1l, ciudad1, EnumCondicion.NORMAL, "Bernhardt", "Milton Gerardo", EnumTipoDocumento.DNI, 111111111, 
+				201111111118l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.IVA_LIBERADO, "correo@HOTMAIL.COM",
+				EnumEstadoCivil.EN_RELACION, "Alumno", 2015, EnumSiniestros.MAS_DE_DOS);
+		
+		Cliente cliente2 = new Cliente(12l, ciudad2, EnumCondicion.NORMAL, "Hominal", "Williams", EnumTipoDocumento.DNI, 222222222, 
+				202222222228l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.NO_RESPONSABLE, "correo@HOTMAIL.COM",
+				EnumEstadoCivil.DIVORCIADO, "Alumno", 2015, EnumSiniestros.MAS_DE_DOS);
+		
+		Cliente cliente3 = new Cliente(123l, ciudad3, EnumCondicion.NORMAL, "Farías", "Exequiel", EnumTipoDocumento.DNI, 333333333, 
+				203333333338l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.MONOTRIBUTISTA_SOCIAL, "correo@HOTMAIL.COM",
+				EnumEstadoCivil.CASADO, "Alumno", 2015, EnumSiniestros.MAS_DE_DOS);
+		
+		Cliente cliente4 = new Cliente(1234l, ciudad4, EnumCondicion.NORMAL, "Paduli", "Juan Diego", EnumTipoDocumento.DNI, 444444444, 
+				204444444448l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.SUJETO_EXENTO, "correo@HOTMAIL.COM",
+				EnumEstadoCivil.VIUDO, "Alumno", 2015, EnumSiniestros.MAS_DE_DOS);
+		
+		Cliente cliente5 = new Cliente(12345l, ciudad2, EnumCondicion.NORMAL, "Martinez", "Jose Luis", EnumTipoDocumento.LIBRETA_DE_ENROLAMIENTO, 555555555, 
+				205555555558l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM",
+				EnumEstadoCivil.CASADO, "Profesor", 2010, EnumSiniestros.MAS_DE_DOS);
 
 		//---------------------------------------------------------------------------
 		//PARA RECREAR LA BASE, BORRA Y LA RECARGA DE NUEVO
@@ -246,6 +260,10 @@ public class CargarBase {
 		GestorTipoCobertura.get().addTipoCobertura(cobertura4);
 		
 		GestorCliente.get().AltaCliente(cliente1);
+		GestorCliente.get().AltaCliente(cliente2);
+		GestorCliente.get().AltaCliente(cliente3);
+		GestorCliente.get().AltaCliente(cliente4);
+		GestorCliente.get().AltaCliente(cliente5);
 		//---------------------------------------------------------------------------
 		
 		
