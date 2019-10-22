@@ -64,7 +64,6 @@ public class AppMenu extends JPanel {
 	private JTextArea configurarBaseDatos = new JTextArea();
 	
 	public AppMenu() {	
-		
 		if(!conectarBaseDatos()) {
 			existeBase = false;
 		}
@@ -72,7 +71,6 @@ public class AppMenu extends JPanel {
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
-		
 		comportamiento();
 		
 		ventana.setVisible(true);
@@ -110,7 +108,7 @@ public class AppMenu extends JPanel {
 		btnConsultarPoliza.setEnabled(false);
 		btnGenerarPropuestas.setEnabled(false);
 		btnRegistrarPagoPoliza.setEnabled(false);
-		btnDarAltaCliente.setEnabled(false);
+		btnDarAltaCliente.setEnabled(existeBase);
 		btnConsultarCliente.setEnabled(existeBase);
 		btnActualizarFactores.setEnabled(false);
 		btnGenerarListado.setEnabled(false);
@@ -283,16 +281,7 @@ public class AppMenu extends JPanel {
 	private void comportamiento() {
 		
 		btnDarAltaPoliza.addActionListener(a -> {
-			try {		
-				if(checkCargarBase.isSelected()) {
-					recargarBaseDatos();
-					checkCargarBase.setSelected(false);
-				}
-				darAltaPoliza();
-				
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
+			darAltaPoliza();
 		});
 		
 		btnConsultarPoliza.addActionListener(a -> {
@@ -308,20 +297,11 @@ public class AppMenu extends JPanel {
 		});
 		
 		btnDarAltaCliente.addActionListener(a -> {
-		    JOptionPane.showMessageDialog(ventana, "Función temporalmente no disponible.\n", "Aviso", JOptionPane.INFORMATION_MESSAGE);
+			altaCliente();
 		});
 	
 		btnConsultarCliente.addActionListener(a -> {
-			try {			
-				if(checkCargarBase.isSelected()) {
-					recargarBaseDatos();
-					checkCargarBase.setSelected(false);
-				}
-				consultarCliente();
-				
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
+			consultarCliente();
 		});
 	
 		btnActualizarFactores.addActionListener(a -> {
@@ -346,8 +326,8 @@ public class AppMenu extends JPanel {
 		});
 		
 	}
-	
-	public Boolean conectarBaseDatos() {
+
+	private Boolean conectarBaseDatos() {
 		if(HibernateUtil.getSessionFactoryValidate() != null) {
 			return true;
 		}
@@ -356,16 +336,44 @@ public class AppMenu extends JPanel {
 		}
 	}
 	
-	public void recargarBaseDatos() {
+	private void recargarBaseDatos() {
 		HibernateUtil.shutdown();
 		CargarBase.load();
 	}
 	
-	public void darAltaPoliza() {
-		new CU01_AP1(ventana);
+	private void darAltaPoliza() {
+		try {			
+			if(checkCargarBase.isSelected()) {
+				recargarBaseDatos();
+				checkCargarBase.setSelected(false);
+			}
+			new CU01_AltaPoliza1(ventana);
+		}catch(Exception ex) {
+		    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	private void consultarCliente() {
-		new CU17_BuscarCliente(ventana);
+		try {			
+			if(checkCargarBase.isSelected()) {
+				recargarBaseDatos();
+				checkCargarBase.setSelected(false);
+			}
+			new CU17_BuscarCliente(ventana);
+		}catch(Exception ex) {
+		    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private void altaCliente() {
+		try {			
+			if(checkCargarBase.isSelected()) {
+				recargarBaseDatos();
+				checkCargarBase.setSelected(false);
+			}
+			new CU04_AltaCliente(ventana);
+		}catch(Exception ex) {
+		    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 }

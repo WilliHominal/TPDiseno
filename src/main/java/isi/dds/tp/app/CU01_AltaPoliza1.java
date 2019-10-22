@@ -28,8 +28,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import isi.dds.tp.app.CU01_DH.DeclararHijoAbierto;
-import isi.dds.tp.gestor.GestorCliente;
+import isi.dds.tp.app.CU01_DeclararHijo.DeclararHijoAbierto;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
@@ -44,40 +43,39 @@ import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.Provincia;
 
 @SuppressWarnings("serial")
-public class CU01_AP1 extends JPanel {
+public class CU01_AltaPoliza1 extends JPanel {
 		
 	private JFrame ventana;
 	private AppMenu menu;
 	private GestorTema tema = GestorTema.get();
 	
 	public Poliza poliza = new Poliza();
-	private Cliente cliente = null;
 	
 	private Boolean estaDeclarandoHijo = false;
 	private Boolean mouseActivo = false;
 	private Boolean primerCliente = true;
 	
-	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
+	private JLabel lnumeroCliente = new JLabel("Núamero cliente:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
 	private JLabel ldocumento = new JLabel("Documento:");
 	private JLabel lapellido = new JLabel("Apellido:");
 	private JLabel lnombres = new JLabel("Nombres:");
 	private JLabel lcalle = new JLabel("Calle:");
-	private JLabel lnumeroDom = new JLabel("N\u00famero domicilio:");
+	private JLabel lnumeroDom = new JLabel("Número domicilio:");
 	private JLabel lpiso = new JLabel("Piso:");
 	private JLabel ldepartamento = new JLabel("Departamento:");
 	private JLabel lprovincia = new JLabel("Provincia*:");
 	private JLabel lciudad = new JLabel("Ciudad*:");
 	private JLabel lmarca = new JLabel("Marca veh\u00edculo*:");
 	private JLabel lmodelo = new JLabel("Modelo veh\u00edculo:*");
-	private JLabel lanio = new JLabel("A\u00f1o modelo:*");
+	private JLabel lanio = new JLabel("Año modelo:*");
 	private JLabel lmotor = new JLabel("Motor*:");
 	private JLabel lchasis = new JLabel("Chasis*:");
 	private JLabel lpatente = new JLabel("Patente*:");
 	private JLabel lsumaAseg = new JLabel("Suma asegurada:");
 	private JLabel lmoneda = new JLabel("$");
-	private JLabel lkm = new JLabel("Km realizados por a\u00f1o:");
-	private JLabel lsiniestros = new JLabel("N\u00famero de siniestros en el \u00faltimo año*:");
+	private JLabel lkm = new JLabel("Km realizados por año:");
+	private JLabel lsiniestros = new JLabel("N\u00famero de siniestros en el último año*:");
 	private JLabel lgarage = new JLabel("¿Se guarda en garage?");
 	private JLabel lalarma = new JLabel("¿Tiene alarma?");
 	private JLabel lrastreo = new JLabel("¿Posee dispositivo de rastreo vehicular?");
@@ -129,7 +127,7 @@ public class CU01_AP1 extends JPanel {
 	private Object[][] datosTabla = {{""},{""},{""},{""}};
 	private DefaultTableModel model;
 	
-	public CU01_AP1(JFrame ventana) {
+	public CU01_AltaPoliza1(JFrame ventana) {
 		this.ventana = ventana;
 		
 		menu = (AppMenu) ventana.getContentPane();
@@ -572,13 +570,7 @@ public class CU01_AP1 extends JPanel {
 		
 		btnAltaCliente.addActionListener(a -> {
 			try {				
-				//GestorCliente.get().getClientes() o consultaClientes
-				cliente = GestorCliente.get().getCliente(123456l);								
-				obtenidoCliente(cliente);	
-				poliza.setCliente(cliente);
-				cliente.getPolizas().add(poliza);
-
-
+				new CU04_AltaCliente(ventana);
 			}catch(Exception ex) {
 				JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
                         "Error.", JOptionPane.ERROR_MESSAGE);    
@@ -592,7 +584,7 @@ public class CU01_AP1 extends JPanel {
 				componentesAlDeclararHijos(false);
 				estaDeclarandoHijo = true;
 				
-				new CU01_DH();
+				new CU01_DeclararHijo();
 				
 				
 	
@@ -663,7 +655,7 @@ public class CU01_AP1 extends JPanel {
 					}
 				
 					poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().getEnumSiniestros(campoNumerosSiniestros.getText()));
-					new CU01_AP2(ventana, poliza);
+					new CU01_AltaPoliza2(ventana, poliza);
 				}
 				
 			}catch(Exception ex) {
@@ -700,10 +692,8 @@ public class CU01_AP1 extends JPanel {
 				
 				seleccionModelo.setEnabled(false);	
 				seleccionModelo.removeAllItems();
-				
-				GestorParametrosVehiculo g = GestorParametrosVehiculo.get();
 
-				Iterator<Modelo> iteratorModelo = g.sortModelos(seleccionMarca.getItemAt(seleccionMarca.getSelectedIndex()).getModelos()).iterator();
+				Iterator<Modelo> iteratorModelo = seleccionMarca.getItemAt(seleccionMarca.getSelectedIndex()).getModelos().iterator();
 				while(iteratorModelo.hasNext()){
 					seleccionModelo.addItem(iteratorModelo.next());
 				}				
@@ -712,7 +702,7 @@ public class CU01_AP1 extends JPanel {
 				campoSumaAsegurada.setText("");
 				seleccionAnio.removeAllItems();
 									
-				Iterator<AnioModelo> iteratorAnioModelo = g.sortAniosModelo(seleccionModelo.getItemAt(seleccionModelo.getSelectedIndex()).getAnios()).iterator();
+				Iterator<AnioModelo> iteratorAnioModelo = seleccionModelo.getItemAt(seleccionModelo.getSelectedIndex()).getAnios().iterator();
 				while(iteratorAnioModelo.hasNext()){
 					seleccionAnio.addItem(iteratorAnioModelo.next());
 				}
@@ -722,7 +712,6 @@ public class CU01_AP1 extends JPanel {
 				tema.seleccion(seleccionModelo, true);
 				tema.seleccion(seleccionAnio, true);
 				campoSumaAsegurada.setText(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()).getSumaAsegurada().toString());
-				//cmbModelo.setSelectedIndex(0);
 			}
 			else {
 				seleccionModelo.setEnabled(false);
@@ -904,7 +893,7 @@ public class CU01_AP1 extends JPanel {
 	 * @param cliente
 	 */
 	public void obtenidoCliente(Cliente cliente){
-		this.cliente = cliente;
+		poliza.setCliente(cliente);
 		campoNumeroCliente.setText(cliente.getNumeroCliente().toString());
 		campoTipoDocumento.setText(GestorEnum.get().getStringTipoDocumento(cliente.getTipoDocumento()));
 		campoNumeroDocumento.setText(cliente.getNumeroDocumento().toString());
@@ -962,7 +951,7 @@ public class CU01_AP1 extends JPanel {
 			}
 			
 			seleccionCiudad.removeAllItems();
-			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(provincias.get(0).getCiudades()).iterator();
+			Iterator<Ciudad> iteratorCiudad = provincias.get(0).getCiudades().iterator();
 			while(iteratorCiudad.hasNext()){
 				seleccionCiudad.addItem(iteratorCiudad.next());
 			}

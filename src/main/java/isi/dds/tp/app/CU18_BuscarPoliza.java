@@ -1,5 +1,8 @@
 package isi.dds.tp.app;
 
-public class CU18_BuscarPoliza {
+import javax.swing.JPanel;
+
+@SuppressWarnings("serial")
+public class CU18_BuscarPoliza  extends JPanel{
 
 }

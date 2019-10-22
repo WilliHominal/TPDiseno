@@ -44,14 +44,14 @@ import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.TipoCobertura;
 
 @SuppressWarnings("serial")
-public class CU01_AP2 extends JPanel  {
+public class CU01_AltaPoliza2 extends JPanel  {
 	
 	
 	 public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new CU01_AP2();
+					new CU01_AltaPoliza2();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -59,7 +59,7 @@ public class CU01_AP2 extends JPanel  {
 		});
 	}
 
-	public CU01_AP2() {				
+	public CU01_AltaPoliza2() {				
 		poliza = new Poliza(2222222111l);
 		Cliente cliente1 = GestorCliente.get().getCliente(123456l);
 		poliza.setCliente(cliente1);		
@@ -69,13 +69,13 @@ public class CU01_AP2 extends JPanel  {
 		frame.setBounds(0,0,1024,600);
 		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
 		frame.setLocationRelativeTo(null);
-		new CU01_AP2(frame, poliza);
+		new CU01_AltaPoliza2(frame, poliza);
 		frame.setVisible(true);
 	}
 	
 	private Poliza poliza;
 	private JFrame ventana;
-	private CU01_AP1 cu01_ap1;
+	private CU01_AltaPoliza1 cu01_ap1;
 	private GestorTema tema = GestorTema.get();
 	
 	private JLabel lTipoCobertura = new JLabel("Tipo de cobertura");
@@ -132,12 +132,12 @@ public class CU01_AP2 extends JPanel  {
 	private DefaultTableModel model = (DefaultTableModel) tablaPagos.getModel();
 
 
-	public CU01_AP2(JFrame ventana, Poliza poliza) {
+	public CU01_AltaPoliza2(JFrame ventana, Poliza poliza) {
 		this.ventana = ventana;
 		this.poliza = poliza;
 		
 		try {			
-			cu01_ap1 = (CU01_AP1) ventana.getContentPane();
+			cu01_ap1 = (CU01_AltaPoliza1) ventana.getContentPane();
 			
 		}catch(Exception ex) {
 			cu01_ap1 = null;

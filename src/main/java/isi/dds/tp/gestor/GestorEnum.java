@@ -168,4 +168,66 @@ public class GestorEnum {
     	}
     	return null;
     }
+    
+    public EnumCondicionIVA getEnumCondicionIva(String condicionIva) {
+    	if(condicionIva.equals("Responsable inscripto")) {
+    		return EnumCondicionIVA.RESPONSABLE_INSCRIPTO;
+    	}
+    	if(condicionIva.equals("Responsable no inscripto")) {
+    		return EnumCondicionIVA.RESPONSABLE_NO_INSCRIPTO;
+    	}
+    	if(condicionIva.equals("No responsable")) {
+    		return EnumCondicionIVA.NO_RESPONSABLE;
+    	}
+    	if(condicionIva.equals("Sujeto exento")) {
+    		return EnumCondicionIVA.SUJETO_EXENTO;
+    	}
+    	if(condicionIva.equals("Consumidor final")) {
+    		return EnumCondicionIVA.CONSUMIDOR_FINAL;
+    	}
+    	if(condicionIva.equals("Responsable monotributo")) {
+    		return EnumCondicionIVA.RESPONSABLE_MONOTRIBUTO;
+    	}
+    	if(condicionIva.equals("Sujeto no categorizado")) {
+    		return EnumCondicionIVA.SUJETO_NO_CATEGORIZADO;
+    	}
+    	if(condicionIva.equals("IVA liberado")) {
+    		return EnumCondicionIVA.IVA_LIBERADO;
+    	}
+    	if(condicionIva.equals("Monotributista social")) {
+    		return EnumCondicionIVA.MONOTRIBUTISTA_SOCIAL;
+    	}
+    	return null;    	
+    }
+    
+    public String getStringCondicionIva(EnumCondicionIVA tipoDocumento) {
+    	if(tipoDocumento.equals(EnumCondicionIVA.RESPONSABLE_INSCRIPTO)) {
+    		return "Responsable inscripto";
+    	}
+    	if(tipoDocumento.equals(EnumCondicionIVA.RESPONSABLE_NO_INSCRIPTO)) {
+    		return "Responsable no inscripto";
+    	}
+    	if(tipoDocumento.equals(EnumCondicionIVA.NO_RESPONSABLE)) {
+    		return "No responsable";
+    	}
+    	if(tipoDocumento.equals(EnumCondicionIVA.SUJETO_EXENTO)) {
+    		return "Sujeto exento";
+    	}
+    	if(tipoDocumento.equals(EnumCondicionIVA.CONSUMIDOR_FINAL)) {
+    		return "Consumidor final";
+    	}
+    	if(tipoDocumento.equals(EnumCondicionIVA.RESPONSABLE_MONOTRIBUTO)) {
+    		return "Responsable monotributo";
+    	}
+    	if(tipoDocumento.equals(EnumCondicionIVA.SUJETO_NO_CATEGORIZADO)) {
+    		return "Sujeto no categorizado";
+    	}
+    	if(tipoDocumento.equals(EnumCondicionIVA.IVA_LIBERADO)) {
+    		return "IVA liberado";
+    	}
+    	if(tipoDocumento.equals(EnumCondicionIVA.MONOTRIBUTISTA_SOCIAL)) {
+    		return "Monotributista social";
+    	}
+    	return null;
+    }
 }

@@ -28,7 +28,7 @@ import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.HijoDeclarado;
 
 @SuppressWarnings("serial")
-public class CU01_DH extends JPanel  {
+public class CU01_DeclararHijo extends JPanel  {
 	
 	public final static class DeclararHijoAbierto {
 	    private DeclararHijoAbierto(){}
@@ -59,7 +59,7 @@ public class CU01_DH extends JPanel  {
 			public void run() {
 				try {
 
-					new CU01_DH();
+					new CU01_DeclararHijo();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -68,7 +68,7 @@ public class CU01_DH extends JPanel  {
 	}
 
 	
-	public CU01_DH() {
+	public CU01_DeclararHijo() {
 		if(DeclararHijoAbierto.declararHijoAbierto == false) {
 			DeclararHijoAbierto.declararHijoAbierto = true;
 			DeclararHijoAbierto.hijo = new HijoDeclarado();
@@ -167,6 +167,7 @@ public class CU01_DH extends JPanel  {
 		}
 
 		try {
+			//TODO elegir como fecha inicial el último día aceptado como fecha válida de cumpleaños
 			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
 			dcFechaNacimiento.setDate(fechaParseada);
 		} catch (ParseException e) {

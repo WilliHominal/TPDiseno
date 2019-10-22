@@ -24,6 +24,7 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+
 import isi.dds.tp.enums.EnumTipoDocumento;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorEnum;
@@ -94,7 +95,7 @@ public class CU17_BuscarCliente extends JPanel {
 		this.ventana = ventana;
 		
 		try {		
-			if(ventana.getContentPane() instanceof CU01_AP1) {
+			if(ventana.getContentPane() instanceof CU01_AltaPoliza1) {
 				esAltaPoliza = true;
 			}
 			panelAnterior = (JPanel) ventana.getContentPane();
@@ -115,20 +116,20 @@ public class CU17_BuscarCliente extends JPanel {
 	}
 
 	private void inicializarComponentes() {
-		setSize(1024,600);
 		
 		campoTotalFilas.setEnabled(false);
 		tablaClientes.setEnabled(false);
 
 		btnBuscar.setPreferredSize(new Dimension(105, 25));
 		btnCancelar.setPreferredSize(new Dimension(105, 25));
-		seleccionTipoDocumento.setPreferredSize(new Dimension(180, 25));
-
-		seleccionTipoDocumento.addItem("Seleccionar tipo documento");
-		seleccionTipoDocumento.addItem("DNI");
-		seleccionTipoDocumento.addItem("Pasaporte");
-		seleccionTipoDocumento.addItem("Libreta civil");
-		seleccionTipoDocumento.addItem("Libreta de enrolamiento");
+		seleccionTipoDocumento.setPreferredSize(new Dimension(183, 25));
+		seleccionOrdenamiento.setPreferredSize(new Dimension(183, 25));
+		
+		seleccionTipoDocumento.addItem("Selecionar tipo documento");
+		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
+		for(int i=0; i<tipoDocumentos.length; i++){
+			seleccionTipoDocumento.addItem(GestorEnum.get().getStringTipoDocumento(tipoDocumentos[i]));
+		}
 		
 		seleccionOrdenamiento.addItem("Default");
 		seleccionOrdenamiento.addItem("Número cliente");
@@ -334,7 +335,7 @@ public class CU17_BuscarCliente extends JPanel {
 		        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
 		            //TODO mostrar datos completos de cliente
 		        	if(esAltaPoliza) {
-		        		CU01_AP1 altaPoliza =  (CU01_AP1) panelAnterior;
+		        		CU01_AltaPoliza1 altaPoliza =  (CU01_AltaPoliza1) panelAnterior;
 		        		altaPoliza.obtenidoCliente(clientes.get(row));
 			        	ventana.setContentPane(altaPoliza);
 			        	estePanel.setVisible(false);

@@ -2,8 +2,8 @@ package isi.dds.tp.gestor;
 
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Iterator;
 import java.util.List;
-
 import isi.dds.tp.dao.DomicilioDAO;
 import isi.dds.tp.modelo.Provincia;
 import isi.dds.tp.modelo.Ciudad;
@@ -30,14 +30,26 @@ public class GestorDomicilio {
     }
     
     public void addPais(Pais p) {
+		Iterator<Provincia> iteratorModelo = sortProvincias(p.getProvincias()).iterator();
+		while(iteratorModelo.hasNext()){
+			sortCiudades(iteratorModelo.next().getCiudades());
+		}	
     	DomicilioDAO.getDAO().addPais(p);
     }
     
     public void addProvincia(Provincia p) {
+		Iterator<Provincia> iteratorModelo = sortProvincias(p.getPais().getProvincias()).iterator();
+		while(iteratorModelo.hasNext()){
+			sortCiudades(iteratorModelo.next().getCiudades());
+		}	
     	DomicilioDAO.getDAO().addProvincia(p);
     }
     
     public void addCiudad(Ciudad c) {
+		Iterator<Provincia> iteratorModelo = sortProvincias(c.getProvincia().getPais().getProvincias()).iterator();
+		while(iteratorModelo.hasNext()){
+			sortCiudades(iteratorModelo.next().getCiudades());
+		}	
     	DomicilioDAO.getDAO().addCiudad(c);
     }
     
@@ -53,20 +65,34 @@ public class GestorDomicilio {
     	
     	return DomicilioDAO.getDAO().getProvincias(id_pais);
     }
-    /*
-    public List<Ciudad> getCiudades(Integer id_provincia) {
-    	return DomicilioDAO.getDAO().getCiudades(id_provincia);
-    }
-    
-    public List<RiesgoCiudad> getRiesgosCiudad(Integer id_ciudad) {
-    	return DomicilioDAO.getDAO().getRiesgosCiudad(id_ciudad);
-    }*/
     
     public RiesgoCiudad ultimoRiesgoCiudad(Integer id_ciudad) {
     	return DomicilioDAO.getDAO().getUltimoRiesgoCiudad(id_ciudad);
     }
     
-    public List<Ciudad> sortCiudades(List<Ciudad> lista){
+    public List<Pais> sortPaises(List<Pais> lista){
+    	lista.sort(Comparator.comparing(Pais::getNombre));
+	    Collections.sort(lista, new Comparator<Pais>() {
+	    	@Override
+	    	public int compare(Pais p1, Pais p2) {
+	    		return p1.getNombre().compareTo(p2.getNombre());
+	    	}
+	    });
+	    return lista;
+    }
+    
+    private List<Provincia> sortProvincias(List<Provincia> lista){
+    	lista.sort(Comparator.comparing(Provincia::getNombre));
+	    Collections.sort(lista, new Comparator<Provincia>() {
+	    	@Override
+	    	public int compare(Provincia p1, Provincia p2) {
+	    		return p1.getNombre().compareTo(p2.getNombre());
+	    	}
+	    });
+	    return lista;
+    }
+    
+    private List<Ciudad> sortCiudades(List<Ciudad> lista){
     	lista.sort(Comparator.comparing(Ciudad::getNombre));
 	    Collections.sort(lista, new Comparator<Ciudad>() {
 	    	@Override

@@ -74,17 +74,17 @@ public class Cliente {
 	@Enumerated(EnumType.STRING)
 	private EnumCondicionIVA condicionIva;
 	
-	@Column(name = "correo_electronico")
+	@Column(nullable = false, name = "correo_electronico")
 	private String correoElectronico;
 	
 	@Column(nullable = false, name = "estado_civil")
 	@Enumerated(EnumType.STRING)
 	private EnumEstadoCivil estadoCivil; 
 	
-	@Column
+	@Column(nullable = false)
 	private String profesion;
 	
-	@Column(name = "anio_registro")
+	@Column(nullable = false, name = "anio_registro")
 	private Integer anioRegistro;
 	
 	public Cliente() {
