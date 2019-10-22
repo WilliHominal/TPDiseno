@@ -3,8 +3,6 @@ package isi.dds.tp.app;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -109,11 +107,11 @@ public class AppMenu extends JPanel {
 		btnGenerarInforme.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));*/
 		
 		btnDarAltaPoliza.setEnabled(existeBase);
-		btnConsultarPoliza.setEnabled(existeBase);
+		btnConsultarPoliza.setEnabled(false);
 		btnGenerarPropuestas.setEnabled(false);
 		btnRegistrarPagoPoliza.setEnabled(false);
 		btnDarAltaCliente.setEnabled(false);
-		btnConsultarCliente.setEnabled(false);
+		btnConsultarCliente.setEnabled(existeBase);
 		btnActualizarFactores.setEnabled(false);
 		btnGenerarListado.setEnabled(false);
 		btnGenerarInforme.setEnabled(false);
@@ -298,16 +296,7 @@ public class AppMenu extends JPanel {
 		});
 		
 		btnConsultarPoliza.addActionListener(a -> {
-			try {			
-				if(checkCargarBase.isSelected()) {
-					recargarBaseDatos();
-					checkCargarBase.setSelected(false);
-				}
-				consultarCliente();
-				
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
+			JOptionPane.showMessageDialog(ventana, "Función temporalmente no disponible.\n", "Aviso", JOptionPane.INFORMATION_MESSAGE);
 		});
 		
 		btnGenerarPropuestas.addActionListener(a -> {
@@ -323,8 +312,17 @@ public class AppMenu extends JPanel {
 		});
 	
 		btnConsultarCliente.addActionListener(a -> {
-		    JOptionPane.showMessageDialog(ventana, "Función temporalmente no disponible.\n", "Aviso", JOptionPane.INFORMATION_MESSAGE);
-			});
+			try {			
+				if(checkCargarBase.isSelected()) {
+					recargarBaseDatos();
+					checkCargarBase.setSelected(false);
+				}
+				consultarCliente();
+				
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		});
 	
 		btnActualizarFactores.addActionListener(a -> {
 		    JOptionPane.showMessageDialog(ventana, "Función temporalmente no disponible.\n", "Aviso", JOptionPane.INFORMATION_MESSAGE);
@@ -349,10 +347,6 @@ public class AppMenu extends JPanel {
 		
 	}
 	
-	private void consultarCliente() {
-		new CU17_BuscarCliente(ventana);
-	}
-
 	public Boolean conectarBaseDatos() {
 		if(HibernateUtil.getSessionFactoryValidate() != null) {
 			return true;
@@ -364,13 +358,14 @@ public class AppMenu extends JPanel {
 	
 	public void recargarBaseDatos() {
 		HibernateUtil.shutdown();
-		Logger log = Logger.getLogger("org.hibernate");
-		log.setLevel(Level.OFF); 
 		CargarBase.load();
 	}
 	
-		
 	public void darAltaPoliza() {
 		new CU01_AP1(ventana);
+	}
+	
+	private void consultarCliente() {
+		new CU17_BuscarCliente(ventana);
 	}
 }

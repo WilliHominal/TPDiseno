@@ -34,7 +34,6 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.EnumEstadoCuota;
-import isi.dds.tp.enums.EnumSiniestros;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorTema;
@@ -538,9 +537,9 @@ public class CU01_AP2 extends JPanel  {
 				//veo si es cliente Plata o Activo
 				Boolean esPlata = true;
 
-				
-				if (!poliza.getCliente().getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO))
-					esPlata = false;
+				//TODO actualizar para siniestros
+			//	if (!poliza.getCliente().getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO))
+				//	esPlata = false;
 
 				for (Cuota cuota : poliza.getCuotas()) {
 					if (cuota.getEstado() == EnumEstadoCuota.IMPAGO)

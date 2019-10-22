@@ -1,52 +1,25 @@
 package isi.dds.tp.hibernate;
 
-import java.time.LocalDate;
-import isi.dds.tp.enums.EnumCondicion;
-import isi.dds.tp.enums.EnumCondicionIVA;
-import isi.dds.tp.enums.EnumEstadoCivil;
-import isi.dds.tp.enums.EnumSexo;
-import isi.dds.tp.enums.EnumSiniestros;
+import java.util.ArrayList;
+import java.util.Iterator;
+import org.hibernate.Session;
 import isi.dds.tp.enums.EnumTipoCobertura;
-import isi.dds.tp.enums.EnumTipoDocumento;
-import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.gestor.GestorTipoCobertura;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Ciudad;
-import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
 import isi.dds.tp.modelo.Pais;
 import isi.dds.tp.modelo.Provincia;
 import isi.dds.tp.modelo.TipoCobertura;
-import isi.dds.tp.modelo.Usuario;
 
 public class CargarBase {
 	
-    @SuppressWarnings("unused")
+
 	public static void load() {
-    	
-		/*
-		 TODO 2 MANERAS DE INSERTAR
-		 	- MEDIANTE CODIGO JAVA (como ciudad prov y)
-		 	- CARGANDO UN FILE SCRIPT
-		*/
-    	
-    	
-    	/* CARGAR POR SCRIPT
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/scriptSQL.sql");
-		Session session = HibernateUtil.getSessionFactory().openSession();
-		session.beginTransaction();
-		
-		Iterator<String> iteradorqueries = queries.iterator();
-		while(iteradorqueries.hasNext()){
 
-			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
-
-		}
-		session.close();
-		*/
     	
     	//CREAMOS LOS OBJETOS A PERSISTIR
     	//las prov capaz conviene ingresarlas por sql con algun script que haya en la web
@@ -56,12 +29,12 @@ public class CargarBase {
 		Provincia prov2 = new Provincia(pais1, "Buenos Aires");
 		Provincia prov3 = new Provincia(pais1, "Entre Rios");
 				
-		Ciudad ciudad1 = new Ciudad(prov1, "Esperanza", 1f);
-		Ciudad ciudad2 = new Ciudad(prov1, "Santa Fe", 2f);
-		Ciudad ciudad3 = new Ciudad(prov2, "La Plata", 3f);
-		Ciudad ciudad4 = new Ciudad(prov2, "Mar del Plata", 4f);
-		Ciudad ciudad5 = new Ciudad(prov3, "Paraná", 5f);
-		Ciudad ciudad6 = new Ciudad(prov3, "Diamante", 6f);
+		new Ciudad(prov1, "Esperanza", 1f);
+		new Ciudad(prov1, "Santa Fe", 2f);
+		new Ciudad(prov2, "La Plata", 3f);
+		new Ciudad(prov2, "Mar del Plata", 4f);
+		new Ciudad(prov3, "Paraná", 5f);
+		new Ciudad(prov3, "Diamante", 6f);
 
 		Marca marca = new Marca("Volkswagen");
 		/*List<Modelo> m = marca.getModelos(); 
@@ -208,10 +181,7 @@ public class CargarBase {
 		
 		Marca marca27 = new Marca("Volvo");*/
 		
-		
-		
-		
-		Usuario usuario = new Usuario("Milto");
+		//Usuario usuario = new Usuario("Milto");
 						
 		TipoCobertura cobertura = new TipoCobertura(EnumTipoCobertura.RESPONSABILIDAD_CIVIL, "Responsabilidad civil", "Descripcion uno", 0.23f);
 		TipoCobertura cobertura1 = new TipoCobertura(EnumTipoCobertura.RESP_CIVIL_ROBO_O_INCENDIO_TOTAL, "Responsabilidad civil, robo o incendio total", "Descripcion dos", 0.39f);
@@ -219,28 +189,10 @@ public class CargarBase {
 		TipoCobertura cobertura3 = new TipoCobertura(EnumTipoCobertura.TERCEROS_COMPLETOS, "Terceros completos", "Descripcion seis", 0.51f);
 		TipoCobertura cobertura4 = new TipoCobertura(EnumTipoCobertura.TODO_RIESGO_CON_FRANQUICIA, "Todo riesgo con franquiia", "Descripcion cinco", 0.48f);
 		
-		Cliente cliente1 = new Cliente(1l, ciudad1, EnumCondicion.NORMAL, "Bernhardt", "Milton Gerardo", EnumTipoDocumento.DNI, 111111111, 
-				201111111118l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.IVA_LIBERADO, "correo@HOTMAIL.COM",
-				EnumEstadoCivil.EN_RELACION, "Alumno", 2015, EnumSiniestros.MAS_DE_DOS);
-		
-		Cliente cliente2 = new Cliente(12l, ciudad2, EnumCondicion.NORMAL, "Hominal", "Williams", EnumTipoDocumento.DNI, 222222222, 
-				202222222228l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.NO_RESPONSABLE, "correo@HOTMAIL.COM",
-				EnumEstadoCivil.DIVORCIADO, "Alumno", 2015, EnumSiniestros.MAS_DE_DOS);
-		
-		Cliente cliente3 = new Cliente(123l, ciudad3, EnumCondicion.NORMAL, "Farías", "Exequiel", EnumTipoDocumento.DNI, 333333333, 
-				203333333338l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.MONOTRIBUTISTA_SOCIAL, "correo@HOTMAIL.COM",
-				EnumEstadoCivil.CASADO, "Alumno", 2015, EnumSiniestros.MAS_DE_DOS);
-		
-		Cliente cliente4 = new Cliente(1234l, ciudad4, EnumCondicion.NORMAL, "Paduli", "Juan Diego", EnumTipoDocumento.DNI, 444444444, 
-				204444444448l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.SUJETO_EXENTO, "correo@HOTMAIL.COM",
-				EnumEstadoCivil.VIUDO, "Alumno", 2015, EnumSiniestros.MAS_DE_DOS);
-		
-		Cliente cliente5 = new Cliente(12345l, ciudad2, EnumCondicion.NORMAL, "Martinez", "Jose Luis", EnumTipoDocumento.LIBRETA_DE_ENROLAMIENTO, 555555555, 
-				205555555558l, EnumSexo.MASCULINO, LocalDate.parse("2015-05-28"), "CALLE", 123, 3, "C", 2020, EnumCondicionIVA.CONSUMIDOR_FINAL, "correo@HOTMAIL.COM",
-				EnumEstadoCivil.CASADO, "Profesor", 2010, EnumSiniestros.MAS_DE_DOS);
 
 		//---------------------------------------------------------------------------
 		//PARA RECREAR LA BASE, BORRA Y LA RECARGA DE NUEVO
+		HibernateUtil.shutdown();
 		HibernateUtil.getSessionFactoryCreate();
 		//---------------------------------------------------------------------------
 		//PERSISTE LOS DATOS CREADOS
@@ -259,11 +211,19 @@ public class CargarBase {
 		GestorTipoCobertura.get().addTipoCobertura(cobertura3);
 		GestorTipoCobertura.get().addTipoCobertura(cobertura4);
 		
-		GestorCliente.get().AltaCliente(cliente1);
-		GestorCliente.get().AltaCliente(cliente2);
-		GestorCliente.get().AltaCliente(cliente3);
-		GestorCliente.get().AltaCliente(cliente4);
-		GestorCliente.get().AltaCliente(cliente5);
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/clientes.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		session.beginTransaction();
+		
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
+
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+
+		}
+		session.close();
+
+		
 		//---------------------------------------------------------------------------
 		
 		

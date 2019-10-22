@@ -18,6 +18,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
@@ -35,7 +36,7 @@ public class GestorTema {
 	private static Color colorFondoErroneo = new Color(255,102,102);
 	private static Color colorLetra = Color.BLACK;
 	private static Color colorLetraErronea = colorFondoErroneo.darker().darker();
-	private static Color colorLetraDeshabilitada = Color.GRAY;
+	private static Color colorLetraDeshabilitada = Color.DARK_GRAY;
 	private static Font letraGrande = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
 	private static Font letra = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 	private static Font letraChica = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
@@ -43,7 +44,7 @@ public class GestorTema {
 	
 	
     private GestorTema() {
-
+    	ToolTipManager.sharedInstance().setInitialDelay(1000);
     }
 
     public static GestorTema get() {

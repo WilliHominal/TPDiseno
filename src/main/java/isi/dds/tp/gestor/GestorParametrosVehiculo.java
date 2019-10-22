@@ -1,6 +1,5 @@
 package isi.dds.tp.gestor;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -25,56 +24,36 @@ public class GestorParametrosVehiculo {
     }
 
     public void addRiesgoModelo(RiesgoModelo r) {
-	       
     	ParametrosVehiculosDAO.getDAO().addRiesgoModelo(r);
- 
     }
     
     public void addModelo(Modelo m) {
-
     	ParametrosVehiculosDAO.getDAO().addModelo(m);
-    	
     }
     
     public void addMarca(Marca m){
-    	
     	ParametrosVehiculosDAO.getDAO().addMarca(m);
-
     }
     
     public void addAnioModelo(AnioModelo a) {
-
     	ParametrosVehiculosDAO.getDAO().addAnioModelo(a);
-
     }
    
 	public List<Marca> getMarcas() {
-		
-    	ArrayList<Marca> marcas = (ArrayList<Marca>) ParametrosVehiculosDAO.getDAO().getMarcas(); 
-    	
-        return marcas;
+		return ParametrosVehiculosDAO.getDAO().getMarcas();
     }
-    
+    /*
 	public List<Modelo> getModelos(Integer id_marca) {
-    	
-    	List<Modelo> modelos = ParametrosVehiculosDAO.getDAO().getModelos(id_marca);
-        
-    	return modelos;
+		return ParametrosVehiculosDAO.getDAO().getModelos(id_marca);
     }
     
 	public List<AnioModelo> getAniosModelo(Integer id_modelo) {
-		
-    	List<AnioModelo> aniosModelo = ParametrosVehiculosDAO.getDAO().getAniosModelo(id_modelo);
-    	
-    	return aniosModelo;
+		return ParametrosVehiculosDAO.getDAO().getAniosModelo(id_modelo);
     }
     
 	public List<RiesgoModelo> getRiesgosModelo(Integer id_modelo) {
-		
-    	List<RiesgoModelo> riesgosModelo = ParametrosVehiculosDAO.getDAO().getRiesgosModelo(id_modelo);
-
-    	return riesgosModelo;
-    }
+		return ParametrosVehiculosDAO.getDAO().getRiesgosModelo(id_modelo);
+    }*/
 	
     public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
     	

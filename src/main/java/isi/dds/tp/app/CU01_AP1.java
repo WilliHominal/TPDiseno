@@ -51,10 +51,11 @@ public class CU01_AP1 extends JPanel {
 	private GestorTema tema = GestorTema.get();
 	
 	public Poliza poliza = new Poliza();
-	public Cliente cliente = null;
+	private Cliente cliente = null;
 	
 	private Boolean estaDeclarandoHijo = false;
 	private Boolean mouseActivo = false;
+	private Boolean primerCliente = true;
 	
 	private JLabel lnumeroCliente = new JLabel("N\u00famero cliente:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
@@ -63,7 +64,8 @@ public class CU01_AP1 extends JPanel {
 	private JLabel lnombres = new JLabel("Nombres:");
 	private JLabel lcalle = new JLabel("Calle:");
 	private JLabel lnumeroDom = new JLabel("N\u00famero domicilio:");
-	private JLabel ldepartamento = new JLabel("  Departamento:");
+	private JLabel lpiso = new JLabel("Piso:");
+	private JLabel ldepartamento = new JLabel("Departamento:");
 	private JLabel lprovincia = new JLabel("Provincia*:");
 	private JLabel lciudad = new JLabel("Ciudad*:");
 	private JLabel lmarca = new JLabel("Marca veh\u00edculo*:");
@@ -90,7 +92,8 @@ public class CU01_AP1 extends JPanel {
 	private JTextField campoNombres = new JTextField(15);
 	private JTextField campoCalle = new JTextField(15);
 	private JTextField campoNumeroDomicilio = new JTextField(8);
-	private JTextField campoDepartamento = new JTextField(3);
+	private JTextField campoPiso = new JTextField(2);
+	private JTextField campoDepartamento = new JTextField(2);
 	private JTextField campoMotor = new JTextField(15);
 	private JTextField campoChasis = new JTextField(8);
 	private JTextField campoPatente = new JTextField(7);
@@ -158,6 +161,7 @@ public class CU01_AP1 extends JPanel {
 		campoNombres.setEnabled(false);
 		campoCalle.setEnabled(false);
 		campoNumeroDomicilio.setEnabled(false);
+		campoPiso.setEnabled(false);
 		campoDepartamento.setEnabled(false);
 		campoSumaAsegurada.setEnabled(false);
 		campoSumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -318,17 +322,29 @@ public class CU01_AP1 extends JPanel {
 		
 		constraints.gridx = 5;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(5, 0, 5, 15);
+		constraints.insets.set(5, 0, 5, 50);
 		add(campoNumeroDomicilio, constraints);
 		
-		constraints.gridx = 6;
-		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(5, 0, 5, 5);
-		add(ldepartamento, constraints);
+		constraints.gridwidth = 2;
+		constraints.gridx = 5;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 100, 5, 0);
+		add(lpiso, constraints);
 		
-		constraints.gridx = 7;
+
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 130, 5, 0);
+		add(campoPiso, constraints);
+		
+		constraints.gridwidth = 1;
+		constraints.gridx = 6;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 0);
+		add(ldepartamento, constraints);
+
+		constraints.gridx = 7;
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(5, 10, 5, 0);
 		add(campoDepartamento, constraints);
 		
 		//FILA 4
@@ -478,6 +494,7 @@ public class CU01_AP1 extends JPanel {
 		tema.label(lnombres);
 		tema.label(lcalle);
 		tema.label(lnumeroDom);
+		tema.label(lpiso);
 		tema.label(ldepartamento);
 		tema.label(lprovincia);
 		tema.label(lciudad);
@@ -508,6 +525,7 @@ public class CU01_AP1 extends JPanel {
 		tema.campo(campoCalle, false);
 		tema.campo(campoNumeroDomicilio, false);
 		tema.campo(campoDepartamento, false);
+		tema.campo(campoPiso, false);
 		tema.campo(campoSumaAsegurada, false);
 		tema.campo(campoNumerosSiniestros, false);
 		tema.campo(campoMotor, false);
@@ -542,20 +560,10 @@ public class CU01_AP1 extends JPanel {
 		
 	}
 
-	public void comportamientoBotones() {
+	private void comportamientoBotones() {
 		btnBuscarCliente.addActionListener(a -> {
 			try {
-				
-				new CU17_BuscarCliente(ventana);
-				/*if(cliente != null) {
-					
-					cliente = GestorCliente.get().getCliente(123456l);
-					obtenidoCliente(cliente);
-					
-					poliza.setCliente(cliente);
-					cliente.getPolizas().add(poliza);
-				}*/
-						
+				new CU17_BuscarCliente(ventana);		
 			}catch(Exception ex) {
             	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
                           "Error.", JOptionPane.ERROR_MESSAGE);       	
@@ -673,7 +681,7 @@ public class CU01_AP1 extends JPanel {
 		});
 	}
 
-	public void comportamientoComboBox() {
+	private void comportamientoComboBox() {
 		seleccionProvincia.addActionListener (a -> {
 			Provincia provincia = seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex());
 			
@@ -764,7 +772,7 @@ public class CU01_AP1 extends JPanel {
 		});
 	}
 
-	public void comportamientoCampos() {
+	private void comportamientoCampos() {
 		
 		campoMotor.addKeyListener(new KeyAdapter(){
 			public void keyTyped(KeyEvent e){
@@ -817,7 +825,7 @@ public class CU01_AP1 extends JPanel {
 	 * que sirve para la declaración de hijos esta siendo usado. Si es así desactiva todos los componentes de este panel
 	 * hasta que deje de ser usar dicho frame.
 	 */
-	public void compMouseParaDeclaracionHijos() {
+	private void compMouseParaDeclaracionHijos() {
         addMouseListener(new MouseAdapter() {
         	public void mouseEntered(MouseEvent event) {
         		if(mouseActivo) {
@@ -895,82 +903,94 @@ public class CU01_AP1 extends JPanel {
 	 * póliza.
 	 * @param cliente
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public void obtenidoCliente(Cliente cliente){
+		this.cliente = cliente;
 		campoNumeroCliente.setText(cliente.getNumeroCliente().toString());
-		campoTipoDocumento.setText(cliente.getTipoDocumento().toString());
+		campoTipoDocumento.setText(GestorEnum.get().getStringTipoDocumento(cliente.getTipoDocumento()));
 		campoNumeroDocumento.setText(cliente.getNumeroDocumento().toString());
 		campoApellido.setText(cliente.getApellido());
 		campoNombres.setText(cliente.getNombre());
 		campoCalle.setText(cliente.getCalle());
 		campoNumeroDomicilio.setText(cliente.getNumeroCalle().toString());
-		campoDepartamento.setText(cliente.getDepartamento());
-		
-		campoMotor.setEnabled(true);
-		campoChasis.setEnabled(true);
-		campoPatente.setEnabled(true);
-		seleccionProvincia.setEnabled(true);
-		seleccionCiudad.setEnabled(true);
-		seleccionMarca.setEnabled(true);
-		seleccionKm.setEnabled(true);
-		rbtnGarageSi.setEnabled(true);
-		rbtnGarageNo.setEnabled(true);
-		rbtnAlarmaSi.setEnabled(true);
-		rbtnAlarmaNo.setEnabled(true);
-		rbtnRastreoNo.setEnabled(true);
-		rbtnRastreoSi.setEnabled(true);
-		rbtnTuercasSi.setEnabled(true);
-		rbtnTuercasNo.setEnabled(true);
-		tablaHijos.setEnabled(true);
-		btnAgregarHijo.setEnabled(true);
-		
-		tema.seleccion(seleccionProvincia, true);
-		tema.seleccion(seleccionCiudad, true);
-		tema.seleccion(seleccionMarca, true);
-		tema.seleccion(seleccionKm, true);
-		tema.seleccion(seleccionModelo, false);
-		tema.seleccion(seleccionAnio, false);
-		
-		tema.campo(campoMotor, true);
-		tema.campo(campoChasis, true);
-		tema.campo(campoPatente, true);
-		tema.tabla(tablaHijos, true);
-		tema.tablaScroll(tablaHijosScroll, true);
-		tema.tablaScroll(tablaHijosScroll, false);
-
-		//TODO determinar que provincias elegir primero
-		ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.get().getProvincias(100);
-		Iterator<Provincia> iteradorProvincias = provincias.iterator();
-		while(iteradorProvincias.hasNext()){
-			seleccionProvincia.addItem(iteradorProvincias.next());
+		if(cliente.getPiso()==null) {
+			campoPiso.setText("-");
+			campoDepartamento.setText("-");
+		}else {
+			campoPiso.setText(cliente.getPiso().toString());
+			campoDepartamento.setText(cliente.getDepartamento());
 		}
+		
+		if(primerCliente) {
+			campoMotor.setEnabled(true);
+			campoChasis.setEnabled(true);
+			campoPatente.setEnabled(true);
+			seleccionProvincia.setEnabled(true);
+			seleccionCiudad.setEnabled(true);
+			seleccionMarca.setEnabled(true);
+			seleccionKm.setEnabled(true);
+			rbtnGarageSi.setEnabled(true);
+			rbtnGarageNo.setEnabled(true);
+			rbtnAlarmaSi.setEnabled(true);
+			rbtnAlarmaNo.setEnabled(true);
+			rbtnRastreoNo.setEnabled(true);
+			rbtnRastreoSi.setEnabled(true);
+			rbtnTuercasSi.setEnabled(true);
+			rbtnTuercasNo.setEnabled(true);
+			tablaHijos.setEnabled(true);
+			btnAgregarHijo.setEnabled(true);
 			
-		seleccionCiudad.removeAllItems();
-		Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(provincias.get(0).getCiudades()).iterator();
-		while(iteratorCiudad.hasNext()){
-			seleccionCiudad.addItem(iteratorCiudad.next());
+			tema.seleccion(seleccionProvincia, true);
+			tema.seleccion(seleccionCiudad, true);
+			tema.seleccion(seleccionMarca, true);
+			tema.seleccion(seleccionKm, true);
+			tema.seleccion(seleccionModelo, false);
+			tema.seleccion(seleccionAnio, false);
+			
+			tema.campo(campoMotor, true);
+			tema.campo(campoChasis, true);
+			tema.campo(campoPatente, true);
+			tema.tabla(tablaHijos, true);
+			tema.tablaScroll(tablaHijosScroll, true);
+			tema.tablaScroll(tablaHijosScroll, false);
+
+			ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.get().getProvincias(cliente.getCiudad().getProvincia().getPais().getIdPais());
+			
+			//TODO elegir provincia que tiene el cliente como registrado
+			Iterator<Provincia> iteradorProvincias = provincias.iterator();
+			while(iteradorProvincias.hasNext()){
+				seleccionProvincia.addItem(iteradorProvincias.next());
+			}
+			
+			seleccionCiudad.removeAllItems();
+			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(provincias.get(0).getCiudades()).iterator();
+			while(iteratorCiudad.hasNext()){
+				seleccionCiudad.addItem(iteratorCiudad.next());
+			}
+			
+			ArrayList<Marca> marcas = (ArrayList<Marca>) GestorParametrosVehiculo.get().getMarcas();
+			seleccionMarca.addItem(new Marca("Seleccionar marca"));
+			Iterator<Marca> marcasIterator = marcas.iterator();
+			while(marcasIterator.hasNext()){
+				seleccionMarca.addItem(marcasIterator.next());
+			}
+			
+			//TODO actualizar para sinietros
+			//campoNumerosSiniestros.setText(GestorEnum.get().getStringSiniestros(cliente.getNumerosSiniestrosUltimoAnios()));
+			
+			seleccionKm.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecionar kilometraje",
+					"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
+					"50.000 - 59.999", "60.000 - 69.999", "70.000 - 79.999", "80.000 - 89.999", "90.000 - 99.999",
+					"100.00 - 109.999", "110.000 - 119.999", "120.000 - 129.999", "130.000 - 139.999", "140.000 - 149.999",
+					"150.000 - 159.999", "160.000 - 169.999", "170.000 - 179.999", "180.000 - 189.999", "190.000 - 199.999",
+					"200.000 - 209.999", "210.000 - 219.999", "220.000 - 229.999", "230.000 - 239.999", "240.000 - 249.999",
+					"250.000 - 259.999", "260.000 - 269.999", "270.000 - 279.999", "280.000 - 289.999", "290.000 - 299.999",
+					"Más de 300.000 km"
+			}));
+			
+			btnConfirmarDatos.setEnabled(true);	
+			primerCliente = false;
 		}
-		
-		ArrayList<Marca> marcas = (ArrayList<Marca>) GestorParametrosVehiculo.get().getMarcas();
-		seleccionMarca.addItem(new Marca("Seleccionar marca"));
-		Iterator<Marca> marcasIterator = marcas.iterator();
-		while(marcasIterator.hasNext()){
-			seleccionMarca.addItem(marcasIterator.next());
-		}
-		
-		campoNumerosSiniestros.setText(GestorEnum.get().getStringSiniestros(cliente.getNumerosSiniestrosUltimoAnios()));
-		
-		seleccionKm.setModel(new DefaultComboBoxModel(new String[] {"Selecionar kilometraje",
-				"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
-				"50.000 - 59.999", "60.000 - 69.999", "70.000 - 79.999", "80.000 - 89.999", "90.000 - 99.999",
-				"100.00 - 109.999", "110.000 - 119.999", "120.000 - 129.999", "130.000 - 139.999", "140.000 - 149.999",
-				"150.000 - 159.999", "160.000 - 169.999", "170.000 - 179.999", "180.000 - 189.999", "190.000 - 199.999",
-				"200.000 - 209.999", "210.000 - 219.999", "220.000 - 229.999", "230.000 - 239.999", "240.000 - 249.999",
-				"250.000 - 259.999", "260.000 - 269.999", "270.000 - 279.999", "280.000 - 289.999", "290.000 - 299.999",
-				"Mayor a 300.000 km"
-		}));
-		
-		btnConfirmarDatos.setEnabled(true);		
+	
 	}
 
 	/**
@@ -1188,7 +1208,7 @@ public class CU01_AP1 extends JPanel {
 	 * acuerdo a sí está o no declarandose un hijo.
 	 * @param val
 	 */
-	public void componentesAlDeclararHijos(Boolean val) {
+	private void componentesAlDeclararHijos(Boolean val) {
 		seleccionProvincia.setEnabled(val);
 		seleccionCiudad.setEnabled(val);
 		seleccionMarca.setEnabled(val);
@@ -1291,7 +1311,7 @@ public class CU01_AP1 extends JPanel {
 				model.setValueAt(GestorEnum.get().getStringEstadoCivilFem(hijosDeclarado.get(fila).getEstadoCivil()), fila, 3);
 			}
 			else {
-				model.setValueAt(GestorEnum.get().getStringEstadoCivilMasc(hijosDeclarado.get(fila).getEstadoCivil()), fila, 3);
+				model.setValueAt(GestorEnum.get().getStringEstadoCivil(hijosDeclarado.get(fila).getEstadoCivil()), fila, 3);
 			}
 		}
 		

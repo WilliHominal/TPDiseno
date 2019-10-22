@@ -69,73 +69,52 @@ public class GestorCliente {
     	return null;
     }
 
-	public List<Cliente> buscarClientes(Long numeroCliente, String apellido, String nombre, EnumTipoDocumento tipoDocumento, Integer numeroDocumento) {
-    	//TODO buscar campos por partes, es decir si coincidice alguna parte retonar
+	public List<Cliente> buscarClientes(Long numeroCliente, String apellido, String nombre, EnumTipoDocumento tipoDocumento, String numeroDocumento, Integer ordenamiento) {
     	String condicionesConsulta = "";
-    	Boolean cantidadParametros = false;
     	
     	if(numeroCliente != null) {
-    		if(condicionesConsulta.isEmpty()) {
-    			condicionesConsulta += " where";
-    		}
-    		condicionesConsulta += " numero_cliente="+numeroCliente;
-    		cantidadParametros = true;
+    		condicionesConsulta += " and numero_cliente="+numeroCliente;
     	}
     	
     	if(apellido != null) {
-    		if(condicionesConsulta.isEmpty()) {
-    			condicionesConsulta += " where";
-    		}
-    		
-    		if(cantidadParametros.booleanValue() == true) {
-    			condicionesConsulta += " and apellido = '"+apellido+"' ";
-    		}
-    		else {
-    			condicionesConsulta += " apellido = '"+apellido+"' ";
-    		}
-    		cantidadParametros = true;
+    		condicionesConsulta += " and to_ascii(apellido, 'latin1') ilike  to_ascii('"+apellido+"%', 'latin1') ";
+
     	}
     	
     	if(nombre != null) {
-    		if(condicionesConsulta.isEmpty()) {
-    			condicionesConsulta += " where";
-    		}
-    		
-    		if(cantidadParametros.booleanValue() == true) {
-    			condicionesConsulta += " and nombre = '"+nombre+"'";
-    		}
-    		else {
-    			condicionesConsulta += " nombre = '"+nombre+"'";
-    		}
-    		cantidadParametros = true;
+   			condicionesConsulta += " and to_ascii(nombre, 'LATIN1') ilike TO_ASCII('"+nombre+")%', 'latin1') ";
     	}
     	
     	if(tipoDocumento != null) {
-    		if(condicionesConsulta.isEmpty()) {
-    			condicionesConsulta += " where";
-    		}
-    		
-    		if(cantidadParametros.booleanValue() == true) {
-    			condicionesConsulta += " and tipo_documento = '"+tipoDocumento+"' ";
-    		}
-    		else {
-    			condicionesConsulta += " tipo_documento = '"+tipoDocumento+"' ";
-    		}
-    		cantidadParametros = true;
+    		condicionesConsulta += " and tipo_documento = '"+tipoDocumento+"' ";
     	}
     	
     	if(numeroDocumento != null) {
-    		if(condicionesConsulta.isEmpty()) {
-    			condicionesConsulta += " where ";
-    		}
-    		
-    		if(cantidadParametros.booleanValue() == true) {
-    			condicionesConsulta += " and numero_documento = "+numeroDocumento;
-    		}
-    		else {
-    			condicionesConsulta += " numero_documento = "+numeroDocumento;
-    		}
+    		condicionesConsulta += " and documento = '"+numeroDocumento+"' ";
     	}
+    	
+		switch(ordenamiento) {
+			case 0: 
+			case 1:
+				condicionesConsulta += " order by numero_cliente asc";
+			break;
+				
+			case 2:
+				condicionesConsulta += " order by apellido asc";
+			break;
+			
+			case 3:
+				condicionesConsulta += " order by nombre asc";
+			break;
+			
+			case 4:
+				condicionesConsulta += " order by tipo_documento asc";
+			break;
+			
+			case 5:
+				condicionesConsulta += " order by documento asc";
+			break;
+		}
     	
     	return ClienteDAO.getDAO().getClientes(condicionesConsulta);
     }

@@ -105,28 +105,6 @@ public class GestorEnum {
     	return null;    	
     }
     
-    public String getStringEstadoCivilMasc(EnumEstadoCivil estadoCivil) {
-    	if(estadoCivil.equals(EnumEstadoCivil.SOLTERO)) {
-    		return "Soltero";
-    	}
-    	if(estadoCivil.equals(EnumEstadoCivil.CASADO)) {
-    		return "Casado";
-    	}
-    	if(estadoCivil.equals(EnumEstadoCivil.VIUDO)) {
-    		return "Viudo";
-    	}
-    	if(estadoCivil.equals(EnumEstadoCivil.DIVORCIADO)) {
-    		return "Divorciado";
-    	}
-    	if(estadoCivil.equals(EnumEstadoCivil.SEPARADO)) {
-    		return "Separado";
-    	}
-    	if(estadoCivil.equals(EnumEstadoCivil.EN_RELACION)) {
-    		return "En relación";
-    	}
-    	return null;    	
-    }
-    
     public EnumSiniestros getEnumSiniestros(String siniestro) {
     	if(siniestro.equals("Ninguno")) {
     		return EnumSiniestros.NINGUNO;

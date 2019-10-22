@@ -4,8 +4,11 @@ import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -21,7 +24,6 @@ import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 import isi.dds.tp.enums.EnumTipoDocumento;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorEnum;
@@ -56,7 +58,10 @@ public class CU17_BuscarCliente extends JPanel {
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
+	private JPanel estePanel;
 	private GestorTema tema = GestorTema.get();
+	
+	private Boolean esAltaPoliza = false;
 	
 	private List<Cliente> clientes = new ArrayList<Cliente>();
 	
@@ -78,16 +83,20 @@ public class CU17_BuscarCliente extends JPanel {
 	private JButton btnCancelar = new JButton("CANCELAR");
 	
 	private JComboBox<String> seleccionTipoDocumento = new JComboBox<String>();
-	private JComboBox<String> seleccionOrdenar = new JComboBox<String>();
+	private JComboBox<String> seleccionOrdenamiento = new JComboBox<String>();
 	private JTable tablaClientes = new JTable();
 	private JScrollPane tablaClientesScroll = new JScrollPane(tablaClientes);
 	private Object[][] datosTabla = {{""},{""},{""},{""},{""}};
 	private DefaultTableModel model;
 	
 	public CU17_BuscarCliente(JFrame ventana) {
+		
 		this.ventana = ventana;
 		
-		try {			
+		try {		
+			if(ventana.getContentPane() instanceof CU01_AP1) {
+				esAltaPoliza = true;
+			}
 			panelAnterior = (JPanel) ventana.getContentPane();
 			
 		}catch(Exception ex) {
@@ -99,7 +108,7 @@ public class CU17_BuscarCliente extends JPanel {
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
-		
+		this.estePanel  = this;
 		comportamientos();
 
 		ventana.setTitle("Buscar cliente");		
@@ -121,13 +130,12 @@ public class CU17_BuscarCliente extends JPanel {
 		seleccionTipoDocumento.addItem("Libreta civil");
 		seleccionTipoDocumento.addItem("Libreta de enrolamiento");
 		
-		seleccionOrdenar.addItem("Default");
-		seleccionOrdenar.addItem("Número cliente");
-		seleccionOrdenar.addItem("Apellido");
-		seleccionOrdenar.addItem("Nombre");
-		seleccionOrdenar.addItem("Tipo documento");
-		seleccionOrdenar.addItem("Número documento");
-		
+		seleccionOrdenamiento.addItem("Default");
+		seleccionOrdenamiento.addItem("Número cliente");
+		seleccionOrdenamiento.addItem("Apellido");
+		seleccionOrdenamiento.addItem("Nombre");
+		seleccionOrdenamiento.addItem("Tipo documento");
+		seleccionOrdenamiento.addItem("Número documento");
 		
 		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 0) {
 		    @Override
@@ -211,7 +219,7 @@ public class CU17_BuscarCliente extends JPanel {
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(10, 10, 10, 5);
-		add(seleccionOrdenar, constraints);	
+		add(seleccionOrdenamiento, constraints);	
 		
 		constraints.gridx = 0;
 		constraints.gridy = 6;
@@ -257,13 +265,13 @@ public class CU17_BuscarCliente extends JPanel {
 		tema.campo(campoApellido, true);
 		tema.campo(campoNumeroDocumento, true);
 		tema.campo(campoNombre, true);
-		tema.campo(campoTotalFilas, true);
+		tema.campo(campoTotalFilas, false);
 		
 		tema.boton(btnBuscar);
 		tema.boton(btnCancelar);
 		
 		tema.seleccion(seleccionTipoDocumento, true);
-		tema.seleccion(seleccionOrdenar, true);
+		tema.seleccion(seleccionOrdenamiento, true);
 
 		tema.tabla(tablaClientes, true);
 		tema.tablaScroll(tablaClientesScroll, true);
@@ -276,7 +284,7 @@ public class CU17_BuscarCliente extends JPanel {
 				String apellido = null;
 				String nombre = null;
 				EnumTipoDocumento tipoDocumento= null;
-				Integer numeroDocumento = null; 				
+				String numeroDocumento = null; 	
 				
 				if(!campoNumeroCliente.getText().isBlank()) {
 					numeroCliente = Long.parseLong(campoNumeroCliente.getText());
@@ -295,14 +303,12 @@ public class CU17_BuscarCliente extends JPanel {
 				}
 								
 				if(!campoNumeroDocumento.getText().isBlank()) {
-					numeroDocumento = Integer.parseInt(campoNumeroDocumento.getText());
+					numeroDocumento = campoNumeroDocumento.getText();
 				}
 				
-				
-				clientes = GestorCliente.get().buscarClientes(numeroCliente, apellido, nombre, tipoDocumento, numeroDocumento);
+				clientes = GestorCliente.get().buscarClientes(numeroCliente, apellido, nombre, tipoDocumento, numeroDocumento, seleccionOrdenamiento.getSelectedIndex());
 				
 				cargarTabla(clientes);
-				
 						
 			}catch(Exception ex) {
             	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
@@ -319,6 +325,29 @@ public class CU17_BuscarCliente extends JPanel {
 			}
 		});
 		
+		tablaClientes.addMouseListener(new MouseAdapter() {
+			//TODO ordenar la tabla si se hace doble click en alguna columna
+		    public void mousePressed(MouseEvent mouseEvent) {
+		        JTable table =(JTable) mouseEvent.getSource();
+		        Point point = mouseEvent.getPoint();
+		        int row = table.rowAtPoint(point);
+		        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
+		            //TODO mostrar datos completos de cliente
+		        	if(esAltaPoliza) {
+		        		CU01_AP1 altaPoliza =  (CU01_AP1) panelAnterior;
+		        		altaPoliza.obtenidoCliente(clientes.get(row));
+			        	ventana.setContentPane(altaPoliza);
+			        	estePanel.setVisible(false);
+		        	}
+		        	else {
+			        	ventana.setContentPane(panelAnterior);
+			        	estePanel.setVisible(false);
+		        	}
+
+		        }
+		    }
+		});
+				
 		campoNumeroCliente.addKeyListener(new KeyAdapter(){
 			public void keyTyped(KeyEvent e){
 				char caracter = e.getKeyChar();
@@ -358,7 +387,7 @@ public class CU17_BuscarCliente extends JPanel {
 	    	}
 	    });
 
-	    campoNumeroDocumento.addKeyListener(new KeyAdapter(){
+	  /*  campoNumeroDocumento.addKeyListener(new KeyAdapter(){
 	    	public void keyTyped(KeyEvent e){
 				char caracter = e.getKeyChar();
 				//TODO poner condiciones de acuerod al tipo de documento
@@ -370,7 +399,7 @@ public class CU17_BuscarCliente extends JPanel {
 					getToolkit().beep();
 				}
 	    	}
-	    }); 
+	    }); */
 	    
 		seleccionTipoDocumento.addActionListener (a -> {
 			
@@ -416,7 +445,12 @@ public class CU17_BuscarCliente extends JPanel {
 		tablaClientes.getColumnModel().getColumn(3).setHeaderValue("Tipo documento");
 		tablaClientes.getColumnModel().getColumn(4).setHeaderValue("Nro. documento");
 		
-		if(clientes != null) {			
+		if(clientes != null) {	
+			tablaClientes.setToolTipText("Doble click para seleccionar un cliente");
+			
+			tablaClientes.setEnabled(true);
+			campoTotalFilas.setText(String.valueOf(clientes.size()));
+			//TODO ordenar clientes
 			for(int fila = 0; fila < tamanioTablaActual; fila++) {
 				model.setValueAt(clientes.get(fila).getNumeroCliente(), fila, 0);
 				model.setValueAt(clientes.get(fila).getApellido(), fila, 1);
@@ -425,6 +459,14 @@ public class CU17_BuscarCliente extends JPanel {
 				model.setValueAt(clientes.get(fila).getNumeroDocumento(), fila, 4);
 
 			}
+			if(tamanioTablaActual == 0) {
+				JOptionPane.showMessageDialog(ventana, "No se han encontrado clientes que cumplan con ese criterio de búsqueda.", "Clente no encontrado", JOptionPane.INFORMATION_MESSAGE);	
+			}
+		}
+		else {
+			tablaClientes.setToolTipText(null);
+			tablaClientes.setEnabled(false);
+			campoTotalFilas.setText("");
 		}
 	}	
 }

@@ -21,6 +21,8 @@ import javax.swing.WindowConstants;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
+import isi.dds.tp.enums.EnumEstadoCivil;
+import isi.dds.tp.enums.EnumSexo;
 import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.HijoDeclarado;
@@ -153,16 +155,16 @@ public class CU01_DH extends JPanel  {
 		seleccionSexo.setPreferredSize(new Dimension(105, 25));
 		
 		seleccionSexo.addItem("Selecionar");
-		seleccionSexo.addItem("Femenino");
-		seleccionSexo.addItem("Masculino");
+		EnumSexo[] sexos = EnumSexo.values();
+		for(int i=0; i<sexos.length; i++){
+			seleccionSexo.addItem(GestorEnum.get().getStringSexo(sexos[i]));
+		}
 		
 		seleccionEstadoCivil.addItem("Selecionar");
-		seleccionEstadoCivil.addItem("Soltero");
-		seleccionEstadoCivil.addItem("Casado");
-		seleccionEstadoCivil.addItem("Viudo");
-		seleccionEstadoCivil.addItem("Divorciado");
-		seleccionEstadoCivil.addItem("Separado");
-		seleccionEstadoCivil.addItem("En relación");
+		EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
+		for(int i=0; i<estadosCivil.length; i++){
+			seleccionEstadoCivil.addItem(GestorEnum.get().getStringEstadoCivil(estadosCivil[i]));
+		}
 
 		try {
 			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
@@ -184,7 +186,7 @@ public class CU01_DH extends JPanel  {
 		tema.label(lestadocivil);
 		tema.label(ldatosObligatorios);
 		tema.calendario(dcFechaNacimiento, true);
-		tema.seleccion(seleccionEstadoCivil, true);
+		tema.seleccion(seleccionSexo, true);
 		tema.seleccion(seleccionEstadoCivil, true);
 		tema.boton(btnAgregarHijo);
 		tema.boton(btnCancelar);
@@ -203,12 +205,27 @@ public class CU01_DH extends JPanel  {
 				seleccionEstadoCivil.removeAllItems();
 				
 				seleccionEstadoCivil.addItem("Selecionar");
-				seleccionEstadoCivil.addItem("Soltera");
-				seleccionEstadoCivil.addItem("Casada");
-				seleccionEstadoCivil.addItem("Viuda");
-				seleccionEstadoCivil.addItem("Divorciada");
-				seleccionEstadoCivil.addItem("Separada");
-				seleccionEstadoCivil.addItem("En relación");
+				EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
+				for(int i=0; i<estadosCivil.length; i++){
+					seleccionEstadoCivil.addItem(GestorEnum.get().getStringEstadoCivil(estadosCivil[i]));
+				}
+				
+				seleccionEstadoCivil.setSelectedIndex(index);
+				
+				seleccionEstadoCivil.setEnabled(true);
+			}
+			else {
+				seleccionEstadoCivil.setEnabled(false);
+				
+				int index = seleccionEstadoCivil.getSelectedIndex();
+				
+				seleccionEstadoCivil.removeAllItems();
+				
+				seleccionEstadoCivil.addItem("Selecionar");
+				EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
+				for(int i=0; i<estadosCivil.length; i++){
+					seleccionEstadoCivil.addItem(GestorEnum.get().getStringEstadoCivilFem(estadosCivil[i]));
+				}
 				
 				seleccionEstadoCivil.setSelectedIndex(index);
 				

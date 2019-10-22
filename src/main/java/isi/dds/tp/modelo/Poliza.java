@@ -10,12 +10,12 @@ import org.hibernate.annotations.IndexColumn;
 @SuppressWarnings("deprecation")
 @Entity
 @Table
-
 public class Poliza {
 	
 	@ManyToOne
 	@JoinColumn(name = "numero_cliente")
 	private Cliente cliente;
+	
 	
 	@OneToMany(cascade = CascadeType.ALL)
 	@JoinColumn(name = "numero_poliza")

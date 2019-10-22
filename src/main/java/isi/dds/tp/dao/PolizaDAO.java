@@ -28,7 +28,6 @@ public class PolizaDAO {
     }
 
     public void addPoliza(Poliza p) {
-
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
@@ -43,7 +42,6 @@ public class PolizaDAO {
     }
     
     public void addSolicitudPoliza(SolicitudPoliza s) {
-
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
@@ -57,79 +55,63 @@ public class PolizaDAO {
         }
     }
 
-    
-    @SuppressWarnings("unchecked")
+
 	public List<Poliza> getPolizas(Long numeroCliente) {
-    	
-    	List<Poliza> polizas = null;
-
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
-            polizas = session.createQuery("SELECT p FROM Poliza p WHERE numero_cliente="+numeroCliente).list();
+            return session.createQuery("SELECT p FROM Poliza p WHERE numero_cliente="+numeroCliente, Poliza.class).list();
             
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
         
-        return polizas;
+        return null;
     }
-    
-    @SuppressWarnings("unchecked")
-	public List<Cuota> getCuotas(Long numeroPoliza) {
 
-    	List<Cuota> cuotas = null;
-    	
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+	public List<Cuota> getCuotas(Long numeroPoliza) {
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
-            cuotas = session.createQuery("SELECT c FROM Cuota c WHERE numero_poliza="+numeroPoliza).list();
+            return session.createQuery("SELECT c FROM Cuota c WHERE numero_poliza="+numeroPoliza, Cuota.class).list();
             
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
         
-        return cuotas;
+        return null;
     }
     
     public SolicitudPoliza getSolicitudPoliza(Long numeroPoliza) {
-
-    	SolicitudPoliza solicitud = null;
-    	
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
-            solicitud = (SolicitudPoliza) session.createQuery("SELECT s FROM SolicitudPoliza s WHERE numero_poliza="+numeroPoliza);
-            
+            return session.createQuery("SELECT s FROM SolicitudPoliza s WHERE numero_poliza="+numeroPoliza, SolicitudPoliza.class).getSingleResult();
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
         
-        return solicitud;
+        return null;
     }
     
-    @SuppressWarnings("unchecked")
 	public List<HijoDeclarado> getHijosDeclarados(Long numeroPoliza) {
-
-    	List<HijoDeclarado> hijos = null;
-    	
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
-            hijos = session.createQuery("SELECT h FROM HijoDeclarado h WHERE numero_poliza="+numeroPoliza).list();
+            return session.createQuery("SELECT h FROM HijoDeclarado h WHERE numero_poliza="+numeroPoliza, HijoDeclarado.class).list();
             
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
         
-        return hijos;
+        return null;
     }
 }

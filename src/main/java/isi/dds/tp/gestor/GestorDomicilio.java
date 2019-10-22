@@ -50,16 +50,17 @@ public class GestorDomicilio {
     }
     
     public List<Provincia> getProvincias(Integer id_pais) {
+    	
     	return DomicilioDAO.getDAO().getProvincias(id_pais);
     }
-    
+    /*
     public List<Ciudad> getCiudades(Integer id_provincia) {
     	return DomicilioDAO.getDAO().getCiudades(id_provincia);
     }
     
     public List<RiesgoCiudad> getRiesgosCiudad(Integer id_ciudad) {
     	return DomicilioDAO.getDAO().getRiesgosCiudad(id_ciudad);
-    }
+    }*/
     
     public RiesgoCiudad ultimoRiesgoCiudad(Integer id_ciudad) {
     	return DomicilioDAO.getDAO().getUltimoRiesgoCiudad(id_ciudad);

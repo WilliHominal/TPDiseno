@@ -1,7 +1,6 @@
 package isi.dds.tp.dao;
 
 import java.util.List;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import isi.dds.tp.hibernate.HibernateUtil;
@@ -54,7 +53,7 @@ public class ClienteDAO {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
 
-            return session.createNativeQuery("SELECT * FROM cliente "+consulta+" ORDER BY nombre", Cliente.class).getResultList();
+            return session.createNativeQuery("SELECT * FROM cliente where (condicion='ACTIVO' or condicion='PLATA') "+consulta, Cliente.class).getResultList();
             
         }
         catch (HibernateException e) {

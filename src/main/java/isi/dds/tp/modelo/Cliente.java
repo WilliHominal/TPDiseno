@@ -12,7 +12,7 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Cliente {
 	
-	@JoinColumn
+	@JoinColumn(name="id_ciudad")
     @OneToOne
 	private Ciudad ciudad;
 	
@@ -43,7 +43,7 @@ public class Cliente {
 	private EnumTipoDocumento tipoDocumento;
 	
 	@Column(nullable = false, unique = true, name = "documento")
-	private Integer numeroDocumento;
+	private String numeroDocumento;
 	
 	@Column(nullable = false, unique = true, name = "cuil")
 	private Long numeroCuil;
@@ -87,10 +87,6 @@ public class Cliente {
 	@Column(name = "anio_registro")
 	private Integer anioRegistro;
 	
-	@Column(nullable = false, name = "numeros_siniestros_ultimo_anios")
-	@Enumerated(EnumType.STRING)
-	private EnumSiniestros numerosSiniestrosUltimoAnios;
-	
 	public Cliente() {
 
 	}
@@ -117,13 +113,12 @@ public class Cliente {
 	 * @param estadoCivil
 	 * @param profesion
 	 * @param anioRegistro
-	 * @param siniestros
 	 */
 	public Cliente(Long numeroCliente, Ciudad ciudad, EnumCondicion condicion, String apellido,
-			String nombre, EnumTipoDocumento tipoDocumento, Integer numeroDocumento, Long numeroCuil, EnumSexo sexo,
+			String nombre, EnumTipoDocumento tipoDocumento, String numeroDocumento, Long numeroCuil, EnumSexo sexo,
 			LocalDate fechaNacimiento, String calle, Integer numeroCalle, Integer piso, String departamento,
 			Integer codigoPostal, EnumCondicionIVA condicionIva, String correoElectronico, EnumEstadoCivil estadoCivil,
-			String profesion, Integer anioRegistro, EnumSiniestros siniestros) {
+			String profesion, Integer anioRegistro) {
 		this.ciudad = ciudad;
 		this.polizas = new ArrayList<Poliza>();
 		
@@ -146,7 +141,6 @@ public class Cliente {
 		this.estadoCivil = estadoCivil;
 		this.profesion = profesion;
 		this.anioRegistro = anioRegistro;
-		this.numerosSiniestrosUltimoAnios = siniestros;
 	}
 	
 	public Ciudad getCiudad() {
@@ -170,7 +164,7 @@ public class Cliente {
 	public EnumTipoDocumento getTipoDocumento() {
 		return tipoDocumento;
 	}
-	public Integer getNumeroDocumento() {
+	public String getNumeroDocumento() {
 		return numeroDocumento;
 	}
 	public Long getNumeroCuil() {
@@ -233,7 +227,7 @@ public class Cliente {
 	public void setTipoDocumento(EnumTipoDocumento tipoDocumento) {
 		this.tipoDocumento = tipoDocumento;
 	}
-	public void setNumeroDocumento(Integer numeroDocumento) {
+	public void setNumeroDocumento(String numeroDocumento) {
 		this.numeroDocumento = numeroDocumento;
 	}
 	public void setNumeroCuil(Long numeroCuil) {
@@ -274,12 +268,5 @@ public class Cliente {
 	}
 	public void setAnioRegistro(Integer anioRegistro) {
 		this.anioRegistro = anioRegistro;
-	} 
-	public EnumSiniestros getNumerosSiniestrosUltimoAnios() {
-		return numerosSiniestrosUltimoAnios;
-	}
-
-	public void setNumerosSiniestrosUltimoAnios(EnumSiniestros numeroSiniestros) {
-		this.numerosSiniestrosUltimoAnios = numeroSiniestros;
 	}
 }

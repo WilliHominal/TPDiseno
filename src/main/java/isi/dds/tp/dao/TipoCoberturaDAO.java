@@ -1,10 +1,8 @@
 package isi.dds.tp.dao;
 
 import java.util.List;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-
 import isi.dds.tp.enums.EnumTipoCobertura;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.RiesgoTipoCobertura;
@@ -14,9 +12,7 @@ public class TipoCoberturaDAO {
 	
 	private static TipoCoberturaDAO instanciaDAO = null;
 	 
-    private TipoCoberturaDAO() {
-
-    }
+    private TipoCoberturaDAO() { }
 
     public static TipoCoberturaDAO getDAO() {
         if (instanciaDAO == null){
@@ -26,7 +22,6 @@ public class TipoCoberturaDAO {
     }
     
     public void addTipoCobertura(TipoCobertura t) {
-    	
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
@@ -38,12 +33,9 @@ public class TipoCoberturaDAO {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-    	
-    	
     }
     
     public void addRiesgoCobertura(RiesgoTipoCobertura r) {
-    
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
@@ -55,16 +47,14 @@ public class TipoCoberturaDAO {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-    	
     }
     
-    @SuppressWarnings("unchecked")
 	public List<TipoCobertura> getTiposCobertura(){
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
-            return session.createQuery("SELECT t FROM TipoCobertura t order by nombre").list();
+            return session.createQuery("SELECT t FROM TipoCobertura t order by nombre", TipoCobertura.class).list();
             
         }
         catch (HibernateException e) {
@@ -74,13 +64,12 @@ public class TipoCoberturaDAO {
     	return null;
     }
     
-    @SuppressWarnings("unchecked")
-	public List<RiesgoTipoCobertura> getRiesgosCobertura(EnumTipoCobertura tipo) {
+/*	public List<RiesgoTipoCobertura> getRiesgosCobertura(EnumTipoCobertura tipo) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
-            return session.createQuery("SELECT r FROM RiesgoTipoCobertura r WHERE tipo_cobertura="+tipo).list();
+            return session.createQuery("SELECT r FROM RiesgoTipoCobertura r WHERE tipo_cobertura="+tipo, RiesgoTipoCobertura.class).list();
             
         }
         catch (HibernateException e) {
@@ -88,7 +77,7 @@ public class TipoCoberturaDAO {
         }
     	
     	return null;
-    }
+    }*/
     
     public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipo) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -96,7 +85,7 @@ public class TipoCoberturaDAO {
         try {
             session.beginTransaction();
             //TODO HACER SUBCONSULTA PARA OBTENER EL ULTIMO RIESGO
-            return (RiesgoTipoCobertura) session.createQuery("SELECT p FROM RiesgoTipoCobertura p where tipo_cobertura="+tipo).uniqueResult();
+            return session.createQuery("SELECT p FROM RiesgoTipoCobertura p where tipo_cobertura="+tipo, RiesgoTipoCobertura.class).uniqueResult();
             
         }
         catch (HibernateException e) {
