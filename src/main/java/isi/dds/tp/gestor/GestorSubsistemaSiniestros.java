@@ -1,5 +1,9 @@
 package isi.dds.tp.gestor;
 
+import isi.dds.tp.dao.SiniestrosDAO;
+import isi.dds.tp.enums.EnumSiniestros;
+import isi.dds.tp.enums.EnumTipoDocumento;
+
 public class GestorSubsistemaSiniestros {
 
 	private static GestorSubsistemaSiniestros instanciaGestor = null;
@@ -15,9 +19,8 @@ public class GestorSubsistemaSiniestros {
         return instanciaGestor;
     }
 
-	public int getSiniestrosUltimosAnios(Integer numeroDocumento) {
-		// TODO se usa para cuando se da de alta un cliente y se actualiza cada tanto o hay que generar una tabla por dni de los clientes
-		return 0;
+	public EnumSiniestros getSiniestrosUltimosAnios(EnumTipoDocumento tipoDocumento, String documento, int anio) {
+		return SiniestrosDAO.getDAO().getSiniestroUltimoAnio(tipoDocumento, documento, anio).getSiniestros();
 	}
 	
 	

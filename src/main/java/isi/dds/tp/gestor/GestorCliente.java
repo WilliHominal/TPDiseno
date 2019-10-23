@@ -69,7 +69,7 @@ public class GestorCliente {
     	return null;
     }
 
-	public List<Cliente> buscarClientes(Long numeroCliente, String apellido, String nombre, EnumTipoDocumento tipoDocumento, String numeroDocumento, Integer ordenamiento) {
+	public List<Cliente> buscarClientes(Long numeroCliente, String apellido, String nombre, EnumTipoDocumento tipoDocumento, String numeroDocumento) {
     	String condicionesConsulta = "";
     	
     	if(numeroCliente != null) {
@@ -92,29 +92,9 @@ public class GestorCliente {
     	if(numeroDocumento != null) {
     		condicionesConsulta += " and documento = '"+numeroDocumento+"' ";
     	}
-    	
-		switch(ordenamiento) {
-			case 0: 
-			case 1:
-				condicionesConsulta += " order by numero_cliente asc";
-			break;
-				
-			case 2:
-				condicionesConsulta += " order by apellido asc";
-			break;
-			
-			case 3:
-				condicionesConsulta += " order by nombre asc";
-			break;
-			
-			case 4:
-				condicionesConsulta += " order by tipo_documento asc";
-			break;
-			
-			case 5:
-				condicionesConsulta += " order by documento asc";
-			break;
-		}
+
+    	condicionesConsulta += " order by numero_cliente asc";
+	
     	
     	return ClienteDAO.getDAO().getClientes(condicionesConsulta);
     }

@@ -119,21 +119,6 @@ public class CU04_AltaCliente extends JPanel{
 	}
 
 	private void inicializarComponentes() {
-		
-		campoNumeroCliente.setEnabled(false);
-		campoApellido.setEnabled(true);
-		campoNombre.setEnabled(true);
-		campoNumeroDocumento.setEnabled(true);
-		campoNumeroCUIL.setEnabled(true);
-		campoCalle.setEnabled(true);
-		campoNumeroDomicilio.setEnabled(true);
-		campoPiso.setEnabled(true);
-		campoDepartamento.setEnabled(true);
-		campoCodigoPostal.setEnabled(true);
-		campoCorreoElectronico.setEnabled(true);
-		campoProfesion.setEnabled(true);
-		campoAnioRegistro.setEnabled(true);
-
 		btnConfirmar.setPreferredSize(new Dimension(160, 25));
 		btnCancelar.setPreferredSize(new Dimension(160, 25));
 		
@@ -190,7 +175,6 @@ public class CU04_AltaCliente extends JPanel{
 	}
 	
 	private void ubicarComponentes() {
-		
 		setLayout (new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		

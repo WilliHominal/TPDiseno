@@ -6,7 +6,6 @@ import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
 import java.util.Map;
-
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -18,11 +17,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
-
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
@@ -102,12 +101,14 @@ public class GestorTema {
     
     public void campo(JTextField campo, Boolean habilitada) {
     	if(habilitada) {
+    		campo.setEnabled(habilitada);
         	campo.setFont(letra);
         	campo.setBackground(colorFondoTexto);
         	campo.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
         	campo.setForeground(colorLetra);
     	}
     	else {
+    		campo.setEnabled(habilitada);
         	campo.setFont(letra);
         	campo.setBackground(colorFondoDeshabilitado);
         	campo.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -124,11 +125,13 @@ public class GestorTema {
     @SuppressWarnings("rawtypes")
 	public void seleccion(JComboBox seleccion, Boolean habilitada) {
     	if(habilitada) {
+    		seleccion.setEnabled(habilitada);
     		seleccion.setBackground(colorFondoTexto);
     		seleccion.setFont(letra);
     		seleccion.setForeground(colorLetra);
     	}
     	else {
+    		seleccion.setEnabled(habilitada);
     		UIManager.put( "ComboBox.disabledBackground", colorFondoDeshabilitado );
     		UIManager.put( "ComboBox.disabledForeground", colorLetraDeshabilitada );
     		seleccion.setBackground(colorFondoDeshabilitado);
@@ -150,7 +153,7 @@ public class GestorTema {
 		check.setToolTipText(tip);
 	}
     
-	public void tablaScroll(JScrollPane tablaScroll, Boolean habilitada ) {
+	public void tablaScroll(JScrollPane tablaScroll, Boolean habilitada) {
     	if(habilitada) {
     		tablaScroll.getViewport().setBackground(colorFondoTexto);	
     		//tablaHijosScroll.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -165,12 +168,19 @@ public class GestorTema {
 
 	public void tabla(JTable tabla, Boolean habilitada) {
     	if(habilitada) {
+    		tabla.setEnabled(habilitada);
     		tabla.setFont(letra);
     		//tablaHijos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+    		tabla.setAutoCreateRowSorter(true);
+    		tabla.getTableHeader().setToolTipText("Doble click en la cabecera para ordenar");
+    		tabla.setAutoCreateRowSorter(true);
+    		tabla.setFillsViewportHeight(true);
+    		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     		tabla.setForeground(colorLetra);
     		tabla.setBackground(colorFondoTexto);
     	}
     	else {
+    		tabla.setEnabled(habilitada);
     		tabla.setFont(letra);
     		//tablaHijos.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
     		tabla.setForeground(colorLetraDeshabilitada);
@@ -180,12 +190,14 @@ public class GestorTema {
 	
 	public void calendario(JDateChooser calendario, Boolean habilitado) {
 		if(habilitado) {
+			calendario.setEnabled(habilitado);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setBackground(colorFondoTexto);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setFont(letra);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
 			((JTextFieldDateEditor)calendario.getDateEditor()).setForeground(colorLetra);
 		}
 		else {
+			calendario.setEnabled(habilitado);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setBackground(colorFondoDeshabilitado);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setFont(letra);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));

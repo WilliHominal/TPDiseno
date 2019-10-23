@@ -26,7 +26,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -146,9 +145,8 @@ public class CU01_AltaPoliza2 extends JPanel  {
 		ventana.setContentPane(this);
 
 		inicializarComponentes();
-		inicializarTema();
-		ubicarComponentes();
-		
+		iniciabilizarTema();
+		ubicarComponentes();		
 		comportamiento();
 
 		ventana.setTitle("Dar de alta póliza: GENERAR PÓLIZA");
@@ -327,8 +325,61 @@ public class CU01_AltaPoliza2 extends JPanel  {
 		constraints.insets.set(15, 815, 5, 5);
 		add(btnVolver, constraints);
 	}
+
+
+	private void inicializarComponentes() {
+		ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) GestorTipoCobertura.get().getTiposCobertura();
+		Iterator<TipoCobertura> iteradorTipoCoberturas = tipoCoberturas.iterator();
+		seleccionTipoCobertura.addItem(new TipoCobertura("Seleccionar tipo cobertura"));
+		while(iteradorTipoCoberturas.hasNext()){
+			seleccionTipoCobertura.addItem(iteradorTipoCoberturas.next());
+		}
+		
+		rbFormaPago.add(mensual);
+		rbFormaPago.add(semestral);
+		
+		try {
+			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
+		      Calendar calendar = Calendar.getInstance();
+		      calendar.setTime(fechaParseada); 
+		      calendar.add(Calendar.DAY_OF_YEAR, 1);  
+		      calendar.getTime(); 
+			dcInicioVigencia.setDate(calendar.getTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		dcInicioVigencia.setPreferredSize(new Dimension(105, 20));
+		dcInicio.setPreferredSize(new Dimension(105, 20));
+		dcFin.setPreferredSize(new Dimension(105, 20));
+		
+		btnConfirmarDatos.setPreferredSize(new Dimension(160, 25));
+		btnGenerarPoliza.setPreferredSize(new Dimension(160, 25));
+		btnVolver.setPreferredSize(new Dimension(160, 25));
+		mensual.setSelected(true);
+
+		lDescUnidad.setVisible(false);
+		lDescSemestral.setVisible(false);
+				
+
+		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
+		rightRenderer.setHorizontalAlignment( JLabel.RIGHT );
+
+		scrollTablaPagos = new JScrollPane(tablaPagos,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollTablaPagos.setPreferredSize(new Dimension(325, 119));
+
+		tablaPagos.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
+		tablaPagos.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
+		tablaPagos.getColumnModel().getColumn(0).setPreferredWidth(200);
+		tablaPagos.getColumnModel().getColumn(1).setPreferredWidth(100);
+		tablaPagos.getColumnModel().getColumn(0).setHeaderValue("Último día de pago");
+		tablaPagos.getColumnModel().getColumn(1).setHeaderValue("Monto");
+		
+		DefaultCellEditor editor = (DefaultCellEditor) tablaPagos.getDefaultEditor(Object.class);
+		editor.setClickCountToStart(10000);
+	}
 	
-	private void inicializarTema() {
+	private void iniciabilizarTema() {
 		tema.panel(this);
 
 		tema.labelSubrayada(lTipoCobertura);
@@ -381,79 +432,6 @@ public class CU01_AltaPoliza2 extends JPanel  {
 		tema.calendario(dcInicioVigencia, true);
 		tema.calendario(dcInicio, false);
 		tema.calendario(dcFin, false);
-	}
-
-	private void inicializarComponentes() {
-
-		ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) GestorTipoCobertura.get().getTiposCobertura();
-		Iterator<TipoCobertura> iteradorTipoCoberturas = tipoCoberturas.iterator();
-		seleccionTipoCobertura.addItem(new TipoCobertura("Seleccionar tipo cobertura"));
-		while(iteradorTipoCoberturas.hasNext()){
-			seleccionTipoCobertura.addItem(iteradorTipoCoberturas.next());
-		}
-		
-		rbFormaPago.add(mensual);
-		rbFormaPago.add(semestral);
-		
-		try {
-			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
-		      Calendar calendar = Calendar.getInstance();
-		      calendar.setTime(fechaParseada); 
-		      calendar.add(Calendar.DAY_OF_YEAR, 1);  
-		      calendar.getTime(); 
-			dcInicioVigencia.setDate(calendar.getTime());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		
-		dcInicioVigencia.setPreferredSize(new Dimension(105, 20));
-		dcInicio.setPreferredSize(new Dimension(105, 20));
-		dcFin.setPreferredSize(new Dimension(105, 20));
-		
-		btnConfirmarDatos.setPreferredSize(new Dimension(160, 25));
-		btnGenerarPoliza.setPreferredSize(new Dimension(160, 25));
-		btnVolver.setPreferredSize(new Dimension(160, 25));
-				
-		campoApellido.setEnabled(false);
-		campoNombre.setEnabled(false);
-		campoModelo.setEnabled(false);
-		campoMarca.setEnabled(false);
-		campoMotor.setEnabled(false);
-		campoChasis.setEnabled(false);
-		campoPatente.setEnabled(false);
-		campoSumaAsegurada.setEnabled(false);
-		campoPremio.setEnabled(false);
-		campoDescuentos.setEnabled(false);
-		campoMontoTotal.setEnabled(false);
-		btnGenerarPoliza.setEnabled(false);
-		dcInicio.setEnabled(false);
-		dcFin.setEnabled(false);
-		tablaPagos.setEnabled(false);
-		
-		mensual.setSelected(true);
-
-		lDescUnidad.setVisible(false);
-		lDescSemestral.setVisible(false);
-				
-		tablaPagos.setFillsViewportHeight(true);
-		tablaPagos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		
-
-		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-		rightRenderer.setHorizontalAlignment( JLabel.RIGHT );
-
-		scrollTablaPagos = new JScrollPane(tablaPagos,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollTablaPagos.setPreferredSize(new Dimension(325, 119));
-
-		tablaPagos.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
-		tablaPagos.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
-		tablaPagos.getColumnModel().getColumn(0).setPreferredWidth(200);
-		tablaPagos.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tablaPagos.getColumnModel().getColumn(0).setHeaderValue("Último día de pago");
-		tablaPagos.getColumnModel().getColumn(1).setHeaderValue("Monto");
-		
-		DefaultCellEditor editor = (DefaultCellEditor) tablaPagos.getDefaultEditor(Object.class);
-		editor.setClickCountToStart(10000);
 	}
 	
 	private void comportamiento() {

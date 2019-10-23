@@ -24,7 +24,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -32,6 +31,7 @@ import isi.dds.tp.app.CU01_DeclararHijo.DeclararHijoAbierto;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
+import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Ciudad;
@@ -134,7 +134,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 
 		ventana.setContentPane(this);
 		
-		
 		poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
 		
 		inicializarComponentes();
@@ -150,41 +149,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 	}
 
 	private void inicializarComponentes() {
-		setSize(1024,600);
-		
-		campoNumeroCliente.setEnabled(false);
-		campoTipoDocumento.setEnabled(false);
-		campoNumeroDocumento.setEnabled(false);
-		campoApellido.setEnabled(false);
-		campoNombres.setEnabled(false);
-		campoCalle.setEnabled(false);
-		campoNumeroDomicilio.setEnabled(false);
-		campoPiso.setEnabled(false);
-		campoDepartamento.setEnabled(false);
-		campoSumaAsegurada.setEnabled(false);
 		campoSumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
-		campoNumerosSiniestros.setEnabled(false);
-		campoMotor.setEnabled(false);
-		campoChasis.setEnabled(false);
-		campoPatente.setEnabled(false);
-		
-		seleccionProvincia.setEnabled(false);
-		seleccionCiudad.setEnabled(false);
-		seleccionMarca.setEnabled(false);
-		seleccionModelo.setEnabled(false);
-		seleccionAnio.setEnabled(false);
-		seleccionKm.setEnabled(false);
-		
-		rbtnGarageSi.setEnabled(false);
-		rbtnGarageNo.setEnabled(false);
-		rbtnAlarmaSi.setEnabled(false);
-		rbtnAlarmaNo.setEnabled(false);
-		rbtnRastreoNo.setEnabled(false);
-		rbtnRastreoSi.setEnabled(false);
-		rbtnTuercasSi.setEnabled(false);
-		rbtnTuercasNo.setEnabled(false);
-		
-		tablaHijos.setEnabled(false);
 		
 		btnQuitarHijo.setEnabled(false);
 		btnConfirmarDatos.setEnabled(false);
@@ -219,15 +184,10 @@ public class CU01_AltaPoliza1 extends JPanel {
 		
 		cargarTabla(new ArrayList<HijoDeclarado>());
 		
-		tablaHijos.setFillsViewportHeight(true);
-		tablaHijos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tablaHijosScroll.setPreferredSize(new Dimension(350, 100));
-		
-		
 	}
 	
-	private void ubicarComponentes() {
-		
+	private void ubicarComponentes() {	
 		setLayout (new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		
@@ -580,14 +540,11 @@ public class CU01_AltaPoliza1 extends JPanel {
 		btnAgregarHijo.addActionListener(a -> {
 			try {				
 				mouseActivo = true;
-				
 				componentesAlDeclararHijos(false);
 				estaDeclarandoHijo = true;
 				
 				new CU01_DeclararHijo();
 				
-				
-	
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -628,6 +585,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 					poliza.setPatente(campoPatente.getText());
 					poliza.setSumaAsegurada(Float.parseFloat(campoSumaAsegurada.getText()));
 					poliza.setKmRealizadosPorAnio(seleccionKm.getItemAt(seleccionKm.getSelectedIndex()));
+					poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().getEnumSiniestros(campoNumerosSiniestros.getText()));
 
 					
 					if(rbtnGarageSi.isSelected()) {
@@ -714,8 +672,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 				campoSumaAsegurada.setText(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()).getSumaAsegurada().toString());
 			}
 			else {
-				seleccionModelo.setEnabled(false);
-				seleccionAnio.setEnabled(false);
 				tema.seleccion(seleccionModelo, false);
 				tema.seleccion(seleccionAnio, false);
 				seleccionModelo.removeAllItems();
@@ -742,7 +698,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 					campoSumaAsegurada.setText(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()).getSumaAsegurada().toString());
 			}
 			else {
-				seleccionAnio.setEnabled(false);
+				tema.seleccion(seleccionAnio, false);
 			}
 
 		});			
@@ -901,6 +857,9 @@ public class CU01_AltaPoliza1 extends JPanel {
 		campoNombres.setText(cliente.getNombre());
 		campoCalle.setText(cliente.getCalle());
 		campoNumeroDomicilio.setText(cliente.getNumeroCalle().toString());
+		campoNumerosSiniestros.setText(GestorEnum.get().getStringSiniestros(
+				GestorSubsistemaSiniestros.get().getSiniestrosUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear())));
+		
 		if(cliente.getPiso()==null) {
 			campoPiso.setText("-");
 			campoDepartamento.setText("-");
@@ -910,13 +869,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		}
 		
 		if(primerCliente) {
-			campoMotor.setEnabled(true);
-			campoChasis.setEnabled(true);
-			campoPatente.setEnabled(true);
-			seleccionProvincia.setEnabled(true);
-			seleccionCiudad.setEnabled(true);
-			seleccionMarca.setEnabled(true);
-			seleccionKm.setEnabled(true);
 			rbtnGarageSi.setEnabled(true);
 			rbtnGarageNo.setEnabled(true);
 			rbtnAlarmaSi.setEnabled(true);
@@ -925,7 +877,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 			rbtnRastreoSi.setEnabled(true);
 			rbtnTuercasSi.setEnabled(true);
 			rbtnTuercasNo.setEnabled(true);
-			tablaHijos.setEnabled(true);
 			btnAgregarHijo.setEnabled(true);
 			
 			tema.seleccion(seleccionProvincia, true);
@@ -944,7 +895,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 
 			ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.get().getProvincias(cliente.getCiudad().getProvincia().getPais().getIdPais());
 			
-			//TODO elegir provincia que tiene el cliente como registrado
 			Iterator<Provincia> iteradorProvincias = provincias.iterator();
 			while(iteradorProvincias.hasNext()){
 				seleccionProvincia.addItem(iteradorProvincias.next());
@@ -962,9 +912,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 			while(marcasIterator.hasNext()){
 				seleccionMarca.addItem(marcasIterator.next());
 			}
-			
-			//TODO actualizar para sinietros
-			//campoNumerosSiniestros.setText(GestorEnum.get().getStringSiniestros(cliente.getNumerosSiniestrosUltimoAnios()));
 			
 			seleccionKm.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecionar kilometraje",
 					"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
@@ -1198,24 +1145,16 @@ public class CU01_AltaPoliza1 extends JPanel {
 	 * @param val
 	 */
 	private void componentesAlDeclararHijos(Boolean val) {
-		seleccionProvincia.setEnabled(val);
-		seleccionCiudad.setEnabled(val);
-		seleccionMarca.setEnabled(val);
-		seleccionKm.setEnabled(val);
+
 		
 		if(seleccionMarca.getSelectedIndex()!=0) {
-			seleccionModelo.setEnabled(val);
-			seleccionAnio.setEnabled(val);
 			tema.seleccion(seleccionModelo, val);
 			tema.seleccion(seleccionAnio, val);
 		}else {
 			tema.seleccion(seleccionModelo, false);
 			tema.seleccion(seleccionAnio, false);
 		}
-		
-		campoMotor.setEnabled(val);
-		campoChasis.setEnabled(val);		
-		campoPatente.setEnabled(val);		
+			
 		tema.seleccion(seleccionKm, val);
 		tema.seleccion(seleccionProvincia, val);
 		tema.seleccion(seleccionCiudad, val);
@@ -1235,8 +1174,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		rbtnRastreoSi.setEnabled(val);
 		rbtnTuercasSi.setEnabled(val);
 		rbtnTuercasNo.setEnabled(val);
-		
-		tablaHijos.setEnabled(val);
 		
 		btnConfirmarDatos.setEnabled(val);
 		btnAgregarHijo.setEnabled(val);

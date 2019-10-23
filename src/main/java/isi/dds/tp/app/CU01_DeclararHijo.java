@@ -77,7 +77,6 @@ public class CU01_DeclararHijo extends JPanel  {
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
-		
 		comportamiento();
 		
 		ventana.setVisible(true);		
@@ -149,7 +148,7 @@ public class CU01_DeclararHijo extends JPanel  {
 		ventana.setBounds(0, 0, 420, 250);
 		ventana.setLocationRelativeTo(null);
 		ventana.setTitle("Dar de alta póliza: AGREGAR DATOS HIJOS");
-		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		ventana.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		
 		seleccionEstadoCivil.setPreferredSize(new Dimension(105, 25));
 		seleccionSexo.setPreferredSize(new Dimension(105, 25));
@@ -310,6 +309,18 @@ public class CU01_DeclararHijo extends JPanel  {
 				DeclararHijoAbierto.hijoDeclarado = false;
 			}
 			ventana.setVisible(false);
+		});
+		
+		ventana.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	if(DeclararHijoAbierto.declararHijoAbierto == true) {
+					DeclararHijoAbierto.declararHijoAbierto = false;
+					DeclararHijoAbierto.hijo = null;
+					DeclararHijoAbierto.hijoDeclarado = false;
+				}
+				ventana.setVisible(false);
+		    }
 		});
 	}
 

@@ -29,6 +29,7 @@
         <mapping class="isi.dds.tp.modelo.RiesgoCiudad"/>
         <mapping class="isi.dds.tp.modelo.RiesgoModelo"/>
         <mapping class="isi.dds.tp.modelo.RiesgoTipoCobertura"/>
+        <mapping class="isi.dds.tp.modelo.Siniestro"/>
         <mapping class="isi.dds.tp.modelo.SolicitudPoliza"/>
         <mapping class="isi.dds.tp.modelo.TipoCobertura"/>
         <mapping class="isi.dds.tp.modelo.Usuario"/>

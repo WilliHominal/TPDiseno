@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.ListSelectionModel;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -72,7 +71,6 @@ public class CU17_BuscarCliente extends JPanel {
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
 	private JLabel lnumeroDocumento = new JLabel("Documento:");
 	private JLabel ltotalFilas = new JLabel("Total de filas:");
-	private JLabel lordenarPor = new JLabel("Ordenar por:");
 		
 	private JTextField campoNumeroCliente = new JTextField(18);
 	private JTextField campoNumeroDocumento = new JTextField(18);
@@ -84,7 +82,6 @@ public class CU17_BuscarCliente extends JPanel {
 	private JButton btnCancelar = new JButton("CANCELAR");
 	
 	private JComboBox<String> seleccionTipoDocumento = new JComboBox<String>();
-	private JComboBox<String> seleccionOrdenamiento = new JComboBox<String>();
 	private JTable tablaClientes = new JTable();
 	private JScrollPane tablaClientesScroll = new JScrollPane(tablaClientes);
 	private Object[][] datosTabla = {{""},{""},{""},{""},{""}};
@@ -105,38 +102,48 @@ public class CU17_BuscarCliente extends JPanel {
 		}
 
 		ventana.setContentPane(this);
-		
+		this.estePanel = this;
 		inicializarComponentes();
 		ubicarComponentes();
-		inicializarTema();
-		this.estePanel  = this;
 		comportamientos();
 
 		ventana.setTitle("Buscar cliente");		
 	}
 
 	private void inicializarComponentes() {
+		tema.panel(this);
 		
-		campoTotalFilas.setEnabled(false);
-		tablaClientes.setEnabled(false);
+		tema.label(lnumeroCliente);
+		tema.label(ltipoDocumento);
+		tema.label(lnumeroDocumento);
+		tema.label(lapellido);
+		tema.label(lnombre);
+		tema.label(ltotalFilas);
+		
+		tema.campo(campoNumeroCliente, true);
+		tema.campo(campoApellido, true);
+		tema.campo(campoNumeroDocumento, true);
+		tema.campo(campoNombre, true);
+		tema.campo(campoTotalFilas, false);
+		
+		tema.boton(btnBuscar);
+		tema.boton(btnCancelar);
+				
+		tema.seleccion(seleccionTipoDocumento, true);
 
-		btnBuscar.setPreferredSize(new Dimension(105, 25));
+		tema.tabla(tablaClientes, true);
+		tema.tablaScroll(tablaClientesScroll, true);
+	
 		btnCancelar.setPreferredSize(new Dimension(105, 25));
+		btnBuscar.setPreferredSize(new Dimension(105, 25));
+		
 		seleccionTipoDocumento.setPreferredSize(new Dimension(183, 25));
-		seleccionOrdenamiento.setPreferredSize(new Dimension(183, 25));
 		
 		seleccionTipoDocumento.addItem("Selecionar tipo documento");
 		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
 		for(int i=0; i<tipoDocumentos.length; i++){
 			seleccionTipoDocumento.addItem(GestorEnum.get().getStringTipoDocumento(tipoDocumentos[i]));
 		}
-		
-		seleccionOrdenamiento.addItem("Default");
-		seleccionOrdenamiento.addItem("Número cliente");
-		seleccionOrdenamiento.addItem("Apellido");
-		seleccionOrdenamiento.addItem("Nombre");
-		seleccionOrdenamiento.addItem("Tipo documento");
-		seleccionOrdenamiento.addItem("Número documento");
 		
 		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 0) {
 		    @Override
@@ -147,9 +154,7 @@ public class CU17_BuscarCliente extends JPanel {
 		
 		tablaClientes.setModel(tableModel);
 		
-		tablaClientes.setFillsViewportHeight(true);
-		tablaClientes.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-		cargarTabla(null);		
+		cargarTabla(null);	
 		tablaClientesScroll.setPreferredSize(new Dimension(600, 500));
 		model = (DefaultTableModel) tablaClientes.getModel();
 	}
@@ -213,16 +218,6 @@ public class CU17_BuscarCliente extends JPanel {
 		add(campoNumeroDocumento, constraints);	
 		
 		constraints.gridx = 0;
-		constraints.gridy = 5;
-		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(10, 5, 10, 5);
-		add(lordenarPor, constraints);
-		constraints.gridx = 1;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(10, 10, 10, 5);
-		add(seleccionOrdenamiento, constraints);	
-		
-		constraints.gridx = 0;
 		constraints.gridy = 6;
 		constraints.gridwidth = 2;
 		constraints.anchor = GridBagConstraints.CENTER;
@@ -251,33 +246,6 @@ public class CU17_BuscarCliente extends JPanel {
 
 	}
 		
-	private void inicializarTema() {	
-		tema.panel(this);
-		
-		tema.label(lnumeroCliente);
-		tema.label(ltipoDocumento);
-		tema.label(lnumeroDocumento);
-		tema.label(lapellido);
-		tema.label(lnombre);
-		tema.label(ltotalFilas);
-		tema.label(lordenarPor);
-		
-		tema.campo(campoNumeroCliente, true);
-		tema.campo(campoApellido, true);
-		tema.campo(campoNumeroDocumento, true);
-		tema.campo(campoNombre, true);
-		tema.campo(campoTotalFilas, false);
-		
-		tema.boton(btnBuscar);
-		tema.boton(btnCancelar);
-		
-		tema.seleccion(seleccionTipoDocumento, true);
-		tema.seleccion(seleccionOrdenamiento, true);
-
-		tema.tabla(tablaClientes, true);
-		tema.tablaScroll(tablaClientesScroll, true);
-	}
-
 	public void comportamientos() {
 		btnBuscar.addActionListener(a -> {
 			try {
@@ -307,7 +275,7 @@ public class CU17_BuscarCliente extends JPanel {
 					numeroDocumento = campoNumeroDocumento.getText();
 				}
 				
-				clientes = GestorCliente.get().buscarClientes(numeroCliente, apellido, nombre, tipoDocumento, numeroDocumento, seleccionOrdenamiento.getSelectedIndex());
+				clientes = GestorCliente.get().buscarClientes(numeroCliente, apellido, nombre, tipoDocumento, numeroDocumento);
 				
 				cargarTabla(clientes);
 						
