@@ -86,8 +86,8 @@ public class AppMenu extends JPanel {
 		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
 		
 		btnDarAltaPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));
-		btnConsultarPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));
-		btnGenerarPropuestas.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
+		btnConsultarPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\2.png"));
+		btnGenerarPropuestas.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_update.png"));
 		btnRegistrarPagoPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_register.png"));
 		btnDarAltaCliente.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));
 		btnConsultarCliente.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));

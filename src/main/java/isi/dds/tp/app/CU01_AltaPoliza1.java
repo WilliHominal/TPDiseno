@@ -960,7 +960,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 		String textoChasis = campoChasis.getText();
 		String textoPatente = campoPatente.getText();
 		
-		if(textoMotor.isBlank()) {
+		if(textoMotor.isEmpty()) {
 			tema.erroneo(campoMotor);
 			motorBlanco = errorNumero+") No se ha introducido un número de motor\n";
 			errorNumero++;
@@ -991,7 +991,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 			}	
 		}
 		
-		if(textoChasis.isBlank()) {
+		if(textoChasis.isEmpty()) {
 			tema.erroneo(campoChasis);
 			chasisBlanco = errorNumero+") No se ha introducido un número de chasis.\n";
 			errorNumero++;
@@ -1025,7 +1025,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 			}			
 		}
 		
-		if(!textoPatente.isBlank()) {
+		if(!textoPatente.isEmpty()) {
 			switch (textoPatente.length()) {
 			
 			//para patente longitud 6
