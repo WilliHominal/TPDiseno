@@ -10,12 +10,9 @@ import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Cliente;
 
 public class ClienteDAO {
-	
 	private static ClienteDAO instanciaDAO = null;
 	 
-    private ClienteDAO() {
-
-    }
+    private ClienteDAO() { }
 
     public static ClienteDAO getDAO() {
         if (instanciaDAO == null){
@@ -26,7 +23,6 @@ public class ClienteDAO {
 
     public void addCliente(Cliente c) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
             session.beginTransaction();
             session.save(c);
@@ -40,24 +36,20 @@ public class ClienteDAO {
     
     public Cliente getCliente(Long numeroCliente) {    	
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
             session.beginTransaction();
             return session.get(Cliente.class, numeroCliente);
         }
         catch (HibernateException e) {
             e.printStackTrace();
-        }
-    	    	
+        }	
     	return null;
     }
     
 	public List<Cliente> getClientes(String consulta) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
-
             return session.createNativeQuery("SELECT * FROM cliente where (condicion='ACTIVO' or condicion='PLATA') "+consulta, Cliente.class).getResultList();
-            
         }
         catch (HibernateException e) {
             e.printStackTrace();

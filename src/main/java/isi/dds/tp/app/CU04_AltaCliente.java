@@ -115,7 +115,7 @@ public class CU04_AltaCliente extends JPanel{
 		ubicarComponentes();
 		inicializarTema();
 		comportamientos();
-		ventana.setTitle("Alta cliente");		
+		ventana.setTitle("Dar de alta cliente");		
 	}
 
 	private void inicializarComponentes() {
@@ -397,8 +397,6 @@ public class CU04_AltaCliente extends JPanel{
 			}
 			
 			seleccionCiudad.setEnabled(true);
-		});			
-
+		});		
 	}
-
 }

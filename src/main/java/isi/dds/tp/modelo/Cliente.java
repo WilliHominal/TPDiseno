@@ -3,9 +3,23 @@ package isi.dds.tp.modelo;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import isi.dds.tp.enums.*;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import org.hibernate.annotations.IndexColumn;
+
+import isi.dds.tp.enums.EnumCondicion;
+import isi.dds.tp.enums.EnumCondicionIVA;
+import isi.dds.tp.enums.EnumEstadoCivil;
+import isi.dds.tp.enums.EnumSexo;
+import isi.dds.tp.enums.EnumTipoDocumento;
 
 @SuppressWarnings("deprecation")
 @Entity
@@ -87,9 +101,7 @@ public class Cliente {
 	@Column(nullable = false, name = "anio_registro")
 	private Integer anioRegistro;
 	
-	public Cliente() {
-
-	}
+	public Cliente() { }
 	
 	/**
 	 * 

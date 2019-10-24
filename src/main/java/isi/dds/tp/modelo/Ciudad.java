@@ -1,13 +1,21 @@
 package isi.dds.tp.modelo;
 
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import org.hibernate.annotations.IndexColumn;
 
 @SuppressWarnings("deprecation")
-
-
 @Entity
 @Table
 public class Ciudad {
@@ -15,7 +23,6 @@ public class Ciudad {
 	@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn(name="id_provincia")
 	private Provincia provincia;
-	
 
 	@OneToMany(cascade= CascadeType.ALL)
 	@JoinColumn(name="id_ciudad")
@@ -31,17 +38,7 @@ public class Ciudad {
 	@Column(nullable = false)
 	private String nombre;
 	
-	public Ciudad() {
-		
-	}
-	
-	public Ciudad(Provincia pr, String nombre, Float riesgo) {
-		this.provincia = pr;
-		this.nombre = nombre;
-		this.riesgos = new ArrayList<RiesgoCiudad>();
-		this.riesgos.add(new RiesgoCiudad(this, riesgo));
-		pr.getCiudades().add(this);
-	}
+	public Ciudad() { }
 
 	public Provincia getProvincia() {
 		return provincia;
@@ -72,4 +69,37 @@ public class Ciudad {
 	public String toString() {
 		return nombre;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((idCiudad == null) ? 0 : idCiudad.hashCode());
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Ciudad other = (Ciudad) obj;
+		if (idCiudad == null) {
+			if (other.idCiudad != null)
+				return false;
+		} else if (!idCiudad.equals(other.idCiudad))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		return true;
+	}
+	
+	
 }

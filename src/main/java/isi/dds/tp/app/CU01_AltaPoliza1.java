@@ -44,7 +44,6 @@ import isi.dds.tp.modelo.Provincia;
 
 @SuppressWarnings("serial")
 public class CU01_AltaPoliza1 extends JPanel {
-		
 	private JFrame ventana;
 	private AppMenu menu;
 	private GestorTema tema = GestorTema.get();
@@ -898,12 +897,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 				seleccionProvincia.addItem(iteradorProvincias.next());
 			}
 			
-			seleccionCiudad.removeAllItems();
-			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(provincias.get(0).getCiudades()).iterator();
-			while(iteratorCiudad.hasNext()){
-				seleccionCiudad.addItem(iteratorCiudad.next());
-			}
-			
 			ArrayList<Marca> marcas = (ArrayList<Marca>) GestorParametrosVehiculo.get().getMarcas();
 			seleccionMarca.addItem(new Marca("Seleccionar marca"));
 			Iterator<Marca> marcasIterator = marcas.iterator();
@@ -924,6 +917,16 @@ public class CU01_AltaPoliza1 extends JPanel {
 			btnConfirmarDatos.setEnabled(true);	
 			primerCliente = false;
 		}
+		
+		seleccionProvincia.setSelectedItem(cliente.getCiudad().getProvincia());	
+		
+		seleccionCiudad.removeAllItems();
+		Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(cliente.getCiudad().getProvincia().getCiudades()).iterator();
+		while(iteratorCiudad.hasNext()){
+			seleccionCiudad.addItem(iteratorCiudad.next());
+		}
+		
+		seleccionCiudad.setSelectedItem(cliente.getCiudad());	
 	
 	}
 

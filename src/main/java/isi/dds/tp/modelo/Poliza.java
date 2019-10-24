@@ -3,9 +3,21 @@ package isi.dds.tp.modelo;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import isi.dds.tp.enums.*;
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import org.hibernate.annotations.IndexColumn;
+import isi.dds.tp.enums.EnumEstadoPoliza;
+import isi.dds.tp.enums.EnumFormaPago;
+import isi.dds.tp.enums.EnumSiniestros;
 
 @SuppressWarnings("deprecation")
 @Entity

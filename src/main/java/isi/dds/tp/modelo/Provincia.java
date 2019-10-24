@@ -1,7 +1,18 @@
 package isi.dds.tp.modelo;
 
-import java.util.*;
-import javax.persistence.*;
+import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import org.hibernate.annotations.IndexColumn;
 
 @SuppressWarnings("deprecation")
@@ -27,17 +38,7 @@ public class Provincia {
 	@Column(nullable = false)
 	private String nombre;
 	
-	
-	public Provincia() {
-		
-	}
-	
-	public Provincia(Pais pais, String nombre) {
-		this.pais = pais;
-		this.ciudades = new ArrayList<Ciudad>();
-		this.nombre = nombre;
-		pais.getProvincias().add(this);
-	}
+	public Provincia() { }
 	
 	public Pais getPais() {
 		return pais;
@@ -68,6 +69,35 @@ public class Provincia {
 	public String toString() {
 		return nombre;
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((idProvincia == null) ? 0 : idProvincia.hashCode());
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Provincia other = (Provincia) obj;
+		if (idProvincia == null) {
+			if (other.idProvincia != null)
+				return false;
+		} else if (!idProvincia.equals(other.idProvincia))
+			return false;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		return true;
+	}
 }

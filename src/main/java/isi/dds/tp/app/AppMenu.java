@@ -104,8 +104,7 @@ public class AppMenu extends JPanel {
 		btnActualizarFactores.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
 		btnGenerarListado.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
 		btnGenerarInforme.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
-		*/
-		
+		*/		
 		btnDarAltaPoliza.setEnabled(existeBase);
 		btnConsultarPoliza.setEnabled(false);
 		btnGenerarPropuestas.setEnabled(false);
