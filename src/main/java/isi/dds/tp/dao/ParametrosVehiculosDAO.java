@@ -124,7 +124,7 @@ public class ParametrosVehiculosDAO {
     }
 
 	public void cargarParametrosVehiculos() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/parametrosVehiculo.sql");
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/parametrosVehiculo.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		session.beginTransaction();
 		Iterator<String> iteradorqueries = queries.iterator();

@@ -124,7 +124,7 @@ public class DomicilioDAO {
     }
 
     public void cargarUbicaciones() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/domicilio.sql");
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/domicilio.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		
 		session.beginTransaction();

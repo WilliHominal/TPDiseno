@@ -103,7 +103,7 @@ public class PolizaDAO {
     }
 
 	public void cargarPolizas() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/polizas.sql");
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/polizas.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		session.beginTransaction();
 		Iterator<String> iteradorqueries = queries.iterator();

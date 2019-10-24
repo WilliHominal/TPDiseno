@@ -68,7 +68,7 @@ public class ParametrosPolizaDAO {
     }
 
 	public void cargarParametrosPoliza() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/parametrosPoliza.sql");
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/parametrosPoliza.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		session.beginTransaction();
 		Iterator<String> iteradorqueries = queries.iterator();

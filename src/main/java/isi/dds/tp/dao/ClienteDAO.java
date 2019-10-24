@@ -58,7 +58,7 @@ public class ClienteDAO {
     }
 	
 	public void cargarClientes() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/clientes.sql");
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/clientes.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		
 		session.beginTransaction();

@@ -1,6 +1,5 @@
 package isi.dds.tp.hibernate;
 
-import isi.dds.tp.enums.EnumTipoCobertura;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
@@ -9,61 +8,11 @@ import isi.dds.tp.gestor.GestorTipoCobertura;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
-import isi.dds.tp.modelo.TipoCobertura;
 
 public class CargarBase {
 	
 	public static void load() {
-    	/*Marca marca = new Marca("Volkswagen");
-		List<Modelo> m = marca.getModelos(); 
-		
-		m.add(new Modelo(marca, "Amarok", 0.8f));
-		new AnioModelo(m.get(0), 2014, 45800f);
-		new AnioModelo(m.get(0), 2015, 51222f);
-		new AnioModelo(m.get(0), 2016, 58120f);
-
-		Modelo modelo2 = new Modelo(marca, "Bora", 0.8f);
-
-		Modelo modelo3 = new Modelo(marca, "Caddy", 0.8f);
-
-		Modelo modelo4 = new Modelo(marca, "Fox", 0.8f);
-
-		Modelo modelo5 = new Modelo(marca, "Gol", 0.8f);
-
-		Modelo modelo6 = new Modelo(marca, "Golf", 0.8f);
-		
-		Modelo modelo7 = new Modelo(marca, "Multivan", 0.8f);
-
-		Modelo modelo8 = new Modelo(marca, "New Beetle", 0.8f);
-
-		Modelo modelo9 = new Modelo(marca, "Passat", 0.8f);
-
-		Modelo modelo10 = new Modelo(marca, "Polo", 0.8f);
-
-		Modelo modelo11 = new Modelo(marca, "Santana", 0.8f);
-
-		Modelo modelo12 = new Modelo(marca, "Saveiro", 0.8f);
-		
-		Modelo modelo13 = new Modelo(marca, "Voyage", 0.8f);
-
-		Modelo modelo14 = new Modelo(marca, "Vento", 0.8f);
-
-		Modelo modelo15 = new Modelo(marca, "Up", 0.8f);
-
-		Modelo modelo16 = new Modelo(marca, "Transporter", 0.8f);
-
-		Modelo modelo17 = new Modelo(marca, "The Beetle", 0.8f);
-
-		Modelo modelo18 = new Modelo(marca, "T-Cross", 0.8f);
-
-		Modelo modelo19 = new Modelo(marca, "Suran", 0.8f);
-
-		Modelo modelo20 = new Modelo(marca, "Sharan", 0.8f);
-
-		Modelo modelo21 = new Modelo(marca, "Scirocco", 0.8f);
-
-	*/
-				
+			
 		Marca marca1 = new Marca("Fiat");
 			Modelo modelo3 = new Modelo(marca1, "Argo", 0.21f);
 				new AnioModelo(modelo3, 2014, 45800f);
@@ -110,88 +59,22 @@ public class CargarBase {
 				new AnioModelo(modelo12, 2019, 230093f);
 			Modelo modelo13 = new Modelo(marca3, "Kangoo II", 0.47f);
 				new AnioModelo(modelo13, 2019, 92630f);
-			
-		/*Marca marca4 = new Marca("Alfa Romeo");
-		
-		Marca marca5 = new Marca("Audi");
-		
-		Marca marca6 = new Marca("MBW");
-		
-		Marca marca7 = new Marca("Chery");
-		
-		Marca marca8 = new Marca("Chevrolet");
-		
-		Marca marca9 = new Marca("Chrysler");
-		
-		Marca marca10 = new Marca("Citroen");
-		
-		Marca marca11 = new Marca("Dodge");
-		
-		Marca marca12 = new Marca("Ferrari");
-		
-		Marca marca13 = new Marca("Honda");
-		
-		Marca marca14 = new Marca("Hyundai");
-		
-		Marca marca15 = new Marca("Jaguar");
-		
-		Marca marca16 = new Marca("Jeep");
-		
-		Marca marca17 = new Marca("Kia");
-				
-		Marca marca18 = new Marca("Land Rover");
-		
-		Marca marca19 = new Marca("Mercedes Benz");
-		
-		Marca marca20 = new Marca("Mitsubishi");
-		
-		Marca marca21 = new Marca("Nissan");
-		
-		Marca marca22 = new Marca("Peugeot");
-		
-		Marca marca23 = new Marca("Porsche");
-		
-		Marca marca24 = new Marca("Seat");
-		
-		Marca marca25 = new Marca("Susuki");
-		
-		Marca marca26 = new Marca("Toyota");
-		
-		Marca marca27 = new Marca("Volvo");*/
-		
-		//Usuario usuario = new Usuario("Milto");
-						
-		TipoCobertura cobertura = new TipoCobertura(EnumTipoCobertura.RESPONSABILIDAD_CIVIL, "Responsabilidad civil", "Descripcion uno", 0.23f);
-		TipoCobertura cobertura1 = new TipoCobertura(EnumTipoCobertura.RESP_CIVIL_ROBO_O_INCENDIO_TOTAL, "Responsabilidad civil, robo o incendio total", "Descripcion dos", 0.39f);
-		TipoCobertura cobertura2 = new TipoCobertura(EnumTipoCobertura.TODO_TOTAL, "Todo total", "Descripcion tres", 0.65f);
-		TipoCobertura cobertura3 = new TipoCobertura(EnumTipoCobertura.TERCEROS_COMPLETOS, "Terceros completos", "Descripcion seis", 0.51f);
-		TipoCobertura cobertura4 = new TipoCobertura(EnumTipoCobertura.TODO_RIESGO_CON_FRANQUICIA, "Todo riesgo con franquiia", "Descripcion cinco", 0.48f);
-		
-
-		//---------------------------------------------------------------------------
 
 		HibernateUtil.shutdown();
 		HibernateUtil.getSessionFactoryCreate();
-
-		//GestorParametrosVehiculo.get().addMarca(marca);
 		GestorParametrosVehiculo.get().addMarca(marca1);
 		GestorParametrosVehiculo.get().addMarca(marca2);
 		GestorParametrosVehiculo.get().addMarca(marca3);
 
-		//GestorUsuario.get().addUsuario(usuario);
 		
-		GestorTipoCobertura.get().addTipoCobertura(cobertura);
-		GestorTipoCobertura.get().addTipoCobertura(cobertura1);
-		GestorTipoCobertura.get().addTipoCobertura(cobertura2);
-		GestorTipoCobertura.get().addTipoCobertura(cobertura3);
-		GestorTipoCobertura.get().addTipoCobertura(cobertura4);
-
+		//-------- TODO: BORRAR LAS CARGAS DE ARRIBA
+		
 		GestorDomicilio.get().cargarUbicaciones();
 		GestorCliente.get().cargarClientes();
 		GestorSubsistemaSiniestros.get().cargarSiniestros();
-		//GestorTipoCobertura.get().cargarTiposCoberturas();
-		//GestorParametrosVehiculo.get().cargarParametrosVehiculos();
-		//GestorParametrosPoliza.get().cargarParametrosPoliza();
-		//GestorPoliza.get().cargarPolizas();
+		GestorTipoCobertura.get().cargarTiposCoberturas();
+	//	GestorParametrosVehiculo.get().cargarParametrosVehiculos();
+	//	GestorParametrosPoliza.get().cargarParametrosPoliza();
+	//	GestorPoliza.get().cargarPolizas();
     }
 }

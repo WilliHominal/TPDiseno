@@ -84,7 +84,7 @@ public class TipoCoberturaDAO {
     }
 
 	public void cargarTiposCoberturas() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/tiposCoberturas.sql");
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/tiposCobertura.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		session.beginTransaction();
 		Iterator<String> iteradorqueries = queries.iterator();
