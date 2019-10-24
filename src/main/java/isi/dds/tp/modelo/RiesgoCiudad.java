@@ -25,7 +25,7 @@ public class RiesgoCiudad {
 	@Column(nullable = false, name = "inicio_vigencia")
 	private LocalDate fechaInicioVigencia;
 	
-	@Column(name = "fein_vigencia")
+	@Column(name = "fin_vigencia")
 	private LocalDate fechaFinVigencia;
 	
 	@Column(nullable = false, name = "valor_porcentual")

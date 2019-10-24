@@ -1,24 +1,22 @@
 package isi.dds.tp.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-
 import isi.dds.tp.hibernate.HibernateUtil;
+import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.SolicitudPoliza;
 
-
-
 public class PolizaDAO {
 	
 	private static PolizaDAO instanciaDAO = null;
 	 
-    private PolizaDAO() {
-
-    }
+    private PolizaDAO() { }
 
     public static PolizaDAO getDAO() {
         if (instanciaDAO == null){
@@ -29,7 +27,6 @@ public class PolizaDAO {
 
     public void addPoliza(Poliza p) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
             session.beginTransaction();
             session.save(p);
@@ -43,7 +40,6 @@ public class PolizaDAO {
     
     public void addSolicitudPoliza(SolicitudPoliza s) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
             session.beginTransaction();
             session.save(s);
@@ -58,22 +54,18 @@ public class PolizaDAO {
 
 	public List<Poliza> getPolizas(Long numeroCliente) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
             session.beginTransaction();
             return session.createQuery("SELECT p FROM Poliza p WHERE numero_cliente="+numeroCliente, Poliza.class).list();
-            
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
-        
         return null;
     }
 
 	public List<Cuota> getCuotas(Long numeroPoliza) {
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
             session.beginTransaction();
             return session.createQuery("SELECT c FROM Cuota c WHERE numero_poliza="+numeroPoliza, Cuota.class).list();
@@ -82,13 +74,11 @@ public class PolizaDAO {
         catch (HibernateException e) {
             e.printStackTrace();
         }
-        
         return null;
     }
     
     public SolicitudPoliza getSolicitudPoliza(Long numeroPoliza) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
             session.beginTransaction();
             return session.createQuery("SELECT s FROM SolicitudPoliza s WHERE numero_poliza="+numeroPoliza, SolicitudPoliza.class).getSingleResult();
@@ -96,13 +86,11 @@ public class PolizaDAO {
         catch (HibernateException e) {
             e.printStackTrace();
         }
-        
         return null;
     }
     
 	public List<HijoDeclarado> getHijosDeclarados(Long numeroPoliza) {
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
             session.beginTransaction();
             return session.createQuery("SELECT h FROM HijoDeclarado h WHERE numero_poliza="+numeroPoliza, HijoDeclarado.class).list();
@@ -111,7 +99,17 @@ public class PolizaDAO {
         catch (HibernateException e) {
             e.printStackTrace();
         }
-        
         return null;
     }
+
+	public void cargarPolizas() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/polizas.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		session.beginTransaction();
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+		}
+		session.close();
+	}
 }

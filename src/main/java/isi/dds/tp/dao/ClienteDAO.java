@@ -1,9 +1,12 @@
 package isi.dds.tp.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import isi.dds.tp.hibernate.HibernateUtil;
+import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Cliente;
 
 public class ClienteDAO {
@@ -61,5 +64,20 @@ public class ClienteDAO {
         }
     	return null;
     }
+	
+	public void cargarClientes() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/clientes.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		
+		session.beginTransaction();
+		
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
+
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+
+		}
+		session.close();
+	}
     
 }

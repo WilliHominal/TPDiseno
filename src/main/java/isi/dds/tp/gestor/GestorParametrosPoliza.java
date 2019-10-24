@@ -6,17 +6,17 @@ import isi.dds.tp.modelo.BitacoraSolicitudPoliza;
 import isi.dds.tp.modelo.ParametrosPoliza;
 import isi.dds.tp.modelo.BitacoraParametrosPoliza;
 
-public class GestorParametroPoliza {
+public class GestorParametrosPoliza {
 	
-	private static GestorParametroPoliza instanciaGestor = null;
+	private static GestorParametrosPoliza instanciaGestor = null;
 	 
-    private GestorParametroPoliza() {
+    private GestorParametrosPoliza() {
 
     }
 
-    public static GestorParametroPoliza get() {
+    public static GestorParametrosPoliza get() {
         if (instanciaGestor == null){
-        	instanciaGestor = new GestorParametroPoliza();
+        	instanciaGestor = new GestorParametrosPoliza();
         }    
         return instanciaGestor;
     }
@@ -48,4 +48,8 @@ public class GestorParametroPoliza {
     public void addParametrosPoliza(ParametrosPoliza p) {
     	ParametrosPolizaDAO.getDAO().addParametrosPoliza(p);
     }
+
+	public void cargarParametrosPoliza() {
+		ParametrosPolizaDAO.getDAO().cargarParametrosPoliza();
+	}
 }

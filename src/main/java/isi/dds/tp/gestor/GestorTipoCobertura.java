@@ -30,12 +30,12 @@ public class GestorTipoCobertura {
 	public List<TipoCobertura> getTiposCobertura(){
 		return TipoCoberturaDAO.getDAO().getTiposCobertura();
     }
-    /*
-	public List<RiesgoTipoCobertura> getRiesgosCobertura(EnumTipoCobertura tipo) {
-		return TipoCoberturaDAO.getDAO().getRiesgosCobertura(tipo);
-    }*/
     
     public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipo) {
     	return TipoCoberturaDAO.getDAO().getUltimoRiesgoTipoCobertura(tipo); 
+    }
+    
+    public void cargarTiposCoberturas() {
+    	TipoCoberturaDAO.getDAO().cargarTiposCoberturas();
     }
 }

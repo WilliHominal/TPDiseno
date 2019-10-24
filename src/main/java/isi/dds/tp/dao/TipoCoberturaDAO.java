@@ -1,10 +1,13 @@
 package isi.dds.tp.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import isi.dds.tp.enums.EnumTipoCobertura;
 import isi.dds.tp.hibernate.HibernateUtil;
+import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.RiesgoTipoCobertura;
 import isi.dds.tp.modelo.TipoCobertura;
 
@@ -62,22 +65,7 @@ public class TipoCoberturaDAO {
         }
     	
     	return null;
-    }
-    
-/*	public List<RiesgoTipoCobertura> getRiesgosCobertura(EnumTipoCobertura tipo) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
-        try {
-            session.beginTransaction();
-            return session.createQuery("SELECT r FROM RiesgoTipoCobertura r WHERE tipo_cobertura="+tipo, RiesgoTipoCobertura.class).list();
-            
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
-    	
-    	return null;
-    }*/
+	}
     
     public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipo) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -94,5 +82,16 @@ public class TipoCoberturaDAO {
     	
     	return null;
     }
+
+	public void cargarTiposCoberturas() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/tiposCoberturas.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		session.beginTransaction();
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+		}
+		session.close();
+	}
     
 }

@@ -23,5 +23,7 @@ public class GestorSubsistemaSiniestros {
 		return SiniestrosDAO.getDAO().getSiniestroUltimoAnio(tipoDocumento, documento, anio).getSiniestros();
 	}
 	
-	
+	public void cargarSiniestros() {
+		SiniestrosDAO.getDAO().cargarSiniestros();
+	}
 }

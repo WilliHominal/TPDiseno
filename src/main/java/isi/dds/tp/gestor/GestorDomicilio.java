@@ -63,7 +63,7 @@ public class GestorDomicilio {
     
     public List<Provincia> getProvincias(Integer id_pais) {
     	
-    	return DomicilioDAO.getDAO().getProvincias(id_pais);
+    	return sortProvincias(DomicilioDAO.getDAO().getProvincias(id_pais));
     }
     
     public RiesgoCiudad ultimoRiesgoCiudad(Integer id_ciudad) {
@@ -92,7 +92,7 @@ public class GestorDomicilio {
 	    return lista;
     }
     
-    private List<Ciudad> sortCiudades(List<Ciudad> lista){
+    public List<Ciudad> sortCiudades(List<Ciudad> lista){
     	lista.sort(Comparator.comparing(Ciudad::getNombre));
 	    Collections.sort(lista, new Comparator<Ciudad>() {
 	    	@Override
@@ -101,5 +101,9 @@ public class GestorDomicilio {
 	    	}
 	    });
 	    return lista;
+    }
+    
+    public void cargarUbicaciones() {
+    	DomicilioDAO.getDAO().cargarUbicaciones();
     }
 }

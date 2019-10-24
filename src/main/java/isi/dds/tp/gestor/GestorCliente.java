@@ -98,5 +98,8 @@ public class GestorCliente {
     	
     	return ClienteDAO.getDAO().getClientes(condicionesConsulta);
     }
-    
+	
+	public void cargarClientes() {
+		ClienteDAO.getDAO().cargarClientes();
+	}
 }

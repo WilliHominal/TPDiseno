@@ -94,6 +94,7 @@ public class AppMenu extends JPanel {
 		btnActualizarFactores.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_update.png"));
 		btnGenerarListado.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
 		btnGenerarInforme.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
+		
 		/*
 		btnConsultarPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
 		btnGenerarPropuestas.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
@@ -102,7 +103,8 @@ public class AppMenu extends JPanel {
 		btnConsultarCliente.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
 		btnActualizarFactores.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
 		btnGenerarListado.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
-		btnGenerarInforme.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));*/
+		btnGenerarInforme.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
+		*/
 		
 		btnDarAltaPoliza.setEnabled(existeBase);
 		btnConsultarPoliza.setEnabled(false);
@@ -139,7 +141,6 @@ public class AppMenu extends JPanel {
 					+ "configurados.");
 			configurarBaseDatos.setEditable(false);
 		}
-		
 	}
 
 	private void ubicarComponentes() {

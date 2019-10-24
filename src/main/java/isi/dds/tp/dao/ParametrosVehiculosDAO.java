@@ -1,10 +1,13 @@
 package isi.dds.tp.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import isi.dds.tp.modelo.RiesgoModelo;
 import isi.dds.tp.hibernate.HibernateUtil;
+import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Modelo;
 import isi.dds.tp.modelo.Marca;
@@ -91,50 +94,6 @@ public class ParametrosVehiculosDAO {
         }
         return null;
     }
-    /*
-	public List<Modelo> getModelos(Integer id_marca) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            return session.createQuery("SELECT m FROM Modelo m where id_marca="+id_marca+" order by nombre", Modelo.class).list();
-            
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    	return null;
-    }
-    
-	public List<AnioModelo> getAniosModelo(Integer id_modelo) {
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            return session.createQuery("SELECT a FROM AnioModelo a where id_modelo="+id_modelo+" order by anio", AnioModelo.class).list();
-            
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    	return null;
-    }
-    
-	public List<RiesgoModelo> getRiesgosModelo(Integer id_modelo) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            return session.createQuery("SELECT r FROM RiesgoCiudad r where id_modelo="+id_modelo, RiesgoModelo.class).list();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-        return null;
-    }*/
 	
     public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -163,4 +122,15 @@ public class ParametrosVehiculosDAO {
         }
         return null;
     }
+
+	public void cargarParametrosVehiculos() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/parametrosVehiculo.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		session.beginTransaction();
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+		}
+		session.close();
+	}
 }

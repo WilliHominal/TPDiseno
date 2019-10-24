@@ -11,9 +11,7 @@ public class GestorPoliza {
 	
 	private static GestorPoliza instanciaGestor = null;
 	 
-    private GestorPoliza() {
-
-    }
+    private GestorPoliza() { }
 
     public static GestorPoliza get() {
         if (instanciaGestor == null){
@@ -23,29 +21,15 @@ public class GestorPoliza {
     }
     
     public void altaPoliza(Poliza p) {
-    	
     	PolizaDAO.getDAO().addPoliza(p);
     }
     
     public void addSolicitudPoliza(SolicitudPoliza s) {
-
     	PolizaDAO.getDAO().addSolicitudPoliza(s);
     }
     
     public void generarNumeroPoliza(Poliza P) {
     	
-    }
-       
-    public Boolean agregarDeclaracionHijo(Poliza p, HijoDeclarado h) {
-    	return null;
-    }
-    
-    public void borrarDeclaracionHijo(Poliza p, HijoDeclarado h){
-    	
-    }
-    
-    public Boolean validarHijosRegistrados(Poliza P) {
-    	return null;
     }
     
     public SolicitudPoliza generarSolicitud(Poliza P){
@@ -57,24 +41,15 @@ public class GestorPoliza {
     }
 
 	public List<Cuota> getCuotas(Long numeroPoliza) {
-
-    	List<Cuota> cuotas = PolizaDAO.getDAO().getCuotas(numeroPoliza);
-        
-        return cuotas;
+		return PolizaDAO.getDAO().getCuotas(numeroPoliza);
     }
     
     public SolicitudPoliza getSolicitudPoliza(Long numeroPoliza) {
-
-    	SolicitudPoliza solicitud = PolizaDAO.getDAO().getSolicitudPoliza(numeroPoliza);
-    	
-        return solicitud;
+    	return PolizaDAO.getDAO().getSolicitudPoliza(numeroPoliza);
     }
     
 	public List<HijoDeclarado> getHijosDeclarados(Long numeroPoliza) {
-
-    	List<HijoDeclarado> hijos = PolizaDAO.getDAO().getHijosDeclarados(numeroPoliza);
-        
-        return hijos;
+		return PolizaDAO.getDAO().getHijosDeclarados(numeroPoliza);
     }
     
     public void actualizarPoliza(Poliza p){
@@ -88,5 +63,9 @@ public class GestorPoliza {
     public SolicitudPoliza getSolicitud(Long numeroPoliza) {
     	return null;
     }
+
+	public void cargarPolizas() {
+		PolizaDAO.getDAO().cargarPolizas();
+	}
 
 }

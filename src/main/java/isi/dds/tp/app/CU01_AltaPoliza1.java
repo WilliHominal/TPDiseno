@@ -634,10 +634,8 @@ public class CU01_AltaPoliza1 extends JPanel {
 	private void comportamientoComboBox() {
 		seleccionProvincia.addActionListener (a -> {
 			Provincia provincia = seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex());
-			
 			seleccionCiudad.removeAllItems();
-			
-			Iterator<Ciudad> iteratorCiudad = provincia.getCiudades().iterator();
+			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(provincia.getCiudades()).iterator();
 			while(iteratorCiudad.hasNext()){
 				seleccionCiudad.addItem(iteratorCiudad.next());
 			}
@@ -901,7 +899,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 			}
 			
 			seleccionCiudad.removeAllItems();
-			Iterator<Ciudad> iteratorCiudad = provincias.get(0).getCiudades().iterator();
+			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(provincias.get(0).getCiudades()).iterator();
 			while(iteratorCiudad.hasNext()){
 				seleccionCiudad.addItem(iteratorCiudad.next());
 			}
@@ -1145,7 +1143,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 	 * @param val
 	 */
 	private void componentesAlDeclararHijos(Boolean val) {
-
 		
 		if(seleccionMarca.getSelectedIndex()!=0) {
 			tema.seleccion(seleccionModelo, val);
@@ -1175,6 +1172,8 @@ public class CU01_AltaPoliza1 extends JPanel {
 		rbtnTuercasSi.setEnabled(val);
 		rbtnTuercasNo.setEnabled(val);
 		
+		btnBuscarCliente.setEnabled(val);
+		btnAltaCliente.setEnabled(val);
 		btnConfirmarDatos.setEnabled(val);
 		btnAgregarHijo.setEnabled(val);
 		btnQuitarHijo.setEnabled(val);

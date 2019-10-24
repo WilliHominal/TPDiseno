@@ -1,43 +1,21 @@
 package isi.dds.tp.hibernate;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import org.hibernate.Session;
 import isi.dds.tp.enums.EnumTipoCobertura;
+import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
+import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
 import isi.dds.tp.gestor.GestorTipoCobertura;
 import isi.dds.tp.modelo.AnioModelo;
-import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
-import isi.dds.tp.modelo.Pais;
-import isi.dds.tp.modelo.Provincia;
 import isi.dds.tp.modelo.TipoCobertura;
 
 public class CargarBase {
 	
-
 	public static void load() {
-
-    	
-    	//CREAMOS LOS OBJETOS A PERSISTIR
-    	//las prov capaz conviene ingresarlas por sql con algun script que haya en la web
-    	Pais pais1 = new Pais("Argentina");
-		
-		Provincia prov1 = new Provincia(pais1, "Santa Fe");
-		Provincia prov2 = new Provincia(pais1, "Buenos Aires");
-		Provincia prov3 = new Provincia(pais1, "Entre Rios");
-				
-		new Ciudad(prov1, "Esperanza", 1f);
-		new Ciudad(prov1, "Santa Fe", 2f);
-		new Ciudad(prov2, "La Plata", 3f);
-		new Ciudad(prov2, "Mar del Plata", 4f);
-		new Ciudad(prov3, "Paraná", 5f);
-		new Ciudad(prov3, "Diamante", 6f);
-
-		Marca marca = new Marca("Volkswagen");
-		/*List<Modelo> m = marca.getModelos(); 
+    	/*Marca marca = new Marca("Volkswagen");
+		List<Modelo> m = marca.getModelos(); 
 		
 		m.add(new Modelo(marca, "Amarok", 0.8f));
 		new AnioModelo(m.get(0), 2014, 45800f);
@@ -191,14 +169,11 @@ public class CargarBase {
 		
 
 		//---------------------------------------------------------------------------
-		//PARA RECREAR LA BASE, BORRA Y LA RECARGA DE NUEVO
+
 		HibernateUtil.shutdown();
 		HibernateUtil.getSessionFactoryCreate();
-		//---------------------------------------------------------------------------
-		//PERSISTE LOS DATOS CREADOS
-		GestorDomicilio.get().addPais(pais1);
-			
-		GestorParametrosVehiculo.get().addMarca(marca);
+
+		//GestorParametrosVehiculo.get().addMarca(marca);
 		GestorParametrosVehiculo.get().addMarca(marca1);
 		GestorParametrosVehiculo.get().addMarca(marca2);
 		GestorParametrosVehiculo.get().addMarca(marca3);
@@ -210,22 +185,13 @@ public class CargarBase {
 		GestorTipoCobertura.get().addTipoCobertura(cobertura2);
 		GestorTipoCobertura.get().addTipoCobertura(cobertura3);
 		GestorTipoCobertura.get().addTipoCobertura(cobertura4);
-		
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/clientes.sql");
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-		session.beginTransaction();
-		
-		Iterator<String> iteradorqueries = queries.iterator();
-		while(iteradorqueries.hasNext()){
 
-			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
-
-		}
-		session.close();
-
-		
-		//---------------------------------------------------------------------------
-		
-		
+		GestorDomicilio.get().cargarUbicaciones();
+		GestorCliente.get().cargarClientes();
+		GestorSubsistemaSiniestros.get().cargarSiniestros();
+		//GestorTipoCobertura.get().cargarTiposCoberturas();
+		//GestorParametrosVehiculo.get().cargarParametrosVehiculos();
+		//GestorParametrosPoliza.get().cargarParametrosPoliza();
+		//GestorPoliza.get().cargarPolizas();
     }
 }

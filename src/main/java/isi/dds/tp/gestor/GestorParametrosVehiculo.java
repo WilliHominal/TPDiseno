@@ -94,4 +94,8 @@ public class GestorParametrosVehiculo {
 	    	}
 	    });
     }
+
+	public void cargarParametrosVehiculos() {
+		ParametrosVehiculosDAO.getDAO().cargarParametrosVehiculos();
+	}
 }

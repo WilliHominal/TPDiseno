@@ -1,9 +1,13 @@
 package isi.dds.tp.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import isi.dds.tp.hibernate.HibernateUtil;
+import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.ParametrosPoliza;
 
 public class ParametrosPolizaDAO {
@@ -36,38 +40,41 @@ public class ParametrosPolizaDAO {
     }
     
     public ParametrosPoliza getParametrosPoliza(Integer codigoParametroPoliza) {
-    	ParametrosPoliza p = null;
-    	
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
             session.beginTransaction();
-            p = session.get(ParametrosPoliza.class, codigoParametroPoliza);
+            return session.get(ParametrosPoliza.class, codigoParametroPoliza);
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
         
-        return p;
+        return null;
     }
     
     public ParametrosPoliza getUltimoParametrosPoliza(Integer codigoParametroPoliza) {
-    	ParametrosPoliza p = null;
-    	
-    	
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();          
         try {
             session.beginTransaction();
-            p = (ParametrosPoliza) session.createQuery("SELECT p FROM ParametrosPoliza p where codigo_parametro_poliza"
-            		+ "="+codigoParametroPoliza+ "and ultimo=true order by nombre");
-            
+            return session.createQuery("SELECT p FROM ParametrosPoliza p where codigo_parametro_poliza"
+            		+ "="+codigoParametroPoliza+ "and ultimo=true order by nombre", ParametrosPoliza.class).uniqueResult(); 
         }
         catch (HibernateException e) {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
-        
-        return p;
+        return null;
     }
+
+	public void cargarParametrosPoliza() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/parametrosPoliza.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		session.beginTransaction();
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+		}
+		session.close();
+	}
 }

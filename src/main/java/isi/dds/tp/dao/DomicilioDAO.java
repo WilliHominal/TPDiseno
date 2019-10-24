@@ -1,9 +1,12 @@
 package isi.dds.tp.dao;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import isi.dds.tp.hibernate.HibernateUtil;
+import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Pais;
 import isi.dds.tp.modelo.Provincia;
@@ -105,47 +108,34 @@ public class DomicilioDAO {
         }
     	return null;
     }
-    /*
-	public List<Ciudad> getCiudades(Integer id_provincia) {
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-        	session.beginTransaction();
-        	return session.createQuery("SELECT c FROM Ciudad c where id_provincia="+id_provincia+" order by nombre", Ciudad.class).list();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
 
-    	return null;
-    }
-    
-	public List<RiesgoCiudad> getRiesgosCiudad(Integer id_ciudad) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            return session.createQuery("SELECT p FROM RiesgoCiudad p where id_ciudad="+id_ciudad, RiesgoCiudad.class).list();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
-
-        return null;
-    }*/
-    
     public RiesgoCiudad getUltimoRiesgoCiudad(Integer id_ciudad) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         
         try {
-            session.beginTransaction();
-           return session.createQuery("SELECT p FROM RiesgoCiudad p where id_ciudad="+id_ciudad+" and ultimo=true", RiesgoCiudad.class).uniqueResult();
+        	session.beginTransaction();
+        	return session.createQuery("SELECT p FROM RiesgoCiudad p where id_ciudad="+id_ciudad+" and ultimo=true", RiesgoCiudad.class).uniqueResult();
             
         }
         catch (HibernateException e) {
-            e.printStackTrace();
+        	e.printStackTrace();
         }
     	return null;
     }
 
+    public void cargarUbicaciones() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/domicilio.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		
+		session.beginTransaction();
+		
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
+
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+
+		}
+		session.close();
+    }
+    
 }

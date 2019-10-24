@@ -109,7 +109,7 @@ public class CU04_AltaCliente extends JPanel{
 		}catch(Exception ex) {
 		    panelAnterior = null;
 		}
-
+		
 		ventana.setContentPane(this);
 		inicializarComponentes();
 		ubicarComponentes();
@@ -154,7 +154,7 @@ public class CU04_AltaCliente extends JPanel{
 			seleccionProvincia.addItem(iteradorProvincias.next());
 		}
 		
-		List<Ciudad> ciudades = seleccionProvincia.getItemAt(seleccionPais.getSelectedIndex()).getCiudades();
+		List<Ciudad> ciudades = GestorDomicilio.get().sortCiudades(seleccionProvincia.getItemAt(seleccionPais.getSelectedIndex()).getCiudades());
 		Iterator<Ciudad> iteradorCiudades = ciudades.iterator();
 		while(iteradorCiudades.hasNext()){
 			seleccionCiudad.addItem(iteradorCiudades.next());
@@ -378,7 +378,7 @@ public class CU04_AltaCliente extends JPanel{
 			seleccionCiudad.setEnabled(false);	
 			seleccionCiudad.removeAllItems();
 								
-			Iterator<Ciudad> iteratorCiudad = seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex()).getCiudades().iterator();
+			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(seleccionProvincia.getItemAt(seleccionPais.getSelectedIndex()).getCiudades()).iterator();
 			while(iteratorCiudad.hasNext()){
 				seleccionCiudad.addItem(iteratorCiudad.next());
 			}

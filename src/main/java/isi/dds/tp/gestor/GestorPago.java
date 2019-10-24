@@ -7,9 +7,7 @@ public class GestorPago {
 	
 	private static GestorPago instanciaGestor = null;
 	 
-    private GestorPago() {
-
-    }
+    private GestorPago() { }
 
     public static GestorPago get() {
         if (instanciaGestor == null){
@@ -17,5 +15,4 @@ public class GestorPago {
         }    
         return instanciaGestor;
     }
-
 }
