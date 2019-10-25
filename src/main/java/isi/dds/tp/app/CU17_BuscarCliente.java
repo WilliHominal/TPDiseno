@@ -23,7 +23,6 @@ import javax.swing.JTextField;
 import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
 import isi.dds.tp.enums.EnumTipoDocumento;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorEnum;
@@ -38,22 +37,18 @@ public class CU17_BuscarCliente extends JPanel {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new CU17_BuscarCliente();
+					JFrame frame = new JFrame();
+					frame.pack();
+					frame.setBounds(0,0,1024,600);
+					frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
+					frame.setLocationRelativeTo(null);
+					new CU17_BuscarCliente(frame);
+					frame.setVisible(true);	
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-	}
-
-	public CU17_BuscarCliente() {		
-		JFrame frame = new JFrame();
-		frame.pack();
-		frame.setBounds(0,0,1024,600);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
-		frame.setLocationRelativeTo(null);
-		new CU17_BuscarCliente(frame);
-		frame.setVisible(true);		
 	}
 	
 	private JFrame ventana;
@@ -61,8 +56,8 @@ public class CU17_BuscarCliente extends JPanel {
 	private JPanel estePanel;
 	private GestorTema tema = GestorTema.get();
 	
+	private String tituloAnterior = "";
 	private Boolean esAltaPoliza = false;
-	
 	private List<Cliente> clientes = new ArrayList<Cliente>();
 	
 	private JLabel lnumeroCliente = new JLabel("Número cliente:");
@@ -88,29 +83,27 @@ public class CU17_BuscarCliente extends JPanel {
 	private DefaultTableModel model;
 	
 	public CU17_BuscarCliente(JFrame ventana) {
-		
 		this.ventana = ventana;
-		
+		this.estePanel = this;
 		try {		
 			if(ventana.getContentPane() instanceof CU01_AltaPoliza1) {
 				esAltaPoliza = true;
 			}
 			panelAnterior = (JPanel) ventana.getContentPane();
-			
+			tituloAnterior = ventana.getTitle();
 		}catch(Exception ex) {
 		    panelAnterior = null;
 		}
-
 		ventana.setContentPane(this);
-		this.estePanel = this;
+		
 		inicializarComponentes();
 		ubicarComponentes();
 		comportamientos();
-
-		ventana.setTitle("Buscar cliente");		
+		
+		ventana.setTitle("Buscar cliente");	
 	}
 
-	private void inicializarComponentes() {
+	private void inicializarComponentes() {	
 		tema.panel(this);
 		
 		tema.label(lnumeroCliente);
@@ -126,8 +119,8 @@ public class CU17_BuscarCliente extends JPanel {
 		tema.campo(campoNombre, true);
 		tema.campo(campoTotalFilas, false);
 		
-		tema.boton(btnBuscar);
-		tema.boton(btnCancelar);
+		tema.boton(btnBuscar, true);
+		tema.boton(btnCancelar, true);
 				
 		tema.seleccion(seleccionTipoDocumento, true);
 
@@ -288,7 +281,8 @@ public class CU17_BuscarCliente extends JPanel {
 		btnCancelar.addActionListener(a -> {
 			try {			
 				this.setVisible(false);
-				ventana.setContentPane(panelAnterior);				
+				ventana.setContentPane(panelAnterior);	
+				ventana.setTitle(tituloAnterior);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -306,10 +300,12 @@ public class CU17_BuscarCliente extends JPanel {
 		        		CU01_AltaPoliza1 altaPoliza =  (CU01_AltaPoliza1) panelAnterior;
 		        		altaPoliza.obtenidoCliente(clientes.get(row));
 			        	ventana.setContentPane(altaPoliza);
+			        	ventana.setTitle(tituloAnterior);
 			        	estePanel.setVisible(false);
 		        	}
 		        	else {
 			        	ventana.setContentPane(panelAnterior);
+			        	ventana.setTitle(tituloAnterior);
 			        	estePanel.setVisible(false);
 		        	}
 
@@ -356,23 +352,6 @@ public class CU17_BuscarCliente extends JPanel {
 	    	}
 	    });
 
-	  /*  campoNumeroDocumento.addKeyListener(new KeyAdapter(){
-	    	public void keyTyped(KeyEvent e){
-				char caracter = e.getKeyChar();
-				//TODO poner condiciones de acuerod al tipo de documento
-				if(Character.isDigit(caracter) && campoNumeroDocumento.getText().length() < 10){
-					
-				}
-				else{
-					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
-				}
-	    	}
-	    }); */
-	    
-		seleccionTipoDocumento.addActionListener (a -> {
-			
-		});		
 	}
 
 	private void cargarTabla(List<Cliente> clientes) {

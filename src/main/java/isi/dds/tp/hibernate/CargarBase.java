@@ -12,8 +12,10 @@ import isi.dds.tp.modelo.Modelo;
 public class CargarBase {
 	
 	public static void load() {
-			
-		Marca marca1 = new Marca("Fiat");
+		HibernateUtil.shutdown();
+		HibernateUtil.getSessionFactoryCreate();	
+		
+		/*Marca marca1 = new Marca("Fiat");
 			Modelo modelo3 = new Modelo(marca1, "Argo", 0.21f);
 				new AnioModelo(modelo3, 2014, 45800f);
 				new AnioModelo(modelo3, 2015, 51222f);
@@ -60,20 +62,18 @@ public class CargarBase {
 			Modelo modelo13 = new Modelo(marca3, "Kangoo II", 0.47f);
 				new AnioModelo(modelo13, 2019, 92630f);
 
-		HibernateUtil.shutdown();
-		HibernateUtil.getSessionFactoryCreate();
+
 		GestorParametrosVehiculo.get().addMarca(marca1);
 		GestorParametrosVehiculo.get().addMarca(marca2);
-		GestorParametrosVehiculo.get().addMarca(marca3);
+		GestorParametrosVehiculo.get().addMarca(marca3);*/
 
-		
 		//-------- TODO: BORRAR LAS CARGAS DE ARRIBA
 		
 		GestorDomicilio.get().cargarUbicaciones();
 		GestorCliente.get().cargarClientes();
 		GestorSubsistemaSiniestros.get().cargarSiniestros();
 		GestorTipoCobertura.get().cargarTiposCoberturas();
-	//	GestorParametrosVehiculo.get().cargarParametrosVehiculos();
+		GestorParametrosVehiculo.get().cargarParametrosVehiculos();
 	//	GestorParametrosPoliza.get().cargarParametrosPoliza();
 	//	GestorPoliza.get().cargarPolizas();
     }

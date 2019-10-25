@@ -1,12 +1,11 @@
 package isi.dds.tp.app;
 
 import java.awt.Dimension;
+import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -25,9 +24,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-import isi.dds.tp.app.CU01_DeclararHijo.DeclararHijoAbierto;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
@@ -44,17 +43,34 @@ import isi.dds.tp.modelo.Provincia;
 
 @SuppressWarnings("serial")
 public class CU01_AltaPoliza1 extends JPanel {
+	
+	 public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					JFrame frame = new JFrame();
+					frame.pack();
+					frame.setBounds(0,0,1024,600);
+					frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
+					frame.setLocationRelativeTo(null);
+					new CU01_AltaPoliza1(frame);
+					frame.setVisible(true);	
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+	
 	private JFrame ventana;
 	private AppMenu menu;
 	private GestorTema tema = GestorTema.get();
 	
+	private String tituloAnterior = "";
+	private Boolean primerCliente = true;
 	public Poliza poliza = new Poliza();
 	
-	private Boolean estaDeclarandoHijo = false;
-	private Boolean mouseActivo = false;
-	private Boolean primerCliente = true;
-	
-	private JLabel lnumeroCliente = new JLabel("Núamero cliente:");
+	private JLabel lnumeroCliente = new JLabel("Número cliente:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
 	private JLabel ldocumento = new JLabel("Documento:");
 	private JLabel lapellido = new JLabel("Apellido:");
@@ -65,8 +81,8 @@ public class CU01_AltaPoliza1 extends JPanel {
 	private JLabel ldepartamento = new JLabel("Departamento:");
 	private JLabel lprovincia = new JLabel("Provincia*:");
 	private JLabel lciudad = new JLabel("Ciudad*:");
-	private JLabel lmarca = new JLabel("Marca veh\u00edculo*:");
-	private JLabel lmodelo = new JLabel("Modelo veh\u00edculo:*");
+	private JLabel lmarca = new JLabel("Marca vehículo*:");
+	private JLabel lmodelo = new JLabel("Modelo vehíedculo:*");
 	private JLabel lanio = new JLabel("Año modelo:*");
 	private JLabel lmotor = new JLabel("Motor*:");
 	private JLabel lchasis = new JLabel("Chasis*:");
@@ -74,7 +90,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 	private JLabel lsumaAseg = new JLabel("Suma asegurada:");
 	private JLabel lmoneda = new JLabel("$");
 	private JLabel lkm = new JLabel("Km realizados por año:");
-	private JLabel lsiniestros = new JLabel("N\u00famero de siniestros en el último año*:");
+	private JLabel lsiniestros = new JLabel("Número de siniestros en el último año*:");
 	private JLabel lgarage = new JLabel("¿Se guarda en garage?");
 	private JLabel lalarma = new JLabel("¿Tiene alarma?");
 	private JLabel lrastreo = new JLabel("¿Posee dispositivo de rastreo vehicular?");
@@ -128,32 +144,30 @@ public class CU01_AltaPoliza1 extends JPanel {
 	
 	public CU01_AltaPoliza1(JFrame ventana) {
 		this.ventana = ventana;
-		
-		menu = (AppMenu) ventana.getContentPane();
-
+		this.tituloAnterior = ventana.getTitle();
+		try {
+			menu = (AppMenu) ventana.getContentPane();
+		}catch(Exception ex) {
+		    menu = null;
+		}
 		ventana.setContentPane(this);
-		
-		poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
 		
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
 		
-		compMouseParaDeclaracionHijos();
 		comportamientoBotones();
 		comportamientoComboBox();		
 		comportamientoCampos();
-
-		ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");		
+		
+		ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");	
 	}
 
 	private void inicializarComponentes() {
+		poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
+				
 		campoSumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
-		
-		btnQuitarHijo.setEnabled(false);
-		btnConfirmarDatos.setEnabled(false);
-		btnAgregarHijo.setEnabled(false);
-		
+				
 		garage.add(rbtnGarageSi);
 		garage.add(rbtnGarageNo);
 		rbtnGarageNo.setSelected(true);
@@ -166,6 +180,15 @@ public class CU01_AltaPoliza1 extends JPanel {
 		tuercas.add(rbtnTuercasSi);
 		tuercas.add(rbtnTuercasNo);
 		rbtnTuercasNo.setSelected(true);
+		
+		rbtnGarageSi.setEnabled(false);
+		rbtnGarageNo.setEnabled(false);
+		rbtnAlarmaSi.setEnabled(false);
+		rbtnAlarmaNo.setEnabled(false);
+		rbtnRastreoNo.setEnabled(false);
+		rbtnRastreoSi.setEnabled(false);
+		rbtnTuercasSi.setEnabled(false);
+		rbtnTuercasNo.setEnabled(false);
 		
 		seleccionProvincia.setPreferredSize(new Dimension(199, 25));
 		seleccionCiudad.setPreferredSize(new Dimension(199, 25));
@@ -190,7 +213,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		setLayout (new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		
-		//FILA 1
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 2;
@@ -231,7 +253,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 0, 5, 0);
 		add(campoNumeroDocumento, constraints);
 		
-		//FILA 2
 		constraints.gridx = 0;
 		constraints.gridy = 1;
 		constraints.gridwidth = 2;
@@ -260,7 +281,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 0, 5, 0);
 		add(campoNombres, constraints);
 		
-		//FILA 3
 		constraints.gridy = 2;
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
@@ -304,7 +324,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 10, 5, 0);
 		add(campoDepartamento, constraints);
 		
-		//FILA 4
 		constraints.gridy = 3;
 		constraints.gridx = 0;
 		constraints.gridwidth = 15;
@@ -313,7 +332,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 0, 5, 0);
 		add(new JLabel("___________________________________________________________________________________________________________________________________"), constraints);
 		
-		//FILA 5
 		constraints.gridy = 4;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.WEST;
@@ -326,7 +344,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 355, 5, 5);
 		add(seleccionCiudad, constraints);
 		
-		//FILA 6
 		constraints.gridy = 5;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lmarca, constraints);
@@ -341,7 +358,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 664, 5, 5);
 		add(seleccionAnio, constraints);
 
-		//FILA 7
 		constraints.gridy = 6;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lmotor, constraints);
@@ -355,8 +371,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 		add(lpatente, constraints);
 		constraints.insets.set(5, 638, 5, 5);
 		add(campoPatente, constraints);
-		
-		//FILA 8
+
 		constraints.gridy = 7;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lsumaAseg, constraints);
@@ -365,21 +380,18 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 268, 5, 5);
 		add(lmoneda, constraints);
 
-		//FILA 9
 		constraints.gridy = 8;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lkm, constraints);
 		constraints.insets.set(5, 145, 5, 5);
 		add(seleccionKm, constraints);
-		
-		//FILA 10
+
 		constraints.gridy = 9;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lsiniestros, constraints);
 		constraints.insets.set(5, 225, 5, 5);
 		add(campoNumerosSiniestros, constraints);
-	
-		//FILA 11
+
 		constraints.gridy = 10;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lgarage, constraints);
@@ -395,7 +407,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 375, 0, 5);
 		add(rbtnAlarmaNo, constraints);
 		
-		//FILA 11
 		constraints.gridy = 11;
 		constraints.insets.set(2, 5, 5, 5);
 		add(lrastreo, constraints);
@@ -411,12 +422,10 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(2, 550, 3, 5);
 		add(rbtnTuercasNo, constraints);
 		
-		//FILA 12
 		constraints.gridy = 12;
 		constraints.insets.set(5, 5, 2, 5);
 		add(lcantidadHijos, constraints);
 		
-		//FILA 13
 		constraints.gridy = 13;
 		constraints.insets.set(3, 5, 2, 5);
 		add(tablaHijosScroll, constraints);
@@ -427,8 +436,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(40, 375, 2, 5);
 		add(btnQuitarHijo, constraints);
 		
-		
-		//FILA 14
 		constraints.gridy = 14;
 		constraints.insets.set(3, 5, 0, 5);
 		add(ldatosObligatorios, constraints);
@@ -489,12 +496,12 @@ public class CU01_AltaPoliza1 extends JPanel {
 		tema.campo(campoChasis, false);
 		tema.campo(campoPatente, false);
 		
-		tema.boton(btnBuscarCliente);
-		tema.boton(btnAltaCliente);
-		tema.boton(btnAgregarHijo);
-		tema.boton(btnQuitarHijo);
-		tema.boton(btnConfirmarDatos);
-		tema.boton(btnCancelar);
+		tema.boton(btnBuscarCliente, true);
+		tema.boton(btnAltaCliente, true);
+		tema.boton(btnAgregarHijo, false);
+		tema.boton(btnQuitarHijo, false);
+		tema.boton(btnConfirmarDatos, false);
+		tema.boton(btnCancelar, true);
 		
 		tema.seleccion(seleccionProvincia, false);
 		tema.seleccion(seleccionCiudad, false);
@@ -538,11 +545,9 @@ public class CU01_AltaPoliza1 extends JPanel {
 		
 		btnAgregarHijo.addActionListener(a -> {
 			try {				
-				mouseActivo = true;
-				componentesAlDeclararHijos(false);
-				estaDeclarandoHijo = true;
+				componentesAlDeclararHijos(false, null);
 				
-				new CU01_DeclararHijo();
+				new CU01_DeclararHijo(ventana);
 				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -558,7 +563,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 					List<HijoDeclarado> hijos = poliza.getHijosDeclarado();
 					
 					if(hijos.size() == 0) {
-						btnQuitarHijo.setEnabled(false);
+						tema.boton(btnQuitarHijo, false);
 					}							
 					cargarTabla(hijos);
 					return;
@@ -623,7 +628,8 @@ public class CU01_AltaPoliza1 extends JPanel {
 		btnCancelar.addActionListener(a -> {
 			try {			
 				this.setVisible(false);
-				ventana.setContentPane(menu);				
+				ventana.setContentPane(menu);	
+				ventana.setTitle(tituloAnterior);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -657,7 +663,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 				campoSumaAsegurada.setText("");
 				seleccionAnio.removeAllItems();
 									
-				Iterator<AnioModelo> iteratorAnioModelo = seleccionModelo.getItemAt(seleccionModelo.getSelectedIndex()).getAnios().iterator();
+				Iterator<AnioModelo> iteratorAnioModelo = GestorParametrosVehiculo.get().sortAniosModelo(seleccionModelo.getItemAt(seleccionModelo.getSelectedIndex()).getAnios()).iterator();
 				while(iteratorAnioModelo.hasNext()){
 					seleccionAnio.addItem(iteratorAnioModelo.next());
 				}
@@ -763,82 +769,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 	}
 	
 	/**
-	 * Este método define que mediante el movimiento del mouse, este panel es capaz de detectar si el frame  
-	 * que sirve para la declaración de hijos esta siendo usado. Si es así desactiva todos los componentes de este panel
-	 * hasta que deje de ser usar dicho frame.
-	 */
-	private void compMouseParaDeclaracionHijos() {
-        addMouseListener(new MouseAdapter() {
-        	public void mouseEntered(MouseEvent event) {
-        		if(mouseActivo) {
-		        	if(estaDeclarandoHijo) {
-		        		componentesAlDeclararHijos(!estaDeclarandoHijo);
-		        		if(!DeclararHijoAbierto.declararHijoAbierto) {
-		        			estaDeclarandoHijo = false;
-		        			
-		        			if(DeclararHijoAbierto.hijoDeclarado) {
-		        				HijoDeclarado hijo = DeclararHijoAbierto.hijo;
-		        				
-			        			hijo.setPoliza(poliza);
-			        			poliza.getHijosDeclarado().add(hijo);
-			        						        			
-			        			cargarTabla(poliza.getHijosDeclarado());
-			        			
-			        			componentesAlDeclararHijos(!estaDeclarandoHijo);
-			        			
-			        			
-			        			DeclararHijoAbierto.hijo = null;
-			        			
-			        			return;
-		        			}
-		        			
-		        		}
-		        		return;
-		        	}
-		        	else {
-		        		componentesAlDeclararHijos(!estaDeclarandoHijo);
-		        		return;
-		        	}
-	        	}
-	        }
-        	
-        	public void mouseReleased(MouseEvent event) {
-        		if(mouseActivo) {
-		        	if(estaDeclarandoHijo) {
-		        		componentesAlDeclararHijos(!estaDeclarandoHijo);
-		        		if(!DeclararHijoAbierto.declararHijoAbierto) {
-		        			estaDeclarandoHijo = false;
-		        			
-		        			if(DeclararHijoAbierto.hijoDeclarado) {
-		        				HijoDeclarado hijo = DeclararHijoAbierto.hijo;
-		        				
-			        			hijo.setPoliza(poliza);
-			        			poliza.getHijosDeclarado().add(hijo);
-			        						        			
-			        			cargarTabla(poliza.getHijosDeclarado());
-			        			
-			        			componentesAlDeclararHijos(!estaDeclarandoHijo);
-			        			
-			        			
-			        			DeclararHijoAbierto.hijo = null;
-			        			
-			        			return;
-		        			}
-		        			
-		        		}
-		        		return;
-		        	}
-		        	else {
-		        		componentesAlDeclararHijos(!estaDeclarandoHijo);
-		        		return;
-		        	}
-	        	}
-	        }
-        });
-
-	}
-
-	/**
 	 * Éste método es invocado una vez obtenido el cliente buscado o que fue dado de alta.
 	 * Setea los campos correspondientes a los atributos del cliente, inhabilita/habilita
 	 * ciertos componentes del panel, y recargar ciertos valores para la generación de la 
@@ -874,7 +804,9 @@ public class CU01_AltaPoliza1 extends JPanel {
 			rbtnRastreoSi.setEnabled(true);
 			rbtnTuercasSi.setEnabled(true);
 			rbtnTuercasNo.setEnabled(true);
-			btnAgregarHijo.setEnabled(true);
+			
+			tema.boton(btnAgregarHijo, true);
+			tema.boton(btnConfirmarDatos, true);
 			
 			tema.seleccion(seleccionProvincia, true);
 			tema.seleccion(seleccionCiudad, true);
@@ -914,7 +846,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 					"Más de 300.000 km"
 			}));
 			
-			btnConfirmarDatos.setEnabled(true);	
+
 			primerCliente = false;
 		}
 		
@@ -1145,7 +1077,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 	 * acuerdo a sí está o no declarandose un hijo.
 	 * @param val
 	 */
-	private void componentesAlDeclararHijos(Boolean val) {
+	public void componentesAlDeclararHijos(Boolean val, HijoDeclarado hijo) {
 		
 		if(seleccionMarca.getSelectedIndex()!=0) {
 			tema.seleccion(seleccionModelo, val);
@@ -1163,6 +1095,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 		tema.campo(campoMotor, val);
 		tema.campo(campoChasis, val);
 		tema.campo(campoPatente, val);
+		
 		tema.tabla(tablaHijos, val);
 		tema.tablaScroll(tablaHijosScroll, val);
 		
@@ -1175,13 +1108,28 @@ public class CU01_AltaPoliza1 extends JPanel {
 		rbtnTuercasSi.setEnabled(val);
 		rbtnTuercasNo.setEnabled(val);
 		
-		btnBuscarCliente.setEnabled(val);
-		btnAltaCliente.setEnabled(val);
-		btnConfirmarDatos.setEnabled(val);
-		btnAgregarHijo.setEnabled(val);
-		btnQuitarHijo.setEnabled(val);
-		btnCancelar.setEnabled(val);
-		mouseActivo = !val;
+		tema.boton(btnBuscarCliente, val);
+		tema.boton(btnAltaCliente, val);
+		tema.boton(btnConfirmarDatos, val);
+		tema.boton(btnCancelar, val);
+		tema.boton(btnAgregarHijo, val);
+		
+		if(hijo == null) {
+			tema.boton(btnQuitarHijo, false);
+		}
+		else {
+			tema.boton(btnQuitarHijo, true);
+		}
+
+		
+		if(val) {
+			if(hijo != null) {
+				hijo.setPoliza(poliza);
+    			poliza.getHijosDeclarado().add(hijo);
+    						        			
+    			cargarTabla(poliza.getHijosDeclarado());
+			}
+		}
 	}
 
 	/**

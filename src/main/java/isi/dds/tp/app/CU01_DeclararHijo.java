@@ -30,14 +30,20 @@ import isi.dds.tp.modelo.HijoDeclarado;
 @SuppressWarnings("serial")
 public class CU01_DeclararHijo extends JPanel  {
 	
-	public final static class DeclararHijoAbierto {
-	    private DeclararHijoAbierto(){}
-	    public static Boolean declararHijoAbierto = false;
-	    public static HijoDeclarado hijo;
-	    public static Boolean hijoDeclarado = false;
+	public static void main(String[] args) {
+		EventQueue.invokeLater(new Runnable() {
+			public void run() {
+				try {
+					new CU01_DeclararHijo(new JFrame());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 	
 	private JFrame ventana =  new JFrame();
+	private JFrame ventanaAltaPoliza =  new JFrame();
 	private GestorTema tema = GestorTema.get();
 	
 	private JLabel lfechaNacimiento = new JLabel("Fecha nacimiento*");
@@ -52,27 +58,9 @@ public class CU01_DeclararHijo extends JPanel  {
 
 	private JButton btnAgregarHijo = new JButton("AGREGAR HIJO");
 	private JButton btnCancelar = new JButton("CANCELAR");
-
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-
-					new CU01_DeclararHijo();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-
 	
-	public CU01_DeclararHijo() {
-		if(DeclararHijoAbierto.declararHijoAbierto == false) {
-			DeclararHijoAbierto.declararHijoAbierto = true;
-			DeclararHijoAbierto.hijo = new HijoDeclarado();
-		}
+	public CU01_DeclararHijo(JFrame frame) {
+		ventanaAltaPoliza = frame;
 		
 		inicializarComponentes();
 		ubicarComponentes();
@@ -188,8 +176,8 @@ public class CU01_DeclararHijo extends JPanel  {
 		tema.calendario(dcFechaNacimiento, true);
 		tema.seleccion(seleccionSexo, true);
 		tema.seleccion(seleccionEstadoCivil, true);
-		tema.boton(btnAgregarHijo);
-		tema.boton(btnCancelar);
+		tema.boton(btnAgregarHijo, true);
+		tema.boton(btnCancelar, true);
 	}
 
 	private void comportamiento() {
@@ -282,44 +270,28 @@ public class CU01_DeclararHijo extends JPanel  {
 				JOptionPane.showConfirmDialog(this, fechaNac + sexo + estadoCivil , "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 			}
 			else {
+				HijoDeclarado hijo = new HijoDeclarado();
 				
-				if(DeclararHijoAbierto.declararHijoAbierto == true) {
-					
-					DeclararHijoAbierto.declararHijoAbierto = false;
-					
-					DeclararHijoAbierto.hijo.setFechaNacimiento(fechaNacLocalDate);
-					
-					DeclararHijoAbierto.hijo.setSexo(GestorEnum.get().getEnumSexo(seleccionSexo.getItemAt(seleccionSexo.getSelectedIndex())));
-	
-					DeclararHijoAbierto.hijo.setEstadoCivil(GestorEnum.get().getEnumEstadoCivil(seleccionEstadoCivil.getItemAt(seleccionEstadoCivil.getSelectedIndex())));
-						
-					DeclararHijoAbierto.hijoDeclarado = true;
-					
-					ventana.setVisible(false);
-				}
-				//ventana.setVisible(false);
+				hijo.setFechaNacimiento(fechaNacLocalDate);
+				hijo.setSexo(GestorEnum.get().getEnumSexo(seleccionSexo.getItemAt(seleccionSexo.getSelectedIndex())));
+				hijo.setEstadoCivil(GestorEnum.get().getEnumEstadoCivil(seleccionEstadoCivil.getItemAt(seleccionEstadoCivil.getSelectedIndex())));
+
+				ventana.setVisible(false);
+				((CU01_AltaPoliza1) ventanaAltaPoliza.getContentPane()).componentesAlDeclararHijos(true, hijo);
 			}
 			
 		});
 		
 		btnCancelar.addActionListener(a -> {
-			if(DeclararHijoAbierto.declararHijoAbierto == true) {
-				DeclararHijoAbierto.declararHijoAbierto = false;
-				DeclararHijoAbierto.hijo = null;
-				DeclararHijoAbierto.hijoDeclarado = false;
-			}
 			ventana.setVisible(false);
+			((CU01_AltaPoliza1) ventanaAltaPoliza.getContentPane()).componentesAlDeclararHijos(true, null);
 		});
 		
 		ventana.addWindowListener(new java.awt.event.WindowAdapter() {
 		    @Override
 		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		    	if(DeclararHijoAbierto.declararHijoAbierto == true) {
-					DeclararHijoAbierto.declararHijoAbierto = false;
-					DeclararHijoAbierto.hijo = null;
-					DeclararHijoAbierto.hijoDeclarado = false;
-				}
 				ventana.setVisible(false);
+				((CU01_AltaPoliza1) ventanaAltaPoliza.getContentPane()).componentesAlDeclararHijos(true, null);
 		    }
 		});
 	}

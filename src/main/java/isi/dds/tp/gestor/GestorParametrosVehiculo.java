@@ -85,7 +85,7 @@ public class GestorParametrosVehiculo {
 	    return lista;
     }
     
-    private void sortAniosModelo(List<AnioModelo> lista){
+    public List<AnioModelo> sortAniosModelo(List<AnioModelo> lista){
     	lista.sort(Comparator.comparing(AnioModelo::getAnio));
 	    Collections.sort(lista, new Comparator<AnioModelo>() {
 	    	@Override
@@ -93,6 +93,7 @@ public class GestorParametrosVehiculo {
 	    		return o1.getAnio().compareTo(o2.getAnio());
 	    	}
 	    });
+	    return lista;
     }
 
 	public void cargarParametrosVehiculos() {

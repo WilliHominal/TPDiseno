@@ -7,7 +7,6 @@ import java.awt.GridBagLayout;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -41,6 +40,8 @@ public class AppMenu extends JPanel {
 	private JFrame ventana;
 	private GestorTema tema = GestorTema.get();
 
+	public String titulo = "Menú";
+	
 	private Boolean existeBase = true;
 	
 	private JLabel ltitulo = new JLabel("GRUPO 5A");
@@ -75,13 +76,10 @@ public class AppMenu extends JPanel {
 	private JScrollPane scroll;
 	
 	public AppMenu() {	
-		if(!conectarBaseDatos()) {
-			existeBase = false;
-		}
+		existeBase = conectarBaseDatos();
 		
 		inicializarComponentes();
 		ubicarComponentes();
-		inicializarTema();
 		comportamiento();
 		
 		ventana.setVisible(true);
@@ -89,25 +87,27 @@ public class AppMenu extends JPanel {
 	
 	private void inicializarComponentes() {
 		this.ventana = new JFrame();
-		
-		ventana.setTitle("Menú");
 		ventana.pack();
 		ventana.setSize(1024,600);
 		ventana.setLocationRelativeTo(null);
 		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
 		
-		btnDarAltaPoliza.setEnabled(existeBase);
-		btnConsultarPoliza.setEnabled(false);
-		btnGenerarPropuestas.setEnabled(false);
-		btnRegistrarPagoPoliza.setEnabled(false);
-		btnDarAltaCliente.setEnabled(existeBase);
-		btnConsultarCliente.setEnabled(existeBase);
-		btnActualizarFactores.setEnabled(false);
-		btnGenerarListado.setEnabled(false);
-		btnGenerarInforme.setEnabled(false);
-		checkCargarBase.setEnabled(existeBase);
+		tema.panel(this);	
+		
+		tema.labelTituloSubrayada(ltitulo);
+		tema.label(lintegrantes);
+		tema.label(lmilton);
+		tema.label(lexe);
+		tema.label(lwilly);
+		tema.label(ljuan);
+		tema.label(lgestionPoliza);
+		tema.label(lgestionClientes);
+		tema.label(lgestionParametros);
+		tema.label(lreportes);
 		
 		if(!existeBase) {
+			ventana.setTitle("CONFIGURAR BASE DE DATOS");
+			
 			configurarBaseDatos = new JTextArea(
 					  "Se debe configurar  la base de datos para utilizar la aplicación.\n\n"
 					+ "1) Como gestor de la base de datos, se debe utilizar POSTGRESQL, y como administrador de dicha base se debe\n"
@@ -123,6 +123,8 @@ public class AppMenu extends JPanel {
 					+ "(imágen C) luego ahí configurar como se dice en (2)(imágen D).\n");
 			configurarBaseDatos.setEditable(false);
 			
+			tema.textArea(configurarBaseDatos);
+			
 			BufferedImage imagenA, imagenB, imagenC, imagenD;
 			try {
 				imagenA = ImageIO.read(new File("src\\main\\resources\\images\\imageA.jpeg"));
@@ -136,24 +138,22 @@ public class AppMenu extends JPanel {
 			} catch (IOException e) { e.printStackTrace(); }
 		}
 		else {
-			btnDarAltaPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));
-			btnConsultarPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));
-			btnGenerarPropuestas.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
-			btnRegistrarPagoPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_register.png"));
-			btnDarAltaCliente.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));
-			btnConsultarCliente.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));
-			btnActualizarFactores.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_update.png"));
-			btnGenerarListado.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
-			btnGenerarInforme.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
+			ventana.setTitle(titulo);
 			
-			/* 	btnConsultarPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
-			btnGenerarPropuestas.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
-			btnRegistrarPagoPoliza.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
-			btnDarAltaCliente.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
-			btnActualizarFactores.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
-			btnGenerarListado.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png"));
-			btnGenerarInforme.setIcon(new ImageIcon("src\\main\\resources\\icons\\icon_unavailable.png")); */
+			tema.botonSubrayado(btnDarAltaPoliza, existeBase, new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));
+			tema.botonSubrayado(btnConsultarPoliza, false, new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));
+			tema.botonSubrayado(btnGenerarPropuestas, false, new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
+			tema.botonSubrayado(btnRegistrarPagoPoliza, false, new ImageIcon("src\\main\\resources\\icons\\icon_register.png"));
+			tema.botonSubrayado(btnDarAltaCliente, existeBase, new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));
+			tema.botonSubrayado(btnConsultarCliente, existeBase, new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));
+			tema.botonSubrayado(btnActualizarFactores, false, new ImageIcon("src\\main\\resources\\icons\\icon_update.png"));
+			tema.botonSubrayado(btnGenerarListado, false, new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
+			tema.botonSubrayado(btnGenerarInforme, false, new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
+			tema.boton(btnSalir, existeBase);
+
 		}
+		
+		tema.check(checkCargarBase, "Habilita la recarga de la propia base de datos");
 	}	
 	
 	private void ubicarComponentes() {
@@ -214,7 +214,6 @@ public class AppMenu extends JPanel {
 			ventana.add(scroll, BorderLayout.CENTER);
 		}
 		else {
-
 			ventana.setContentPane(this);
 			
 			constraints.gridx = 1;
@@ -285,45 +284,12 @@ public class AppMenu extends JPanel {
 			add(checkCargarBase, constraints);
 		}
 
-		constraints.insets.set(15, 25, 15, 0);
+		constraints.insets.set(15, 30, 15, 0);
 		constraints.gridy = 18;
 		add(btnSalir, constraints);
 	}
 		
-
-	private void inicializarTema() {
-		tema.panel(this);		
-
-		if(!existeBase) {
-			tema.textArea(configurarBaseDatos);
-		}
-
-		tema.labelTituloSubrayada(ltitulo);
-		tema.label(lintegrantes);
-		tema.label(lmilton);
-		tema.label(lexe);
-		tema.label(lwilly);
-		tema.label(ljuan);
-		tema.label(lgestionPoliza);
-		tema.label(lgestionClientes);
-		tema.label(lgestionParametros);
-		tema.label(lreportes);
-		
-		tema.botonSubrayado(btnDarAltaPoliza);
-		tema.botonSubrayado(btnConsultarPoliza);
-		tema.botonSubrayado(btnGenerarPropuestas);
-		tema.botonSubrayado(btnRegistrarPagoPoliza);
-		tema.botonSubrayado(btnDarAltaCliente);
-		tema.botonSubrayado(btnConsultarCliente);
-		tema.botonSubrayado(btnActualizarFactores);
-		tema.botonSubrayado(btnGenerarListado);
-		tema.botonSubrayado(btnGenerarInforme);
-		tema.boton(btnSalir);
-		
-		tema.check(checkCargarBase, "Habilita la recarga de la propia base de datos");
-	}
 	
-
 	private void comportamiento() {
 		
 		btnDarAltaPoliza.addActionListener(a -> {
@@ -371,8 +337,15 @@ public class AppMenu extends JPanel {
 			}
 		});
 		
+		ventana.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+				ventana.setVisible(false);
+				HibernateUtil.shutdown();
+		    }
+		});
+		
 	}
-	
 
 	private Boolean conectarBaseDatos() {
 		if(HibernateUtil.getSessionFactoryValidate() != null) {
@@ -383,12 +356,10 @@ public class AppMenu extends JPanel {
 		}
 	}
 	
-	
 	private void recargarBaseDatos() {
 		HibernateUtil.shutdown();
 		CargarBase.load();
 	}
-	
 	
 	private void darAltaPoliza() {
 		try {			
@@ -401,7 +372,6 @@ public class AppMenu extends JPanel {
 		    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
 	
 	private void consultarCliente() {
 		try {			

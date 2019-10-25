@@ -32,27 +32,25 @@ public class CU04_AltaCliente extends JPanel{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new CU04_AltaCliente();
+					JFrame frame = new JFrame();
+					frame.pack();
+					frame.setBounds(0,0,1024,600);
+					frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
+					frame.setLocationRelativeTo(null);
+					new CU04_AltaCliente(frame);
+					frame.setVisible(true);	
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
 	}
-
-	public CU04_AltaCliente() {		
-		JFrame frame = new JFrame();
-		frame.pack();
-		frame.setBounds(0,0,1024,600);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
-		frame.setLocationRelativeTo(null);
-		new CU04_AltaCliente(frame);
-		frame.setVisible(true);		
-	}
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
 	private GestorTema tema = GestorTema.get();
+	
+	private String tituloAnterior = "";
 	
 	private JLabel lnumeroCliente = new JLabel("Número cliente:");
 	private JLabel lapellido = new JLabel("Apellido*:");
@@ -90,7 +88,6 @@ public class CU04_AltaCliente extends JPanel{
 	private JTextField campoProfesion = new JTextField(15);
 	private JTextField campoAnioRegistro = new JTextField(5);
 	
-	
 	private JButton btnConfirmar = new JButton("CONFIRMAR DATOS");
 	private JButton btnCancelar = new JButton("CANCELAR");
 	
@@ -104,18 +101,21 @@ public class CU04_AltaCliente extends JPanel{
 
 	public CU04_AltaCliente(JFrame ventana) {
 		this.ventana = ventana;
+		this.tituloAnterior = ventana.getTitle();
 		try {		
 			panelAnterior = (JPanel) ventana.getContentPane();
 		}catch(Exception ex) {
 		    panelAnterior = null;
 		}
-		
 		ventana.setContentPane(this);
+		
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
 		comportamientos();
-		ventana.setTitle("Dar de alta cliente");		
+		
+
+		ventana.setTitle("Dar de alta cliente");	
 	}
 
 	private void inicializarComponentes() {
@@ -340,8 +340,8 @@ public class CU04_AltaCliente extends JPanel{
 		tema.campo(campoProfesion, true);
 		tema.campo(campoAnioRegistro, true);
 		
-		tema.boton(btnConfirmar);
-		tema.boton(btnCancelar);
+		tema.boton(btnConfirmar, true);
+		tema.boton(btnCancelar, true);
 		
 		tema.seleccion(seleccionTipoDocumento, true);
 		tema.seleccion(seleccionSexo, true);
@@ -361,7 +361,8 @@ public class CU04_AltaCliente extends JPanel{
 		btnCancelar.addActionListener(a -> {
 			try {			
 				this.setVisible(false);
-				ventana.setContentPane(panelAnterior);				
+				ventana.setContentPane(panelAnterior);	
+				ventana.setTitle(tituloAnterior);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}

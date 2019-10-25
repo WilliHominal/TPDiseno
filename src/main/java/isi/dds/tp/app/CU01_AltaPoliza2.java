@@ -77,6 +77,8 @@ public class CU01_AltaPoliza2 extends JPanel  {
 	private CU01_AltaPoliza1 cu01_ap1;
 	private GestorTema tema = GestorTema.get();
 	
+	private String tituloAnterior = "";
+	
 	private JLabel lTipoCobertura = new JLabel("Tipo de cobertura");
 	private JLabel lFechaInicioVigencia = new JLabel("Fecha de inicio de vigencia de la póliza");
 	private JLabel lFormaPago = new JLabel("Forma de pago");
@@ -134,27 +136,24 @@ public class CU01_AltaPoliza2 extends JPanel  {
 	public CU01_AltaPoliza2(JFrame ventana, Poliza poliza) {
 		this.ventana = ventana;
 		this.poliza = poliza;
-		
+		this.tituloAnterior = ventana.getTitle();
 		try {			
-			cu01_ap1 = (CU01_AltaPoliza1) ventana.getContentPane();
-			
+			cu01_ap1 = (CU01_AltaPoliza1) ventana.getContentPane();	
 		}catch(Exception ex) {
 			cu01_ap1 = null;
 		}
-		
 		ventana.setContentPane(this);
-
+		
 		inicializarComponentes();
 		iniciabilizarTema();
 		ubicarComponentes();		
 		comportamiento();
-
+		
 		ventana.setTitle("Dar de alta póliza: GENERAR PÓLIZA");
 	}
 	
 	private void ubicarComponentes() {
 		setLayout(new GridBagLayout());
-		
 		GridBagConstraints constraints = new GridBagConstraints();
 		
 		//constraints generales
@@ -417,9 +416,9 @@ public class CU01_AltaPoliza2 extends JPanel  {
 		tema.campo(campoDescuentos, false);
 		tema.campo(campoMontoTotal, false);
 		
-		tema.boton(btnConfirmarDatos);
-		tema.boton(btnGenerarPoliza);
-		tema.boton(btnVolver);
+		tema.boton(btnConfirmarDatos, true);
+		tema.boton(btnGenerarPoliza, false);
+		tema.boton(btnVolver, true);
 		
 		tema.seleccion(seleccionTipoCobertura, true);
 		
@@ -545,6 +544,7 @@ public class CU01_AltaPoliza2 extends JPanel  {
 		btnVolver.addActionListener(a -> {
 			if(JOptionPane.showConfirmDialog(ventana, "¿Desea corregir algún dato ingresado?", "Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 				ventana.setContentPane(cu01_ap1);
+				ventana.setTitle(tituloAnterior);
 				this.setVisible(false);
 			}
 		});
@@ -617,7 +617,8 @@ public class CU01_AltaPoliza2 extends JPanel  {
 			
 			dcInicioVigencia.setEnabled(true);
 			
-			btnGenerarPoliza.setEnabled(true);
+			tema.boton(btnGenerarPoliza, true);
+			
 			if (semestral.isSelected()) {
 				lDescSemestral.setVisible(true);
 			}
