@@ -13,7 +13,9 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
+
+import com.toedter.calendar.JDateChooser;
+
 import isi.dds.tp.enums.EnumCondicionIVA;
 import isi.dds.tp.enums.EnumEstadoCivil;
 import isi.dds.tp.enums.EnumSexo;
@@ -33,12 +35,8 @@ public class CU04_AltaCliente extends JPanel{
 			public void run() {
 				try {
 					JFrame frame = new JFrame();
-					frame.pack();
-					frame.setBounds(0,0,1024,600);
-					frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
-					frame.setLocationRelativeTo(null);
 					new CU04_AltaCliente(frame);
-					frame.setVisible(true);	
+					GestorTema.get().ventana(frame);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -55,6 +53,7 @@ public class CU04_AltaCliente extends JPanel{
 	private JLabel lnumeroCliente = new JLabel("Número cliente:");
 	private JLabel lapellido = new JLabel("Apellido*:");
 	private JLabel lnombre = new JLabel("Nombres*:");
+	private JLabel lfechaNacimiento = new JLabel("Fecha nacimiento*:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento*:");
 	private JLabel lnumeroDocumento = new JLabel("Número documento*:");
 	private JLabel lnumeroCUIL = new JLabel("Número CUIL*:");
@@ -72,21 +71,23 @@ public class CU04_AltaCliente extends JPanel{
 	private JLabel lestadoCivil = new JLabel("Estado civil*:");
 	private JLabel lprofesion = new JLabel("Profesión*:");
 	private JLabel lanioRegistro = new JLabel("Año registro*:");
-	private JLabel ldatosObligatorios = new JLabel("(*) datos obligatios)");
+	private JLabel ldatosObligatorios = new JLabel("Datos obligatios (*)");
 		
-	private JTextField campoNumeroCliente = new JTextField(15);
-	private JTextField campoApellido = new JTextField(15);
-	private JTextField campoNombre = new JTextField(15);
-	private JTextField campoNumeroDocumento = new JTextField(15);
-	private JTextField campoNumeroCUIL = new JTextField(15);
-	private JTextField campoCalle = new JTextField(15);
+	private JTextField campoNumeroCliente = new JTextField(16);
+	private JTextField campoApellido = new JTextField(16);
+	private JTextField campoNombre = new JTextField(16);
+	private JTextField campoNumeroDocumento = new JTextField(16);
+	private JTextField campoNumeroCUIL = new JTextField(16);
+	private JTextField campoCalle = new JTextField(16);
 	private JTextField campoNumeroDomicilio = new JTextField(5);
 	private JTextField campoPiso = new JTextField(2);
 	private JTextField campoDepartamento = new JTextField(2);
 	private JTextField campoCodigoPostal = new JTextField(5);
-	private JTextField campoCorreoElectronico = new JTextField(15);
-	private JTextField campoProfesion = new JTextField(15);
+	private JTextField campoCorreoElectronico = new JTextField(16);
+	private JTextField campoProfesion = new JTextField(16);
 	private JTextField campoAnioRegistro = new JTextField(5);
+	
+	private JDateChooser dcFechaNacimiento = new JDateChooser();
 	
 	private JButton btnConfirmar = new JButton("CONFIRMAR DATOS");
 	private JButton btnCancelar = new JButton("CANCELAR");
@@ -119,18 +120,20 @@ public class CU04_AltaCliente extends JPanel{
 	}
 
 	private void inicializarComponentes() {
-		btnConfirmar.setPreferredSize(new Dimension(160, 25));
-		btnCancelar.setPreferredSize(new Dimension(160, 25));
+		btnConfirmar.setPreferredSize(new Dimension(150, 25));
+		btnCancelar.setPreferredSize(new Dimension(150, 25));
 		
-		seleccionTipoDocumento.setPreferredSize(new Dimension(180, 25));
-		seleccionSexo.setPreferredSize(new Dimension(120, 25));
-		seleccionPais.setPreferredSize(new Dimension(130, 25));
-		seleccionProvincia.setPreferredSize(new Dimension(130, 25));
-		seleccionCiudad.setPreferredSize(new Dimension(130, 25));
-		seleccionCondicionIva.setPreferredSize(new Dimension(180, 25));
-		seleccionEstadoCivil.setPreferredSize(new Dimension(150, 25));
+		dcFechaNacimiento.setPreferredSize(new Dimension(164, 25));
 		
-		seleccionTipoDocumento.addItem("Selecionar tipo documento");
+		seleccionTipoDocumento.setPreferredSize(new Dimension(164, 25));
+		seleccionSexo.setPreferredSize(new Dimension(164, 25));
+		seleccionPais.setPreferredSize(new Dimension(164, 25));
+		seleccionProvincia.setPreferredSize(new Dimension(164, 25));
+		seleccionCiudad.setPreferredSize(new Dimension(164, 25));
+		seleccionCondicionIva.setPreferredSize(new Dimension(164, 25));
+		seleccionEstadoCivil.setPreferredSize(new Dimension(164, 25));
+		
+		seleccionTipoDocumento.addItem("Selecionar tipo doc.");
 		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
 		for(int i=0; i<tipoDocumentos.length; i++){
 			seleccionTipoDocumento.addItem(GestorEnum.get().getStringTipoDocumento(tipoDocumentos[i]));
@@ -154,13 +157,13 @@ public class CU04_AltaCliente extends JPanel{
 			seleccionProvincia.addItem(iteradorProvincias.next());
 		}
 		
-		List<Ciudad> ciudades = GestorDomicilio.get().sortCiudades(seleccionProvincia.getItemAt(seleccionPais.getSelectedIndex()).getCiudades());
+		List<Ciudad> ciudades = GestorDomicilio.get().sortCiudades(seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex()));
 		Iterator<Ciudad> iteradorCiudades = ciudades.iterator();
 		while(iteradorCiudades.hasNext()){
 			seleccionCiudad.addItem(iteradorCiudades.next());
 		}
 		
-		seleccionCondicionIva.addItem("Selecionar condición de IVA");
+		seleccionCondicionIva.addItem("Selecionar cond. de IVA");
 		EnumCondicionIVA[] condicionesIva = EnumCondicionIVA.values();
 		for(int i=0; i<condicionesIva.length; i++){
 			seleccionCondicionIva.addItem(GestorEnum.get().getStringCondicionIva(condicionesIva[i]));
@@ -184,119 +187,131 @@ public class CU04_AltaCliente extends JPanel{
 		constraints.gridwidth = 2;
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(10, 5, 10, 5);
+		constraints.insets.set(10, 25, 13, 5);
 		add(lnumeroCliente, constraints);
-		constraints.insets.set(5, 100, 5, 5);
+		constraints.insets.set(5, 120, 5, 5);
 		add(campoNumeroCliente, constraints);	
+		constraints.insets.set(10, 310, 13, 5);
+		add(lnumeroCUIL, constraints);
+		constraints.insets.set(5, 375, 5, 5);
+		add(campoNumeroCUIL, constraints); 
 		
 		constraints.gridy = 1;
-		constraints.insets.set(10, 5, 10, 5);
+		constraints.insets.set(10, 60, 13, 5);
 		add(lapellido, constraints);
-		constraints.insets.set(5, 65, 5, 5);
+		constraints.insets.set(5, 120, 5, 5);
 		add(campoApellido, constraints);
-		constraints.insets.set(10, 240, 10, 5);
+		constraints.insets.set(10, 310, 13, 5);
 		add(lnombre, constraints);
-		constraints.insets.set(5, 303, 5, 5);
-		add(campoNombre, constraints);
+		constraints.insets.set(5, 375, 5, 5);
+		add(campoNombre, constraints); 
 		
+
 		constraints.gridy = 2;
-		constraints.insets.set(10, 5, 10, 5);
-		add(ltipoDocumento, constraints);
-		constraints.insets.set(5, 108, 5, 5);
-		add(seleccionTipoDocumento, constraints);
-		constraints.insets.set(10, 310, 10, 5);
-		add(lnumeroDocumento, constraints);
-		constraints.insets.set(5, 432, 5, 5);
-		add(campoNumeroDocumento, constraints);
+		constraints.insets.set(10, 8, 13, 5);
+		add(lfechaNacimiento, constraints);
+		constraints.insets.set(5, 120, 5, 5);
+		add(dcFechaNacimiento, constraints);
+		
 		
 		constraints.gridy = 3;
-		constraints.insets.set(10, 5, 10, 5);
-		add(lnumeroCUIL, constraints);
-		constraints.insets.set(5, 94, 5, 5);
-		add(campoNumeroCUIL, constraints);
+		constraints.insets.set(10, 17, 13, 5);
+		add(ltipoDocumento, constraints);
+		constraints.insets.set(5, 120, 5, 5);
+		add(seleccionTipoDocumento, constraints);
+		constraints.insets.set(10, 310, 13, 5);
+		add(lnumeroDocumento, constraints);
+		constraints.insets.set(5, 433, 5, 5);
+		add(campoNumeroDocumento, constraints);
 		
 		constraints.gridy = 4;
-		constraints.insets.set(10, 5, 10, 5);
-		add(lsexo, constraints);
-		constraints.insets.set(5, 45, 5, 5);
-		add(seleccionSexo, constraints);
+		constraints.insets.set(10, 30, 13, 5);
+		add(lnumeroCUIL, constraints);
+		constraints.insets.set(5, 120, 5, 5);
+		add(campoNumeroCUIL, constraints);
 		
 		constraints.gridy = 5;
-		constraints.gridwidth = 4;
-		constraints.insets.set(10, 5, 10, 5);
-		add(lcalle, constraints);
-		constraints.insets.set(5, 48, 5, 5);
-		add(campoCalle, constraints);	
-		constraints.insets.set(10, 220, 10, 5);
-		add(lnumeroDomicilio, constraints);
-		constraints.insets.set(5, 330, 5, 5);
-		add(campoNumeroDomicilio, constraints);	
-		constraints.insets.set(10, 405, 10, 5);
-		add(lpiso, constraints);
-		constraints.insets.set(5, 438, 5, 5);
-		add(campoPiso, constraints);	
-		constraints.insets.set(10, 483, 10, 5);
-		add(ldepartamento, constraints);
-		constraints.insets.set(5, 570 , 5, 5);
-		add(campoDepartamento, constraints);	
+		constraints.insets.set(10, 77, 13, 5);
+		add(lsexo, constraints);
+		constraints.insets.set(5, 120, 5, 5);
+		add(seleccionSexo, constraints);
 		
 		constraints.gridy = 6;
-		constraints.insets.set(10, 5, 10, 5);
-		add(lpais, constraints);
-		constraints.insets.set(5, 45, 5, 5);
-		add(seleccionPais, constraints);	
-		constraints.insets.set(10, 195, 10, 5);
-		add(lprovincia, constraints);
-		constraints.insets.set(5, 262, 5, 5);
-		add(seleccionProvincia, constraints);	
-		constraints.insets.set(10, 415, 10, 5);
-		add(lciudad, constraints);
-		constraints.insets.set(5, 470, 5, 5);
-		add(seleccionCiudad, constraints);
-		constraints.insets.set(10, 620, 10, 5);
-		add(lcodigoPostal, constraints);
-		constraints.insets.set(5, 710 , 5, 5);
-		add(campoCodigoPostal, constraints);	
+		constraints.gridwidth = 4;
+		constraints.insets.set(10, 76, 13, 5);
+		add(lcalle, constraints);
+		constraints.insets.set(5, 120, 5, 5);
+		add(campoCalle, constraints);	
+		constraints.insets.set(10, 310, 13, 5);
+		add(lnumeroDomicilio, constraints);
+		constraints.insets.set(5, 422, 5, 5);
+		add(campoNumeroDomicilio, constraints);	
+		constraints.insets.set(10, 500, 13, 5);
+		add(lpiso, constraints);
+		constraints.insets.set(5, 534, 5, 5);
+		add(campoPiso, constraints);	
+		constraints.insets.set(10, 585, 13, 5);
+		add(ldepartamento, constraints);
+		constraints.insets.set(5, 672 , 5, 5);
+		add(campoDepartamento, constraints);	
 		
 		constraints.gridy = 7;
-		constraints.gridwidth = 2;
-		constraints.insets.set(10, 5, 10, 5);
-		add(lcondicionIva, constraints);
-		constraints.insets.set(5, 115, 5, 5);
-		add(seleccionCondicionIva, constraints);	
+		constraints.insets.set(10, 80, 13, 5);
+		add(lpais, constraints);
+		constraints.insets.set(5, 120, 5, 5);
+		add(seleccionPais, constraints);	
+		constraints.insets.set(10, 310, 13, 5);
+		add(lprovincia, constraints);
+		constraints.insets.set(5, 375, 5, 5);
+		add(seleccionProvincia, constraints);	
+		constraints.insets.set(10, 565, 13, 5);
+		add(lciudad, constraints);
+		constraints.insets.set(5, 619, 5, 5);
+		add(seleccionCiudad, constraints);
+		constraints.insets.set(10, 805, 13, 5);
+		add(lcodigoPostal, constraints);
+		constraints.insets.set(5, 893 , 5, 5);
+		add(campoCodigoPostal, constraints);	
 		
 		constraints.gridy = 8;
-		constraints.insets.set(10, 5, 10, 5);
+		constraints.gridwidth = 2;
+		constraints.insets.set(10, 8, 13, 5);
+		add(lcondicionIva, constraints);
+		constraints.insets.set(5, 120, 5, 5);
+		add(seleccionCondicionIva, constraints);	
+		
+		constraints.gridy = 9;
+		constraints.insets.set(10, 2, 13, 5);
 		add(lcorreoElectronico, constraints);
-		constraints.insets.set(5, 118, 5, 5);
+		constraints.insets.set(5, 120, 5, 5);
 		add(campoCorreoElectronico, constraints);	
 
-		constraints.gridy = 9;
-		constraints.insets.set(10, 5, 10, 5);
+		constraints.gridy = 10;
+		constraints.insets.set(10, 40, 13, 5);
 		add(lestadoCivil, constraints);
-		constraints.insets.set(5, 82, 5, 5);
+		constraints.insets.set(5, 120, 5, 5);
 		add(seleccionEstadoCivil, constraints);
 		
-		constraints.gridy = 10;
-		constraints.insets.set(10, 5, 10, 5);
+		constraints.gridy = 11;
+		constraints.insets.set(10, 51, 13, 5);
 		add(lprofesion, constraints);
-		constraints.insets.set(5, 72, 5, 5);
+		constraints.insets.set(5, 120, 5, 5);
 		add(campoProfesion, constraints);
-		constraints.insets.set(10, 245, 10, 5);
+		constraints.insets.set(10, 310, 13, 5);
 		add(lanioRegistro, constraints);
-		constraints.insets.set(5, 324, 5, 5);
+		constraints.insets.set(5, 386, 5, 5);
 		add(campoAnioRegistro, constraints);
 		
-		constraints.gridy = 11;
-		constraints.insets.set(10, 5, 10, 5);
+		constraints.gridy = 12;
+		constraints.insets.set(5, 30, 5, 5);
 		add(ldatosObligatorios, constraints);
 		
-		constraints.gridy = 12;
+		constraints.gridy = 13;
 		constraints.gridwidth = 4;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(30, 5, 10, 170);
+		constraints.insets.set(5, 5, 5, 170);
 		add(btnConfirmar, constraints);
-		constraints.insets.set(30, 5, 10, 0);
+		constraints.insets.set(5, 5, 5, 0);
 		add(btnCancelar, constraints);
 
 	}
@@ -309,6 +324,7 @@ public class CU04_AltaCliente extends JPanel{
 		tema.label(lnumeroDocumento);
 		tema.label(lapellido);
 		tema.label(lnombre);
+		tema.label(lfechaNacimiento);
 		tema.label(lnumeroCUIL);
 		tema.label(lsexo);
 		tema.label(lcalle);
@@ -339,6 +355,8 @@ public class CU04_AltaCliente extends JPanel{
 		tema.campo(campoCorreoElectronico, true);
 		tema.campo(campoProfesion, true);
 		tema.campo(campoAnioRegistro, true);
+		
+		tema.calendario(dcFechaNacimiento, true);
 		
 		tema.boton(btnConfirmar, true);
 		tema.boton(btnCancelar, true);
@@ -379,7 +397,7 @@ public class CU04_AltaCliente extends JPanel{
 			seleccionCiudad.setEnabled(false);	
 			seleccionCiudad.removeAllItems();
 								
-			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(seleccionProvincia.getItemAt(seleccionPais.getSelectedIndex()).getCiudades()).iterator();
+			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex())).iterator();
 			while(iteratorCiudad.hasNext()){
 				seleccionCiudad.addItem(iteratorCiudad.next());
 			}

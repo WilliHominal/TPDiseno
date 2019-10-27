@@ -24,7 +24,6 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import isi.dds.tp.gestor.GestorDomicilio;
@@ -49,12 +48,8 @@ public class CU01_AltaPoliza1 extends JPanel {
 			public void run() {
 				try {
 					JFrame frame = new JFrame();
-					frame.pack();
-					frame.setBounds(0,0,1024,600);
-					frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
-					frame.setLocationRelativeTo(null);
 					new CU01_AltaPoliza1(frame);
-					frame.setVisible(true);	
+					GestorTema.get().ventana(frame);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -82,7 +77,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 	private JLabel lprovincia = new JLabel("Provincia*:");
 	private JLabel lciudad = new JLabel("Ciudad*:");
 	private JLabel lmarca = new JLabel("Marca vehículo*:");
-	private JLabel lmodelo = new JLabel("Modelo vehíedculo:*");
+	private JLabel lmodelo = new JLabel("Modelo vehículo:*");
 	private JLabel lanio = new JLabel("Año modelo:*");
 	private JLabel lmotor = new JLabel("Motor*:");
 	private JLabel lchasis = new JLabel("Chasis*:");
@@ -492,9 +487,13 @@ public class CU01_AltaPoliza1 extends JPanel {
 		tema.campo(campoPiso, false);
 		tema.campo(campoSumaAsegurada, false);
 		tema.campo(campoNumerosSiniestros, false);
+		
 		tema.campo(campoMotor, false);
+		campoMotor.setToolTipText("CCCCCCCCCC9999999");
 		tema.campo(campoChasis, false);
+		campoChasis.setToolTipText("C9999999");
 		tema.campo(campoPatente, false);
+		campoPatente.setToolTipText("LLL999 / LL9999LL");
 		
 		tema.boton(btnBuscarCliente, true);
 		tema.boton(btnAltaCliente, true);
@@ -640,7 +639,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 		seleccionProvincia.addActionListener (a -> {
 			Provincia provincia = seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex());
 			seleccionCiudad.removeAllItems();
-			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(provincia.getCiudades()).iterator();
+			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(provincia).iterator();
 			while(iteratorCiudad.hasNext()){
 				seleccionCiudad.addItem(iteratorCiudad.next());
 			}
@@ -853,7 +852,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 		seleccionProvincia.setSelectedItem(cliente.getCiudad().getProvincia());	
 		
 		seleccionCiudad.removeAllItems();
-		Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(cliente.getCiudad().getProvincia().getCiudades()).iterator();
+		Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(cliente.getCiudad().getProvincia()).iterator();
 		while(iteratorCiudad.hasNext()){
 			seleccionCiudad.addItem(iteratorCiudad.next());
 		}

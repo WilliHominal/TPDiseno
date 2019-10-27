@@ -20,7 +20,6 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import isi.dds.tp.enums.EnumTipoDocumento;
@@ -28,7 +27,6 @@ import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.Cliente;
-
 
 @SuppressWarnings("serial")
 public class CU17_BuscarCliente extends JPanel {
@@ -38,12 +36,8 @@ public class CU17_BuscarCliente extends JPanel {
 			public void run() {
 				try {
 					JFrame frame = new JFrame();
-					frame.pack();
-					frame.setBounds(0,0,1024,600);
-					frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
-					frame.setLocationRelativeTo(null);
 					new CU17_BuscarCliente(frame);
-					frame.setVisible(true);	
+					GestorTema.get().ventana(frame);
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -59,6 +53,7 @@ public class CU17_BuscarCliente extends JPanel {
 	private String tituloAnterior = "";
 	private Boolean esAltaPoliza = false;
 	private List<Cliente> clientes = new ArrayList<Cliente>();
+	private Cliente clienteObtenido = null;
 	
 	private JLabel lnumeroCliente = new JLabel("Número cliente:");
 	private JLabel lapellido = new JLabel("Apellido:");
@@ -66,6 +61,8 @@ public class CU17_BuscarCliente extends JPanel {
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
 	private JLabel lnumeroDocumento = new JLabel("Documento:");
 	private JLabel ltotalFilas = new JLabel("Total de filas:");
+	
+	
 		
 	private JTextField campoNumeroCliente = new JTextField(18);
 	private JTextField campoNumeroDocumento = new JTextField(18);
@@ -289,26 +286,13 @@ public class CU17_BuscarCliente extends JPanel {
 		});
 		
 		tablaClientes.addMouseListener(new MouseAdapter() {
-			//TODO ordenar la tabla si se hace doble click en alguna columna
 		    public void mousePressed(MouseEvent mouseEvent) {
 		        JTable table =(JTable) mouseEvent.getSource();
 		        Point point = mouseEvent.getPoint();
 		        int row = table.rowAtPoint(point);
 		        if (mouseEvent.getClickCount() == 2 && table.getSelectedRow() != -1) {
-		            //TODO mostrar datos completos de cliente
-		        	if(esAltaPoliza) {
-		        		CU01_AltaPoliza1 altaPoliza =  (CU01_AltaPoliza1) panelAnterior;
-		        		altaPoliza.obtenidoCliente(clientes.get(row));
-			        	ventana.setContentPane(altaPoliza);
-			        	ventana.setTitle(tituloAnterior);
-			        	estePanel.setVisible(false);
-		        	}
-		        	else {
-			        	ventana.setContentPane(panelAnterior);
-			        	ventana.setTitle(tituloAnterior);
-			        	estePanel.setVisible(false);
-		        	}
-
+		        	clienteObtenido = clientes.get(row);
+		        	new CU17_MostrarCliente(ventana,clienteObtenido);
 		        }
 		    }
 		});
@@ -398,7 +382,6 @@ public class CU17_BuscarCliente extends JPanel {
 			
 			tablaClientes.setEnabled(true);
 			campoTotalFilas.setText(String.valueOf(clientes.size()));
-			//TODO ordenar clientes
 			for(int fila = 0; fila < tamanioTablaActual; fila++) {
 				model.setValueAt(clientes.get(fila).getNumeroCliente(), fila, 0);
 				model.setValueAt(clientes.get(fila).getApellido(), fila, 1);
@@ -417,6 +400,21 @@ public class CU17_BuscarCliente extends JPanel {
 			campoTotalFilas.setText("");
 		}
 	}	
+	
+	public void obtenidoCliente() {
+    	if(esAltaPoliza) {
+    		CU01_AltaPoliza1 altaPoliza =  (CU01_AltaPoliza1) panelAnterior;
+    		altaPoliza.obtenidoCliente(clienteObtenido);
+        	ventana.setContentPane(altaPoliza);
+        	ventana.setTitle(tituloAnterior);
+        	estePanel.setVisible(false);
+    	}
+    	else {
+        	ventana.setContentPane(panelAnterior);
+        	ventana.setTitle(tituloAnterior);
+        	estePanel.setVisible(false);
+    	}
+	}
 }
 
 

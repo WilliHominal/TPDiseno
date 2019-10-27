@@ -26,7 +26,6 @@ import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
@@ -62,14 +61,9 @@ public class CU01_AltaPoliza2 extends JPanel  {
 		poliza = new Poliza(2222222111l);
 		Cliente cliente1 = GestorCliente.get().getCliente(123456l);
 		poliza.setCliente(cliente1);		
-		
 		JFrame frame = new JFrame();
-		frame.pack();
-		frame.setBounds(0,0,1024,600);
-		frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
-		frame.setLocationRelativeTo(null);
 		new CU01_AltaPoliza2(frame, poliza);
-		frame.setVisible(true);
+		GestorTema.get().ventana(frame);
 	}
 	
 	private Poliza poliza;

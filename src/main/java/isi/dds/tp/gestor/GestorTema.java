@@ -11,6 +11,7 @@ import javax.swing.Icon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -22,9 +23,11 @@ import javax.swing.ListSelectionModel;
 import javax.swing.SwingConstants;
 import javax.swing.ToolTipManager;
 import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.ColorUIResource;
+import javax.swing.table.JTableHeader;
 
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
@@ -86,7 +89,7 @@ public class GestorTema {
     	colorFondoErroneo = new Color(255,83,77);
     	colorLetra =  Color.BLACK;//colorFondoDeshabilitado;
     	colorLetraErronea = colorFondoErroneo.darker().darker();
-    	colorLetraDeshabilitada = colorFondoTexto.darker().darker();
+    	colorLetraDeshabilitada = colorFondoTexto.darker();
     	letraGrande = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
     	letra = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
     	letraChica = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
@@ -94,6 +97,13 @@ public class GestorTema {
     
     @SuppressWarnings("unused")
 	private void tema3() {
+    	/*
+    	#B36D46
+    	#FFBC96
+    	#FFAC7D
+    	#34B3B0
+    	#A4FFFE
+    	 */
     	colorBoton = new Color(252,74,26);
     	colorBotonDeshabilitado = colorBoton.darker();
     	colorFondoPantalla = new Color(174,189,172);
@@ -112,7 +122,15 @@ public class GestorTema {
     	panel.setFont(letra);
     	panel.setBackground(colorFondoPantalla);
     	panel.setForeground(colorLetra);
+    	panel.setBorder(BorderFactory.createLineBorder(colorBotonDeshabilitado, 5));
     }
+    
+	public void ventana(JFrame ventana) {
+		ventana.setSize(1064,600);
+		ventana.setLocationRelativeTo(null);
+		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+		ventana.setVisible(true);
+	}
     
     public void label(JLabel label) {
     	label.setForeground(colorLetra);
@@ -141,7 +159,6 @@ public class GestorTema {
 	}
     
     public void boton(JButton btn, Boolean habilitado) {
- 
     	if(habilitado) {
         	btn.setBackground(colorBoton);
         	btn.setFont(letra);
@@ -178,12 +195,13 @@ public class GestorTema {
     	else {
     		btn.setDisabledIcon(icono);
     		btn.setBackground(colorFondoPantalla);
-    		UIManager.put( "Button.disabledText", colorLetraDeshabilitada );
+    		UIManager.put( "Button.disabledText", Color.DARK_GRAY.brighter());
 			btn.setEnabled(false);
     	}
     }
     
     public void campo(JTextField campo, Boolean habilitada) {
+    	//campo.setCaretColor(colorBoton);
     	if(habilitada) {
     		campo.setEnabled(habilitada);
         	campo.setFont(letra);
@@ -208,7 +226,7 @@ public class GestorTema {
     
     @SuppressWarnings("rawtypes")
 	public void seleccion(JComboBox seleccion, Boolean habilitada) {
-
+    	//seleccion.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
     	if(habilitada) {
     		seleccion.setEnabled(habilitada);
     		seleccion.setBackground(colorFondoTexto);
@@ -250,21 +268,26 @@ public class GestorTema {
 	}
 
 	public void tabla(JTable tabla, Boolean habilitada) {
+		JTableHeader th = tabla.getTableHeader();
+		th.setFont(letra);
+		th.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+		tabla.setEnabled(habilitada);
+		tabla.setFont(letra);
     	if(habilitada) {
-    		tabla.setEnabled(habilitada);
-    		tabla.setFont(letra);
     		tabla.getTableHeader().setToolTipText("Doble click en la cabecera para ordenar");
     		tabla.setAutoCreateRowSorter(true);
     		tabla.setFillsViewportHeight(true);
     		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     		tabla.setForeground(colorLetra);
     		tabla.setBackground(colorFondoTexto);
+    		th.setBackground(colorFondoTexto);
+    		th.setForeground(colorLetra);
     	}
     	else {
-    		tabla.setEnabled(habilitada);
-    		tabla.setFont(letra);
     		tabla.setForeground(colorLetraDeshabilitada);
     		tabla.setBackground(colorFondoDeshabilitado);
+    		th.setBackground(colorFondoDeshabilitado);
+    		th.setForeground(colorLetraDeshabilitada);
     	}
 	}
 	
@@ -289,5 +312,4 @@ public class GestorTema {
 		componente.setBackground(colorFondoErroneo);
 		componente.setForeground(colorLetraErronea);
 	}
-
 }

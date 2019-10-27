@@ -17,7 +17,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import javax.swing.WindowConstants;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.CargarBase;
 import isi.dds.tp.hibernate.HibernateUtil;
@@ -81,17 +80,11 @@ public class AppMenu extends JPanel {
 		inicializarComponentes();
 		ubicarComponentes();
 		comportamiento();
-		
-		ventana.setVisible(true);
+		tema.ventana(ventana);
 	}
 	
 	private void inicializarComponentes() {
-		this.ventana = new JFrame();
-		ventana.pack();
-		ventana.setSize(1024,600);
-		ventana.setLocationRelativeTo(null);
-		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);	
-		
+		this.ventana = new JFrame();		
 		tema.panel(this);	
 		
 		tema.labelTituloSubrayada(ltitulo);
