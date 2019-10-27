@@ -11,15 +11,15 @@ import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.RiesgoTipoCobertura;
 import isi.dds.tp.modelo.TipoCobertura;
 
-public class TipoCoberturaDAO {
+public class DAOTipoCobertura {
 	
-	private static TipoCoberturaDAO instanciaDAO = null;
+	private static DAOTipoCobertura instanciaDAO = null;
 	 
-    private TipoCoberturaDAO() { }
+    private DAOTipoCobertura() { }
 
-    public static TipoCoberturaDAO getDAO() {
+    public static DAOTipoCobertura getDAO() {
         if (instanciaDAO == null){
-        	instanciaDAO = new TipoCoberturaDAO();
+        	instanciaDAO = new DAOTipoCobertura();
         }    
         return instanciaDAO;
     }

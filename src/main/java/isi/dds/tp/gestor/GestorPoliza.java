@@ -1,7 +1,7 @@
 package isi.dds.tp.gestor;
 
 import java.util.List;
-import isi.dds.tp.dao.PolizaDAO;
+import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.SolicitudPoliza;
@@ -21,11 +21,11 @@ public class GestorPoliza {
     }
     
     public void altaPoliza(Poliza p) {
-    	PolizaDAO.getDAO().addPoliza(p);
+    	DAOPoliza.getDAO().addPoliza(p);
     }
     
     public void addSolicitudPoliza(SolicitudPoliza s) {
-    	PolizaDAO.getDAO().addSolicitudPoliza(s);
+    	DAOPoliza.getDAO().addSolicitudPoliza(s);
     }
     
     public void generarNumeroPoliza(Poliza P) {
@@ -41,15 +41,15 @@ public class GestorPoliza {
     }
 
 	public List<Cuota> getCuotas(Long numeroPoliza) {
-		return PolizaDAO.getDAO().getCuotas(numeroPoliza);
+		return DAOPoliza.getDAO().getCuotas(numeroPoliza);
     }
     
     public SolicitudPoliza getSolicitudPoliza(Long numeroPoliza) {
-    	return PolizaDAO.getDAO().getSolicitudPoliza(numeroPoliza);
+    	return DAOPoliza.getDAO().getSolicitudPoliza(numeroPoliza);
     }
     
 	public List<HijoDeclarado> getHijosDeclarados(Long numeroPoliza) {
-		return PolizaDAO.getDAO().getHijosDeclarados(numeroPoliza);
+		return DAOPoliza.getDAO().getHijosDeclarados(numeroPoliza);
     }
     
     public void actualizarPoliza(Poliza p){
@@ -65,7 +65,7 @@ public class GestorPoliza {
     }
 
 	public void cargarPolizas() {
-		PolizaDAO.getDAO().cargarPolizas();
+		DAOPoliza.getDAO().cargarPolizas();
 	}
 
 }

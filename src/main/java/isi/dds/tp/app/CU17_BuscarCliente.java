@@ -245,11 +245,11 @@ public class CU17_BuscarCliente extends JPanel {
 				EnumTipoDocumento tipoDocumento= null;
 				String numeroDocumento = null; 	
 				
-				if(!campoNumeroCliente.getText().isBlank()) {
+				if(!campoNumeroCliente.getText().isEmpty()) {
 					numeroCliente = Long.parseLong(campoNumeroCliente.getText());
 				}
 				
-				if(!campoApellido.getText().isBlank()) {
+				if(!campoApellido.getText().isEmpty()) {
 					apellido = campoApellido.getText();
 				}
 				
@@ -261,7 +261,7 @@ public class CU17_BuscarCliente extends JPanel {
 					tipoDocumento = GestorEnum.get().getEnumTipoDocumento(seleccionTipoDocumento.getItemAt(seleccionTipoDocumento.getSelectedIndex()));
 				}
 								
-				if(!campoNumeroDocumento.getText().isBlank()) {
+				if(!campoNumeroDocumento.getText().isEmpty()) {
 					numeroDocumento = campoNumeroDocumento.getText();
 				}
 				

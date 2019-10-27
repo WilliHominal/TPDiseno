@@ -12,15 +12,15 @@ import isi.dds.tp.modelo.Pais;
 import isi.dds.tp.modelo.Provincia;
 import isi.dds.tp.modelo.RiesgoCiudad;
 
-public class DomicilioDAO {
+public class DAODomicilio {
 
-	private static DomicilioDAO instanciaDAO = null;
+	private static DAODomicilio instanciaDAO = null;
 	 
-    private DomicilioDAO() {}
+    private DAODomicilio() {}
 
-    public static DomicilioDAO getDAO() {
+    public static DAODomicilio getDAO() {
         if (instanciaDAO == null){
-        	instanciaDAO = new DomicilioDAO();
+        	instanciaDAO = new DAODomicilio();
         }    
         return instanciaDAO;
     }

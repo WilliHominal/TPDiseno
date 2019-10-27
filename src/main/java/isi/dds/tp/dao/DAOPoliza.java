@@ -5,32 +5,31 @@ import java.util.Iterator;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import isi.dds.tp.modelo.RiesgoModelo;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
-import isi.dds.tp.modelo.AnioModelo;
-import isi.dds.tp.modelo.Modelo;
-import isi.dds.tp.modelo.Marca;
+import isi.dds.tp.modelo.Cuota;
+import isi.dds.tp.modelo.HijoDeclarado;
+import isi.dds.tp.modelo.Poliza;
+import isi.dds.tp.modelo.SolicitudPoliza;
 
-public class ParametrosVehiculosDAO {
+public class DAOPoliza {
 	
-	private static ParametrosVehiculosDAO instanciaDAO = null;
+	private static DAOPoliza instanciaDAO = null;
 	 
-    private ParametrosVehiculosDAO() {}
+    private DAOPoliza() { }
 
-    public static ParametrosVehiculosDAO getDAO() {
+    public static DAOPoliza getDAO() {
         if (instanciaDAO == null){
-        	instanciaDAO = new ParametrosVehiculosDAO();
+        	instanciaDAO = new DAOPoliza();
         }    
         return instanciaDAO;
     }
-    
-    public void addRiesgoModelo(RiesgoModelo r) {
+
+    public void addPoliza(Poliza p) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
         try {
             session.beginTransaction();
-            session.save(r);
+            session.save(p);
             session.getTransaction().commit();
         }
         catch (HibernateException e) {
@@ -39,40 +38,11 @@ public class ParametrosVehiculosDAO {
         }
     }
     
-    public void addModelo(Modelo m) {
+    public void addSolicitudPoliza(SolicitudPoliza s) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
         try {
             session.beginTransaction();
-            session.save(m);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-    
-    public void addMarca(Marca m){
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-    	
-        try {
-            session.beginTransaction();
-            session.save(m);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-    
-    public void addAnioModelo(AnioModelo a) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            session.save(a);            
+            session.save(s);
             session.getTransaction().commit();
         }
         catch (HibernateException e) {
@@ -81,41 +51,12 @@ public class ParametrosVehiculosDAO {
         }
     }
 
-	public List<Marca> getMarcas() {
+
+	public List<Poliza> getPolizas(Long numeroCliente) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
         try {
             session.beginTransaction();
-            return session.createQuery("SELECT m FROM Marca m order by nombre", Marca.class).list();
-            
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-	
-    public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
-        try {
-            session.beginTransaction();
-            //TODO HACER SUBCONSULTA PARA OBTENER EL ULTIMO RIESGO
-            return session.createQuery("SELECT p FROM RiesgoModelo p where id_modelo="+id_modelo+" and ultimo=true", RiesgoModelo.class).uniqueResult();
-            
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
-    	return null;
-    }
-    
-    public Marca getMarca(Integer id_marca) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
-        try {
-            session.beginTransaction();
-            return session.get(Marca.class, id_marca);
+            return session.createQuery("SELECT p FROM Poliza p WHERE numero_cliente="+numeroCliente, Poliza.class).list();
         }
         catch (HibernateException e) {
             e.printStackTrace();
@@ -123,8 +64,46 @@ public class ParametrosVehiculosDAO {
         return null;
     }
 
-	public void cargarParametrosVehiculos() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/parametrosVehiculo.sql");
+	public List<Cuota> getCuotas(Long numeroPoliza) {
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+            session.beginTransaction();
+            return session.createQuery("SELECT c FROM Cuota c WHERE numero_poliza="+numeroPoliza, Cuota.class).list();
+            
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+    public SolicitudPoliza getSolicitudPoliza(Long numeroPoliza) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+            session.beginTransaction();
+            return session.createQuery("SELECT s FROM SolicitudPoliza s WHERE numero_poliza="+numeroPoliza, SolicitudPoliza.class).getSingleResult();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    
+	public List<HijoDeclarado> getHijosDeclarados(Long numeroPoliza) {
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+            session.beginTransaction();
+            return session.createQuery("SELECT h FROM HijoDeclarado h WHERE numero_poliza="+numeroPoliza, HijoDeclarado.class).list();
+            
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+	public void cargarPolizas() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/polizas.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		session.beginTransaction();
 		Iterator<String> iteradorqueries = queries.iterator();

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
-import isi.dds.tp.dao.ParametrosVehiculosDAO;
+import isi.dds.tp.dao.DAOParametrosVehiculos;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.RiesgoModelo;
 
@@ -25,7 +25,7 @@ public class GestorParametrosVehiculo {
     }
 
     public void addRiesgoModelo(RiesgoModelo r) {
-    	ParametrosVehiculosDAO.getDAO().addRiesgoModelo(r);
+    	DAOParametrosVehiculos.getDAO().addRiesgoModelo(r);
     }
     
     public void addMarca(Marca m){
@@ -33,7 +33,7 @@ public class GestorParametrosVehiculo {
 		while(iteratorModelo.hasNext()){
 			sortAniosModelo(iteratorModelo.next().getAnios());
 		}	
-    	ParametrosVehiculosDAO.getDAO().addMarca(m);
+    	DAOParametrosVehiculos.getDAO().addMarca(m);
     }
     
     public void addModelo(Modelo m) {
@@ -41,7 +41,7 @@ public class GestorParametrosVehiculo {
 		while(iteratorModelo.hasNext()){
 			sortAniosModelo(iteratorModelo.next().getAnios());
 		}	
-    	ParametrosVehiculosDAO.getDAO().addModelo(m);
+    	DAOParametrosVehiculos.getDAO().addModelo(m);
     }
     
     public void addAnioModelo(AnioModelo a) {
@@ -49,16 +49,16 @@ public class GestorParametrosVehiculo {
 		while(iteratorModelo.hasNext()){
 			sortAniosModelo(iteratorModelo.next().getAnios());
 		}
-    	ParametrosVehiculosDAO.getDAO().addAnioModelo(a);
+    	DAOParametrosVehiculos.getDAO().addAnioModelo(a);
     }
    
 	public List<Marca> getMarcas() {
-		return ParametrosVehiculosDAO.getDAO().getMarcas();
+		return DAOParametrosVehiculos.getDAO().getMarcas();
     }
 	
     public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
     	
-    	RiesgoModelo riesgo = ParametrosVehiculosDAO.getDAO().getUltimoRiesgoModelo(id_modelo);
+    	RiesgoModelo riesgo = DAOParametrosVehiculos.getDAO().getUltimoRiesgoModelo(id_modelo);
 
     	return riesgo;
     }
@@ -97,6 +97,6 @@ public class GestorParametrosVehiculo {
     }
 
 	public void cargarParametrosVehiculos() {
-		ParametrosVehiculosDAO.getDAO().cargarParametrosVehiculos();
+		DAOParametrosVehiculos.getDAO().cargarParametrosVehiculos();
 	}
 }

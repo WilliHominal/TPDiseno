@@ -3,7 +3,7 @@ package isi.dds.tp.gestor;
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.modelo.Poliza;
 import java.util.List;
-import isi.dds.tp.dao.ClienteDAO;
+import isi.dds.tp.dao.DAOCliente;
 import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.EnumTipoDocumento;
 
@@ -24,7 +24,7 @@ public class GestorCliente {
 
     public void AltaCliente(Cliente c) {
     	
-    	ClienteDAO.getDAO().addCliente(c);
+    	DAOCliente.getDAO().addCliente(c);
     	
     }
     
@@ -61,7 +61,7 @@ public class GestorCliente {
     }
 
     public Cliente getCliente(Long numeroCliente) {
-    	Cliente cliente = ClienteDAO.getDAO().getCliente(numeroCliente);
+    	Cliente cliente = DAOCliente.getDAO().getCliente(numeroCliente);
     	return cliente;
     }
     
@@ -96,10 +96,10 @@ public class GestorCliente {
     	condicionesConsulta += " order by numero_cliente asc";
 	
     	
-    	return ClienteDAO.getDAO().getClientes(condicionesConsulta);
+    	return DAOCliente.getDAO().getClientes(condicionesConsulta);
     }
 	
 	public void cargarClientes() {
-		ClienteDAO.getDAO().cargarClientes();
+		DAOCliente.getDAO().cargarClientes();
 	}
 }

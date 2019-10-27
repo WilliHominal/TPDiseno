@@ -6,17 +6,17 @@ import org.hibernate.Session;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Usuario;
 
-public class UsuarioDAO {
+public class DAOUsuario {
 	
-	private static UsuarioDAO instanciaDAO = null;
+	private static DAOUsuario instanciaDAO = null;
 	 
-    private UsuarioDAO() {
+    private DAOUsuario() {
 
     }
 
-    public static UsuarioDAO getDAO() {
+    public static DAOUsuario getDAO() {
         if (instanciaDAO == null){
-        	instanciaDAO = new UsuarioDAO();
+        	instanciaDAO = new DAOUsuario();
         }    
         return instanciaDAO;
     }

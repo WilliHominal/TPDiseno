@@ -2,30 +2,35 @@ package isi.dds.tp.dao;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
-import isi.dds.tp.modelo.Cliente;
+import isi.dds.tp.modelo.ParametrosPoliza;
 
-public class ClienteDAO {
-	private static ClienteDAO instanciaDAO = null;
+public class DAOParametrosPoliza {
+	
+	private static DAOParametrosPoliza instanciaDAO = null;
 	 
-    private ClienteDAO() { }
+    private DAOParametrosPoliza() {
 
-    public static ClienteDAO getDAO() {
+    }
+
+    public static DAOParametrosPoliza getDAO() {
         if (instanciaDAO == null){
-        	instanciaDAO = new ClienteDAO();
+        	instanciaDAO = new DAOParametrosPoliza();
         }    
         return instanciaDAO;
     }
 
-    public void addCliente(Cliente c) {
+    public void addParametrosPoliza(ParametrosPoliza p) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        
         try {
             session.beginTransaction();
-            session.save(c);
+            session.save(p);
             session.getTransaction().commit();
         }
         catch (HibernateException e) {
@@ -34,42 +39,42 @@ public class ClienteDAO {
         }
     }
     
-    public Cliente getCliente(Long numeroCliente) {    	
+    public ParametrosPoliza getParametrosPoliza(Integer codigoParametroPoliza) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        
         try {
             session.beginTransaction();
-            return session.get(Cliente.class, numeroCliente);
+            return session.get(ParametrosPoliza.class, codigoParametroPoliza);
         }
         catch (HibernateException e) {
             e.printStackTrace();
-        }	
-    	return null;
+        }
+        
+        return null;
     }
     
-	public List<Cliente> getClientes(String consulta) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+    public ParametrosPoliza getUltimoParametrosPoliza(Integer codigoParametroPoliza) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();          
         try {
-            return session.createNativeQuery("SELECT * FROM cliente where (condicion='ACTIVO' or condicion='PLATA') "+consulta, Cliente.class).getResultList();
+            session.beginTransaction();
+            return session.createQuery("SELECT p FROM ParametrosPoliza p where codigo_parametro_poliza"
+            		+ "="+codigoParametroPoliza+ "and ultimo=true order by nombre", ParametrosPoliza.class).uniqueResult(); 
         }
         catch (HibernateException e) {
             e.printStackTrace();
+            session.getTransaction().rollback();
         }
-    	return null;
+        return null;
     }
-	
-	public void cargarClientes() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/clientes.sql");
+
+	public void cargarParametrosPoliza() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/parametrosPoliza.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-		
 		session.beginTransaction();
-		
 		Iterator<String> iteradorqueries = queries.iterator();
 		while(iteradorqueries.hasNext()){
-
 			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
-
 		}
 		session.close();
 	}
-    
 }

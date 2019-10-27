@@ -3,7 +3,7 @@ package isi.dds.tp.gestor;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
-import isi.dds.tp.dao.DomicilioDAO;
+import isi.dds.tp.dao.DAODomicilio;
 import isi.dds.tp.modelo.Provincia;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Pais;
@@ -29,19 +29,19 @@ public class GestorDomicilio {
     }
     
     public void addRiesgoCiudad(RiesgoCiudad r) {
-    	DomicilioDAO.getDAO().addRiesgoCiudad(r);
+    	DAODomicilio.getDAO().addRiesgoCiudad(r);
     }
     
     public List<Pais> getPaises() {
-    	return DomicilioDAO.getDAO().getPaises();
+    	return DAODomicilio.getDAO().getPaises();
     }
     
     public List<Provincia> getProvincias(Integer id_pais) {
-    	return sortProvincias(DomicilioDAO.getDAO().getProvincias(id_pais));
+    	return sortProvincias(DAODomicilio.getDAO().getProvincias(id_pais));
     }
     
     public RiesgoCiudad ultimoRiesgoCiudad(Integer id_ciudad) {
-    	return DomicilioDAO.getDAO().getUltimoRiesgoCiudad(id_ciudad);
+    	return DAODomicilio.getDAO().getUltimoRiesgoCiudad(id_ciudad);
     }
     
     public List<Pais> sortPaises(List<Pais> lista){
@@ -78,6 +78,6 @@ public class GestorDomicilio {
     }
     
     public void cargarUbicaciones() {
-    	DomicilioDAO.getDAO().cargarUbicaciones();
+    	DAODomicilio.getDAO().cargarUbicaciones();
     }
 }
