@@ -1,4 +1,4 @@
-package isi.dds.tp.app;
+package isi.dds.tp.view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;

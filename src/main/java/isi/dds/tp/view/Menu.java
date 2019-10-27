@@ -1,4 +1,4 @@
-package isi.dds.tp.app;
+package isi.dds.tp.view;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -22,13 +22,13 @@ import isi.dds.tp.hibernate.CargarBase;
 import isi.dds.tp.hibernate.HibernateUtil;
 
 @SuppressWarnings("serial")
-public class AppMenu extends JPanel {
+public class Menu extends JPanel {
 	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new AppMenu();
+					new Menu();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -74,7 +74,7 @@ public class AppMenu extends JPanel {
 	
 	private JScrollPane scroll;
 	
-	public AppMenu() {	
+	public Menu() {	
 		existeBase = conectarBaseDatos();
 		
 		inicializarComponentes();

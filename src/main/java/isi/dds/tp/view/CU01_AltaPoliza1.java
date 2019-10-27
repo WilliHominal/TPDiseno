@@ -1,4 +1,4 @@
-package isi.dds.tp.app;
+package isi.dds.tp.view;
 
 import java.awt.Dimension;
 import java.awt.EventQueue;
@@ -58,7 +58,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 	}
 	
 	private JFrame ventana;
-	private AppMenu menu;
+	private Menu menu;
 	private GestorTema tema = GestorTema.get();
 	
 	private String tituloAnterior = "";
@@ -141,7 +141,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 		this.ventana = ventana;
 		this.tituloAnterior = ventana.getTitle();
 		try {
-			menu = (AppMenu) ventana.getContentPane();
+			menu = (Menu) ventana.getContentPane();
 		}catch(Exception ex) {
 		    menu = null;
 		}
