@@ -36,7 +36,7 @@ public class CU04_AltaCliente extends JPanel{
 				try {
 					JFrame frame = new JFrame();
 					new CU04_AltaCliente(frame);
-					GestorTema.get().ventana(frame);
+					GestorTema.get().setTema(frame, "Dar de alta cliente");
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -114,9 +114,6 @@ public class CU04_AltaCliente extends JPanel{
 		ubicarComponentes();
 		inicializarTema();
 		comportamientos();
-		
-
-		ventana.setTitle("Dar de alta cliente");	
 	}
 
 	private void inicializarComponentes() {
@@ -317,57 +314,57 @@ public class CU04_AltaCliente extends JPanel{
 	}
 		
 	private void inicializarTema() {	
-		tema.panel(this);
+		tema.setTema(this);
 		
-		tema.label(lnumeroCliente);
-		tema.label(ltipoDocumento);
-		tema.label(lnumeroDocumento);
-		tema.label(lapellido);
-		tema.label(lnombre);
-		tema.label(lfechaNacimiento);
-		tema.label(lnumeroCUIL);
-		tema.label(lsexo);
-		tema.label(lcalle);
-		tema.label(lnumeroDomicilio);
-		tema.label(lpiso);
-		tema.label(ldepartamento);
-		tema.label(lpais);
-		tema.label(lprovincia);
-		tema.label(lciudad);
-		tema.label(lcodigoPostal);
-		tema.label(lcondicionIva);
-		tema.label(lcorreoElectronico);
-		tema.label(lestadoCivil);
-		tema.label(lprofesion);
-		tema.label(lanioRegistro);
-		tema.labelChica(ldatosObligatorios);
+		tema.setTema(lnumeroCliente);
+		tema.setTema(ltipoDocumento);
+		tema.setTema(lnumeroDocumento);
+		tema.setTema(lapellido);
+		tema.setTema(lnombre);
+		tema.setTema(lfechaNacimiento);
+		tema.setTema(lnumeroCUIL);
+		tema.setTema(lsexo);
+		tema.setTema(lcalle);
+		tema.setTema(lnumeroDomicilio);
+		tema.setTema(lpiso);
+		tema.setTema(ldepartamento);
+		tema.setTema(lpais);
+		tema.setTema(lprovincia);
+		tema.setTema(lciudad);
+		tema.setTema(lcodigoPostal);
+		tema.setTema(lcondicionIva);
+		tema.setTema(lcorreoElectronico);
+		tema.setTema(lestadoCivil);
+		tema.setTema(lprofesion);
+		tema.setTema(lanioRegistro);
+		tema.setTemaLabelchica(ldatosObligatorios);
 		
-		tema.campo(campoNumeroCliente, false);
-		tema.campo(campoApellido, true);
-		tema.campo(campoNombre, true);
-		tema.campo(campoNumeroDocumento, true);
-		tema.campo(campoNumeroCUIL, true);
-		tema.campo(campoCalle, true);
-		tema.campo(campoNumeroDomicilio, true);
-		tema.campo(campoPiso, true);
-		tema.campo(campoDepartamento, true);
-		tema.campo(campoCodigoPostal, true);
-		tema.campo(campoCorreoElectronico, true);
-		tema.campo(campoProfesion, true);
-		tema.campo(campoAnioRegistro, true);
+		tema.setTema(campoNumeroCliente, false);
+		tema.setTema(campoApellido, true);
+		tema.setTema(campoNombre, true);
+		tema.setTema(campoNumeroDocumento, true);
+		tema.setTema(campoNumeroCUIL, true);
+		tema.setTema(campoCalle, true);
+		tema.setTema(campoNumeroDomicilio, true);
+		tema.setTema(campoPiso, true);
+		tema.setTema(campoDepartamento, true);
+		tema.setTema(campoCodigoPostal, true);
+		tema.setTema(campoCorreoElectronico, true);
+		tema.setTema(campoProfesion, true);
+		tema.setTema(campoAnioRegistro, true);
 		
-		tema.calendario(dcFechaNacimiento, true);
+		tema.setTema(dcFechaNacimiento, true);
 		
-		tema.boton(btnConfirmar, true);
-		tema.boton(btnCancelar, true);
+		tema.setTema(btnConfirmar, true);
+		tema.setTema(btnCancelar, true);
 		
-		tema.seleccion(seleccionTipoDocumento, true);
-		tema.seleccion(seleccionSexo, true);
-		tema.seleccion(seleccionPais, true);
-		tema.seleccion(seleccionProvincia, true);
-		tema.seleccion(seleccionCiudad, true);
-		tema.seleccion(seleccionCondicionIva, true);
-		tema.seleccion(seleccionEstadoCivil, true);
+		tema.setTema(seleccionTipoDocumento, true);
+		tema.setTema(seleccionSexo, true);
+		tema.setTema(seleccionPais, true);
+		tema.setTema(seleccionProvincia, true);
+		tema.setTema(seleccionCiudad, true);
+		tema.setTema(seleccionCondicionIva, true);
+		tema.setTema(seleccionEstadoCivil, true);
 
 	}
 

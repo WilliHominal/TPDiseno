@@ -36,18 +36,20 @@ public class GestorTema {
 	
 	private static GestorTema instanciaGestor = null;
 	
-	private static Color colorBoton;
-	private static Color colorBotonDeshabilitado;
-	private static Color colorFondoPantalla;
-	private static Color colorFondoTexto; 
-	private static Color colorFondoDeshabilitado;
-	private static Color colorFondoErroneo;
-	private static Color colorLetra;
-	private static Color colorLetraErronea;
-	private static Color colorLetraDeshabilitada;
-	private static Font letraGrande;
-	private static Font letra;
-	private static Font letraChica;
+	private static Color COLOR_BOTON;
+	private static Color COLOR_BOTON_DESHABILITADO;
+	private static Color COLOR_FONDO_PANTALLA;
+	private static Color COLOR_FONDO_TEXTO; 
+	private static Color COLOR_FONDO_DESHABILITADO;
+	private static Color COLOR_FONDO_ERRONEO;
+	private static Color COLOR_LETRA;
+	private static Color COLOR_LETRA_ERRONEA;
+	private static Color COLOR_LETRA_DESHABILITADA;
+	private static Font FUENTE_LETRA_NORMAL;
+	private static Font FUENTE_LETRA_CHICA;
+	private static Font FUENTE_LETRA_GRANDE;
+	
+	//TODO cambiar color de barra de scroll
 	
     private GestorTema() {
     	ToolTipManager.sharedInstance().setInitialDelay(1000);
@@ -65,34 +67,34 @@ public class GestorTema {
 	private void tema1() {
     	
     	instanciaGestor = null;
-    	colorBoton = new Color(0, 128, 128);
-    	colorBotonDeshabilitado =  new Color(0, 50, 50);
-    	colorFondoPantalla = new Color(204,204,204);
-    	colorFondoTexto = new Color(204, 204, 153).brighter(); 
-    	colorFondoDeshabilitado = colorFondoTexto.darker();
-    	colorFondoErroneo = new Color(255,102,102);
-    	colorLetra = Color.BLACK;
-    	colorLetraErronea = colorFondoErroneo.darker().darker();
-    	colorLetraDeshabilitada = Color.DARK_GRAY;
-    	letraGrande = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
-    	letra = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    	letraChica = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
+    	COLOR_BOTON = new Color(0, 128, 128);
+    	COLOR_BOTON_DESHABILITADO =  new Color(0, 50, 50);
+    	COLOR_FONDO_PANTALLA = new Color(204,204,204);
+    	COLOR_FONDO_TEXTO = new Color(204, 204, 153).brighter(); 
+    	COLOR_FONDO_DESHABILITADO = COLOR_FONDO_TEXTO.darker();
+    	COLOR_FONDO_ERRONEO = new Color(255,102,102);
+    	COLOR_LETRA = Color.BLACK;
+    	COLOR_LETRA_ERRONEA = COLOR_FONDO_ERRONEO.darker().darker();
+    	COLOR_LETRA_DESHABILITADA = Color.DARK_GRAY;
+    	FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
+    	FUENTE_LETRA_NORMAL = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+    	FUENTE_LETRA_CHICA = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
     	UIManager.put("Button.select", new ColorUIResource(Color.RED));
     }
     
     private void tema2() {
-    	colorBoton = new Color(179,149,62);
-    	colorBotonDeshabilitado = new Color(102,83,26);
-    	colorFondoPantalla = new Color(139, 163, 255);
-    	colorFondoTexto = new Color(217,224,255);
-    	colorFondoDeshabilitado = new Color(70,82,128);
-    	colorFondoErroneo = new Color(255,83,77);
-    	colorLetra =  Color.BLACK;//colorFondoDeshabilitado;
-    	colorLetraErronea = colorFondoErroneo.darker().darker();
-    	colorLetraDeshabilitada = colorFondoTexto.darker();
-    	letraGrande = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
-    	letra = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    	letraChica = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
+    	COLOR_BOTON = new Color(179,149,62);
+    	COLOR_BOTON_DESHABILITADO = new Color(102,83,26);
+    	COLOR_FONDO_PANTALLA = new Color(139, 163, 255);
+    	COLOR_FONDO_TEXTO = new Color(217,224,255);
+    	COLOR_FONDO_DESHABILITADO = new Color(70,82,128);
+    	COLOR_FONDO_ERRONEO = new Color(255,83,77);
+    	COLOR_LETRA =  Color.BLACK;//colorFondoDeshabilitado;
+    	COLOR_LETRA_ERRONEA = COLOR_FONDO_ERRONEO.darker().darker();
+    	COLOR_LETRA_DESHABILITADA = COLOR_FONDO_TEXTO.darker();
+    	FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
+    	FUENTE_LETRA_NORMAL = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+    	FUENTE_LETRA_CHICA = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
     }
     
     @SuppressWarnings("unused")
@@ -104,212 +106,211 @@ public class GestorTema {
     	#34B3B0
     	#A4FFFE
     	 */
-    	colorBoton = new Color(252,74,26);
-    	colorBotonDeshabilitado = colorBoton.darker();
-    	colorFondoPantalla = new Color(174,189,172);
-    	colorFondoTexto = new Color(247,183,51);
-    	colorFondoDeshabilitado = new Color(198,146,41);
-    	colorFondoErroneo = new Color(255,83,77);
-    	colorLetra =  Color.BLACK;//colorFondoDeshabilitado;
-    	colorLetraErronea = colorFondoErroneo.darker().darker();
-    	colorLetraDeshabilitada = colorFondoTexto.darker();
-    	letraGrande = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
-    	letra = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    	letraChica = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
+    	COLOR_BOTON = new Color(252,74,26);
+    	COLOR_BOTON_DESHABILITADO = COLOR_BOTON.darker();
+    	COLOR_FONDO_PANTALLA = new Color(174,189,172);
+    	COLOR_FONDO_TEXTO = new Color(247,183,51);
+    	COLOR_FONDO_DESHABILITADO = new Color(198,146,41);
+    	COLOR_FONDO_ERRONEO = new Color(255,83,77);
+    	COLOR_LETRA =  Color.BLACK;//colorFondoDeshabilitado;
+    	COLOR_LETRA_ERRONEA = COLOR_FONDO_ERRONEO.darker().darker();
+    	COLOR_LETRA_DESHABILITADA = COLOR_FONDO_TEXTO.darker();
+    	FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
+    	FUENTE_LETRA_NORMAL = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+    	FUENTE_LETRA_CHICA = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
     }
 
-    public void panel(JPanel panel) {
-    	panel.setFont(letra);
-    	panel.setBackground(colorFondoPantalla);
-    	panel.setForeground(colorLetra);
-    	panel.setBorder(BorderFactory.createLineBorder(colorBotonDeshabilitado, 5));
+    public void setTema(JPanel panel) {
+    	panel.setFont(FUENTE_LETRA_NORMAL);
+    	panel.setBackground(COLOR_FONDO_PANTALLA);
+    	panel.setForeground(COLOR_LETRA);
+    	panel.setBorder(BorderFactory.createLineBorder(COLOR_BOTON_DESHABILITADO, 5));
     }
     
-	public void ventana(JFrame ventana) {
+	public void setTema(JFrame ventana, String titulo) {
 		ventana.setSize(1064,600);
+		ventana.setTitle(titulo);
 		ventana.setLocationRelativeTo(null);
 		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		ventana.setVisible(true);
 	}
     
-    public void label(JLabel label) {
-    	label.setForeground(colorLetra);
-    	label.setFont(letra);
+    public void setTema(JLabel label) {
+    	label.setForeground(COLOR_LETRA);
+    	label.setFont(FUENTE_LETRA_NORMAL);
     }
     
-    public void labelChica(JLabel label) {
-    	label.setForeground(colorLetra);
-    	label.setFont(letraChica);
+    public void setTemaLabelchica(JLabel label) {
+    	label.setForeground(COLOR_LETRA);
+    	label.setFont(FUENTE_LETRA_CHICA);
     }
     
-    public void labelSubrayada(JLabel label) {
-		Font font = letra;
+    public void setTemaSubrayado(JLabel label) {
+		Font font = FUENTE_LETRA_NORMAL;
 		Map<TextAttribute, Object> titulo = new HashMap<>(font.getAttributes());
 		titulo.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
 		label.setFont(font.deriveFont(titulo));
-		label.setForeground(colorLetra);
+		label.setForeground(COLOR_LETRA);
     }
     
-	public void labelTituloSubrayada(JLabel label) {
-		Font font = letraGrande;
+	public void setTemaTitulo(JLabel label) {
+		Font font = FUENTE_LETRA_GRANDE;
 		Map<TextAttribute, Object> titulo = new HashMap<>(font.getAttributes());
 		titulo.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
 		label.setFont(font.deriveFont(titulo));
-		label.setForeground(colorLetra);
+		label.setForeground(COLOR_LETRA);
 	}
     
-    public void boton(JButton btn, Boolean habilitado) {
+    public void setTema(JButton btn, Boolean habilitado) {
     	if(habilitado) {
-        	btn.setBackground(colorBoton);
-        	btn.setFont(letra);
-        	btn.setForeground(colorLetra);
+        	btn.setBackground(COLOR_BOTON);
+        	btn.setFont(FUENTE_LETRA_NORMAL);
+        	btn.setForeground(COLOR_LETRA);
         	btn.setEnabled(true);
         	btn.setContentAreaFilled(false);
     		btn.setOpaque(true);
     	}
     	else {
-        	btn.setBackground(colorBotonDeshabilitado);
-    		UIManager.put( "Button.disabledText", colorLetraDeshabilitada );
-        	btn.setFont(letra);
+        	btn.setBackground(COLOR_BOTON_DESHABILITADO);
+    		UIManager.put( "Button.disabledText", COLOR_LETRA_DESHABILITADA );
+        	btn.setFont(FUENTE_LETRA_NORMAL);
         	btn.setEnabled(false);
     	}
     }
     
-    public void botonSubrayado(JButton btn, Boolean habilitado, Icon icono) {
-    	Font font = letra;
+    public void setTema(JButton btn, Boolean habilitado, Icon icono) {
+    	Font font = FUENTE_LETRA_NORMAL;
 		Map<TextAttribute, Object> subrayado = new HashMap<>(font.getAttributes());
 		subrayado.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
 		
 		btn.setHorizontalAlignment(SwingConstants.LEADING);
-		btn.setBackground(colorFondoPantalla);
+		btn.setBackground(COLOR_FONDO_PANTALLA);
 		btn.setFont(font.deriveFont(subrayado));
-		btn.setBorder(new LineBorder(colorFondoPantalla));
+		btn.setBorder(new LineBorder(COLOR_FONDO_PANTALLA));
 		btn.setIcon(icono);
 		
 	   	if(habilitado) {
-			btn.setForeground(colorLetra);
+			btn.setForeground(COLOR_LETRA);
 			btn.setEnabled(true);
 			btn.setContentAreaFilled(false);
     		btn.setOpaque(true);
 	   	}
     	else {
     		btn.setDisabledIcon(icono);
-    		btn.setBackground(colorFondoPantalla);
+    		btn.setBackground(COLOR_FONDO_PANTALLA);
     		UIManager.put( "Button.disabledText", Color.DARK_GRAY.brighter());
 			btn.setEnabled(false);
     	}
     }
     
-    public void campo(JTextField campo, Boolean habilitada) {
+    public void setTema(JTextField campo, Boolean habilitada) {
     	//campo.setCaretColor(colorBoton);
     	if(habilitada) {
     		campo.setEnabled(habilitada);
-        	campo.setFont(letra);
-        	campo.setBackground(colorFondoTexto);
+        	campo.setFont(FUENTE_LETRA_NORMAL);
+        	campo.setBackground(COLOR_FONDO_TEXTO);
         	campo.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-        	campo.setForeground(colorLetra);
+        	campo.setForeground(COLOR_LETRA);
     	}
     	else {
     		campo.setEnabled(habilitada);
-        	campo.setFont(letra);
-        	campo.setBackground(colorFondoDeshabilitado);
+        	campo.setFont(FUENTE_LETRA_NORMAL);
+        	campo.setBackground(COLOR_FONDO_DESHABILITADO);
         	campo.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-        	campo.setDisabledTextColor(colorLetraDeshabilitada);
+        	campo.setDisabledTextColor(COLOR_LETRA_DESHABILITADA);
     	}
     }
     
-	public void textArea(JTextArea textArea) {
-		textArea.setBackground(colorFondoPantalla);
-		textArea.setFont(letra);
-		textArea.setForeground(colorLetraErronea);
+	public void setTema(JTextArea textArea) {
+		textArea.setBackground(COLOR_FONDO_PANTALLA);
+		textArea.setFont(FUENTE_LETRA_NORMAL);
+		textArea.setForeground(COLOR_LETRA_ERRONEA);
 	}
     
     @SuppressWarnings("rawtypes")
-	public void seleccion(JComboBox seleccion, Boolean habilitada) {
-    	//seleccion.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
+	public void setTema(JComboBox seleccion, Boolean habilitada) {
     	if(habilitada) {
     		seleccion.setEnabled(habilitada);
-    		seleccion.setBackground(colorFondoTexto);
-    		seleccion.setFont(letra);
-    		seleccion.setForeground(colorLetra);
+    		seleccion.setBackground(COLOR_FONDO_TEXTO);
+    		seleccion.setFont(FUENTE_LETRA_NORMAL);
+    		seleccion.setForeground(COLOR_LETRA);
     	}
     	else {
     		seleccion.setEnabled(habilitada);
-    		UIManager.put( "ComboBox.disabledBackground", colorFondoDeshabilitado );
-    		UIManager.put( "ComboBox.disabledForeground", colorLetraDeshabilitada );
-    		seleccion.setBackground(colorFondoDeshabilitado);
-    		seleccion.setFont(letra);
-    		seleccion.setForeground(colorLetraDeshabilitada);
+    		UIManager.put( "ComboBox.disabledBackground", COLOR_FONDO_DESHABILITADO );
+    		UIManager.put( "ComboBox.disabledForeground", COLOR_LETRA_DESHABILITADA );
+    		seleccion.setBackground(COLOR_FONDO_DESHABILITADO);
+    		seleccion.setFont(FUENTE_LETRA_NORMAL);
+    		seleccion.setForeground(COLOR_LETRA_DESHABILITADA);
     	}
     }
     
-    public void radioButton(JRadioButton rbtn) {
-    	rbtn.setBackground(colorFondoPantalla);
-    	rbtn.setFont(letra);
-    	rbtn.setForeground(colorLetra);
+    public void setTema(JRadioButton rbtn) {
+    	rbtn.setBackground(COLOR_FONDO_PANTALLA);
+    	rbtn.setFont(FUENTE_LETRA_NORMAL);
+    	rbtn.setForeground(COLOR_LETRA);
     }
 
-	public void check(JCheckBox check, String tip) {
-		check.setBackground(colorFondoPantalla);
-		check.setFont(letra);
-		check.setForeground(colorLetra);
+	public void setTema(JCheckBox check, String tip) {
+		check.setBackground(COLOR_FONDO_PANTALLA);
+		check.setFont(FUENTE_LETRA_NORMAL);
+		check.setForeground(COLOR_LETRA);
 		check.setToolTipText(tip);
 	}
     
-	public void tablaScroll(JScrollPane tablaScroll, Boolean habilitada) {
+	public void setTema(JScrollPane tablaScroll, Boolean habilitada) {
     	if(habilitada) {
-    		tablaScroll.getViewport().setBackground(colorFondoTexto);	
-    		tablaScroll.setForeground(colorLetra);
+    		tablaScroll.getViewport().setBackground(COLOR_FONDO_TEXTO);	
+    		tablaScroll.setForeground(COLOR_LETRA);
     	}
     	else {
-    		tablaScroll.getViewport().setBackground(colorFondoDeshabilitado);	
-    		tablaScroll.setForeground(colorLetraDeshabilitada);
+    		tablaScroll.getViewport().setBackground(COLOR_FONDO_DESHABILITADO);	
+    		tablaScroll.setForeground(COLOR_LETRA_DESHABILITADA);
     	}
 	}
 
-	public void tabla(JTable tabla, Boolean habilitada) {
+	public void setTema(JTable tabla, Boolean habilitada) {
 		JTableHeader th = tabla.getTableHeader();
-		th.setFont(letra);
+		th.setFont(FUENTE_LETRA_NORMAL);
 		th.setBorder(BorderFactory.createLineBorder(Color.BLACK, 1));
 		tabla.setEnabled(habilitada);
-		tabla.setFont(letra);
+		tabla.setFont(FUENTE_LETRA_NORMAL);
     	if(habilitada) {
     		tabla.getTableHeader().setToolTipText("Doble click en la cabecera para ordenar");
     		tabla.setAutoCreateRowSorter(true);
     		tabla.setFillsViewportHeight(true);
     		tabla.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-    		tabla.setForeground(colorLetra);
-    		tabla.setBackground(colorFondoTexto);
-    		th.setBackground(colorFondoTexto);
-    		th.setForeground(colorLetra);
+    		tabla.setForeground(COLOR_LETRA);
+    		tabla.setBackground(COLOR_FONDO_TEXTO);
+    		th.setBackground(COLOR_FONDO_TEXTO);
+    		th.setForeground(COLOR_LETRA);
     	}
     	else {
-    		tabla.setForeground(colorLetraDeshabilitada);
-    		tabla.setBackground(colorFondoDeshabilitado);
-    		th.setBackground(colorFondoDeshabilitado);
-    		th.setForeground(colorLetraDeshabilitada);
+    		tabla.setForeground(COLOR_LETRA_DESHABILITADA);
+    		tabla.setBackground(COLOR_FONDO_DESHABILITADO);
+    		th.setBackground(COLOR_FONDO_DESHABILITADO);
+    		th.setForeground(COLOR_LETRA_DESHABILITADA);
     	}
 	}
 	
-	public void calendario(JDateChooser calendario, Boolean habilitado) {
+	public void setTema(JDateChooser calendario, Boolean habilitado) {
 		if(habilitado) {
 			calendario.setEnabled(habilitado);
-			((JTextFieldDateEditor)calendario.getDateEditor()).setBackground(colorFondoTexto);
-			((JTextFieldDateEditor)calendario.getDateEditor()).setFont(letra);
+			((JTextFieldDateEditor)calendario.getDateEditor()).setBackground(COLOR_FONDO_TEXTO);
+			((JTextFieldDateEditor)calendario.getDateEditor()).setFont(FUENTE_LETRA_NORMAL);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.RAISED));
-			((JTextFieldDateEditor)calendario.getDateEditor()).setForeground(colorLetra);
+			((JTextFieldDateEditor)calendario.getDateEditor()).setForeground(COLOR_LETRA);
 		}
 		else {
 			calendario.setEnabled(habilitado);
-			((JTextFieldDateEditor)calendario.getDateEditor()).setBackground(colorFondoDeshabilitado);
-			((JTextFieldDateEditor)calendario.getDateEditor()).setFont(letra);
+			((JTextFieldDateEditor)calendario.getDateEditor()).setBackground(COLOR_FONDO_DESHABILITADO);
+			((JTextFieldDateEditor)calendario.getDateEditor()).setFont(FUENTE_LETRA_NORMAL);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-			((JTextFieldDateEditor)calendario.getDateEditor()).setDisabledTextColor(colorLetraDeshabilitada);
+			((JTextFieldDateEditor)calendario.getDateEditor()).setDisabledTextColor(COLOR_LETRA_DESHABILITADA);
 		}
 	}
     
 	public void erroneo(Component componente) {
-		componente.setBackground(colorFondoErroneo);
-		componente.setForeground(colorLetraErronea);
+		componente.setBackground(COLOR_FONDO_ERRONEO);
+		componente.setForeground(COLOR_LETRA_ERRONEA);
 	}
 }

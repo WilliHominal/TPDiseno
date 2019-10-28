@@ -63,7 +63,7 @@ public class CU01_AltaPoliza2 extends JPanel  {
 		poliza.setCliente(cliente1);		
 		JFrame frame = new JFrame();
 		new CU01_AltaPoliza2(frame, poliza);
-		GestorTema.get().ventana(frame);
+		GestorTema.get().setTema(frame, "Dar de alta póliza: GENERAR PÓLIZA");
 	}
 	
 	private Poliza poliza;
@@ -142,8 +142,6 @@ public class CU01_AltaPoliza2 extends JPanel  {
 		iniciabilizarTema();
 		ubicarComponentes();		
 		comportamiento();
-		
-		ventana.setTitle("Dar de alta póliza: GENERAR PÓLIZA");
 	}
 	
 	private void ubicarComponentes() {
@@ -373,58 +371,58 @@ public class CU01_AltaPoliza2 extends JPanel  {
 	}
 	
 	private void iniciabilizarTema() {
-		tema.panel(this);
+		tema.setTema(this);
 
-		tema.labelSubrayada(lTipoCobertura);
-		tema.labelSubrayada(lFechaInicioVigencia);
-		tema.labelSubrayada(lFormaPago);
-		tema.labelSubrayada(lInfoPoliza);
-		tema.labelSubrayada(lTitularSeguro);
-		tema.labelSubrayada(lDatosVehiculo);
-		tema.labelSubrayada(lFechaInicio);
-		tema.labelSubrayada(lFechaFin);
+		tema.setTemaSubrayado(lTipoCobertura);
+		tema.setTemaSubrayado(lFechaInicioVigencia);
+		tema.setTemaSubrayado(lFormaPago);
+		tema.setTemaSubrayado(lInfoPoliza);
+		tema.setTemaSubrayado(lTitularSeguro);
+		tema.setTemaSubrayado(lDatosVehiculo);
+		tema.setTemaSubrayado(lFechaInicio);
+		tema.setTemaSubrayado(lFechaFin);
 
-		tema.label(lDescUnidad);
-		tema.label(lDescSemestral);
-		tema.label(lApellido);
-		tema.label(lNombre);
-		tema.label(lModelo);
-		tema.label(lMarca);
-		tema.label(lMotor);
-		tema.label(lChasis);
-		tema.label(lPatente);
-		tema.label(lSumaAsegurada);
-		tema.label(lPremio);
-		tema.label(lDescuento);
-		tema.label(lMontoTotal);
+		tema.setTema(lDescUnidad);
+		tema.setTema(lDescSemestral);
+		tema.setTema(lApellido);
+		tema.setTema(lNombre);
+		tema.setTema(lModelo);
+		tema.setTema(lMarca);
+		tema.setTema(lMotor);
+		tema.setTema(lChasis);
+		tema.setTema(lPatente);
+		tema.setTema(lSumaAsegurada);
+		tema.setTema(lPremio);
+		tema.setTema(lDescuento);
+		tema.setTema(lMontoTotal);
 		
-		tema.campo(campoApellido, false);
-		tema.campo(campoNombre, false);
-		tema.campo(campoMarca, false);
-		tema.campo(campoModelo, false);
-		tema.campo(campoMotor, false);
-		tema.campo(campoChasis, false);
-		tema.campo(campoPatente, false);
-		tema.campo(campoSumaAsegurada, false);
-		tema.campo(campoPremio, false);
-		tema.campo(campoDescuentos, false);
-		tema.campo(campoMontoTotal, false);
+		tema.setTema(campoApellido, false);
+		tema.setTema(campoNombre, false);
+		tema.setTema(campoMarca, false);
+		tema.setTema(campoModelo, false);
+		tema.setTema(campoMotor, false);
+		tema.setTema(campoChasis, false);
+		tema.setTema(campoPatente, false);
+		tema.setTema(campoSumaAsegurada, false);
+		tema.setTema(campoPremio, false);
+		tema.setTema(campoDescuentos, false);
+		tema.setTema(campoMontoTotal, false);
 		
-		tema.boton(btnConfirmarDatos, true);
-		tema.boton(btnGenerarPoliza, false);
-		tema.boton(btnVolver, true);
+		tema.setTema(btnConfirmarDatos, true);
+		tema.setTema(btnGenerarPoliza, false);
+		tema.setTema(btnVolver, true);
 		
-		tema.seleccion(seleccionTipoCobertura, true);
+		tema.setTema(seleccionTipoCobertura, true);
 		
-		tema.radioButton(mensual);
-		tema.radioButton(semestral);
+		tema.setTema(mensual);
+		tema.setTema(semestral);
 		
-		tema.tabla(tablaPagos, false);
-		tema.tablaScroll(scrollTablaPagos, false);
+		tema.setTema(tablaPagos, false);
+		tema.setTema(scrollTablaPagos, false);
 		
-		tema.calendario(dcInicioVigencia, true);
-		tema.calendario(dcInicio, false);
-		tema.calendario(dcFin, false);
+		tema.setTema(dcInicioVigencia, true);
+		tema.setTema(dcInicio, false);
+		tema.setTema(dcFin, false);
 	}
 	
 	private void comportamiento() {
@@ -545,7 +543,7 @@ public class CU01_AltaPoliza2 extends JPanel  {
 		
 		//listener para sacar color rojo cuando lo selecciona
 		seleccionTipoCobertura.addActionListener (a -> {
-			tema.seleccion(seleccionTipoCobertura, true);
+			tema.setTema(seleccionTipoCobertura, true);
 		});
 	}
 		
@@ -592,7 +590,7 @@ public class CU01_AltaPoliza2 extends JPanel  {
 			valido = false;
 		}
 		else {
-			tema.calendario(dcInicioVigencia, true);
+			tema.setTema(dcInicioVigencia, true);
 		}
 		
 		if(!valido) {
@@ -611,7 +609,7 @@ public class CU01_AltaPoliza2 extends JPanel  {
 			
 			dcInicioVigencia.setEnabled(true);
 			
-			tema.boton(btnGenerarPoliza, true);
+			tema.setTema(btnGenerarPoliza, true);
 			
 			if (semestral.isSelected()) {
 				lDescSemestral.setVisible(true);

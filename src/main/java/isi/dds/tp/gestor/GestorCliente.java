@@ -76,20 +76,20 @@ public class GestorCliente {
     		condicionesConsulta += " and numero_cliente="+numeroCliente;
     	}
     	
-    	if(apellido != null) {
+    	if(!apellido.isEmpty()) {
     		condicionesConsulta += " and to_ascii(apellido, 'latin1') ilike  to_ascii('"+apellido+"%', 'latin1') ";
 
     	}
     	
-    	if(nombre != null) {
-   			condicionesConsulta += " and to_ascii(nombre, 'LATIN1') ilike TO_ASCII('"+nombre+")%', 'latin1') ";
+    	if(!nombre.isEmpty()) {
+   			condicionesConsulta += " and to_ascii(nombre, 'LATIN1') ilike TO_ASCII('"+nombre+"%', 'latin1') ";
     	}
     	
     	if(tipoDocumento != null) {
     		condicionesConsulta += " and tipo_documento = '"+tipoDocumento+"' ";
     	}
     	
-    	if(numeroDocumento != null) {
+    	if(!numeroDocumento.isEmpty()) {
     		condicionesConsulta += " and documento = '"+numeroDocumento+"' ";
     	}
 

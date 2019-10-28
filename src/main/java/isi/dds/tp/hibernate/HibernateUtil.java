@@ -71,4 +71,18 @@ public class HibernateUtil {
             StandardServiceRegistryBuilder.destroy(registryBis);
         }
     }
+    
+	public static Boolean conectarBaseDatos() {
+		if(getSessionFactoryValidate() != null) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public static void recargarBaseDatos() {
+		shutdown();
+		CargarBase.load();
+	}
 }

@@ -1,46 +1,20 @@
 package isi.dds.tp.view;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
-import isi.dds.tp.gestor.GestorCliente;
-import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorTema;
-import isi.dds.tp.modelo.Cliente;
 
-@SuppressWarnings("serial")
 public class CU17_MostrarCliente extends JPanel{
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JFrame frame = new JFrame();
-					
-					Cliente cliente = GestorCliente.get().getCliente(5434663813l);
-					
-					new CU17_MostrarCliente(frame, cliente);
-					GestorTema.get().ventana(frame);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	private static final long serialVersionUID = 1728174776538659768L;
 
-	private JFrame ventana;
-	private CU17_BuscarCliente panelAnterior;
 	private GestorTema tema = GestorTema.get();
-	private Cliente cliente;
-	private String tituloAnterior;
 	
 	private JLabel lnumeroCliente = new JLabel("Número cliente:");
 	private JLabel lcondicion = new JLabel("Condición:");
@@ -76,7 +50,7 @@ public class CU17_MostrarCliente extends JPanel{
 	private JTextField campoSexo = new JTextField(16);
 	private JTextField campoFechaNacimiento = new JTextField(16);
 	private JTextField campoCalle = new JTextField(16);
-	private JTextField campoNumeroDomicilio = new JTextField(5);
+	private JTextField campoNumeroCalle = new JTextField(5);
 	private JTextField campoPiso = new JTextField(2);
 	private JTextField campoDepartamento = new JTextField(2);
 	private JTextField campoPais = new JTextField(16);
@@ -92,29 +66,15 @@ public class CU17_MostrarCliente extends JPanel{
 	private JButton btnElegirCliente = new JButton("ELEGIR CLIENTE");
 	private JButton btnVolver = new JButton("VOLVER");
 	
-	public CU17_MostrarCliente(JFrame ventana, Cliente cliente){
-		this.cliente = cliente;
-		this.ventana = ventana;
-		this.tituloAnterior = ventana.getTitle();
-		try {		
-			panelAnterior = (CU17_BuscarCliente) ventana.getContentPane();
-		}catch(Exception ex) {
-		    panelAnterior = null;
-		}
-		ventana.setContentPane(this);
-		
+	public CU17_MostrarCliente(){
 		inicializarComponentes();
 		ubicarComponentes();
-		comportamientos();
-		
-		ventana.setTitle("Buscar cliente: MOSTRAR CLIENTE SELECCIONADO");	
 	}
 
 	private void ubicarComponentes() {
 		setLayout (new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		
-		//FILA 1
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 2;
@@ -135,7 +95,6 @@ public class CU17_MostrarCliente extends JPanel{
 		constraints.insets.set(5, 375, 5, 5);
 		add(campoNombre, constraints); 
 		
-
 		constraints.gridy = 2;
 		constraints.insets.set(10, 8, 13, 5);
 		add(lfechaNacimiento, constraints);
@@ -173,7 +132,7 @@ public class CU17_MostrarCliente extends JPanel{
 		constraints.insets.set(10, 310, 13, 5);
 		add(lnumeroDomicilio, constraints);
 		constraints.insets.set(5, 422, 5, 5);
-		add(campoNumeroDomicilio, constraints);	
+		add(campoNumeroCalle, constraints);	
 		constraints.insets.set(10, 500, 13, 5);
 		add(lpiso, constraints);
 		constraints.insets.set(5, 534, 5, 5);
@@ -230,7 +189,6 @@ public class CU17_MostrarCliente extends JPanel{
 		constraints.insets.set(5, 386, 5, 5);
 		add(campoAnioRegistro, constraints);
 		
-		
 		constraints.gridy = 13;
 		constraints.gridwidth = 4;
 		constraints.anchor = GridBagConstraints.EAST;
@@ -238,117 +196,153 @@ public class CU17_MostrarCliente extends JPanel{
 		add(btnElegirCliente, constraints);
 		constraints.insets.set(10, 5, 10, 0);
 		add(btnVolver, constraints);
-
 	}
 	
 	private void inicializarComponentes() {
+		tema.setTema(this);
+		tema.setTema(lnumeroCliente);
+		tema.setTema(lcondicion);
+		tema.setTema(ltipoDocumento);
+		tema.setTema(lnumeroDocumento);
+		tema.setTema(lapellido);
+		tema.setTema(lnombre);
+		tema.setTema(lfechaNacimiento);
+		tema.setTema(lnumeroCUIL);
+		tema.setTema(lsexo);
+		tema.setTema(lcalle);
+		tema.setTema(lnumeroDomicilio);
+		tema.setTema(lpiso);
+		tema.setTema(ldepartamento);
+		tema.setTema(lpais);
+		tema.setTema(lprovincia);
+		tema.setTema(lciudad);
+		tema.setTema(lcodigoPostal);
+		tema.setTema(lcondicionIva);
+		tema.setTema(lcorreoElectronico);
+		tema.setTema(lestadoCivil);
+		tema.setTema(lprofesion);
+		tema.setTema(lanioRegistro);
+		tema.setTema(campoNumeroCliente, false);
+		tema.setTema(campoCondicion, false);
+		tema.setTema(campoApellido, false);
+		tema.setTema(campoNombre, false);
+		tema.setTema(campoNumeroDocumento, false);
+		tema.setTema(campoNumeroCUIL, false);
+		tema.setTema(campoCalle, false);
+		tema.setTema(campoNumeroCalle, false);
+		tema.setTema(campoPiso, false);
+		tema.setTema(campoDepartamento, false);
+		tema.setTema(campoCodigoPostal, false);
+		tema.setTema(campoCorreoElectronico, false);
+		tema.setTema(campoProfesion, false);
+		tema.setTema(campoAnioRegistro, false);
+		tema.setTema(campoTipoDocumento, false);
+		tema.setTema(campoSexo, false);
+		tema.setTema(campoFechaNacimiento, false);
+		tema.setTema(campoPais, false);
+		tema.setTema(campoProvincia, false);
+		tema.setTema(campoCiudad, false);
+		tema.setTema(campoCondicionIva, false);
+		tema.setTema(campoEstadoCivil, false);
+		tema.setTema(btnElegirCliente, true);
+		tema.setTema(btnVolver, true);
 		btnElegirCliente.setPreferredSize(new Dimension(164, 25));
 		btnVolver.setPreferredSize(new Dimension(164, 25));
-		
-		tema.panel(this);
-		
-		tema.label(lnumeroCliente);
-		tema.label(lcondicion);
-		tema.label(ltipoDocumento);
-		tema.label(lnumeroDocumento);
-		tema.label(lapellido);
-		tema.label(lnombre);
-		tema.label(lfechaNacimiento);
-		tema.label(lnumeroCUIL);
-		tema.label(lsexo);
-		tema.label(lcalle);
-		tema.label(lnumeroDomicilio);
-		tema.label(lpiso);
-		tema.label(ldepartamento);
-		tema.label(lpais);
-		tema.label(lprovincia);
-		tema.label(lciudad);
-		tema.label(lcodigoPostal);
-		tema.label(lcondicionIva);
-		tema.label(lcorreoElectronico);
-		tema.label(lestadoCivil);
-		tema.label(lprofesion);
-		tema.label(lanioRegistro);
-		
-		tema.campo(campoNumeroCliente, false);
-		tema.campo(campoCondicion, false);
-		tema.campo(campoApellido, false);
-		tema.campo(campoNombre, false);
-		tema.campo(campoNumeroDocumento, false);
-		tema.campo(campoNumeroCUIL, false);
-		tema.campo(campoCalle, false);
-		tema.campo(campoNumeroDomicilio, false);
-		tema.campo(campoPiso, false);
-		tema.campo(campoDepartamento, false);
-		tema.campo(campoCodigoPostal, false);
-		tema.campo(campoCorreoElectronico, false);
-		tema.campo(campoProfesion, false);
-		tema.campo(campoAnioRegistro, false);
-		tema.campo(campoTipoDocumento, false);
-		tema.campo(campoSexo, false);
-		tema.campo(campoFechaNacimiento, false);
-		tema.campo(campoPais, false);
-		tema.campo(campoProvincia, false);
-		tema.campo(campoCiudad, false);
-		tema.campo(campoCondicionIva, false);
-		tema.campo(campoEstadoCivil, false);
-		
-		campoNumeroCliente.setText(cliente.getNumeroCliente().toString());
-		campoCondicion.setText(cliente.getCondicion().toString());
-		campoApellido.setText(cliente.getApellido());
-		campoNombre.setText(cliente.getNombre());
-		campoNumeroDocumento.setText(cliente.getNumeroDocumento());
-		campoNumeroCUIL.setText(cliente.getNumeroCuil().toString());
-		campoCalle.setText(cliente.getCalle());
-		campoNumeroDomicilio.setText(cliente.getNumeroCalle().toString());
-		if(cliente.getPiso()==null) {
-			campoPiso.setText("-");
-			campoDepartamento.setText("-");
-		}else {
-			campoPiso.setText(cliente.getPiso().toString());
-			campoDepartamento.setText(cliente.getDepartamento());
-		}
-		campoCodigoPostal.setText(cliente.getCodigoPostal().toString());
-		campoCorreoElectronico.setText(cliente.getCorreoElectronico());
-		campoProfesion.setText(cliente.getProfesion());
-		campoAnioRegistro.setText(cliente.getAnioRegistro().toString());
-		campoTipoDocumento.setText(GestorEnum.get().getStringTipoDocumento(cliente.getTipoDocumento()));
-		campoSexo.setText(GestorEnum.get().getStringSexo(cliente.getSexo()));
-		campoFechaNacimiento.setText(cliente.getFechaNacimiento().toString());
-		campoPais.setText(cliente.getCiudad().getProvincia().getPais().getNombre());
-		campoProvincia.setText(cliente.getCiudad().getProvincia().getNombre());
-		campoCiudad.setText(cliente.getCiudad().getNombre());
-		campoCondicionIva.setText(GestorEnum.get().getStringCondicionIva(cliente.getCondicionIva()));
-		if(campoSexo.getText().equals("Femenino")) {
-			campoEstadoCivil.setText(GestorEnum.get().getStringEstadoCivilFem(cliente.getEstadoCivil()));
-		}
-		else {
-			campoEstadoCivil.setText(GestorEnum.get().getStringEstadoCivil(cliente.getEstadoCivil()));
-		}
-		
-		tema.boton(btnElegirCliente, true);
-		tema.boton(btnVolver, true);
 	}
 
+	public void addListenerBtn_ElegirCliente(ActionListener listener) {
+		btnElegirCliente.addActionListener(listener);
+	}
 	
-	private void comportamientos() {
-		btnElegirCliente.addActionListener(a -> {
-			try {			
-				panelAnterior.obtenidoCliente();
-	        	this.setVisible(false);    
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}  	
-		});
-		 
-		btnVolver.addActionListener(a -> {
-			try {			
-				this.setVisible(false);
-				ventana.setContentPane(panelAnterior);	
-				ventana.setTitle(tituloAnterior);
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		});		
+	public void addListenerBtn_Volver(ActionListener listener) {
+		btnVolver.addActionListener(listener);
+	}
+	
+	public void setNumeroCliente(String numeroCliente) {
+		this.campoNumeroCliente.setText(numeroCliente);
+	}
+
+	public void setCondicion(String condicion) {
+		this.campoCondicion.setText(condicion);
+	}
+
+	public void setApellido(String apellido) {
+		this.campoApellido.setText(apellido);
+	}
+
+	public void setNombre(String nombre) {
+		this.campoNombre.setText(nombre);
+	}
+
+	public void setTipoDocumento(String tipoDocumento) {
+		this.campoTipoDocumento.setText(tipoDocumento);
+	}
+
+	public void setNumeroDocumento(String numeroDocumento) {
+		this.campoNumeroDocumento.setText(numeroDocumento);
+	}
+	
+	public void setNumeroCuil(String numeroCuil) {
+		this.campoNumeroCUIL.setText(numeroCuil);
+	}
+
+	public void setSexo(String sexo) {
+		this.campoSexo.setText(sexo);
+	}
+
+	public void setFechaNacimiento(String fechaNacimiento) {
+		this.campoFechaNacimiento.setText(fechaNacimiento);
+	}
+
+	public void setCalle(String calle) {
+		this.campoCalle.setText(calle);
+	}
+
+	public void setNumeroCalle(String numeroCalle) {
+		this.campoNumeroCalle.setText(numeroCalle);
+	}
+
+	public void setPiso(String piso) {
+		this.campoPiso.setText(piso);
+	}
+
+	public void setDepartamento(String departamento) {
+		this.campoDepartamento.setText(departamento);
+	}
+
+	public void setPais(String pais) {
+		this.campoPais.setText(pais);
+	}
+
+	public void setProvincia(String provincia) {
+		this.campoProvincia.setText(provincia);
+	}
+
+	public void setCiudad(String ciudad) {
+		this.campoCiudad.setText(ciudad);
+	}
+
+	public void setCodigoPostal(String codigoPostal) {
+		this.campoCodigoPostal.setText(codigoPostal);
+	}
+
+	public void setCondicionIva(String condicionIva) {
+		this.campoCondicionIva.setText(condicionIva);
+	}
+
+	public void setCorreoElectronico(String correoElectronico) {
+		this.campoCorreoElectronico.setText(correoElectronico);
+	}
+
+	public void setEstadoCivil(String estadoCivil) {
+		this.campoEstadoCivil.setText(estadoCivil);
+	}
+
+	public void setProfesion(String profesion) {
+		this.campoProfesion.setText(profesion);
+	}
+
+	public void setAnioRegistro(String anioRegistro) {
+		this.campoAnioRegistro.setText(anioRegistro);
 	}
 }

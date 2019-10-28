@@ -168,16 +168,16 @@ public class CU01_DeclararHijo extends JPanel  {
 	}
 	
 	private void inicializarTema() {	
-		tema.panel(this);
-		tema.label(lfechaNacimiento);
-		tema.label(lsexo);
-		tema.label(lestadocivil);
-		tema.label(ldatosObligatorios);
-		tema.calendario(dcFechaNacimiento, true);
-		tema.seleccion(seleccionSexo, true);
-		tema.seleccion(seleccionEstadoCivil, true);
-		tema.boton(btnAgregarHijo, true);
-		tema.boton(btnCancelar, true);
+		tema.setTema(this);
+		tema.setTema(lfechaNacimiento);
+		tema.setTema(lsexo);
+		tema.setTema(lestadocivil);
+		tema.setTema(ldatosObligatorios);
+		tema.setTema(dcFechaNacimiento, true);
+		tema.setTema(seleccionSexo, true);
+		tema.setTema(seleccionEstadoCivil, true);
+		tema.setTema(btnAgregarHijo, true);
+		tema.setTema(btnCancelar, true);
 	}
 
 	private void comportamiento() {
@@ -220,13 +220,13 @@ public class CU01_DeclararHijo extends JPanel  {
 				seleccionEstadoCivil.setEnabled(true);
 			}
 			if(seleccionSexo.getSelectedIndex()>0) {
-				tema.seleccion(seleccionSexo, true);
+				tema.setTema(seleccionSexo, true);
 			}
 		});
 		
 		seleccionEstadoCivil.addActionListener (a -> {
 			if(seleccionEstadoCivil.getSelectedIndex() > 0){
-				tema.seleccion(seleccionEstadoCivil, true);
+				tema.setTema(seleccionEstadoCivil, true);
 			}
 		});
 		
@@ -341,7 +341,7 @@ public class CU01_DeclararHijo extends JPanel  {
 		}
 		
 		if(valido1&&valido2){
-			tema.calendario(dcFechaNacimiento, true);
+			tema.setTema(dcFechaNacimiento, true);
 			return true;
 		}
 		else {
