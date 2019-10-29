@@ -27,7 +27,7 @@ import javax.swing.UIManager;
 import javax.swing.WindowConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.ColorUIResource;
+import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.JTableHeader;
 
 import com.toedter.calendar.JDateChooser;
@@ -37,10 +37,10 @@ public class GestorTema {
 	
 	private static GestorTema instanciaGestor = null;
 	
-	private static Dimension DIMENSION_VENTANA;
-	private static Dimension DIMENSION_BOTON;
-	private static Dimension DIMENSION_COMBO_BOX;
-	private static Dimension DIMENSION_CALENDARIO;
+	private static Dimension DIMENSION_VENTANA = new Dimension(1064,600);
+	private static Dimension DIMENSION_BOTON = new Dimension(160, 25);
+	private static Dimension DIMENSION_COMBO_BOX = new Dimension(164, 22);
+	private static Dimension DIMENSION_CALENDARIO = new Dimension(105, 20);
 	private static Color COLOR_BOTON;
 	private static Color COLOR_BOTON_DESHABILITADO;
 	private static Color COLOR_FONDO_PANTALLA;
@@ -51,15 +51,13 @@ public class GestorTema {
 	private static Color COLOR_LETRA_ERRONEA;
 	private static Color COLOR_LETRA_DESHABILITADA;
 	private static Color COLOR_LETRA_BOTON_DESHABILITADA;
-	private static Font FUENTE_LETRA_NORMAL;
-	private static Font FUENTE_LETRA_CHICA;
-	private static Font FUENTE_LETRA_GRANDE;
-	
-	//TODO cambiar color de barra de scroll
+	private static Font FUENTE_LETRA_NORMAL = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
+	private static Font FUENTE_LETRA_CHICA = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
+	private static Font FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
 	
     private GestorTema() {
     	ToolTipManager.sharedInstance().setInitialDelay(1000);
-    	tema2();
+    	tema1();
     }
 
     public static GestorTema get() {
@@ -68,67 +66,31 @@ public class GestorTema {
         }    
         return instanciaGestor;
     }
-    
-    @SuppressWarnings("unused")
-	private void tema1() {
-    	DIMENSION_VENTANA = new Dimension(1064,600);
-    	COLOR_BOTON = new Color(0, 128, 128);
-    	COLOR_BOTON_DESHABILITADO =  new Color(0, 50, 50);
-    	COLOR_FONDO_PANTALLA = new Color(204,204,204);
-    	COLOR_FONDO_TEXTO = new Color(204, 204, 153).brighter(); 
-    	COLOR_FONDO_DESHABILITADO = COLOR_FONDO_TEXTO.darker();
-    	COLOR_FONDO_ERRONEO = new Color(255,102,102);
-    	COLOR_LETRA = Color.BLACK;
-    	COLOR_LETRA_ERRONEA = COLOR_FONDO_ERRONEO.darker().darker();
-    	COLOR_LETRA_DESHABILITADA = Color.DARK_GRAY;
-    	FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
-    	FUENTE_LETRA_NORMAL = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    	FUENTE_LETRA_CHICA = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
-    	UIManager.put("Button.select", new ColorUIResource(Color.RED));
-    }
-    
-    private void tema2() {
-    	DIMENSION_BOTON = new Dimension(160, 25);
-    	DIMENSION_COMBO_BOX = new Dimension(164, 22);
-    	DIMENSION_CALENDARIO = new Dimension(105, 20);
-    	DIMENSION_VENTANA = new Dimension(1064,600);
+        
+    private void tema1() {
     	COLOR_BOTON = new Color(179,149,62);
     	COLOR_BOTON_DESHABILITADO = new Color(102,83,26);
     	COLOR_FONDO_PANTALLA = new Color(139, 163, 255);
     	COLOR_FONDO_TEXTO = new Color(217,224,255);
     	COLOR_FONDO_DESHABILITADO = new Color(70,82,128);
     	COLOR_FONDO_ERRONEO = new Color(255,83,77);
-    	COLOR_LETRA =  Color.BLACK;//colorFondoDeshabilitado;
+    	COLOR_LETRA = Color.BLACK;
     	COLOR_LETRA_ERRONEA = COLOR_FONDO_ERRONEO.darker().darker();
     	COLOR_LETRA_DESHABILITADA =  COLOR_FONDO_TEXTO.darker();
     	COLOR_LETRA_BOTON_DESHABILITADA = Color.DARK_GRAY;
-    	FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
-    	FUENTE_LETRA_NORMAL = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    	FUENTE_LETRA_CHICA = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
     }
     
     @SuppressWarnings("unused")
-	private void tema3() {
-    	DIMENSION_VENTANA = new Dimension(1064,600);
-    	/*
-    	#B36D46
-    	#FFBC96
-    	#FFAC7D
-    	#34B3B0
-    	#A4FFFE
-    	 */
-    	COLOR_BOTON = new Color(252,74,26);
+	private void tema2() {
+    	COLOR_BOTON = new Color(52,179,176);
     	COLOR_BOTON_DESHABILITADO = COLOR_BOTON.darker();
-    	COLOR_FONDO_PANTALLA = new Color(174,189,172);
-    	COLOR_FONDO_TEXTO = new Color(247,183,51);
-    	COLOR_FONDO_DESHABILITADO = new Color(198,146,41);
+    	COLOR_FONDO_PANTALLA = new Color(255,172,125);
+    	COLOR_FONDO_TEXTO = new Color(164,255,254);
+    	COLOR_FONDO_DESHABILITADO = new Color(179,109,70);
     	COLOR_FONDO_ERRONEO = new Color(255,83,77);
-    	COLOR_LETRA =  Color.BLACK;//colorFondoDeshabilitado;
+    	COLOR_LETRA = Color.BLACK;
     	COLOR_LETRA_ERRONEA = COLOR_FONDO_ERRONEO.darker().darker();
     	COLOR_LETRA_DESHABILITADA = COLOR_FONDO_TEXTO.darker();
-    	FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
-    	FUENTE_LETRA_NORMAL = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
-    	FUENTE_LETRA_CHICA = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
     }
 
     public void setTema(JPanel panel) {
@@ -271,6 +233,14 @@ public class GestorTema {
 	}
     
 	public void setTema(JScrollPane tablaScroll, Boolean habilitada) {
+		tablaScroll.setBackground(COLOR_FONDO_PANTALLA);
+		tablaScroll.getVerticalScrollBar().setBackground(COLOR_FONDO_PANTALLA);
+		tablaScroll.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
+	            @Override
+	            protected void configureScrollBarColors() {
+	                this.thumbColor = COLOR_FONDO_PANTALLA.darker();
+	            }
+	    });
     	if(habilitada) {
     		tablaScroll.getViewport().setBackground(COLOR_FONDO_TEXTO);	
     		tablaScroll.setForeground(COLOR_LETRA);
