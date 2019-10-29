@@ -14,7 +14,7 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import isi.dds.tp.gestor.GestorTema;
 
-public class CU01_DeclararHijo extends JFrame  {
+public class CU01View3 extends JFrame  {
 	private static final long serialVersionUID = 6648717348390850354L;
 
 	private JPanel panel =  new JPanel();
@@ -33,7 +33,7 @@ public class CU01_DeclararHijo extends JFrame  {
 	private JButton btnAgregarHijo = new JButton("AGREGAR HIJO");
 	private JButton btnCancelar = new JButton("CANCELAR");
 	
-	public CU01_DeclararHijo() {
+	public CU01View3() {
 		ubicarComponentes();
 		inicializarTema();
 		addListenerSeleccionEstadoCivil();

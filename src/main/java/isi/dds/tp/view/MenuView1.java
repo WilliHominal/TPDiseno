@@ -10,7 +10,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import isi.dds.tp.gestor.GestorTema;
 
-public class Menu extends JPanel {
+public class MenuView1 extends JPanel {
 	private static final long serialVersionUID = -8891096858523158004L;
 
 	private GestorTema tema = GestorTema.get();
@@ -40,7 +40,7 @@ public class Menu extends JPanel {
 	
 	private JCheckBox checkCargarBase = new JCheckBox("Recargar base");
 
-	public Menu() {
+	public MenuView1() {
 		inicializarComponentes();
 		ubicarComponentes();
 	}

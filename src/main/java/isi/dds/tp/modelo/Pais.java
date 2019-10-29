@@ -4,6 +4,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -18,7 +19,7 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Pais {
 	
-	@OneToMany(cascade= CascadeType.ALL)
+	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="id_pais")
 	@IndexColumn(name="idx")
 	private List<Provincia> provincias;

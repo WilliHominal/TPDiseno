@@ -19,7 +19,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import isi.dds.tp.gestor.GestorTema;
 
-public class CU17_BuscarCliente extends JPanel {
+public class CU17View1 extends JPanel {
 	private static final long serialVersionUID = 2371539154905078614L;
 
 	private GestorTema tema = GestorTema.get();
@@ -46,7 +46,7 @@ public class CU17_BuscarCliente extends JPanel {
 	private Object[][] datosTabla = {{""},{""},{""},{""},{""}};
 	private DefaultTableModel model;
 	
-	public CU17_BuscarCliente() {
+	public CU17View1() {
 		inicializarComponentes();
 		ubicarComponentes();
 		addTablaClientes(0);	

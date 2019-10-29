@@ -62,9 +62,7 @@ public class BitacoraSolicitudPoliza {
 	@Column(nullable = false, name = "mod_tipo_cobertura")
 	private Boolean modificoTipoCobertura = false; 
 	
-	public BitacoraSolicitudPoliza() {
-		
-	}
+	public BitacoraSolicitudPoliza() { }
 	
 	public Usuario getUsuario() {
 		return usuario;

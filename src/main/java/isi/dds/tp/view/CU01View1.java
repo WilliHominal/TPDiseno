@@ -26,7 +26,7 @@ import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
 import isi.dds.tp.modelo.Provincia;
 
-public class CU01_AltaPoliza1 extends JPanel {
+public class CU01View1 extends JPanel {
 	private static final long serialVersionUID = 4544933098405881656L;
 
 	private GestorTema tema = GestorTema.get();
@@ -103,7 +103,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 	private Object[][] datosTabla = {{""},{""},{""},{""}};
 	private DefaultTableModel model;
 	
-	public CU01_AltaPoliza1() {	
+	public CU01View1() {	
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();

@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -19,7 +20,7 @@ import org.hibernate.annotations.IndexColumn;
 @Table(name = "tipo_cobertura")
 public class TipoCobertura {
 	
-	@OneToMany(cascade= CascadeType.ALL)
+	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="tipo_cobertura")
 	@IndexColumn(name="idx")
 	private List<RiesgoTipoCobertura> riesgo;
@@ -35,9 +36,7 @@ public class TipoCobertura {
 	@Column(nullable = false)
 	private String nombre;
 
-	public TipoCobertura() {
-		
-	}
+	public TipoCobertura() { }
 	
 	public TipoCobertura(String nombre) {
 		this.nombre = nombre;

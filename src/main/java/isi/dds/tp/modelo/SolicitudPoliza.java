@@ -6,6 +6,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,12 +35,12 @@ public class SolicitudPoliza {
     @OneToOne
 	private Ciudad ciudad;
 	
-	@OneToMany()
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="numero_solicitud")
 	@IndexColumn(name="idx")
 	private List<HijoDeclarado> hijosDeclarados;
 	
-	@OneToMany()
+	@OneToMany(fetch = FetchType.LAZY)
 	@JoinColumn(name="numero_solicitud")
 	@IndexColumn(name="idx")
 	private List<BitacoraSolicitudPoliza> bitacorasSolicitud;

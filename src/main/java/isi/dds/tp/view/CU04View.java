@@ -28,14 +28,14 @@ import isi.dds.tp.modelo.Pais;
 import isi.dds.tp.modelo.Provincia;
 
 @SuppressWarnings("serial")
-public class CU04_AltaCliente extends JPanel{
+public class CU04View extends JPanel{
 
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					JFrame frame = new JFrame();
-					new CU04_AltaCliente(frame);
+					new CU04View(frame);
 					GestorTema.get().setTema(frame, "Dar de alta cliente");
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -100,7 +100,7 @@ public class CU04_AltaCliente extends JPanel{
 	private JComboBox<String> seleccionCondicionIva = new JComboBox<String>();
 	private JComboBox<String> seleccionEstadoCivil = new JComboBox<String>();
 
-	public CU04_AltaCliente(JFrame ventana) {
+	public CU04View(JFrame ventana) {
 		this.ventana = ventana;
 		this.tituloAnterior = ventana.getTitle();
 		try {		

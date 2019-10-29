@@ -32,21 +32,18 @@ public class AnioModelo {
 
 	public AnioModelo() { }
 	
-	public AnioModelo(Modelo modelo, Integer anio, Float suma) {
-		modelo.getAnios().add(this);
-		this.anio = anio;
-		this.sumaAsegurada = suma;
-	}
-	
 	public Modelo getModelo() {
 		return modelo;
 	}
+	
 	public Integer getAnio() {
 		return anio;
 	}
+	
 	public void setModelo(Modelo modelo) {
 		this.modelo = modelo;
 	}
+	
 	public void setAnio(Integer anio) {
 		this.anio = anio;
 	}

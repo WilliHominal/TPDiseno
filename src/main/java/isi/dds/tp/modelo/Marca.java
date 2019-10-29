@@ -1,10 +1,10 @@
 package isi.dds.tp.modelo;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +19,7 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Marca {
 
-	@OneToMany(cascade= CascadeType.ALL)
+	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="id_marca")
 	@IndexColumn(name="idx")
 	private List<Modelo> modelos;
@@ -33,30 +33,33 @@ public class Marca {
 	@Column(nullable = false)
 	private String nombre;
 	
-	public Marca() {
-		
-	}
+	public Marca() { }
 	
+	//es para los combobox
 	public Marca(String nombre) {
 		this.nombre = nombre;
-		this.modelos = new ArrayList<Modelo>();
 	}
-	
+
 	public List<Modelo> getModelos() {
 		return modelos;
 	}
+	
 	public Integer getIdMarca() {
 		return idMarca;
 	}
+	
 	public String getNombre() {
 		return nombre;
 	}
+	
 	public void setModelos(List<Modelo> modelos) {
 		this.modelos = modelos;
 	}
+	
 	public void setIdMarca(Integer idMarca) {
 		this.idMarca = idMarca;
 	}
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
@@ -96,7 +99,4 @@ public class Marca {
 			return false;
 		return true;
 	}
-	
-	
-	
 }

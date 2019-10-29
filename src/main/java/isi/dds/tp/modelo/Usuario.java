@@ -5,6 +5,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,12 +21,12 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Usuario {
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name ="id_usuario")
 	@IndexColumn(name ="idx")
 	private List <BitacoraSolicitudPoliza> bitacorasSolicitudPoliza;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name ="id_usuario")
 	@IndexColumn(name ="idx")
 	private List <BitacoraParametrosPoliza> bitacoraParametrosPoliza;

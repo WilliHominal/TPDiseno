@@ -42,14 +42,14 @@ import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.TipoCobertura;
 
 @SuppressWarnings("serial")
-public class CU01_AltaPoliza2 extends JPanel  {
+public class CU01View2 extends JPanel  {
 	
 	
 	 public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					new CU01_AltaPoliza2();
+					new CU01View2();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -57,18 +57,18 @@ public class CU01_AltaPoliza2 extends JPanel  {
 		});
 	}
 
-	public CU01_AltaPoliza2() {				
+	public CU01View2() {				
 		poliza = new Poliza(2222222111l);
 		Cliente cliente1 = GestorCliente.get().getCliente(123456l);
 		poliza.setCliente(cliente1);		
 		JFrame frame = new JFrame();
-		new CU01_AltaPoliza2(frame, poliza);
+		new CU01View2(frame, poliza);
 		GestorTema.get().setTema(frame, "Dar de alta póliza: GENERAR PÓLIZA");
 	}
 	
 	private Poliza poliza;
 	private JFrame ventana;
-	private CU01_AltaPoliza1 cu01_ap1;
+	private CU01View1 cu01_ap1;
 	private GestorTema tema = GestorTema.get();
 	
 	private String tituloAnterior = "";
@@ -127,12 +127,12 @@ public class CU01_AltaPoliza2 extends JPanel  {
 	private DefaultTableModel model = (DefaultTableModel) tablaPagos.getModel();
 
 
-	public CU01_AltaPoliza2(JFrame ventana, Poliza poliza) {
+	public CU01View2(JFrame ventana, Poliza poliza) {
 		this.ventana = ventana;
 		this.poliza = poliza;
 		this.tituloAnterior = ventana.getTitle();
 		try {			
-			cu01_ap1 = (CU01_AltaPoliza1) ventana.getContentPane();	
+			cu01_ap1 = (CU01View1) ventana.getContentPane();	
 		}catch(Exception ex) {
 			cu01_ap1 = null;
 		}

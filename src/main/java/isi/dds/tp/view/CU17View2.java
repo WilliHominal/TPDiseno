@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import isi.dds.tp.gestor.GestorTema;
 
-public class CU17_MostrarCliente extends JPanel{
+public class CU17View2 extends JPanel{
 	private static final long serialVersionUID = 1728174776538659768L;
 
 	private GestorTema tema = GestorTema.get();
@@ -66,7 +66,7 @@ public class CU17_MostrarCliente extends JPanel{
 	private JButton btnElegirCliente = new JButton("ELEGIR CLIENTE");
 	private JButton btnVolver = new JButton("VOLVER");
 	
-	public CU17_MostrarCliente(){
+	public CU17View2(){
 		inicializarComponentes();
 		ubicarComponentes();
 	}

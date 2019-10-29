@@ -3,6 +3,6 @@ package isi.dds.tp.view;
 import javax.swing.JPanel;
 
 @SuppressWarnings("serial")
-public class CU12_PagoPoliza2 extends JPanel{
+public class CU18View  extends JPanel{
 
 }

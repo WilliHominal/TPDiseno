@@ -24,7 +24,7 @@ public class Ciudad {
 	@JoinColumn(name="id_provincia")
 	private Provincia provincia;
 
-	@OneToMany(cascade= CascadeType.ALL)
+	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="id_ciudad")
 	@IndexColumn(name="idx")
 	private List<RiesgoCiudad> riesgos;

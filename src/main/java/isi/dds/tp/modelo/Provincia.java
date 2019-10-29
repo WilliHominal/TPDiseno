@@ -24,7 +24,7 @@ public class Provincia {
 	@JoinColumn(name="id_pais")
 	private Pais pais;
 	
-	@OneToMany(cascade= CascadeType.ALL)
+	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="id_provincia")
 	@IndexColumn(name="idx")
 	private List<Ciudad> ciudades;
