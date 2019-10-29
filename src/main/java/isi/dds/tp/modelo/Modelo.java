@@ -20,7 +20,7 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Modelo {
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="id_marca")
 	private Marca marca;
 	

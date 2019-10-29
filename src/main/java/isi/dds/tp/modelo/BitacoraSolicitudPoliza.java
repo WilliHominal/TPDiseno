@@ -3,6 +3,7 @@ package isi.dds.tp.modelo;
 import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,11 +16,11 @@ import javax.persistence.Table;
 @Table(name = "bitacora_solicitud_poliza")
 public class BitacoraSolicitudPoliza {
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_usuario")
 	private Usuario usuario;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="numero_solicitud")
 	private SolicitudPoliza solicitudPoliza;
 	

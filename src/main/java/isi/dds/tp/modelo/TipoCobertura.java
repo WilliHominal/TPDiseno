@@ -1,6 +1,5 @@
 package isi.dds.tp.modelo;
 
-import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.enums.EnumTipoCobertura;
 import javax.persistence.CascadeType;
@@ -38,17 +37,10 @@ public class TipoCobertura {
 
 	public TipoCobertura() { }
 	
+	//para los comboBox
 	public TipoCobertura(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	public TipoCobertura(EnumTipoCobertura tipoCobertura, String nombre, String descripcion, Float riesgo) {
-		this.riesgo =  new  ArrayList<RiesgoTipoCobertura>();
-		this.riesgo.add(new RiesgoTipoCobertura(this, riesgo));
-		this.tipoCobertura = tipoCobertura;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		}	
 
 	public List<RiesgoTipoCobertura> getRiesgo() {
 		return riesgo;
@@ -86,6 +78,4 @@ public class TipoCobertura {
 	public String toString() {
 		return nombre;
 	}
-	
-	
 }

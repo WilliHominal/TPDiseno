@@ -32,7 +32,6 @@ import isi.dds.tp.modelo.Provincia;
 import isi.dds.tp.view.CU01View1;
 import isi.dds.tp.view.CU01View2;
 import isi.dds.tp.view.CU01View3;
-import isi.dds.tp.view.CU04View;
 
 public class CU01Controller {
 		
@@ -290,12 +289,10 @@ public class CU01Controller {
 		    				else {
 		    					patente = false;
 		    				}
-		    		
 		        		break;
 		        	}
 	        		
 	        	}
-	        	
 	        break;     
 
 	        //para patente longitud 7
@@ -344,7 +341,6 @@ public class CU01Controller {
 				errorNumero++;
 				valido = false;
 			break;
-
 			}		
 		}
 		else {
@@ -352,7 +348,6 @@ public class CU01Controller {
 		}
 		
 		if (altaPoliza1.getKmAnio().equals("Selecionar kilometraje")) {
-			//seleccionKm.setBackground(colorErroneo);
 			km = true;
 			kmSelecciono = errorNumero+") No se ha seleccionado un valor del campo km realizados por año.\n";
 			valido = false;
@@ -385,7 +380,7 @@ public class CU01Controller {
 	class ListenerAltaCliente implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {				
-				new CU04View(ventana);
+				new CU04Controller(ventana);
 				ventana.revalidate();
 			}catch(Exception ex) {
 				JOptionPane.showMessageDialog(ventana, "No se pudo obtener el cliente desde la base de datos",

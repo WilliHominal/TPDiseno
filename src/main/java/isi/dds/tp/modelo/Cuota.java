@@ -25,7 +25,7 @@ public class Cuota{
 	@JoinColumn(name = "numero_poliza")
 	private Poliza poliza;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="numero_recibo")
 	private Pago pago;
 	

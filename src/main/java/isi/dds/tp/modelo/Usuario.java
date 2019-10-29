@@ -1,6 +1,5 @@
 package isi.dds.tp.modelo;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -31,7 +30,6 @@ public class Usuario {
 	@IndexColumn(name ="idx")
 	private List <BitacoraParametrosPoliza> bitacoraParametrosPoliza;
 	
-	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_usuario")
 	@SequenceGenerator(name = "id_usuario", sequenceName = "id_usuario_seq", initialValue = 100, allocationSize = 1)
@@ -50,23 +48,7 @@ public class Usuario {
 	@Column(nullable = false)
 	private String apellido;
 
-	public Usuario() {
-		
-	}
-	
-	public Usuario(String nombre) {
-		this.nombre = nombre;
-		this.bitacoraParametrosPoliza = null;
-		this.contrasenia = "julio berme";
-		this.apellido = "vernete";
-	}
-	
-	public Usuario(String contrasenia, EnumTipoUsuario tipoUsuario) {
-		this.bitacorasSolicitudPoliza = new ArrayList<BitacoraSolicitudPoliza>();
-		this.bitacoraParametrosPoliza = new ArrayList<BitacoraParametrosPoliza>();
-		this.contrasenia = contrasenia;
-		this.tipoUsuario = tipoUsuario;
-	}
+	public Usuario() { }
 	
 	public List<BitacoraSolicitudPoliza> getBitacorasSolicitudPoliza() {
 		return bitacorasSolicitudPoliza;

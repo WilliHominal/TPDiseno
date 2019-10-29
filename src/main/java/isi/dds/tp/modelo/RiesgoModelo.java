@@ -45,23 +45,6 @@ public class RiesgoModelo {
 
 	public RiesgoModelo() { }
 
-	public RiesgoModelo(Modelo modelo, Float valorPorcentual) {
-		this.bitacoraParametros = null;
-		this.fechaInicioVigencia = LocalDate.now();
-		this.fechaFinVigencia = null;
-		this.valorPorcentual = valorPorcentual;
-		this.ultimo = true;
-	}
-
-	public RiesgoModelo(BitacoraParametrosPoliza b, Modelo modelo, Float valorPorcentual) {
-		this.bitacoraParametros = b;
-		this.fechaInicioVigencia = LocalDate.now();
-		this.fechaFinVigencia = null;
-		this.valorPorcentual = valorPorcentual;
-		this.ultimo = true;
-		b.getRiesgosModelo().add(this);
-	}
-
 	public Integer getId() {
 		return id;
 	}

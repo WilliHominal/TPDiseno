@@ -43,23 +43,6 @@ public class RiesgoTipoCobertura {
 	private Boolean ultimo;
 
 	public RiesgoTipoCobertura() { }
-	
-	public RiesgoTipoCobertura(TipoCobertura tipoCobertura,	Float valorPorcentual) {
-		this.bitacoraParametros = null;
-		this.fechaInicioVigencia = LocalDate.now();
-		this.fechaFinVigencia = null;
-		this.valorPorcentual = valorPorcentual;
-		this.ultimo = true;
-	}
-	
-	public RiesgoTipoCobertura(BitacoraParametrosPoliza b, TipoCobertura tipoCobertura,	Float valorPorcentual) {
-		this.bitacoraParametros = b;
-		this.fechaInicioVigencia = LocalDate.now();
-		this.fechaFinVigencia = null;
-		this.valorPorcentual = valorPorcentual;
-		this.ultimo = true;
-		b.getRiesgosTipoCobertura().add(this);
-	}
 
 	public BitacoraParametrosPoliza getBitacoraParametros() {
 		return bitacoraParametros;

@@ -1,54 +1,24 @@
 package isi.dds.tp.view;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.Iterator;
-import java.util.List;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import com.toedter.calendar.JDateChooser;
-
-import isi.dds.tp.enums.EnumCondicionIVA;
-import isi.dds.tp.enums.EnumEstadoCivil;
-import isi.dds.tp.enums.EnumSexo;
-import isi.dds.tp.enums.EnumTipoDocumento;
-import isi.dds.tp.gestor.GestorDomicilio;
-import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Pais;
 import isi.dds.tp.modelo.Provincia;
 
-@SuppressWarnings("serial")
-public class CU04View extends JPanel{
-
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JFrame frame = new JFrame();
-					new CU04View(frame);
-					GestorTema.get().setTema(frame, "Dar de alta cliente");
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+public class CU04View extends JPanel{	
+	private static final long serialVersionUID = -1269025063146813420L;
 	
-	private JFrame ventana;
-	private JPanel panelAnterior;
 	private GestorTema tema = GestorTema.get();
-	
-	private String tituloAnterior = "";
 	
 	private JLabel lnumeroCliente = new JLabel("Número cliente:");
 	private JLabel lapellido = new JLabel("Apellido*:");
@@ -100,85 +70,29 @@ public class CU04View extends JPanel{
 	private JComboBox<String> seleccionCondicionIva = new JComboBox<String>();
 	private JComboBox<String> seleccionEstadoCivil = new JComboBox<String>();
 
-	public CU04View(JFrame ventana) {
-		this.ventana = ventana;
-		this.tituloAnterior = ventana.getTitle();
-		try {		
-			panelAnterior = (JPanel) ventana.getContentPane();
-		}catch(Exception ex) {
-		    panelAnterior = null;
-		}
-		ventana.setContentPane(this);
-		
+	public CU04View() {
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
-		comportamientos();
 	}
 
 	private void inicializarComponentes() {
-		btnConfirmar.setPreferredSize(new Dimension(150, 25));
-		btnCancelar.setPreferredSize(new Dimension(150, 25));
-		
+		btnConfirmar.setPreferredSize(new Dimension(160, 25));
+		btnCancelar.setPreferredSize(new Dimension(160, 25));
 		dcFechaNacimiento.setPreferredSize(new Dimension(164, 25));
-		
 		seleccionTipoDocumento.setPreferredSize(new Dimension(164, 25));
 		seleccionSexo.setPreferredSize(new Dimension(164, 25));
 		seleccionPais.setPreferredSize(new Dimension(164, 25));
 		seleccionProvincia.setPreferredSize(new Dimension(164, 25));
 		seleccionCiudad.setPreferredSize(new Dimension(164, 25));
 		seleccionCondicionIva.setPreferredSize(new Dimension(164, 25));
-		seleccionEstadoCivil.setPreferredSize(new Dimension(164, 25));
-		
-		seleccionTipoDocumento.addItem("Selecionar tipo doc.");
-		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
-		for(int i=0; i<tipoDocumentos.length; i++){
-			seleccionTipoDocumento.addItem(GestorEnum.get().parseString(tipoDocumentos[i]));
-		}
-		
-		seleccionSexo.addItem("Selecionar sexo");
-		EnumSexo[] sexos = EnumSexo.values();
-		for(int i=0; i<sexos.length; i++){
-			seleccionSexo.addItem(GestorEnum.get().parseString(sexos[i]));
-		}
-		
-		List<Pais> paises = GestorDomicilio.get().getPaises();
-		Iterator<Pais> iteradorPais = paises.iterator();
-		while(iteradorPais.hasNext()){
-			seleccionPais.addItem(iteradorPais.next());
-		}
-		
-		List<Provincia> provincias = seleccionPais.getItemAt(seleccionPais.getSelectedIndex()).getProvincias();
-		Iterator<Provincia> iteradorProvincias = provincias.iterator();
-		while(iteradorProvincias.hasNext()){
-			seleccionProvincia.addItem(iteradorProvincias.next());
-		}
-		
-		List<Ciudad> ciudades = GestorDomicilio.get().sortCiudades(seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex()));
-		Iterator<Ciudad> iteradorCiudades = ciudades.iterator();
-		while(iteradorCiudades.hasNext()){
-			seleccionCiudad.addItem(iteradorCiudades.next());
-		}
-		
-		seleccionCondicionIva.addItem("Selecionar cond. de IVA");
-		EnumCondicionIVA[] condicionesIva = EnumCondicionIVA.values();
-		for(int i=0; i<condicionesIva.length; i++){
-			seleccionCondicionIva.addItem(GestorEnum.get().parseString(condicionesIva[i]));
-		}
-		
-		seleccionEstadoCivil.addItem("Selecionar estado civil");
-		EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
-		for(int i=0; i<estadosCivil.length; i++){
-			seleccionEstadoCivil.addItem(GestorEnum.get().parseStringMasc(estadosCivil[i]));
-		}
-		
+		seleccionEstadoCivil.setPreferredSize(new Dimension(164, 25));	
 	}
 	
 	private void ubicarComponentes() {
 		setLayout (new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
-		
-		//FILA 1
+	
 		constraints.gridx = 0;
 		constraints.gridy = 0;
 		constraints.gridwidth = 2;
@@ -203,13 +117,11 @@ public class CU04View extends JPanel{
 		constraints.insets.set(5, 375, 5, 5);
 		add(campoNombre, constraints); 
 		
-
 		constraints.gridy = 2;
 		constraints.insets.set(10, 8, 13, 5);
 		add(lfechaNacimiento, constraints);
 		constraints.insets.set(5, 120, 5, 5);
 		add(dcFechaNacimiento, constraints);
-		
 		
 		constraints.gridy = 3;
 		constraints.insets.set(10, 17, 13, 5);
@@ -310,12 +222,10 @@ public class CU04View extends JPanel{
 		add(btnConfirmar, constraints);
 		constraints.insets.set(5, 5, 5, 0);
 		add(btnCancelar, constraints);
-
 	}
 		
 	private void inicializarTema() {	
 		tema.setTema(this);
-		
 		tema.setTema(lnumeroCliente);
 		tema.setTema(ltipoDocumento);
 		tema.setTema(lnumeroDocumento);
@@ -338,7 +248,6 @@ public class CU04View extends JPanel{
 		tema.setTema(lprofesion);
 		tema.setTema(lanioRegistro);
 		tema.setTemaLabelchica(ldatosObligatorios);
-		
 		tema.setTema(campoNumeroCliente, false);
 		tema.setTema(campoApellido, true);
 		tema.setTema(campoNombre, true);
@@ -352,12 +261,9 @@ public class CU04View extends JPanel{
 		tema.setTema(campoCorreoElectronico, true);
 		tema.setTema(campoProfesion, true);
 		tema.setTema(campoAnioRegistro, true);
-		
 		tema.setTema(dcFechaNacimiento, true);
-		
 		tema.setTema(btnConfirmar, true);
 		tema.setTema(btnCancelar, true);
-		
 		tema.setTema(seleccionTipoDocumento, true);
 		tema.setTema(seleccionSexo, true);
 		tema.setTema(seleccionPais, true);
@@ -365,54 +271,89 @@ public class CU04View extends JPanel{
 		tema.setTema(seleccionCiudad, true);
 		tema.setTema(seleccionCondicionIva, true);
 		tema.setTema(seleccionEstadoCivil, true);
-
+	}
+	
+	public void addListenerBtnConfirmar(ActionListener listener) {
+		btnConfirmar.addActionListener(listener);
+	}
+	
+	public void addListenerBtnCancelar(ActionListener listener) {
+		btnCancelar.addActionListener(listener);
+	}
+	
+	public void addListenerSeleccionPais(ActionListener listener) {
+		seleccionPais.addActionListener (listener);
+	}
+	
+	public void addListenerSeleccionProvincia(ActionListener listener) {
+		seleccionProvincia.addActionListener (listener);	
+	}
+	
+	public void addListenerSeleccionSexo(ActionListener listener) {
+		seleccionSexo.addActionListener (listener);	
+	}
+	
+	public void addPais(Pais pais) {
+		seleccionPais.addItem(pais);
+	}
+	
+	public void addProvincia(Provincia provincia) {
+		seleccionProvincia.addItem(provincia);
+	}
+	
+	public void addCiudad(Ciudad ciudad) {
+		seleccionCiudad.addItem(ciudad);
+	}
+	
+	public void addTipoDocumento(String tipoDocumento) {
+		seleccionTipoDocumento.addItem(tipoDocumento);
+	}
+	
+	public void addSexo(String sexo) {
+		seleccionSexo.addItem(sexo);
+	}
+	
+	public void addCondicionIva(String condicionIva) {
+		seleccionCondicionIva.addItem(condicionIva);
+	}
+	
+	public void addEstadoCivil(String estadoCivil) {
+		seleccionEstadoCivil.addItem(estadoCivil);
+	}
+	
+	public Pais getPais() {
+		return seleccionPais.getItemAt(seleccionPais.getSelectedIndex());
+	}
+	
+	public Provincia getProvincia() {
+		return seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex());
+	}
+	
+	public String getSexo() {
+		return seleccionSexo.getItemAt(seleccionSexo.getSelectedIndex());
+	}
+	
+	public void habilitarProvincia(Boolean habilitado) {
+		if(!habilitado) {
+			seleccionProvincia.removeAllItems();
+		}
+		seleccionProvincia.setEnabled(true);	
+	}
+	
+	public void habilitarCiudad(Boolean habilitado) {
+		if(!habilitado) {
+			seleccionCiudad.removeAllItems();
+		}
+		seleccionCiudad.setEnabled(true);	
 	}
 
-	public void comportamientos() {
-		btnConfirmar.addActionListener(a -> {
-           	JOptionPane.showMessageDialog(null, "Solo se implementó el mockup del caso de uso 04:  Dar de Alta Cliente.", "Aviso", JOptionPane.INFORMATION_MESSAGE);       	
-		});
-		 
-		btnCancelar.addActionListener(a -> {
-			try {			
-				this.setVisible(false);
-				ventana.setContentPane(panelAnterior);	
-				ventana.setTitle(tituloAnterior);
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		});
-	    
-		seleccionPais.addActionListener (a -> {
-			seleccionProvincia.setEnabled(false);	
-			seleccionProvincia.removeAllItems();
-			Iterator<Provincia> iteratorProvincias = seleccionPais.getItemAt(seleccionPais.getSelectedIndex()).getProvincias().iterator();
-			while(iteratorProvincias.hasNext()){
-				seleccionProvincia.addItem(iteratorProvincias.next());
-			}				
-			
-			seleccionCiudad.setEnabled(false);	
-			seleccionCiudad.removeAllItems();
-								
-			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex())).iterator();
-			while(iteratorCiudad.hasNext()){
-				seleccionCiudad.addItem(iteratorCiudad.next());
-			}
-			
-			seleccionProvincia.setEnabled(true);
-			seleccionCiudad.setEnabled(true);
-		});
-		
-		seleccionProvincia.addActionListener (a -> {
-			seleccionCiudad.setEnabled(false);	
-			seleccionCiudad.removeAllItems();
-								
-			Iterator<Ciudad> iteratorCiudad = seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex()).getCiudades().iterator();
-			while(iteratorCiudad.hasNext()){
-				seleccionCiudad.addItem(iteratorCiudad.next());
-			}
-			
-			seleccionCiudad.setEnabled(true);
-		});		
+	public Integer indexSeleccionEstadoCivil() {
+		int index = seleccionEstadoCivil.getSelectedIndex();
+		seleccionEstadoCivil.removeAllItems();
+		return index;
+	}
+
+	public void setEstadoCivil(Integer index) {
+		seleccionEstadoCivil.setSelectedIndex(index);
 	}
 }

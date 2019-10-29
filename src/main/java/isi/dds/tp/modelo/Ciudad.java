@@ -20,7 +20,7 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Ciudad {
 	
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="id_provincia")
 	private Provincia provincia;
 

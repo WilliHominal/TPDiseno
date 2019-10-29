@@ -21,7 +21,7 @@ import org.hibernate.annotations.IndexColumn;
 @Table(name = "bitacora_parametros_poliza")
 public class BitacoraParametrosPoliza {
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="id_usuario")
 	private Usuario usuario;
 	

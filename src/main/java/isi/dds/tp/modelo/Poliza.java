@@ -25,10 +25,9 @@ import isi.dds.tp.enums.EnumSiniestros;
 @Table
 public class Poliza {
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "numero_cliente")
 	private Cliente cliente;
-	
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "numero_poliza")
@@ -39,7 +38,6 @@ public class Poliza {
 	@JoinColumn(name = "numero_poliza")
 	@IndexColumn(name ="idx")
 	private List<Cuota> cuotas;
-	
     
 	@JoinColumn(name = "tipo_cobertura")
     @OneToOne
@@ -159,9 +157,7 @@ public class Poliza {
 	@Column(nullable = false, name = "porcentaje_valor_asegurado")
 	private Float porcentajeValorAsegurado;
 		
-	public Poliza() {
-		
-	}
+	public Poliza() { }
 	
 	public Poliza(Long l) {
 		this.cliente = new Cliente();;
@@ -200,46 +196,6 @@ public class Poliza {
 		this.valorRiesgoModelo = 4f;
 		this.valorRiesgoCobertura = 56f;
 		this.porcentajeValorAsegurado = 45f;
-	}
-
-	public Poliza(Cliente cliente, TipoCobertura tc, AnioModelo am, Ciudad ciudad, ParametrosPoliza p, SolicitudPoliza sp,
-			Long numeroPoliza, Float sumaAsegurada, EnumEstadoPoliza estado, String motor, String chasis,
-			String patente, String kmRealizadosPorAnio, Boolean guardaGarage, Boolean tieneAlarma,
-			Boolean tieneRastreoVehicular, Boolean tt, EnumSiniestros ns) {
-		this.cliente = cliente;
-		this.hijosDeclarado = new ArrayList<HijoDeclarado>();
-		this.tipoCobertura = tc;
-		this.anioModelo = am;
-		this.ciudad = ciudad;
-		this.parametroPoliza = p;
-		this.solicitudPoliza = sp;
-		this.numeroPoliza = numeroPoliza;
-		this.sumaAsegurada = sumaAsegurada;
-		this.estado = estado;
-		this.motor = motor;
-		this.chasis = chasis;
-		this.patente = patente;
-		this.kmRealizadosPorAnio = kmRealizadosPorAnio;
-		this.guardaGarage = guardaGarage;
-		this.tieneAlarma = tieneAlarma;
-		this.tieneRastreoVehicular = tieneRastreoVehicular;
-		this.tieneTuercasAntirobo = tt;
-		this.numerosSiniestrosUltimoAnios = ns;
-		this.inicioVigencia = null;
-		this.fechaEmision = null;
-		this.finVigencia = null;
-		this.formaPago = null;
-		this.esPropuesta = null;
-		this.estaEmitida = null;
-		this.valorDescuentoPorUnidadAdicional = null;
-		this.valorPremio = null;
-		this.valorPrima = null;
-		this.valorDescuento = null;
-		this.valorBonificacionPagoSemestral = null;
-		this.valorInteresGenero = null;
-		this.valorRiesgoCiudad = null;
-		this.valorRiesgoModelo = null;
-		this.porcentajeValorAsegurado = null;
 	}
 	
 	public Cliente getCliente() {

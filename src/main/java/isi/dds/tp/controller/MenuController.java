@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
-import isi.dds.tp.view.CU04View;
 import isi.dds.tp.view.MenuView2;
 import isi.dds.tp.view.MenuView1;
 
@@ -84,7 +83,7 @@ public class MenuController {
 					HibernateUtil.recargarBaseDatos();
 					menuView1.yaCargoBaseDatos();
 				}
-				new CU04View(ventana);
+				new CU04Controller(ventana);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -99,7 +98,6 @@ public class MenuController {
 					menuView1.yaCargoBaseDatos();
 				}
 				new CU17Controller(ventana);
-				//a.setMenuController(instancia);
 				ventana.revalidate();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
