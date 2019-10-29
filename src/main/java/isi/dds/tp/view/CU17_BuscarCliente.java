@@ -219,7 +219,7 @@ public class CU17_BuscarCliente extends JPanel {
 	    });
 	}
 	
-	public void addItemSeleccionTipoCobertura(String item) {
+	public void addItemTipoCobertura(String item) {
 		seleccionTipoDocumento.addItem(item);
 	}
 

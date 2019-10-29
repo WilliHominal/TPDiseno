@@ -133,13 +133,13 @@ public class CU04_AltaCliente extends JPanel{
 		seleccionTipoDocumento.addItem("Selecionar tipo doc.");
 		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
 		for(int i=0; i<tipoDocumentos.length; i++){
-			seleccionTipoDocumento.addItem(GestorEnum.get().getStringTipoDocumento(tipoDocumentos[i]));
+			seleccionTipoDocumento.addItem(GestorEnum.get().parseString(tipoDocumentos[i]));
 		}
 		
 		seleccionSexo.addItem("Selecionar sexo");
 		EnumSexo[] sexos = EnumSexo.values();
 		for(int i=0; i<sexos.length; i++){
-			seleccionSexo.addItem(GestorEnum.get().getStringSexo(sexos[i]));
+			seleccionSexo.addItem(GestorEnum.get().parseString(sexos[i]));
 		}
 		
 		List<Pais> paises = GestorDomicilio.get().getPaises();
@@ -163,13 +163,13 @@ public class CU04_AltaCliente extends JPanel{
 		seleccionCondicionIva.addItem("Selecionar cond. de IVA");
 		EnumCondicionIVA[] condicionesIva = EnumCondicionIVA.values();
 		for(int i=0; i<condicionesIva.length; i++){
-			seleccionCondicionIva.addItem(GestorEnum.get().getStringCondicionIva(condicionesIva[i]));
+			seleccionCondicionIva.addItem(GestorEnum.get().parseString(condicionesIva[i]));
 		}
 		
 		seleccionEstadoCivil.addItem("Selecionar estado civil");
 		EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
 		for(int i=0; i<estadosCivil.length; i++){
-			seleccionEstadoCivil.addItem(GestorEnum.get().getStringEstadoCivil(estadosCivil[i]));
+			seleccionEstadoCivil.addItem(GestorEnum.get().parseStringMasc(estadosCivil[i]));
 		}
 		
 	}

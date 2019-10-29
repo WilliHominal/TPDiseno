@@ -1,23 +1,16 @@
 package isi.dds.tp.view;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
@@ -26,48 +19,18 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
-
-import isi.dds.tp.controller.CU17_controller;
-import isi.dds.tp.gestor.GestorDomicilio;
-import isi.dds.tp.gestor.GestorEnum;
-import isi.dds.tp.gestor.GestorParametrosVehiculo;
-import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Ciudad;
-import isi.dds.tp.modelo.Cliente;
-import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
-import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.Provincia;
 
-@SuppressWarnings("serial")
 public class CU01_AltaPoliza1 extends JPanel {
-	
-	 public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JFrame frame = new JFrame();
-					new CU01_AltaPoliza1(frame);
-					GestorTema.get().setTema(frame, "Dar de alta póliza: INGRESAR DATOS");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
-	private JFrame ventana;
-	private Menu menu;
+	private static final long serialVersionUID = 4544933098405881656L;
+
 	private GestorTema tema = GestorTema.get();
-	
-	private String tituloAnterior = "";
-	private Boolean primerCliente = true;
-	public Poliza poliza = new Poliza();
-	
+
 	private JLabel lnumeroCliente = new JLabel("Número cliente:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
 	private JLabel ldocumento = new JLabel("Documento:");
@@ -102,7 +65,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 	private JTextField campoApellido = new JTextField(15);
 	private JTextField campoNombres = new JTextField(15);
 	private JTextField campoCalle = new JTextField(15);
-	private JTextField campoNumeroDomicilio = new JTextField(8);
+	private JTextField campoNumeroCalle = new JTextField(8);
 	private JTextField campoPiso = new JTextField(2);
 	private JTextField campoDepartamento = new JTextField(2);
 	private JTextField campoMotor = new JTextField(15);
@@ -140,28 +103,18 @@ public class CU01_AltaPoliza1 extends JPanel {
 	private Object[][] datosTabla = {{""},{""},{""},{""}};
 	private DefaultTableModel model;
 	
-	public CU01_AltaPoliza1(JFrame ventana) {
-		this.ventana = ventana;
-		this.tituloAnterior = ventana.getTitle();
-		try {
-			menu = (Menu) ventana.getContentPane();
-		}catch(Exception ex) {
-		    menu = null;
-		}
-		ventana.setContentPane(this);
-		
+	public CU01_AltaPoliza1() {	
 		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
-		
-		comportamientoBotones();
-		comportamientoComboBox();		
-		comportamientoCampos();
+		cargarTabla(0);
+		addListenerCampoMotor();
+		addListenerCampoChasis();
+		addListenerCampoPatente();
+		addListenerSeleccionKm();
 	}
 
 	private void inicializarComponentes() {
-		poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
-				
 		campoSumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
 				
 		garage.add(rbtnGarageSi);
@@ -199,9 +152,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 		btnQuitarHijo.setPreferredSize(new Dimension(160, 25));
 		btnConfirmarDatos.setPreferredSize(new Dimension(170, 25));
 		btnCancelar.setPreferredSize(new Dimension(170, 25));
-		
-		cargarTabla(new ArrayList<HijoDeclarado>());
-		
+				
 		tablaHijosScroll.setPreferredSize(new Dimension(350, 100));
 	}
 	
@@ -296,7 +247,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.gridx = 5;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 5, 50);
-		add(campoNumeroDomicilio, constraints);
+		add(campoNumeroCalle, constraints);
 		
 		constraints.gridwidth = 2;
 		constraints.gridx = 5;
@@ -304,7 +255,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		constraints.insets.set(5, 100, 5, 0);
 		add(lpiso, constraints);
 		
-
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 130, 5, 0);
 		add(campoPiso, constraints);
@@ -446,7 +396,6 @@ public class CU01_AltaPoliza1 extends JPanel {
 		
 	private void inicializarTema() {	
 		tema.setTema(this);
-		
 		tema.setTema(lnumeroCliente);
 		tema.setTema(ltipoDocumento);
 		tema.setTema(ldocumento);
@@ -474,42 +423,36 @@ public class CU01_AltaPoliza1 extends JPanel {
 		tema.setTema(ltuercas);
 		tema.setTema(lcantidadHijos);
 		tema.setTema(ldatosObligatorios);
-		
 		tema.setTemaLabelchica(ldatosObligatorios);
-			
 		tema.setTema(campoNumeroCliente, false);
 		tema.setTema(campoTipoDocumento, false);
 		tema.setTema(campoNumeroDocumento, false);
 		tema.setTema(campoApellido, false);
 		tema.setTema(campoNombres, false);
 		tema.setTema(campoCalle, false);
-		tema.setTema(campoNumeroDomicilio, false);
+		tema.setTema(campoNumeroCalle, false);
 		tema.setTema(campoDepartamento, false);
 		tema.setTema(campoPiso, false);
 		tema.setTema(campoSumaAsegurada, false);
 		tema.setTema(campoNumerosSiniestros, false);
-		
 		tema.setTema(campoMotor, false);
 		campoMotor.setToolTipText("CCCCCCCCCC9999999");
 		tema.setTema(campoChasis, false);
 		campoChasis.setToolTipText("C9999999");
 		tema.setTema(campoPatente, false);
 		campoPatente.setToolTipText("LLL999 / LL9999LL");
-		
 		tema.setTema(btnBuscarCliente, true);
 		tema.setTema(btnAltaCliente, true);
 		tema.setTema(btnAgregarHijo, false);
 		tema.setTema(btnQuitarHijo, false);
 		tema.setTema(btnConfirmarDatos, false);
 		tema.setTema(btnCancelar, true);
-		
 		tema.setTema(seleccionProvincia, false);
 		tema.setTema(seleccionCiudad, false);
 		tema.setTema(seleccionMarca, false);
 		tema.setTema(seleccionModelo, false);
 		tema.setTema(seleccionAnio, false);
 		tema.setTema(seleccionKm, false);
-
 		tema.setTema(rbtnGarageSi);
 		tema.setTema(rbtnGarageNo);
 		tema.setTema(rbtnAlarmaSi);
@@ -518,560 +461,36 @@ public class CU01_AltaPoliza1 extends JPanel {
 		tema.setTema(rbtnRastreoNo);
 		tema.setTema(rbtnTuercasSi);
 		tema.setTema(rbtnTuercasNo);
-
 		tema.setTema(tablaHijos, false);
 		tema.setTema(tablaHijosScroll, false);
-		
 	}
 
-	private void comportamientoBotones() {
-		btnBuscarCliente.addActionListener(a -> {
-			try {
-				new CU17_controller(ventana);	
-				ventana.revalidate();
-			}catch(Exception ex) {
-            	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
-                          "Error.", JOptionPane.ERROR_MESSAGE);       	
-			}
-		});
+	public void componentesAlObtenerCliente() {
+		rbtnGarageSi.setEnabled(true);
+		rbtnGarageNo.setEnabled(true);
+		rbtnAlarmaSi.setEnabled(true);
+		rbtnAlarmaNo.setEnabled(true);
+		rbtnRastreoNo.setEnabled(true);
+		rbtnRastreoSi.setEnabled(true);
+		rbtnTuercasSi.setEnabled(true);
+		rbtnTuercasNo.setEnabled(true);
 		
-		btnAltaCliente.addActionListener(a -> {
-			try {				
-				new CU04_AltaCliente(ventana);
-				ventana.revalidate();
-			}catch(Exception ex) {
-				JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
-                        "Error.", JOptionPane.ERROR_MESSAGE);    
-			}
-		});
+		tema.setTema(btnAgregarHijo, true);
+		tema.setTema(btnConfirmarDatos, true);
 		
-		btnAgregarHijo.addActionListener(a -> {
-			try {				
-				componentesAlDeclararHijos(false, null);
-				
-				new CU01_DeclararHijo(ventana);
-				
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		});
+		tema.setTema(seleccionProvincia, true);
+		tema.setTema(seleccionCiudad, true);
+		tema.setTema(seleccionMarca, true);
+		tema.setTema(seleccionKm, true);
+		tema.setTema(seleccionModelo, false);
+		tema.setTema(seleccionAnio, false);
 		
-		btnQuitarHijo.addActionListener(a -> {
-			try {			
-				if(poliza.getHijosDeclarado().size() > 0) {
-					int hijoSeleccionado = tablaHijos.getSelectedRow();
-					poliza.getHijosDeclarado().remove(hijoSeleccionado);
-					
-					List<HijoDeclarado> hijos = poliza.getHijosDeclarado();
-					
-					if(hijos.size() == 0) {
-						tema.setTema(btnQuitarHijo, false);
-					}							
-					cargarTabla(hijos);
-					return;
-				}
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		});
- 
-		btnConfirmarDatos.addActionListener(a -> {
-			try {		
-				
-				if(!condicionesGenerarPoliza()) {
-					return;
-				}
-				
-				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
-					
-					poliza.setCiudad(seleccionCiudad.getItemAt(seleccionCiudad.getSelectedIndex()));
-					poliza.setAnioModelo(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()));
-					poliza.setMotor(campoMotor.getText());
-					poliza.setChasis(campoChasis.getText());
-					poliza.setPatente(campoPatente.getText());
-					poliza.setSumaAsegurada(Float.parseFloat(campoSumaAsegurada.getText()));
-					poliza.setKmRealizadosPorAnio(seleccionKm.getItemAt(seleccionKm.getSelectedIndex()));
-					poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().getEnumSiniestros(campoNumerosSiniestros.getText()));
-
-					
-					if(rbtnGarageSi.isSelected()) {
-						poliza.setGuardaGarage(true);
-					}else {
-						poliza.setGuardaGarage(false);
-					}
-					
-					if(rbtnAlarmaSi.isSelected()) {
-						poliza.setTieneAlarma(true);
-					}else {
-						poliza.setTieneAlarma(false);
-					}
-					
-					if(rbtnRastreoSi.isSelected()) {
-						poliza.setTieneRastreoVehicular(true);
-					}else {
-						poliza.setTieneRastreoVehicular(false);
-					}
-					
-					if(rbtnTuercasSi.isSelected()) {
-						poliza.setTieneTuercasAntirobo(true);
-					}else {
-						poliza.setTieneTuercasAntirobo(false);
-					}
-				
-					poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().getEnumSiniestros(campoNumerosSiniestros.getText()));
-					new CU01_AltaPoliza2(ventana, poliza);
-				}
-				
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		});
-		 
-		btnCancelar.addActionListener(a -> {
-			try {			
-				this.setVisible(false);
-				ventana.setContentPane(menu);	
-				ventana.setTitle(tituloAnterior);
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(this, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		});
-	}
-
-	private void comportamientoComboBox() {
-		seleccionProvincia.addActionListener (a -> {
-			Provincia provincia = seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex());
-			seleccionCiudad.removeAllItems();
-			Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(provincia).iterator();
-			while(iteratorCiudad.hasNext()){
-				seleccionCiudad.addItem(iteratorCiudad.next());
-			}
-		});		
-		
-		seleccionMarca.addActionListener (a -> {
-			tema.setTema(seleccionMarca, true);
-			if(seleccionMarca.getSelectedIndex()!=0) {
-				//para cuando es seleccionado luego de clickear el confirmar datos
-				
-				seleccionModelo.setEnabled(false);	
-				seleccionModelo.removeAllItems();
-
-				Iterator<Modelo> iteratorModelo = seleccionMarca.getItemAt(seleccionMarca.getSelectedIndex()).getModelos().iterator();
-				while(iteratorModelo.hasNext()){
-					seleccionModelo.addItem(iteratorModelo.next());
-				}				
-				
-				seleccionAnio.setEnabled(false);	
-				campoSumaAsegurada.setText("");
-				seleccionAnio.removeAllItems();
-									
-				Iterator<AnioModelo> iteratorAnioModelo = GestorParametrosVehiculo.get().sortAniosModelo(seleccionModelo.getItemAt(seleccionModelo.getSelectedIndex()).getAnios()).iterator();
-				while(iteratorAnioModelo.hasNext()){
-					seleccionAnio.addItem(iteratorAnioModelo.next());
-				}
-				
-				seleccionModelo.setEnabled(true);
-				seleccionAnio.setEnabled(true);
-				tema.setTema(seleccionModelo, true);
-				tema.setTema(seleccionAnio, true);
-				campoSumaAsegurada.setText(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()).getSumaAsegurada().toString());
-			}
-			else {
-				tema.setTema(seleccionModelo, false);
-				tema.setTema(seleccionAnio, false);
-				seleccionModelo.removeAllItems();
-				campoSumaAsegurada.setText("");	
-				seleccionAnio.removeAllItems();
-			}			
-		});
-		
-		seleccionModelo.addActionListener (a -> {
-			if(seleccionModelo.isEnabled()) {
-				
-					Modelo modelo = seleccionModelo.getItemAt(seleccionModelo.getSelectedIndex());
-					
-					seleccionAnio.setEnabled(false);	
-					campoSumaAsegurada.setText("");
-					seleccionAnio.removeAllItems();
-										
-					Iterator<AnioModelo> iteratorAnioModelo = modelo.getAnios().iterator();
-					while(iteratorAnioModelo.hasNext()){
-						seleccionAnio.addItem(iteratorAnioModelo.next());
-					}
-					
-					seleccionAnio.setEnabled(true);
-					campoSumaAsegurada.setText(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()).getSumaAsegurada().toString());
-			}
-			else {
-				tema.setTema(seleccionAnio, false);
-			}
-
-		});			
-		
-		seleccionAnio.addActionListener (a -> {
-			if(seleccionAnio.isEnabled()) {
-				campoSumaAsegurada.setText(seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex()).getSumaAsegurada().toString());
-			}
-			else {
-				campoSumaAsegurada.setText("");
-			}
-		});
-		
-		seleccionKm.addActionListener (a -> {
-			tema.setTema(seleccionKm, true);	
-		});
-	}
-
-	private void comportamientoCampos() {
-		
-		campoMotor.addKeyListener(new KeyAdapter(){
-			public void keyTyped(KeyEvent e){
-				tema.setTema(campoMotor, true);
-				char caracter = e.getKeyChar();
-				if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
-						&& campoMotor.getText().length() < 17 ){
-				}
-				else{
-					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
-				}
-			}
-		}); 
-
-	    campoChasis.addKeyListener(new KeyAdapter(){ 
-	    	public void keyTyped(KeyEvent e){
-				tema.setTema(campoChasis, true);
-				char caracter = e.getKeyChar();
-				if(( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
-						&& campoChasis.getText().length() < 8 ){
-					
-				}
-				else{
-					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
-				}
-	    	}
-	    });
-
-	    campoPatente.addKeyListener(new KeyAdapter(){
-	    	public void keyTyped(KeyEvent e){
-				tema.setTema(campoPatente, true);
-				char caracter = e.getKeyChar();
-				if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
-						&& campoPatente.getText().length() < 7 ){
-					
-				}
-				else{
-					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
-				}
-	    	}
-	    }); 
-
-	}
-	
-	/**
-	 * Éste método es invocado una vez obtenido el cliente buscado o que fue dado de alta.
-	 * Setea los campos correspondientes a los atributos del cliente, inhabilita/habilita
-	 * ciertos componentes del panel, y recargar ciertos valores para la generación de la 
-	 * póliza.
-	 * @param cliente
-	 */
-	public void obtenidoCliente(Cliente cliente){
-		poliza.setCliente(cliente);
-		campoNumeroCliente.setText(cliente.getNumeroCliente().toString());
-		campoTipoDocumento.setText(GestorEnum.get().getStringTipoDocumento(cliente.getTipoDocumento()));
-		campoNumeroDocumento.setText(cliente.getNumeroDocumento().toString());
-		campoApellido.setText(cliente.getApellido());
-		campoNombres.setText(cliente.getNombre());
-		campoCalle.setText(cliente.getCalle());
-		campoNumeroDomicilio.setText(cliente.getNumeroCalle().toString());
-		campoNumerosSiniestros.setText(GestorEnum.get().getStringSiniestros(
-				GestorSubsistemaSiniestros.get().getSiniestrosUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear())));
-		
-		if(cliente.getPiso()==null) {
-			campoPiso.setText("-");
-			campoDepartamento.setText("-");
-		}else {
-			campoPiso.setText(cliente.getPiso().toString());
-			campoDepartamento.setText(cliente.getDepartamento());
-		}
-		
-		if(primerCliente) {
-			rbtnGarageSi.setEnabled(true);
-			rbtnGarageNo.setEnabled(true);
-			rbtnAlarmaSi.setEnabled(true);
-			rbtnAlarmaNo.setEnabled(true);
-			rbtnRastreoNo.setEnabled(true);
-			rbtnRastreoSi.setEnabled(true);
-			rbtnTuercasSi.setEnabled(true);
-			rbtnTuercasNo.setEnabled(true);
-			
-			tema.setTema(btnAgregarHijo, true);
-			tema.setTema(btnConfirmarDatos, true);
-			
-			tema.setTema(seleccionProvincia, true);
-			tema.setTema(seleccionCiudad, true);
-			tema.setTema(seleccionMarca, true);
-			tema.setTema(seleccionKm, true);
-			tema.setTema(seleccionModelo, false);
-			tema.setTema(seleccionAnio, false);
-			
-			tema.setTema(campoMotor, true);
-			tema.setTema(campoChasis, true);
-			tema.setTema(campoPatente, true);
-			tema.setTema(tablaHijos, true);
-			tema.setTema(tablaHijosScroll, true);
-			tema.setTema(tablaHijosScroll, false);
-
-			ArrayList<Provincia> provincias = (ArrayList<Provincia>) GestorDomicilio.get().getProvincias(cliente.getCiudad().getProvincia().getPais().getIdPais());
-			
-			Iterator<Provincia> iteradorProvincias = provincias.iterator();
-			while(iteradorProvincias.hasNext()){
-				seleccionProvincia.addItem(iteradorProvincias.next());
-			}
-			
-			ArrayList<Marca> marcas = (ArrayList<Marca>) GestorParametrosVehiculo.get().getMarcas();
-			seleccionMarca.addItem(new Marca("Seleccionar marca"));
-			Iterator<Marca> marcasIterator = marcas.iterator();
-			while(marcasIterator.hasNext()){
-				seleccionMarca.addItem(marcasIterator.next());
-			}
-			
-			seleccionKm.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecionar kilometraje",
-					"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
-					"50.000 - 59.999", "60.000 - 69.999", "70.000 - 79.999", "80.000 - 89.999", "90.000 - 99.999",
-					"100.00 - 109.999", "110.000 - 119.999", "120.000 - 129.999", "130.000 - 139.999", "140.000 - 149.999",
-					"150.000 - 159.999", "160.000 - 169.999", "170.000 - 179.999", "180.000 - 189.999", "190.000 - 199.999",
-					"200.000 - 209.999", "210.000 - 219.999", "220.000 - 229.999", "230.000 - 239.999", "240.000 - 249.999",
-					"250.000 - 259.999", "260.000 - 269.999", "270.000 - 279.999", "280.000 - 289.999", "290.000 - 299.999",
-					"Más de 300.000 km"
-			}));
-			
-
-			primerCliente = false;
-		}
-		
-		seleccionProvincia.setSelectedItem(cliente.getCiudad().getProvincia());	
-		
-		seleccionCiudad.removeAllItems();
-		Iterator<Ciudad> iteratorCiudad = GestorDomicilio.get().sortCiudades(cliente.getCiudad().getProvincia()).iterator();
-		while(iteratorCiudad.hasNext()){
-			seleccionCiudad.addItem(iteratorCiudad.next());
-		}
-		
-		seleccionCiudad.setSelectedItem(cliente.getCiudad());	
-	
-	}
-
-	/**
-	 * Este método retorna un valor Boolean de acuerdo a sí
-	 * se dan las condiciones necesarias para generar una
-	 * póliza Si no se dan las condiciones necesarias 
-	 * genera un aviso de error, distiguiendo que se está
-	 * incumpliendo para poder generar póliza.
-	 * @return
-	 */
-	private Boolean condicionesGenerarPoliza() {
-		String patenteLargo = "", patenteFormato6 = "", patenteFormato7 = "";
-		String chasisBlanco = "", chasisLargo = "", chasisFormato = "";
-		String motorBlanco = "", motorLargo = "", motorFormato = "";
-		String marcaSelecciono = "", kmSelecciono = "";
-		
-		Boolean valido = true;
-		
-		int errorNumero = 1;
-	
-		if (seleccionMarca.getSelectedIndex() == 0) {
-			tema.erroneo(seleccionMarca);
-			//seleccionMarca.setBackground(colorErroneo);
-			marcaSelecciono = errorNumero+") No se ha seleccionado un valor del campo marca.\n";
-			errorNumero++;
-			valido = false;
-		}
-		
-		String textoMotor = campoMotor.getText();
-		String textoChasis = campoChasis.getText();
-		String textoPatente = campoPatente.getText();
-		
-		if(textoMotor.isEmpty()) {
-			tema.erroneo(campoMotor);
-			motorBlanco = errorNumero+") No se ha introducido un número de motor\n";
-			errorNumero++;
-			valido = false;
-		}
-		else {
-			if(textoMotor.length() == 17) {
-				for(int i = 10; i < 17; i++) {
-					if(Character.isLetter(textoMotor.charAt(i))) {
-						tema.erroneo(campoMotor);
-						motorFormato = errorNumero+") Formato de motor incorrecto. El formato de un número de chasis es CCCCCCCCCC9999999, donde\n"
-								+ "las C debe indican que debe escribirse un dígito o una letra los 9 indican que deb escrirse un dígito.\n";
-						errorNumero++;
-						valido = false;
-						i = 17;
-					}
-					else {
-						tema.setTema(campoMotor, true);
-					}
-				}
-						
-			}
-			else {
-				tema.erroneo(campoMotor);
-				motorLargo = errorNumero+") La definición de un número de motor debe ser de longitud 17.\n";
-				errorNumero++;
-				valido = false;
-			}	
-		}
-		
-		if(textoChasis.isEmpty()) {
-			tema.erroneo(campoChasis);
-			chasisBlanco = errorNumero+") No se ha introducido un número de chasis.\n";
-			errorNumero++;
-			valido = false;
-		}
-		else{
-			if(textoChasis.length() == 8) {
-
-				for(int i = 1; i < 8; i++) {
-					
-					if(!Character.isDigit(textoChasis.charAt(i))) {
-						tema.erroneo(campoChasis);
-						chasisFormato = errorNumero+") Formato de chasis incorrecto. El formato de un número de chasis es C9999999, donde C indica\n"
-								+ "que debe escribirse un dígito o una letra y los 9 indican quedebe escribirse un dígito.\n";
-						errorNumero++;
-						valido = false;
-						i = 8;
-					}
-					else {
-						tema.setTema(campoChasis, true);
-					}
-				}
-				
-				
-			}
-			else {
-				tema.erroneo(campoChasis);
-				chasisLargo = errorNumero+") La definición de un número de chasis debe ser de longitud 8.\n";
-				errorNumero++;
-				valido = false;
-			}			
-		}
-		
-		if(!textoPatente.isEmpty()) {
-			switch (textoPatente.length()) {
-			
-			//para patente longitud 6
-	        case 6:
-	        	for(int i = 0; i < 6; i++) {
-	        		
-		        	switch(i) {
-		        		case 0:
-		        		case 1:
-		        		case 2:
-		    				if(!Character.isLetter(textoPatente.charAt(i))) {
-		    					tema.erroneo(campoPatente);
-		    					patenteFormato6 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 6 es LLL999, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
-		    					errorNumero++;
-		    					valido = false;
-		    					i = 6;
-		    				}
-		    				else {
-		    					tema.setTema(campoPatente, true);
-		    				}
-		        		break;
-		        		
-		        		case 3:
-		        		case 4:
-		        		case 5:
-		    				if(!Character.isDigit(textoPatente.charAt(i))) {
-		    					tema.erroneo(campoPatente);
-		    					patenteFormato6 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 6 es LLL999, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
-		    					errorNumero++;
-		    					valido = false;
-		    					i = 6;
-		    				}
-		    				else {
-		    					tema.setTema(campoPatente, true);
-		    				}
-		    		
-		        		break;
-		        	}
-	        		
-	        	}
-	        	
-	        break;     
-
-	        //para patente longitud 7
-	        case 7:
-	        	for(int j = 0; j < 7; j++) {
-	        		
-		        	switch(j) {
-		        		case 0:
-		        		case 1:
-		        		case 5:
-		        		case 6:
-		    				if(Character.isDigit(textoPatente.charAt(j))) {
-		    					tema.erroneo(campoPatente);
-		    					patenteFormato7 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 7 es LL999LL, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
-		    					errorNumero++;
-		    					valido = false;
-		    					j = 7;
-		    				}else {
-		    					tema.setTema(campoPatente, true);
-		    				}
-		        		break;
-		        
-		        		case 2:
-		        		case 3:
-		        		case 4:
-		    				if(Character.isLetter(textoPatente.charAt(j))) {
-		    					tema.erroneo(campoPatente);
-		    					patenteFormato7 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 7 es LL999LL, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";	
-		    					errorNumero++;
-		    					valido = false;
-		    					j = 7;
-		    				}else {
-		    					tema.setTema(campoPatente, true);
-		    				}
-		        		break;
-		        	}
-	        		
-	        	}
-	        break;
-
-	        default:
-	        	tema.erroneo(campoPatente);
-				patenteLargo = errorNumero+") La definición de una patente debe ser de longitud 6 o 7.\n";
-				errorNumero++;
-				valido = false;
-			break;
-
-			}		
-		}
-		else {
-			tema.setTema(campoPatente, true);
-		}
-		
-		if (seleccionKm.getSelectedIndex() == 0) {
-			//seleccionKm.setBackground(colorErroneo);
-			tema.erroneo(seleccionKm);
-			kmSelecciono = errorNumero+") No se ha seleccionado un valor del campo km realizados por año.\n";
-			valido = false;
-		}
-
-		String mensajeError = marcaSelecciono + motorBlanco + motorFormato + motorLargo + chasisBlanco + chasisFormato + chasisLargo + patenteFormato6 + patenteFormato7 + patenteLargo + kmSelecciono;
-		
-		if(!valido) {
-			JOptionPane.showConfirmDialog(ventana, mensajeError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-		}
-		
-		return valido;
+		tema.setTema(campoMotor, true);
+		tema.setTema(campoChasis, true);
+		tema.setTema(campoPatente, true);
+		tema.setTema(tablaHijos, true);
+		tema.setTema(tablaHijosScroll, true);
+		tema.setTema(tablaHijosScroll, false);
 	}
 
 	/**
@@ -1079,8 +498,7 @@ public class CU01_AltaPoliza1 extends JPanel {
 	 * acuerdo a sí está o no declarandose un hijo.
 	 * @param val
 	 */
-	public void componentesAlDeclararHijos(Boolean val, HijoDeclarado hijo) {
-		
+	public void componentesAlDeclararHijos(Boolean val, Integer canHijos) {
 		if(seleccionMarca.getSelectedIndex()!=0) {
 			tema.setTema(seleccionModelo, val);
 			tema.setTema(seleccionAnio, val);
@@ -1116,35 +534,44 @@ public class CU01_AltaPoliza1 extends JPanel {
 		tema.setTema(btnCancelar, val);
 		tema.setTema(btnAgregarHijo, val);
 		
-		if(hijo == null) {
+		if(canHijos == 0) {
 			tema.setTema(btnQuitarHijo, false);
 		}
 		else {
 			tema.setTema(btnQuitarHijo, true);
 		}
-
-		
-		if(val) {
-			if(hijo != null) {
-				hijo.setPoliza(poliza);
-    			poliza.getHijosDeclarado().add(hijo);
-    						        			
-    			cargarTabla(poliza.getHijosDeclarado());
-			}
-		}
 	}
 
+	public void noValido(Boolean marca, Boolean motor, Boolean chasis, Boolean patente, Boolean km) {
+		if(marca) {
+			tema.erroneo(seleccionMarca);
+		}
+		if(motor) {
+			tema.erroneo(campoMotor);	
+		}
+		if(chasis) {
+			tema.erroneo(campoChasis);
+		}
+		if(patente) {
+			tema.erroneo(campoPatente);
+		}
+		if(km) {
+			tema.erroneo(seleccionKm);
+		}
+	}
+	
 	/**
 	 * Recarga el modelo de la tabla cada vez que se elimina o agrega un hijo,
 	 * de modo que haya una fila por cada hijo declarado. Luego carga los hijos
 	 * actualmente declarados.
 	 * @param hijosDeclarado
 	 */
-	private void cargarTabla(List<HijoDeclarado> hijosDeclarado) {
-		int tamanioTablaActual = hijosDeclarado.size();
+	public void cargarTabla(Integer cantHijos) {
 		
-		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, tamanioTablaActual) {
-		    @Override
+		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, cantHijos) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
 		    public boolean isCellEditable(int row, int column) {
 		       return false;
 		    }
@@ -1170,30 +597,284 @@ public class CU01_AltaPoliza1 extends JPanel {
 		tablaHijos.getColumnModel().getColumn(1).setHeaderValue("Fecha nacimiento");
 		tablaHijos.getColumnModel().getColumn(2).setHeaderValue("Sexo");
 		tablaHijos.getColumnModel().getColumn(3).setHeaderValue("Estado civil");
-		
-		for(int fila = 0; fila < tamanioTablaActual; fila++) {
-			
-			model.setValueAt(fila+1, fila, 0);
-			
-			LocalDate date = hijosDeclarado.get(fila).getFechaNacimiento();
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
-			String formattedString = date.format(formatter);
-			
-			model.setValueAt(formattedString, fila, 1);
-			
-			String sexo = GestorEnum.get().getStringSexo(hijosDeclarado.get(fila).getSexo());
-			
-			model.setValueAt(sexo, fila, 2);
-			
-			if(sexo.equals("Femenino")) {
-				model.setValueAt(GestorEnum.get().getStringEstadoCivilFem(hijosDeclarado.get(fila).getEstadoCivil()), fila, 3);
+	}
+	
+	public void cargarHijosTabla(Integer fila, String fechaNac, String sexo, String estadoCivil) {
+		model.setValueAt(fila+1, fila, 0);
+		model.setValueAt(fechaNac, fila, 1);
+		model.setValueAt(sexo, fila, 2);
+		model.setValueAt(estadoCivil, fila, 3);
+	}
+	
+	public void addListenerBtn_BuscarCliente(ActionListener listener) {
+		btnBuscarCliente.addActionListener(listener);
+	}
+
+	public void addListenerBtn_AltaCliente(ActionListener listener) {
+		btnAltaCliente.addActionListener(listener);
+	}
+	
+	public void addListenerBtn_AgregarHijo(ActionListener listener) {
+		btnAgregarHijo.addActionListener(listener);
+	}
+	
+	public void addListenerBtn_QuitarHijo(ActionListener listener) {
+		btnQuitarHijo.addActionListener(listener);
+	}
+	
+	public void addListenerBtn_ConfirmarDatos(ActionListener listener) {
+		btnConfirmarDatos.addActionListener(listener);
+	}
+	
+	public void addListenerBtn_Cancelar(ActionListener listener) {
+		btnCancelar.addActionListener(listener);
+	}
+	
+	public void addListenerCampoMotor() {
+		campoMotor.addKeyListener(new KeyAdapter(){
+			public void keyTyped(KeyEvent e){
+				tema.setTema(campoMotor, true);
+				char caracter = e.getKeyChar();
+				if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+						&& campoMotor.getText().length() < 17 ){
+				}
+				else{
+					e.consume();  // ignorar el evento de teclado
+					getToolkit().beep();
+				}
 			}
-			else {
-				model.setValueAt(GestorEnum.get().getStringEstadoCivil(hijosDeclarado.get(fila).getEstadoCivil()), fila, 3);
-			}
+		}); 
+	}
+	
+	public void addListenerCampoChasis() {
+	    campoChasis.addKeyListener(new KeyAdapter(){ 
+	    	public void keyTyped(KeyEvent e){
+				tema.setTema(campoChasis, true);
+				char caracter = e.getKeyChar();
+				if(( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+						&& campoChasis.getText().length() < 8 ){
+					
+				}
+				else{
+					e.consume();  // ignorar el evento de teclado
+					getToolkit().beep();
+				}
+	    	}
+	    });
+	}
+	
+	public void addListenerCampoPatente() {
+	    campoPatente.addKeyListener(new KeyAdapter(){
+	    	public void keyTyped(KeyEvent e){
+				tema.setTema(campoPatente, true);
+				char caracter = e.getKeyChar();
+				if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+						&& campoPatente.getText().length() < 7 ){
+					
+				}
+				else{
+					e.consume();  // ignorar el evento de teclado
+					getToolkit().beep();
+				}
+	    	}
+	    }); 
+	}
+	
+	public void addListenerSeleccionProvincia(ActionListener listener) {
+		seleccionProvincia.addActionListener (listener);		
+	}
+	
+	public void addListenerSeleccionMarca(ActionListener listener) {
+		seleccionMarca.addActionListener (listener);
+		seleccionMarca.addActionListener (a -> {
+			tema.setTema(seleccionMarca, true);	
+		});
+	}
+	
+	public void addListenerSeleccionModelo(ActionListener listener) {
+		seleccionModelo.addActionListener (listener);
+	}
+	
+	public void addListenerSeleccionAnioModelo(ActionListener listener) {
+		seleccionAnio.addActionListener (listener);
+	}
+	
+	public void addListenerSeleccionKm() {
+		seleccionKm.addActionListener (a -> {
+			tema.setTema(seleccionKm, true);	
+		});
+	}
+	
+	public void addMarca(Marca marca) {
+		seleccionMarca.addItem(marca);
+	}
+	
+	public void addModelo(Modelo modelo) {
+		seleccionModelo.addItem(modelo);
+	}
+	
+	public void addAnioModelo(AnioModelo anioModelo) {
+		seleccionAnio.addItem(anioModelo);
+	}
+	
+	public void addProvincia(Provincia provincia) {
+		seleccionProvincia.addItem(provincia);
+	}
+	
+	public void addCiudad(Ciudad ciudad, Boolean borrarLista) {
+		if(borrarLista) {
+			seleccionCiudad.removeAllItems();
 		}
-		
-	}	
+		seleccionCiudad.addItem(ciudad);
+	}
+	
+	public void addKmsAnio() {
+		seleccionKm.setModel(new DefaultComboBoxModel<String>(new String[] {"Selecionar kilometraje",
+				"0 - 9.999", "10.000 - 19.999", "20.000 - 29.999", "30.000 - 39.999", "40.000 - 49.999",
+				"50.000 - 59.999", "60.000 - 69.999", "70.000 - 79.999", "80.000 - 89.999", "90.000 - 99.999",
+				"100.00 - 109.999", "110.000 - 119.999", "120.000 - 129.999", "130.000 - 139.999", "140.000 - 149.999",
+				"150.000 - 159.999", "160.000 - 169.999", "170.000 - 179.999", "180.000 - 189.999", "190.000 - 199.999",
+				"200.000 - 209.999", "210.000 - 219.999", "220.000 - 229.999", "230.000 - 239.999", "240.000 - 249.999",
+				"250.000 - 259.999", "260.000 - 269.999", "270.000 - 279.999", "280.000 - 289.999", "290.000 - 299.999",
+				"Más de 300.000 km"
+		}));
+	}
+	
+	public void setNumeroCliente(String numeroCliente) {
+		this.campoNumeroCliente.setText(numeroCliente);
+	}
+
+	public void setApellido(String apellido) {
+		this.campoApellido.setText(apellido);
+	}
+
+	public void setNombre(String nombre) {
+		this.campoNombres.setText(nombre);
+	}
+
+	public void setTipoDocumento(String tipoDocumento) {
+		this.campoTipoDocumento.setText(tipoDocumento);
+	}
+
+	public void setNumeroDocumento(String numeroDocumento) {
+		this.campoNumeroDocumento.setText(numeroDocumento);
+	}
+
+	public void setCalle(String calle) {
+		this.campoCalle.setText(calle);
+	}
+
+	public void setNumeroCalle(String numeroCalle) {
+		this.campoNumeroCalle.setText(numeroCalle);
+	}
+
+	public void setPiso(String piso) {
+		this.campoPiso.setText(piso);
+	}
+
+	public void setDepartamento(String departamento) {
+		this.campoDepartamento.setText(departamento);
+	}
+	
+	public void setProvinciaInicio(Provincia provincia) {
+		seleccionProvincia.setSelectedItem(provincia);	
+	}
+	
+	public void setCiudadInicio(Ciudad ciudad) {
+		seleccionCiudad.setSelectedItem(ciudad);	
+	}
+	
+	public void setSumaAsegurada(String sumaAsegurada) {
+		campoSumaAsegurada.setText(sumaAsegurada);
+	}
+	
+	public Provincia getProvincia() {
+		return seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex());
+	}
+	
+	public Ciudad getCiudad() {
+		return seleccionCiudad.getItemAt(seleccionCiudad.getSelectedIndex());
+	}
+	
+	public Marca getMarca() {
+		return seleccionMarca.getItemAt(seleccionMarca.getSelectedIndex());
+	}
+	
+	public Modelo getModelo() {
+		return seleccionModelo.getItemAt(seleccionModelo.getSelectedIndex());
+	}
+	
+	public AnioModelo getAnioModelo() {
+		return seleccionAnio.getItemAt(seleccionAnio.getSelectedIndex());
+	}
+	
+	public String getMotor() {
+		return campoMotor.getText();
+	}
+
+	public String getChasis() {
+		return campoChasis.getText();
+	}
+
+	public String getPatente() {
+		return campoPatente.getText();
+	}
+	
+	public String getSumaAsegurada() {
+		return campoSumaAsegurada.getText();
+	}
+	
+	public String getNumeroSiniestros() {
+		return campoNumerosSiniestros.getText();
+	}
+
+	public String getKmAnio() {
+		return seleccionKm.getItemAt(seleccionKm.getSelectedIndex());
+	}
+	
+	public Boolean getGarage() {
+		return rbtnGarageSi.isSelected();
+	}
+
+	public Boolean getAlarma() {
+		return rbtnAlarmaSi.isSelected();
+	}
+	
+	public Boolean getRastreo() {
+		return rbtnRastreoSi.isSelected();
+	}
+	
+	public Boolean getTuercasAntirrobo() {
+		return rbtnTuercasSi.isSelected();
+	}
+	
+	public Integer getFilaSeleccionada() {
+		return tablaHijos.getSelectedRow();
+	}
+	
+	public void habilitarSeleccionModelo(Boolean habilitar) {
+		tema.setTema(seleccionModelo, habilitar);
+		if(!habilitar) {
+			seleccionModelo.removeAllItems();
+		}
+	}
+	
+	public void habilitarSeleccionAnioModelo(Boolean habilitar) {
+		tema.setTema(seleccionAnio, habilitar);
+		if(!habilitar) {
+			seleccionAnio.removeAllItems();
+			campoSumaAsegurada.setText("");	
+		}
+	}
+
+	public Boolean habilitadaSeleccionModelo() {
+		return seleccionModelo.isEnabled();
+	}
+	
+	public Boolean habilitadaSeleccionAnioModelo() {
+		return seleccionAnio.isEnabled();
+	}
+
 }
 
 

@@ -171,7 +171,7 @@ public class GestorTema {
     	}
     	else {
         	btn.setBackground(COLOR_BOTON_DESHABILITADO);
-    		UIManager.put( "Button.disabledText", COLOR_LETRA_DESHABILITADA );
+    		UIManager.put( "Button.disabledText", COLOR_LETRA_DESHABILITADA);
         	btn.setFont(FUENTE_LETRA_NORMAL);
         	btn.setEnabled(false);
     	}
@@ -197,7 +197,7 @@ public class GestorTema {
     	else {
     		btn.setDisabledIcon(icono);
     		btn.setBackground(COLOR_FONDO_PANTALLA);
-    		UIManager.put( "Button.disabledText", Color.DARK_GRAY.brighter());
+    		UIManager.put( "Button.disabledText", COLOR_LETRA_DESHABILITADA);
 			btn.setEnabled(false);
     	}
     }

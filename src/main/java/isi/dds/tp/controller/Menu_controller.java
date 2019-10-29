@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
-import isi.dds.tp.view.CU01_AltaPoliza1;
 import isi.dds.tp.view.CU04_AltaCliente;
 import isi.dds.tp.view.ErrorBaseDatos;
 import isi.dds.tp.view.Menu;
@@ -49,14 +48,14 @@ public class Menu_controller {
 		tema.setTema(ventana, "MENÚ");
 		ventana.setContentPane(menu);
 		menu.addListenerBtn_AltaPoliza(new ListenerAltaPoliza());
-		menu.addListenerBtn_ConsultarPoliza(new ListenerFuncionNoDisponible());
-		menu.addListenerBtn_GenerarPropuesta(new ListenerFuncionNoDisponible());
-		menu.addListenerBtn_RegistrarPagoPoliza(new ListenerFuncionNoDisponible());
+		//menu.addListenerBtn_ConsultarPoliza(new ListenerFuncionNoDisponible());
+		//menu.addListenerBtn_GenerarPropuesta(new ListenerFuncionNoDisponible());
+		//menu.addListenerBtn_RegistrarPagoPoliza(new ListenerFuncionNoDisponible());
 		menu.addListenerBtn_AltaCliente(new ListenerAltaCliente());
 		menu.addListenerBtn_ConsultarCliente(new ListenerConsultarCliente());
-		menu.addListenerBtn_ActualizarFactores(new ListenerFuncionNoDisponible());
-		menu.addListenerBtn_GenerarInforme(new ListenerFuncionNoDisponible());
-		menu.addListenerBtn_GenerarListado(new ListenerFuncionNoDisponible());
+		//menu.addListenerBtn_ActualizarFactores(new ListenerFuncionNoDisponible());
+		//menu.addListenerBtn_GenerarInforme(new ListenerFuncionNoDisponible());
+		//menu.addListenerBtn_GenerarListado(new ListenerFuncionNoDisponible());
 		menu.addListenerBtn_Salir(new ListenerSalir());
 	}
 	
@@ -82,7 +81,7 @@ public class Menu_controller {
 					HibernateUtil.recargarBaseDatos();
 					menu.yaCargoBaseDatos();
 				}
-				new CU01_AltaPoliza1(ventana);
+				new CU01_controller(ventana);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}

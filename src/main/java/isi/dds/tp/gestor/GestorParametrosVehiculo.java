@@ -29,25 +29,25 @@ public class GestorParametrosVehiculo {
     }
     
     public void addMarca(Marca m){
-		Iterator<Modelo> iteratorModelo = sortModelos(m.getModelos()).iterator();
+		Iterator<Modelo> iteratorModelo = sortModelos(m).iterator();
 		while(iteratorModelo.hasNext()){
-			sortAniosModelo(iteratorModelo.next().getAnios());
+			sortAniosModelo(iteratorModelo.next());
 		}	
     	DAOParametrosVehiculos.getDAO().addMarca(m);
     }
     
     public void addModelo(Modelo m) {
-		Iterator<Modelo> iteratorModelo = sortModelos(m.getMarca().getModelos()).iterator();
+		Iterator<Modelo> iteratorModelo = sortModelos(m.getMarca()).iterator();
 		while(iteratorModelo.hasNext()){
-			sortAniosModelo(iteratorModelo.next().getAnios());
+			sortAniosModelo(iteratorModelo.next());
 		}	
     	DAOParametrosVehiculos.getDAO().addModelo(m);
     }
     
     public void addAnioModelo(AnioModelo a) {
-		Iterator<Modelo> iteratorModelo = sortModelos(a.getModelo().getMarca().getModelos()).iterator();
+		Iterator<Modelo> iteratorModelo = sortModelos(a.getModelo().getMarca()).iterator();
 		while(iteratorModelo.hasNext()){
-			sortAniosModelo(iteratorModelo.next().getAnios());
+			sortAniosModelo(iteratorModelo.next());
 		}
     	DAOParametrosVehiculos.getDAO().addAnioModelo(a);
     }
@@ -74,26 +74,26 @@ public class GestorParametrosVehiculo {
 	    return lista;
     }
     
-    private List<Modelo> sortModelos(List<Modelo> lista){
-    	lista.sort(Comparator.comparing(Modelo::getNombre));
-	    Collections.sort(lista, new Comparator<Modelo>() {
+    private List<Modelo> sortModelos(Marca marca){
+    	marca.getModelos().sort(Comparator.comparing(Modelo::getNombre));
+	    Collections.sort(marca.getModelos(), new Comparator<Modelo>() {
 	    	@Override
 	    	public int compare(Modelo m1, Modelo m2) {
 	    		return m1.getNombre().compareTo(m2.getNombre());
 	    	}
 	    });
-	    return lista;
+	    return marca.getModelos();
     }
     
-    public List<AnioModelo> sortAniosModelo(List<AnioModelo> lista){
-    	lista.sort(Comparator.comparing(AnioModelo::getAnio));
-	    Collections.sort(lista, new Comparator<AnioModelo>() {
+    public List<AnioModelo> sortAniosModelo(Modelo modelo){
+    	modelo.getAnios().sort(Comparator.comparing(AnioModelo::getAnio));
+	    Collections.sort(modelo.getAnios(), new Comparator<AnioModelo>() {
 	    	@Override
 	    	public int compare(AnioModelo o1, AnioModelo o2) {
 	    		return o1.getAnio().compareTo(o2.getAnio());
 	    	}
 	    });
-	    return lista;
+	    return modelo.getAnios();
     }
 
 	public void cargarParametrosVehiculos() {

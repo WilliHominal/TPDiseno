@@ -102,7 +102,7 @@ public class CU17_controller {
 				}
 				
 				if(!buscarCliente.getTipoDocumento().equals("Selecionar tipo documento")) {
-					tipoDocumento = GestorEnum.get().getEnumTipoDocumento(buscarCliente.getTipoDocumento());
+					tipoDocumento = GestorEnum.get().parseEnumTipoDocumento(buscarCliente.getTipoDocumento());
 				}
 				
 				clientes = GestorCliente.get().buscarClientes(numeroCliente, apellido, nombre, tipoDocumento, numeroDocumento);
@@ -149,8 +149,7 @@ public class CU17_controller {
 	class ListenerElegirCliente implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {			
-				obtenidoCliente();
-				mostrarCliente.setVisible(false);    
+				obtenidoCliente(); 
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}  	
@@ -170,10 +169,10 @@ public class CU17_controller {
 	}
 	
 	private void cargarSeleccionTipoDocumento() {
-		buscarCliente.addItemSeleccionTipoCobertura("Selecionar tipo documento");
+		buscarCliente.addItemTipoCobertura("Selecionar tipo documento");
 		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
 		for(int i=0; i<tipoDocumentos.length; i++){
-			buscarCliente.addItemSeleccionTipoCobertura(gestorEnum.getStringTipoDocumento(tipoDocumentos[i]));
+			buscarCliente.addItemTipoCobertura(gestorEnum.parseString(tipoDocumentos[i]));
 		}
 	}
 	
@@ -188,7 +187,7 @@ public class CU17_controller {
 				Cliente c = null;
 				for(int fila=0; fila<cantClientes; fila++) {
 					c = clientes.get(fila);
-					buscarCliente.setValoresTablaClientes(fila, c.getNumeroCliente(), c.getApellido(), c.getNombre(), gestorEnum.getStringTipoDocumento(c.getTipoDocumento()), c.getNumeroDocumento());
+					buscarCliente.setValoresTablaClientes(fila, c.getNumeroCliente(), c.getApellido(), c.getNombre(), gestorEnum.parseString(c.getTipoDocumento()), c.getNumeroDocumento());
 				}
 			}
 			else {
@@ -221,18 +220,18 @@ public class CU17_controller {
 		mostrarCliente.setCorreoElectronico(cliente.getCorreoElectronico());
 		mostrarCliente.setProfesion(cliente.getProfesion());
 		mostrarCliente.setAnioRegistro(cliente.getAnioRegistro().toString());
-		mostrarCliente.setTipoDocumento(gestorEnum.getStringTipoDocumento(cliente.getTipoDocumento()));
-		mostrarCliente.setSexo(gestorEnum.getStringSexo(cliente.getSexo()));
+		mostrarCliente.setTipoDocumento(gestorEnum.parseString(cliente.getTipoDocumento()));
+		mostrarCliente.setSexo(gestorEnum.parseString(cliente.getSexo()));
 		mostrarCliente.setFechaNacimiento(cliente.getFechaNacimiento().toString());
 		mostrarCliente.setCiudad(cliente.getCiudad().getProvincia().getPais().getNombre());
 		mostrarCliente.setProvincia(cliente.getCiudad().getProvincia().getNombre());
 		mostrarCliente.setPais(cliente.getCiudad().getNombre());
-		mostrarCliente.setCondicionIva(gestorEnum.getStringCondicionIva(cliente.getCondicionIva()));
+		mostrarCliente.setCondicionIva(gestorEnum.parseString(cliente.getCondicionIva()));
 		if(cliente.getSexo().equals(EnumSexo.FEMENINO)) {
-			mostrarCliente.setEstadoCivil(gestorEnum.getStringEstadoCivilFem(cliente.getEstadoCivil()));
+			mostrarCliente.setEstadoCivil(gestorEnum.parseStringFem(cliente.getEstadoCivil()));
 		}
 		else {
-			mostrarCliente.setEstadoCivil(gestorEnum.getStringEstadoCivil(cliente.getEstadoCivil()));
+			mostrarCliente.setEstadoCivil(gestorEnum.parseStringMasc(cliente.getEstadoCivil()));
 		}
 	}
 	
@@ -240,6 +239,7 @@ public class CU17_controller {
 		if(esAltaPoliza) {
 	    	ventana.setContentPane(panelAnterior);
 	    	ventana.setTitle(tituloAnterior);
+	    	
 			altaPolizaController.obtenidoCliente(clienteObtenido);
 	    	mostrarCliente.setVisible(false);
 	    	

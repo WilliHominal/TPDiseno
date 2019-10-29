@@ -17,7 +17,7 @@ public class GestorEnum {
         return instanciaGestor;
     }
     
-    public EnumSexo getEnumSexo(String sexo) {
+    public EnumSexo parseEnumSexo(String sexo) {
     	if(sexo.equals("Masculino")) {
     		return EnumSexo.MASCULINO;
     	}
@@ -28,7 +28,7 @@ public class GestorEnum {
     	return null;
     }
     
-    public String getStringSexo(EnumSexo sexo) {
+    public String parseString(EnumSexo sexo) {
     	if(sexo.equals(EnumSexo.MASCULINO)) {
     		return "Masculino";
     	}
@@ -39,7 +39,7 @@ public class GestorEnum {
     	return null;
     }
     
-    public EnumEstadoCivil getEnumEstadoCivil(String estadoCivil) {
+    public EnumEstadoCivil parseEnumEstadoCivil(String estadoCivil) {
     	if(estadoCivil.equals("Soltero") || estadoCivil.equals("Soltera")) {
     		return EnumEstadoCivil.SOLTERO;
     	}
@@ -61,7 +61,7 @@ public class GestorEnum {
     	return null;    	
     }
     
-    public String getStringEstadoCivil(EnumEstadoCivil estadoCivil) {
+    public String parseStringMasc(EnumEstadoCivil estadoCivil) {
     	if(estadoCivil.equals(EnumEstadoCivil.SOLTERO)) {
     		return "Soltero";
     	}
@@ -83,7 +83,7 @@ public class GestorEnum {
     	return null;    	
     }
     
-    public String getStringEstadoCivilFem(EnumEstadoCivil estadoCivil) {
+    public String parseStringFem(EnumEstadoCivil estadoCivil) {
     	if(estadoCivil.equals(EnumEstadoCivil.SOLTERO)) {
     		return "Soltera";
     	}
@@ -105,7 +105,7 @@ public class GestorEnum {
     	return null;    	
     }
     
-    public EnumSiniestros getEnumSiniestros(String siniestro) {
+    public EnumSiniestros parseEnumSiniestros(String siniestro) {
     	if(siniestro.equals("Ninguno")) {
     		return EnumSiniestros.NINGUNO;
     	}
@@ -121,7 +121,7 @@ public class GestorEnum {
     	return null;    	
     }
     
-    public String getStringSiniestros(EnumSiniestros siniestro) {
+    public String parseString(EnumSiniestros siniestro) {
     	if(siniestro.equals(EnumSiniestros.NINGUNO)) {
     		return "Ninguno";
     	}
@@ -137,7 +137,7 @@ public class GestorEnum {
     	return null;
     }
     
-    public EnumTipoDocumento getEnumTipoDocumento(String tipoDocumento) {
+    public EnumTipoDocumento parseEnumTipoDocumento(String tipoDocumento) {
     	if(tipoDocumento.equals("DNI")) {
     		return EnumTipoDocumento.DNI;
     	}
@@ -153,7 +153,7 @@ public class GestorEnum {
     	return null;    	
     }
     
-    public String getStringTipoDocumento(EnumTipoDocumento tipoDocumento) {
+    public String parseString(EnumTipoDocumento tipoDocumento) {
     	if(tipoDocumento.equals(EnumTipoDocumento.DNI)) {
     		return "DNI";
     	}
@@ -169,7 +169,7 @@ public class GestorEnum {
     	return null;
     }
     
-    public EnumCondicionIVA getEnumCondicionIva(String condicionIva) {
+    public EnumCondicionIVA parseEnumCondicionIva(String condicionIva) {
     	if(condicionIva.equals("Responsable inscripto")) {
     		return EnumCondicionIVA.RESPONSABLE_INSCRIPTO;
     	}
@@ -200,7 +200,7 @@ public class GestorEnum {
     	return null;    	
     }
     
-    public String getStringCondicionIva(EnumCondicionIVA tipoDocumento) {
+    public String parseString(EnumCondicionIVA tipoDocumento) {
     	if(tipoDocumento.equals(EnumCondicionIVA.RESPONSABLE_INSCRIPTO)) {
     		return "Responsable inscripto";
     	}
