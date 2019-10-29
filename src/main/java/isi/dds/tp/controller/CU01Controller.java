@@ -1,6 +1,5 @@
 package isi.dds.tp.controller;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -36,22 +35,7 @@ import isi.dds.tp.view.CU01View3;
 import isi.dds.tp.view.CU04View;
 
 public class CU01Controller {
-	
-	 public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JFrame frame = new JFrame();
-					new CU01Controller(frame);
-					GestorTema.get().setTema(frame, "Dar de alta póliza: INGRESAR DATOS");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
+		
 	private GestorEnum gestorEnum = GestorEnum.get();
 	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
 	private GestorParametrosVehiculo gestorVehiculo = GestorParametrosVehiculo.get();
@@ -82,6 +66,7 @@ public class CU01Controller {
 	}
 	
 	private void setAltaPoliza1() {
+		GestorTema.get().setTema(ventana, "Dar de alta póliza: INGRESAR DATOS");
 		this.altaPoliza1 = new CU01View1();
 		altaPoliza1.addListenerBtn_BuscarCliente(new ListenerBuscarCliente());;
 		altaPoliza1.addListenerBtn_AltaCliente(new ListenerAltaCliente());

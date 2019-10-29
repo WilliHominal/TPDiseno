@@ -1,8 +1,5 @@
 package isi.dds.tp.gestor;
 
-import isi.dds.tp.dao.DAOPago;
-import isi.dds.tp.modelo.Pago;
-
 public class GestorPago {
 	
 	private static GestorPago instanciaGestor = null;

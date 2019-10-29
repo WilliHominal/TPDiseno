@@ -1,6 +1,5 @@
 package isi.dds.tp.controller;
 
-import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
@@ -14,22 +13,12 @@ import isi.dds.tp.view.MenuView1;
 
 public class MenuController {
 	
+	//para ejecutar esto, ejecutar "AppPrincipal"
+	
 	private MenuView1 menuView1;
 	private MenuView2 menuView2;
 	private JFrame ventana;
 	private GestorTema tema = GestorTema.get();
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					new MenuController(new JFrame());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 	
 	public MenuController(JFrame ventana) {
 		this.ventana = ventana;

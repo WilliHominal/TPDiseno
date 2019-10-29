@@ -1,6 +1,5 @@
 package isi.dds.tp.controller;
 
-import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,23 +21,7 @@ import isi.dds.tp.view.CU01View1;
 import isi.dds.tp.view.CU17View1;
 import isi.dds.tp.view.CU17View2;
 
-public class CU17Controller {
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					JFrame frame = new JFrame();
-					GestorTema.get().setTema(frame, "Buscar cliente");
-					new CU17Controller(frame);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-    
+public class CU17Controller {    
 	private JFrame ventana;
 	private JPanel panelAnterior;
 	private CU17View1 buscarCliente;
@@ -69,6 +52,7 @@ public class CU17Controller {
 	}
 	
 	private void setBuscarCliente() {
+		tema.setTema(ventana, "Buscar cliente");
 		this.buscarCliente = new CU17View1();
 		cargarSeleccionTipoDocumento();
 		buscarCliente.addListenerBtnCancelar(new ListenerCancelar());
