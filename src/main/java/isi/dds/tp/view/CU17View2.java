@@ -38,7 +38,6 @@ public class CU17View2 extends JPanel{
 	private JLabel lestadoCivil = new JLabel("Estado civil:");
 	private JLabel lprofesion = new JLabel("Profesión:");
 	private JLabel lanioRegistro = new JLabel("Año registro:");
-
 	
 	private JTextField campoNumeroCliente = new JTextField(16);
 	private JTextField campoCondicion = new JTextField(16);
@@ -192,7 +191,7 @@ public class CU17View2 extends JPanel{
 		constraints.gridy = 13;
 		constraints.gridwidth = 4;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(10, 5, 10, 170);
+		constraints.insets.set(10, 5, 10, 190);
 		add(btnElegirCliente, constraints);
 		constraints.insets.set(10, 5, 10, 0);
 		add(btnVolver, constraints);
@@ -246,8 +245,6 @@ public class CU17View2 extends JPanel{
 		tema.setTema(campoEstadoCivil, false);
 		tema.setTema(btnElegirCliente, true);
 		tema.setTema(btnVolver, true);
-		btnElegirCliente.setPreferredSize(new Dimension(164, 25));
-		btnVolver.setPreferredSize(new Dimension(164, 25));
 	}
 
 	public void addListenerBtn_ElegirCliente(ActionListener listener) {

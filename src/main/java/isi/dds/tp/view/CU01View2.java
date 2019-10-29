@@ -41,11 +41,11 @@ import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.TipoCobertura;
 
-@SuppressWarnings("serial")
 public class CU01View2 extends JPanel  {
-	
-	
-	 public static void main(String[] args) {
+	private static final long serialVersionUID = -7012157343373007588L;
+
+
+	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -64,6 +64,7 @@ public class CU01View2 extends JPanel  {
 		JFrame frame = new JFrame();
 		new CU01View2(frame, poliza);
 		GestorTema.get().setTema(frame, "Dar de alta póliza: GENERAR PÓLIZA");
+		frame.setVisible(true);
 	}
 	
 	private Poliza poliza;
@@ -137,9 +138,8 @@ public class CU01View2 extends JPanel  {
 			cu01_ap1 = null;
 		}
 		ventana.setContentPane(this);
-		
-		inicializarComponentes();
 		iniciabilizarTema();
+		inicializarComponentes();
 		ubicarComponentes();		
 		comportamiento();
 	}

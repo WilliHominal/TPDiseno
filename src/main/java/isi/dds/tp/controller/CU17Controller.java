@@ -54,7 +54,13 @@ public class CU17Controller {
 	private void setBuscarCliente() {
 		tema.setTema(ventana, "Buscar cliente");
 		this.buscarCliente = new CU17View1();
-		cargarSeleccionTipoDocumento();
+
+		buscarCliente.addItemTipoCobertura("Selecionar tipo doc.");
+		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
+		for(int i=0; i<tipoDocumentos.length; i++){
+			buscarCliente.addItemTipoCobertura(gestorEnum.parseString(tipoDocumentos[i]));
+		}
+		
 		buscarCliente.addListenerBtnCancelar(new ListenerCancelar());
 		buscarCliente.addListenerBtnBuscar(new ListenerBuscar());
 		buscarCliente.addListenerTablaClientes(new ListenerTablaClientes());
@@ -149,14 +155,6 @@ public class CU17Controller {
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
-		}
-	}
-	
-	private void cargarSeleccionTipoDocumento() {
-		buscarCliente.addItemTipoCobertura("Selecionar tipo documento");
-		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
-		for(int i=0; i<tipoDocumentos.length; i++){
-			buscarCliente.addItemTipoCobertura(gestorEnum.parseString(tipoDocumentos[i]));
 		}
 	}
 	

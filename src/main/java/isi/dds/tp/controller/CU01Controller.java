@@ -532,7 +532,7 @@ public class CU01Controller {
 	public void setDeclararHijos() {
 		declararHijo = new CU01View3();
 		declararHijo.setResizable(false);
-		declararHijo.setBounds(0, 0, 420, 250);
+		declararHijo.setBounds(0, 0, 400, 250);
 		declararHijo.setLocationRelativeTo(null);
 		declararHijo.setTitle("Dar de alta póliza: AGREGAR DATOS HIJOS");
 		declararHijo.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);

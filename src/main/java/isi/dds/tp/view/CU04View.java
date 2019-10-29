@@ -1,6 +1,5 @@
 package isi.dds.tp.view;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
@@ -71,22 +70,8 @@ public class CU04View extends JPanel{
 	private JComboBox<String> seleccionEstadoCivil = new JComboBox<String>();
 
 	public CU04View() {
-		inicializarComponentes();
 		ubicarComponentes();
 		inicializarTema();
-	}
-
-	private void inicializarComponentes() {
-		btnConfirmar.setPreferredSize(new Dimension(160, 25));
-		btnCancelar.setPreferredSize(new Dimension(160, 25));
-		dcFechaNacimiento.setPreferredSize(new Dimension(164, 25));
-		seleccionTipoDocumento.setPreferredSize(new Dimension(164, 25));
-		seleccionSexo.setPreferredSize(new Dimension(164, 25));
-		seleccionPais.setPreferredSize(new Dimension(164, 25));
-		seleccionProvincia.setPreferredSize(new Dimension(164, 25));
-		seleccionCiudad.setPreferredSize(new Dimension(164, 25));
-		seleccionCondicionIva.setPreferredSize(new Dimension(164, 25));
-		seleccionEstadoCivil.setPreferredSize(new Dimension(164, 25));	
 	}
 	
 	private void ubicarComponentes() {
@@ -212,15 +197,14 @@ public class CU04View extends JPanel{
 		add(campoAnioRegistro, constraints);
 		
 		constraints.gridy = 12;
-		constraints.insets.set(5, 30, 5, 5);
+		constraints.insets.set(25, 30, 5, 5);
 		add(ldatosObligatorios, constraints);
 		
-		constraints.gridy = 13;
 		constraints.gridwidth = 4;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(5, 5, 5, 170);
+		constraints.insets.set(25, 5, 5, 170);
 		add(btnConfirmar, constraints);
-		constraints.insets.set(5, 5, 5, 0);
+		constraints.insets.set(25, 5, 5, 0);
 		add(btnCancelar, constraints);
 	}
 		

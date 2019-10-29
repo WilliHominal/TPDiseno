@@ -37,14 +37,14 @@ public class CU01View1 extends JPanel {
 	private JLabel lapellido = new JLabel("Apellido:");
 	private JLabel lnombres = new JLabel("Nombres:");
 	private JLabel lcalle = new JLabel("Calle:");
-	private JLabel lnumeroDom = new JLabel("Número domicilio:");
+	private JLabel lnumeroCalle = new JLabel("Número domicilio:");
 	private JLabel lpiso = new JLabel("Piso:");
 	private JLabel ldepartamento = new JLabel("Departamento:");
 	private JLabel lprovincia = new JLabel("Provincia*:");
 	private JLabel lciudad = new JLabel("Ciudad*:");
 	private JLabel lmarca = new JLabel("Marca vehículo*:");
-	private JLabel lmodelo = new JLabel("Modelo vehículo:*");
-	private JLabel lanio = new JLabel("Año modelo:*");
+	private JLabel lmodelo = new JLabel("Modelo vehículo*:");
+	private JLabel lanio = new JLabel("Año modelo*:");
 	private JLabel lmotor = new JLabel("Motor*:");
 	private JLabel lchasis = new JLabel("Chasis*:");
 	private JLabel lpatente = new JLabel("Patente*:");
@@ -60,18 +60,18 @@ public class CU01View1 extends JPanel {
 	private JLabel ldatosObligatorios = new JLabel("(*) datos obligatios)");
 		
 	private JTextField campoNumeroCliente = new JTextField(10);
-	private JTextField campoTipoDocumento = new JTextField(15);
+	private JTextField campoTipoDocumento = new JTextField(16);
 	private JTextField campoNumeroDocumento = new JTextField(8);
-	private JTextField campoApellido = new JTextField(15);
-	private JTextField campoNombres = new JTextField(15);
-	private JTextField campoCalle = new JTextField(15);
+	private JTextField campoApellido = new JTextField(16);
+	private JTextField campoNombres = new JTextField(16);
+	private JTextField campoCalle = new JTextField(16);
 	private JTextField campoNumeroCalle = new JTextField(8);
 	private JTextField campoPiso = new JTextField(2);
 	private JTextField campoDepartamento = new JTextField(2);
-	private JTextField campoMotor = new JTextField(15);
+	private JTextField campoMotor = new JTextField(16);
 	private JTextField campoChasis = new JTextField(8);
 	private JTextField campoPatente = new JTextField(7);
-	private JTextField campoSumaAsegurada = new JTextField(15);
+	private JTextField campoSumaAsegurada = new JTextField(16);
 	private JTextField campoNumerosSiniestros = new JTextField(10); 
 	
 	private JButton btnBuscarCliente = new JButton("BUSCAR CLIENTES");
@@ -116,7 +116,7 @@ public class CU01View1 extends JPanel {
 
 	private void inicializarComponentes() {
 		campoSumaAsegurada.setHorizontalAlignment(SwingConstants.RIGHT);
-				
+		
 		garage.add(rbtnGarageSi);
 		garage.add(rbtnGarageNo);
 		rbtnGarageNo.setSelected(true);
@@ -129,7 +129,7 @@ public class CU01View1 extends JPanel {
 		tuercas.add(rbtnTuercasSi);
 		tuercas.add(rbtnTuercasNo);
 		rbtnTuercasNo.setSelected(true);
-		
+
 		rbtnGarageSi.setEnabled(false);
 		rbtnGarageNo.setEnabled(false);
 		rbtnAlarmaSi.setEnabled(false);
@@ -137,22 +137,8 @@ public class CU01View1 extends JPanel {
 		rbtnRastreoNo.setEnabled(false);
 		rbtnRastreoSi.setEnabled(false);
 		rbtnTuercasSi.setEnabled(false);
-		rbtnTuercasNo.setEnabled(false);
+		rbtnTuercasNo.setEnabled(false);	
 		
-		seleccionProvincia.setPreferredSize(new Dimension(199, 25));
-		seleccionCiudad.setPreferredSize(new Dimension(199, 25));
-		seleccionMarca.setPreferredSize(new Dimension(163, 25));
-		seleccionModelo.setPreferredSize(new Dimension(145, 25));
-		seleccionAnio.setPreferredSize(new Dimension(130, 25));
-		seleccionKm.setPreferredSize(new Dimension(220, 25));
-		
-		btnBuscarCliente.setPreferredSize(new Dimension(160, 25));
-		btnAltaCliente.setPreferredSize(new Dimension(160, 25));
-		btnAgregarHijo.setPreferredSize(new Dimension(160, 25));
-		btnQuitarHijo.setPreferredSize(new Dimension(160, 25));
-		btnConfirmarDatos.setPreferredSize(new Dimension(170, 25));
-		btnCancelar.setPreferredSize(new Dimension(170, 25));
-				
 		tablaHijosScroll.setPreferredSize(new Dimension(350, 100));
 	}
 	
@@ -197,7 +183,7 @@ public class CU01View1 extends JPanel {
 		constraints.gridx = 7;
 		constraints.gridwidth = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(5, 0, 5, 0);
+		constraints.insets.set(5, 0, 0, 0);
 		add(campoNumeroDocumento, constraints);
 		
 		constraints.gridx = 0;
@@ -242,7 +228,7 @@ public class CU01View1 extends JPanel {
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets.set(5, 0, 5, 5);
-		add(lnumeroDom, constraints);
+		add(lnumeroCalle, constraints);
 		
 		constraints.gridx = 5;
 		constraints.anchor = GridBagConstraints.WEST;
@@ -252,23 +238,24 @@ public class CU01View1 extends JPanel {
 		constraints.gridwidth = 2;
 		constraints.gridx = 5;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(5, 100, 5, 0);
+		constraints.insets.set(5, 108, 5, 0);
 		add(lpiso, constraints);
 		
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(5, 130, 5, 0);
+		constraints.insets.set(5, 140, 5, 0);
 		add(campoPiso, constraints);
 		
 		constraints.gridwidth = 1;
 		constraints.gridx = 6;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(5, 0, 5, 0);
+		constraints.anchor = GridBagConstraints.EAST;
+		constraints.insets.set(5, 0, 5, 5);
 		add(ldepartamento, constraints);
 
 		constraints.gridx = 7;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(5, 10, 5, 0);
+		constraints.insets.set(5, 0, 0, 0);
 		add(campoDepartamento, constraints);
+
 		
 		constraints.gridy = 3;
 		constraints.gridx = 0;
@@ -276,60 +263,60 @@ public class CU01View1 extends JPanel {
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.CENTER;
 		constraints.insets.set(5, 0, 5, 0);
-		add(new JLabel("___________________________________________________________________________________________________________________________________"), constraints);
+		add(new JLabel("____________________________________________________________________________________________________________________________________________"), constraints);
 		
 		constraints.gridy = 4;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lprovincia, constraints);
-		constraints.insets.set(5, 75, 5, 5);
+		constraints.insets.set(5, 70, 5, 5);
 		add(seleccionProvincia, constraints);
-		constraints.insets.set(5, 295, 5, 5);
+		constraints.insets.set(5, 290, 5, 5);
 		add(lciudad, constraints);
-		constraints.insets.set(5, 355, 5, 5);
+		constraints.insets.set(5, 344, 5, 5);
 		add(seleccionCiudad, constraints);
 		
 		constraints.gridy = 5;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lmarca, constraints);
-		constraints.insets.set(5, 111, 5, 5);
+		constraints.insets.set(5, 102, 5, 5);
 		add(seleccionMarca, constraints);
-		constraints.insets.set(5, 295, 5, 5);
+		constraints.insets.set(5, 290, 5, 5);
 		add(lmodelo, constraints);
-		constraints.insets.set(5, 410, 5, 5);
+		constraints.insets.set(5, 394, 5, 5);
 		add(seleccionModelo, constraints);
-		constraints.insets.set(5, 575, 5, 5);
+		constraints.insets.set(5, 580, 5, 5);
 		add(lanio, constraints);
-		constraints.insets.set(5, 664, 5, 5);
+		constraints.insets.set(5, 660, 5, 5);
 		add(seleccionAnio, constraints);
 
 		constraints.gridy = 6;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lmotor, constraints);
-		constraints.insets.set(5, 60, 5, 5);
+		constraints.insets.set(5, 50, 5, 5);
 		add(campoMotor, constraints);
-		constraints.insets.set(5, 295, 5, 5);
+		constraints.insets.set(5, 290, 5, 5);
 		add(lchasis, constraints);
-		constraints.insets.set(5, 349, 5, 5);
+		constraints.insets.set(5, 343, 5, 5);
 		add(campoChasis, constraints);
-		constraints.insets.set(5, 575, 5, 5);
+		constraints.insets.set(5, 580, 5, 5);
 		add(lpatente, constraints);
-		constraints.insets.set(5, 638, 5, 5);
+		constraints.insets.set(5, 636, 5, 5);
 		add(campoPatente, constraints);
 
 		constraints.gridy = 7;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lsumaAseg, constraints);
-		constraints.insets.set(5, 113, 5, 5);
+		constraints.insets.set(5, 108, 5, 5);
 		add(campoSumaAsegurada, constraints);
-		constraints.insets.set(5, 268, 5, 5);
+		constraints.insets.set(5, 273, 5, 5);
 		add(lmoneda, constraints);
 
 		constraints.gridy = 8;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lkm, constraints);
-		constraints.insets.set(5, 145, 5, 5);
+		constraints.insets.set(5, 137, 5, 5);
 		add(seleccionKm, constraints);
 
 		constraints.gridy = 9;
@@ -402,7 +389,7 @@ public class CU01View1 extends JPanel {
 		tema.setTema(lapellido);
 		tema.setTema(lnombres);
 		tema.setTema(lcalle);
-		tema.setTema(lnumeroDom);
+		tema.setTema(lnumeroCalle);
 		tema.setTema(lpiso);
 		tema.setTema(ldepartamento);
 		tema.setTema(lprovincia);

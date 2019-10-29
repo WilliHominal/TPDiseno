@@ -50,32 +50,32 @@ public class CU01View3 extends JFrame  {
 		constraints.gridwidth = 2;
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(5, 5, 3, 80);
+		constraints.insets.set(5, 5, 3, 65);
 		panel.add(lfechaNacimiento, constraints);
 		
 		constraints.gridy = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 5, 5, 80);
+		constraints.insets.set(0, 5, 5, 65);
 		panel.add(dcFechaNacimiento, constraints);
 		
 		constraints.gridy = 2;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(15, 5, 3, 80);
+		constraints.insets.set(15, 5, 3, 65);
 		panel.add(lsexo, constraints);
 		
 		constraints.gridy = 3;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 5, 5, 80);
+		constraints.insets.set(0, 5, 5, 65);
 		panel.add(seleccionSexo, constraints);
 		
 		constraints.gridy = 4;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(15, 5, 3, 80);
+		constraints.insets.set(15, 5, 3, 65);
 		panel.add(lestadocivil, constraints);
 		
 		constraints.gridy = 5;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 5, 10, 80);
+		constraints.insets.set(0, 5, 10, 65);
 		panel.add(seleccionEstadoCivil, constraints);
 		
 		constraints.gridx = 3;
@@ -97,7 +97,7 @@ public class CU01View3 extends JFrame  {
 		panel.add(ldatosObligatorios, constraints);
 	}
 	
-	private void inicializarTema() {	
+	private void inicializarTema() {		
 		tema.setTema(panel);
 		tema.setTema(lfechaNacimiento);
 		tema.setTema(lsexo);
@@ -111,9 +111,6 @@ public class CU01View3 extends JFrame  {
 		
 		seleccionEstadoCivil.setPreferredSize(new Dimension(105, 25));
 		seleccionSexo.setPreferredSize(new Dimension(105, 25));
-		dcFechaNacimiento.setPreferredSize(new Dimension(105, 25));
-		btnAgregarHijo.setPreferredSize(new Dimension(130, 25));
-		btnCancelar.setPreferredSize(new Dimension(130, 25));
 	}
 	
 	public void noValido(Boolean fechaError, Boolean sexoError, Boolean estadoCivilError) {

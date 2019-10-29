@@ -2,6 +2,7 @@ package isi.dds.tp.gestor;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.font.TextAttribute;
 import java.util.HashMap;
@@ -36,6 +37,10 @@ public class GestorTema {
 	
 	private static GestorTema instanciaGestor = null;
 	
+	private static Dimension DIMENSION_VENTANA;
+	private static Dimension DIMENSION_BOTON;
+	private static Dimension DIMENSION_COMBO_BOX;
+	private static Dimension DIMENSION_CALENDARIO;
 	private static Color COLOR_BOTON;
 	private static Color COLOR_BOTON_DESHABILITADO;
 	private static Color COLOR_FONDO_PANTALLA;
@@ -66,8 +71,7 @@ public class GestorTema {
     
     @SuppressWarnings("unused")
 	private void tema1() {
-    	
-    	instanciaGestor = null;
+    	DIMENSION_VENTANA = new Dimension(1064,600);
     	COLOR_BOTON = new Color(0, 128, 128);
     	COLOR_BOTON_DESHABILITADO =  new Color(0, 50, 50);
     	COLOR_FONDO_PANTALLA = new Color(204,204,204);
@@ -84,6 +88,10 @@ public class GestorTema {
     }
     
     private void tema2() {
+    	DIMENSION_BOTON = new Dimension(160, 25);
+    	DIMENSION_COMBO_BOX = new Dimension(164, 22);
+    	DIMENSION_CALENDARIO = new Dimension(105, 20);
+    	DIMENSION_VENTANA = new Dimension(1064,600);
     	COLOR_BOTON = new Color(179,149,62);
     	COLOR_BOTON_DESHABILITADO = new Color(102,83,26);
     	COLOR_FONDO_PANTALLA = new Color(139, 163, 255);
@@ -101,6 +109,7 @@ public class GestorTema {
     
     @SuppressWarnings("unused")
 	private void tema3() {
+    	DIMENSION_VENTANA = new Dimension(1064,600);
     	/*
     	#B36D46
     	#FFBC96
@@ -126,11 +135,11 @@ public class GestorTema {
     	panel.setFont(FUENTE_LETRA_NORMAL);
     	panel.setBackground(COLOR_FONDO_PANTALLA);
     	panel.setForeground(COLOR_LETRA);
-    	panel.setBorder(BorderFactory.createLineBorder(COLOR_BOTON_DESHABILITADO, 5));
+    	//panel.setBorder(BorderFactory.createLineBorder(COLOR_BOTON_DESHABILITADO, 5));
     }
     
 	public void setTema(JFrame ventana, String titulo) {
-		ventana.setSize(1064,600);
+		ventana.setSize(DIMENSION_VENTANA);
 		ventana.setTitle(titulo);
 		ventana.setLocationRelativeTo(null);
 		ventana.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -163,6 +172,7 @@ public class GestorTema {
 	}
     
     public void setTema(JButton btn, Boolean habilitado) {
+    	btn.setPreferredSize(DIMENSION_BOTON);
     	if(habilitado) {
         	btn.setBackground(COLOR_BOTON);
         	btn.setFont(FUENTE_LETRA_NORMAL);
@@ -230,6 +240,7 @@ public class GestorTema {
     
     @SuppressWarnings("rawtypes")
 	public void setTema(JComboBox seleccion, Boolean habilitada) {
+    	seleccion.setPreferredSize(DIMENSION_COMBO_BOX);
     	if(habilitada) {
     		seleccion.setEnabled(habilitada);
     		seleccion.setBackground(COLOR_FONDO_TEXTO);
@@ -295,6 +306,7 @@ public class GestorTema {
 	}
 	
 	public void setTema(JDateChooser calendario, Boolean habilitado) {
+		calendario.setPreferredSize(DIMENSION_CALENDARIO);
 		if(habilitado) {
 			calendario.setEnabled(habilitado);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setBackground(COLOR_FONDO_TEXTO);

@@ -31,10 +31,10 @@ public class CU17View1 extends JPanel {
 	private JLabel lnumeroDocumento = new JLabel("Documento:");
 	private JLabel ltotalFilas = new JLabel("Total de filas:");
 	
-	private JTextField campoNumeroCliente = new JTextField(18);
-	private JTextField campoNumeroDocumento = new JTextField(18);
-	private JTextField campoNombre = new JTextField(18);
-	private JTextField campoApellido = new JTextField(18);
+	private JTextField campoNumeroCliente = new JTextField(16);
+	private JTextField campoNumeroDocumento = new JTextField(16);
+	private JTextField campoNombre = new JTextField(16);
+	private JTextField campoApellido = new JTextField(16);
 	private JTextField campoTotalFilas = new JTextField(3);
 	
 	private JButton btnBuscar = new JButton("BUSCAR");
@@ -55,7 +55,7 @@ public class CU17View1 extends JPanel {
 		addListenerCampoNombre();
 	}
 
-	private void inicializarComponentes() {	
+	private void inicializarComponentes() {			
 		tema.setTema(this);
 		tema.setTema(lnumeroCliente);
 		tema.setTema(ltipoDocumento);
@@ -73,11 +73,8 @@ public class CU17View1 extends JPanel {
 		tema.setTema(seleccionTipoDocumento, true);
 		tema.setTema(tablaClientes, true);
 		tema.setTema(tablaClientesScroll, true);
-	
-		btnCancelar.setPreferredSize(new Dimension(105, 25));
-		btnBuscar.setPreferredSize(new Dimension(105, 25));
-		seleccionTipoDocumento.setPreferredSize(new Dimension(183, 25));
-		tablaClientesScroll.setPreferredSize(new Dimension(600, 500));	
+
+		tablaClientesScroll.setPreferredSize(new Dimension(680, 500));	
 	}
 	
 	private void ubicarComponentes() {
@@ -140,20 +137,22 @@ public class CU17View1 extends JPanel {
 		constraints.gridy = 6;
 		constraints.gridwidth = 2;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(50, 5, 5, 150);
+		constraints.insets.set(30, 5, 5, 5);
 		add(btnBuscar, constraints);
-		constraints.insets.set(50, 150, 5, 5);
+		
+		constraints.gridy = 7;
+		constraints.insets.set(30, 5, 5, 5);
 		add(btnCancelar, constraints);	
 		
 		constraints.gridx = 2;
 		constraints.gridy = 0;
-		constraints.gridheight = 8;
+		constraints.gridheight = 9;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(5, 50, 5, 5);
+		constraints.insets.set(5, 30, 5, 5);
 		add(tablaClientesScroll, constraints);	
 		
 		constraints.gridx = 2;
-		constraints.gridy = 8;
+		constraints.gridy = 9;
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets.set(5, 5, 5, 5);
