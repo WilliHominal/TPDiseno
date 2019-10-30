@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 
 import isi.dds.tp.view.CU12View1;
 
+@SuppressWarnings("unused")
 public class CU12Controller {
 
 	private CU12Controller instancia;

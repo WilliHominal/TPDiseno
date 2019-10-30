@@ -133,4 +133,16 @@ public class DAOParametrosVehiculos {
 		}
 		session.close();
 	}
+
+	public AnioModelo getAnioModelo(Integer id) {
+	  	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+            session.beginTransaction();
+            return session.get(AnioModelo.class, id);
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }	
+    	return null;
+	}
 }

@@ -56,6 +56,10 @@ public class GestorParametrosVehiculo {
 		return DAOParametrosVehiculos.getDAO().getMarcas();
     }
 	
+	public AnioModelo getAnioModelo(Integer id) {
+		return DAOParametrosVehiculos.getDAO().getAnioModelo(id);
+    }
+	
     public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
     	
     	RiesgoModelo riesgo = DAOParametrosVehiculos.getDAO().getUltimoRiesgoModelo(id_modelo);

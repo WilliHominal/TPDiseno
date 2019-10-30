@@ -5,7 +5,9 @@ import javax.swing.JPanel;
 
 import isi.dds.tp.view.CU18View;
 
+@SuppressWarnings("unused")
 public class CU18Controller {
+	
 	
 	private CU18Controller instancia;
 	private CU18View buscarPoliza;

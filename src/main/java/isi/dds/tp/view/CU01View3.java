@@ -1,6 +1,5 @@
 package isi.dds.tp.view;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
@@ -104,13 +103,10 @@ public class CU01View3 extends JFrame  {
 		tema.setTema(lestadocivil);
 		tema.setTema(ldatosObligatorios);
 		tema.setTema(dcFechaNacimiento, true);
-		tema.setTema(seleccionSexo, true);
-		tema.setTema(seleccionEstadoCivil, true);
+		tema.setComboBoxChico(seleccionSexo, true);
+		tema.setComboBoxChico(seleccionEstadoCivil, true);
 		tema.setTema(btnAgregarHijo, true);
 		tema.setTema(btnCancelar, true);
-		
-		seleccionEstadoCivil.setPreferredSize(new Dimension(105, 25));
-		seleccionSexo.setPreferredSize(new Dimension(105, 25));
 	}
 	
 	public void noValido(Boolean fechaError, Boolean sexoError, Boolean estadoCivilError) {
@@ -129,7 +125,7 @@ public class CU01View3 extends JFrame  {
 		seleccionSexo.addActionListener(listener);
 		seleccionSexo.addActionListener (a -> {
 			if(seleccionSexo.getSelectedIndex() > 0){
-				tema.setTema(seleccionSexo, true);
+				tema.setComboBoxChico(seleccionSexo, true);
 			}
 		});
 	}
@@ -143,7 +139,7 @@ public class CU01View3 extends JFrame  {
 	public void addListenerSeleccionEstadoCivil() {
 		seleccionEstadoCivil.addActionListener (a -> {
 			if(seleccionEstadoCivil.getSelectedIndex() > 0){
-				tema.setTema(seleccionEstadoCivil, true);
+				tema.setComboBoxChico(seleccionEstadoCivil, true);
 			}
 		});
 	}
@@ -182,20 +178,6 @@ public class CU01View3 extends JFrame  {
 	
 	public Date getFechaNac() {
 		return dcFechaNacimiento.getDate();
-	}
-	
-	public void habilitarSeleccionEstadoCivil(Boolean habilitar) {
-		tema.setTema(seleccionEstadoCivil, habilitar);
-		if(!habilitar) {
-			seleccionEstadoCivil.removeAllItems();
-		}
-	}
-	
-	public void habilitarSeleccionSexo(Boolean habilitar) {
-		tema.setTema(seleccionSexo, habilitar);
-		if(!habilitar) {
-			seleccionSexo.removeAllItems();
-		}
 	}
 	
 	public Integer indexSeleccionEstadoCivil() {

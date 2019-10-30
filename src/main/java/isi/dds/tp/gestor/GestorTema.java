@@ -39,7 +39,9 @@ public class GestorTema {
 	
 	private static Dimension DIMENSION_VENTANA = new Dimension(1064,600);
 	private static Dimension DIMENSION_BOTON = new Dimension(160, 25);
+	private static Dimension DIMENSION_COMBO_BOX_CHICO = new Dimension(105, 25);
 	private static Dimension DIMENSION_COMBO_BOX = new Dimension(164, 22);
+	private static Dimension DIMENSION_COMBO_BOX_GRANDE = new Dimension(260, 22);
 	private static Dimension DIMENSION_CALENDARIO = new Dimension(105, 20);
 	private static Color COLOR_BOTON;
 	private static Color COLOR_BOTON_DESHABILITADO;
@@ -53,7 +55,7 @@ public class GestorTema {
 	private static Color COLOR_LETRA_BOTON_DESHABILITADA;
 	private static Font FUENTE_LETRA_NORMAL = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 	private static Font FUENTE_LETRA_CHICA = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
-	private static Font FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 14);
+	private static Font FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 	
     private GestorTema() {
     	ToolTipManager.sharedInstance().setInitialDelay(1000);
@@ -97,6 +99,7 @@ public class GestorTema {
     	panel.setFont(FUENTE_LETRA_NORMAL);
     	panel.setBackground(COLOR_FONDO_PANTALLA);
     	panel.setForeground(COLOR_LETRA);
+    	panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
     	//panel.setBorder(BorderFactory.createLineBorder(COLOR_BOTON_DESHABILITADO, 5));
     }
     
@@ -126,10 +129,11 @@ public class GestorTema {
     }
     
 	public void setTemaTitulo(JLabel label) {
-		Font font = FUENTE_LETRA_GRANDE;
-		Map<TextAttribute, Object> titulo = new HashMap<>(font.getAttributes());
-		titulo.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
-		label.setFont(font.deriveFont(titulo));
+		//Font font = FUENTE_LETRA_GRANDE;
+		//Map<TextAttribute, Object> titulo = new HashMap<>(font.getAttributes());
+		//titulo.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
+		//label.setFont(font.deriveFont(titulo));
+		label.setFont(FUENTE_LETRA_GRANDE);
 		label.setForeground(COLOR_LETRA);
 	}
     
@@ -150,7 +154,7 @@ public class GestorTema {
         	btn.setEnabled(false);
     	}
     }
-    
+        
     public void setTema(JButton btn, Boolean habilitado, Icon icono) {
     	Font font = FUENTE_LETRA_NORMAL;
 		Map<TextAttribute, Object> subrayado = new HashMap<>(font.getAttributes());
@@ -200,8 +204,7 @@ public class GestorTema {
 		textArea.setForeground(COLOR_LETRA_ERRONEA);
 	}
     
-    @SuppressWarnings("rawtypes")
-	public void setTema(JComboBox seleccion, Boolean habilitada) {
+	public void setTema(JComboBox<?> seleccion, Boolean habilitada) {
     	seleccion.setPreferredSize(DIMENSION_COMBO_BOX);
     	if(habilitada) {
     		seleccion.setEnabled(habilitada);
@@ -219,6 +222,16 @@ public class GestorTema {
     	}
     }
     
+    public void setComboBoxChico(JComboBox<?> seleccion, Boolean habilitada) {
+    	setTema(seleccion, habilitada);
+    	seleccion.setPreferredSize(DIMENSION_COMBO_BOX_CHICO);
+    }
+    
+    public void setComboBoxGrande(JComboBox<?> seleccion, Boolean habilitada) {
+    	setTema(seleccion, habilitada);
+    	seleccion.setPreferredSize(DIMENSION_COMBO_BOX_GRANDE);
+    }
+    
     public void setTema(JRadioButton rbtn) {
     	rbtn.setBackground(COLOR_FONDO_PANTALLA);
     	rbtn.setFont(FUENTE_LETRA_NORMAL);
@@ -234,6 +247,7 @@ public class GestorTema {
     
 	public void setTema(JScrollPane tablaScroll, Boolean habilitada) {
 		tablaScroll.setBackground(COLOR_FONDO_PANTALLA);
+		tablaScroll.setEnabled(habilitada);
 		tablaScroll.getVerticalScrollBar().setBackground(COLOR_FONDO_PANTALLA);
 		tablaScroll.getVerticalScrollBar().setUI(new BasicScrollBarUI() {
 	            @Override

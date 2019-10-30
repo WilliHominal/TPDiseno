@@ -5,10 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.util.Random;
 
+@SuppressWarnings("unused")
 public class Reordenar {
 
 	 public static void main(String[] args) {

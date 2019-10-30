@@ -8,48 +8,55 @@ import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
+import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.EnumEstadoCivil;
+import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumSexo;
+import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
+import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorTema;
+import isi.dds.tp.gestor.GestorTipoCobertura;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Cliente;
+import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.Provincia;
+import isi.dds.tp.modelo.TipoCobertura;
 import isi.dds.tp.view.CU01View1;
 import isi.dds.tp.view.CU01View2;
 import isi.dds.tp.view.CU01View3;
 
-public class CU01Controller {
-		
-	private GestorEnum gestorEnum = GestorEnum.get();
-	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
-	private GestorParametrosVehiculo gestorVehiculo = GestorParametrosVehiculo.get();
-	
+public class CU01Controller {	
 	private CU01Controller instancia;
+	private CU01View1 altaPoliza1;
+	private CU01View2 altaPoliza2;
+	private CU01View3 declararHijo;
+	
 	private JFrame ventana;
 	private JPanel panelAnterior;
 	private String tituloAnterior = "";
 	
-	private CU01View1 altaPoliza1;
-	private Boolean primerCliente = true;
-	public Poliza poliza = new Poliza();
-	public List<HijoDeclarado> hijosDeclarados =  new ArrayList<HijoDeclarado>();
+	private GestorEnum gestorEnum = GestorEnum.get();
+	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
+	private GestorParametrosVehiculo gestorVehiculo = GestorParametrosVehiculo.get();
+	private GestorPoliza gestorPoliza = GestorPoliza.get();
 	
-	private CU01View3 declararHijo;
+	private Boolean primerCliente = true;
+	private Poliza poliza;
 	
 	public CU01Controller(JFrame ventana) {
 		instancia = this;
@@ -61,42 +68,84 @@ public class CU01Controller {
 			panelAnterior = null;
 		}
 			
-		setAltaPoliza1();
+		setView1_AltaPoliza1();
 	}
 	
-	private void setAltaPoliza1() {
+	public CU01Controller(JFrame ventana, Poliza poliza) {
+		instancia = this;
+		this.poliza = poliza;
+		this.ventana = ventana;
+		this.tituloAnterior = ventana.getTitle();
+		try {
+			panelAnterior = (JPanel) ventana.getContentPane();
+		}catch(Exception ex) {
+			panelAnterior = null;
+		}
+			
+		setView2_AltaPoliza2();
+	}
+	
+	private void setView1_AltaPoliza1() {
 		GestorTema.get().setTema(ventana, "Dar de alta póliza: INGRESAR DATOS");
 		this.altaPoliza1 = new CU01View1();
-		altaPoliza1.addListenerBtn_BuscarCliente(new ListenerBuscarCliente());;
-		altaPoliza1.addListenerBtn_AltaCliente(new ListenerAltaCliente());
-		altaPoliza1.addListenerBtn_AgregarHijo(new ListenerDeclararHijo());
-		altaPoliza1.addListenerBtn_QuitarHijo(new ListenerQuitarHijo());
-		altaPoliza1.addListenerSeleccionProvincia(new ListenerProvincia());
-		altaPoliza1.addListenerSeleccionMarca(new ListenerMarca());
-		altaPoliza1.addListenerSeleccionModelo(new ListenerModelo());
-		altaPoliza1.addListenerSeleccionAnioModelo(new ListenerAnioModelo());
-		altaPoliza1.addListenerBtn_ConfirmarDatos(new ListenerConfirmarDatos());
-		altaPoliza1.addListenerBtn_Cancelar(new ListenerCancelarAltaPoliza());
-		poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
+		altaPoliza1.addListenerBtn_BuscarCliente(new ListenerView1BuscarCliente());;
+		altaPoliza1.addListenerBtn_AltaCliente(new ListenerView1AltaCliente());
+		altaPoliza1.addListenerBtn_AgregarHijo(new ListenerView1DeclararHijo());
+		altaPoliza1.addListenerBtn_QuitarHijo(new ListenerView1QuitarHijo());
+		altaPoliza1.addListenerSeleccionProvincia(new ListenerView1Provincia());
+		altaPoliza1.addListenerSeleccionMarca(new ListenerView1Marca());
+		altaPoliza1.addListenerSeleccionModelo(new ListenerView1Modelo());
+		altaPoliza1.addListenerSeleccionAnioModelo(new ListenerView1AnioModelo());
+		altaPoliza1.addListenerBtn_ConfirmarDatos(new ListenerView1ConfirmarDatos());
+		altaPoliza1.addListenerBtn_Cancelar(new ListenerView1CancelarAltaPoliza());
 		ventana.setContentPane(altaPoliza1);
 		ventana.revalidate();
 	}
 	
-	public void cargarTabla(){
-		Integer cantHijos = hijosDeclarados.size();
+	private void setView2_AltaPoliza2() {
+		altaPoliza2 = new CU01View2();
+		setFechaInicioVigenciaDefault();
+		addSeleccionTipoCobertura();
+		altaPoliza2.addListenerBtnConfirmarDatos(new ListenerView2ConfirmarDatos());
+		altaPoliza2.addListenerBtnGenerarPoliza(new ListenerView2GenerarPoliza());
+		altaPoliza2.addListenerBtnVolver(new ListenerView2Volver());
+		ventana.setContentPane(altaPoliza2);
+		ventana.revalidate();
+	}
+	
+	private void setView3_DeclararHijos() {
+		declararHijo = new CU01View3();
+		declararHijo.setResizable(false);
+		declararHijo.setBounds(0, 0, 400, 250);
+		declararHijo.setLocationRelativeTo(null);
+		declararHijo.setTitle("Dar de alta póliza: AGREGAR DATOS HIJOS");
+		declararHijo.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		setFechaInicioDefault();
+		addSelecccionSexo();
+		addSeleccionEstadoCivil();
+		addListenerVentanaDeclararHijo();
+		declararHijo.addListenerSeleccionSexo(new ListenerView3Sexo());
+		declararHijo.addListenerBtnAgregarHijo(new ListenerView3AgregarHijo());
+		declararHijo.addListenerBtnCancelar(new ListenerView3Cancelar());
+		declararHijo.setVisible(true);
+	}
+	
+	//-------- MÉTODOS QUE TRABAJAN SOBRE CU01View1 - AltaPoliza1
+	private  void cargarTabla(){
+		Integer cantHijos = poliza.getHijosDeclarado().size();
 		altaPoliza1.cargarTabla(cantHijos);
 		if(cantHijos > 0) {
 			for(int fila = 0; fila < cantHijos; fila++) {
-				LocalDate date = hijosDeclarados.get(fila).getFechaNacimiento();
+				LocalDate date = poliza.getHijosDeclarado().get(fila).getFechaNacimiento();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
 				String formattedString = date.format(formatter);
-				String sexo = GestorEnum.get().parseString(hijosDeclarados.get(fila).getSexo());
+				String sexo = GestorEnum.get().parseString(poliza.getHijosDeclarado().get(fila).getSexo());
 				String estadoCivil = "";
 				if(sexo.equals("Femenino")) {
-					estadoCivil = gestorEnum.parseStringFem(hijosDeclarados.get(fila).getEstadoCivil());
+					estadoCivil = gestorEnum.parseStringFem(poliza.getHijosDeclarado().get(fila).getEstadoCivil());
 				}
 				else {
-					estadoCivil = gestorEnum.parseStringMasc(hijosDeclarados.get(fila).getEstadoCivil());
+					estadoCivil = gestorEnum.parseStringMasc(poliza.getHijosDeclarado().get(fila).getEstadoCivil());
 				}
 				altaPoliza1.cargarHijosTabla(fila, formattedString, sexo, estadoCivil);
 			}
@@ -111,8 +160,8 @@ public class CU01Controller {
 	 * @param cliente
 	 */
 	public void obtenidoCliente(Cliente cliente) {
-		poliza.setCliente(cliente);
-	
+		poliza = new Poliza();
+		gestorPoliza.actualizarPoliza(poliza, cliente);
 		altaPoliza1.setNumeroCliente(cliente.getNumeroCliente().toString());
 		altaPoliza1.setApellido(cliente.getApellido());
 		altaPoliza1.setNombre(cliente.getNombre());
@@ -120,6 +169,7 @@ public class CU01Controller {
 		altaPoliza1.setNumeroDocumento(cliente.getNumeroDocumento());
 		altaPoliza1.setCalle(cliente.getCalle()) ;
 		altaPoliza1.setNumeroCalle(cliente.getNumeroCalle().toString());
+		
 		if(cliente.getPiso() == null) {
 			altaPoliza1.setPiso("-");
 			altaPoliza1.setDepartamento("-");
@@ -157,19 +207,25 @@ public class CU01Controller {
 		}
 		
 		altaPoliza1.setCiudadInicio(cliente.getCiudad());
-		
-		
+	}
+
+	private  void agregarHijoTabla(HijoDeclarado hijo) {
+		if(hijo != null) {
+			gestorPoliza.addHijo(poliza, hijo);
+			cargarTabla();
+			altaPoliza1.componentesAlDeclararHijos(true, poliza.getHijosDeclarado().size());
+		}
 	}
 
 	/**
 	 * Este método retorna un valor Boolean de acuerdo a sí
 	 * se dan las condiciones necesarias para generar una
-	 * póliza Si no se dan las condiciones necesarias 
+	 * póliza. Si no se dan las condiciones necesarias 
 	 * genera un aviso de error, distiguiendo que se está
 	 * incumpliendo para poder generar póliza.
 	 * @return
 	 */
-	public Boolean condicionesGenerarPoliza() {
+	private  Boolean condicionesGenerarPoliza() {
 		String patenteLargo = "", patenteFormato6 = "", patenteFormato7 = "";
 		String chasisBlanco = "", chasisLargo = "", chasisFormato = "";
 		String motorBlanco = "", motorLargo = "", motorFormato = "";
@@ -210,9 +266,7 @@ public class CU01Controller {
 						valido = false;
 						i = 17;
 					}
-					else {
-						motor = false;
-					}
+					else { motor = false; }
 				}
 			}
 			else {
@@ -240,9 +294,7 @@ public class CU01Controller {
 						valido = false;
 						i = 8;
 					}
-					else {
-						chasis = false;
-					}
+					else { chasis = false; }
 				}
 			}
 			else {
@@ -270,9 +322,7 @@ public class CU01Controller {
 		    					valido = false;
 		    					i = 6;
 		    				}
-		    				else {
-		    					patente = false;
-		    				}
+		    				else { patente = false; }
 		        		break;
 		        		
 		        		case 3:
@@ -286,17 +336,14 @@ public class CU01Controller {
 		    					valido = false;
 		    					i = 6;
 		    				}
-		    				else {
-		    					patente = false;
-		    				}
+		    				else { patente = false; }
 		        		break;
 		        	}
 	        		
 	        	}
 	        break;     
-
-	        //para patente longitud 7
-	        case 7:
+	        
+	        case 7:  //para patente longitud 7
 	        	for(int j = 0; j < 7; j++) {
 	        		
 		        	switch(j) {
@@ -311,9 +358,7 @@ public class CU01Controller {
 		    					errorNumero++;
 		    					valido = false;
 		    					j = 7;
-		    				}else {
-		    					patente = false;
-		    				}
+		    				}else { patente = false; }
 		        		break;
 		        
 		        		case 2:
@@ -326,12 +371,9 @@ public class CU01Controller {
 		    					errorNumero++;
 		    					valido = false;
 		    					j = 7;
-		    				}else {
-		    					patente = false;
-		    				}
+		    				}else { patente = false; }
 		        		break;
 		        	}
-	        		
 	        	}
 	        break;
 
@@ -343,9 +385,7 @@ public class CU01Controller {
 			break;
 			}		
 		}
-		else {
-			patente = false;
-		}
+		else { patente = false; }
 		
 		if (altaPoliza1.getKmAnio().equals("Selecionar kilometraje")) {
 			km = true;
@@ -357,186 +397,83 @@ public class CU01Controller {
 		
 		if(!valido) {
 			altaPoliza1.noValido(marca, motor, chasis,patente, km);
-			
 			JOptionPane.showConfirmDialog(ventana, mensajeError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 		}
-		
 		return valido;
 	}
 	
-	class ListenerBuscarCliente implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {
-				CU17Controller a = new CU17Controller(ventana);	
-				a.setAltaPolizaController(instancia);
-				ventana.revalidate();
-			}catch(Exception ex) {
-            	JOptionPane.showMessageDialog(ventana, "No se pudo obtener el cliente desde la base de datos",
-                          "Error.", JOptionPane.ERROR_MESSAGE);       	
-			}
+	//-------- MÉTODOS QUE TRABAJAN SOBRE CU01View2 - AltaPoliza2
+	
+	private void setFechaInicioVigenciaDefault() {
+		try {
+			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
+		      Calendar calendar = Calendar.getInstance();
+		      calendar.setTime(fechaParseada); 
+		      calendar.add(Calendar.DAY_OF_YEAR, 1);  
+		      calendar.getTime(); 
+		      altaPoliza2.setInicioVigencia(calendar.getTime());
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	private void addSeleccionTipoCobertura() {
+		ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) GestorTipoCobertura.get().getTiposCobertura();
+		Iterator<TipoCobertura> iteradorTipoCoberturas = tipoCoberturas.iterator();
+		altaPoliza2.addTipoCobertura(new TipoCobertura("Seleccionar tipo cobertura"));
+		while(iteradorTipoCoberturas.hasNext()){
+			altaPoliza2.addTipoCobertura(iteradorTipoCoberturas.next());
 		}
 	}
 
-	class ListenerAltaCliente implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {				
-				new CU04Controller(ventana);
-				ventana.revalidate();
-			}catch(Exception ex) {
-				JOptionPane.showMessageDialog(ventana, "No se pudo obtener el cliente desde la base de datos",
-                        "Error.", JOptionPane.ERROR_MESSAGE);    
-			}
-		}
-	}
-	
-	class ListenerDeclararHijo implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {				
-				altaPoliza1.componentesAlDeclararHijos(false, 0);
-				setDeclararHijos();
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-	
-	class ListenerQuitarHijo implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {			
-				if(poliza.getHijosDeclarado().size() > 0) {
-					int hijoSeleccionado = altaPoliza1.getFilaSeleccionada();
-					poliza.getHijosDeclarado().remove(hijoSeleccionado);
-					hijosDeclarados = poliza.getHijosDeclarado();
-					cargarTabla();
-					return;
-				}
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-	
-	class ListenerConfirmarDatos implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {	
-				if(!condicionesGenerarPoliza()) {
-					return;
-				}
-				
-				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
-					
-					poliza.setCiudad(altaPoliza1.getCiudad());
-					poliza.setAnioModelo(altaPoliza1.getAnioModelo());
-					poliza.setMotor(altaPoliza1.getMotor());
-					poliza.setChasis(altaPoliza1.getChasis());
-					poliza.setPatente(altaPoliza1.getPatente());
-					poliza.setSumaAsegurada(Float.parseFloat(altaPoliza1.getSumaAsegurada()));
-					poliza.setKmRealizadosPorAnio(altaPoliza1.getKmAnio());
-					poliza.setNumerosSiniestrosUltimoAnios(gestorEnum.parseEnumSiniestros(altaPoliza1.getNumeroSiniestros()));
-					poliza.setGuardaGarage(altaPoliza1.getGarage());
-					poliza.setTieneAlarma(altaPoliza1.getAlarma());
-					poliza.setTieneRastreoVehicular(altaPoliza1.getRastreo());
-					poliza.setTieneTuercasAntirobo(altaPoliza1.getTuercasAntirrobo());
-					new CU01View2(ventana, poliza);
-				}
-				
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-	
-	class ListenerCancelarAltaPoliza implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {			
-				ventana.setContentPane(panelAnterior);	
-				ventana.setTitle(tituloAnterior);
-				altaPoliza1.setVisible(false);
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-	
-	class ListenerProvincia implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			Provincia provincia = altaPoliza1.getProvincia();
-			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(provincia).iterator();
-			altaPoliza1.addCiudad(iteratorCiudad.next(), true);
-			while(iteratorCiudad.hasNext()){
-				altaPoliza1.addCiudad(iteratorCiudad.next(), false);
-			}
-		}
-	}
-	
-	class ListenerMarca implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			
-			Marca marca = altaPoliza1.getMarca();
-			altaPoliza1.habilitarSeleccionModelo(false);
-			altaPoliza1.habilitarSeleccionAnioModelo(false);
-			if(!marca.equals(new Marca("Seleccionar marca"))) {
-				Iterator<Modelo> iteratorModelo = marca.getModelos().iterator();
-				while(iteratorModelo.hasNext()){
-					altaPoliza1.addModelo(iteratorModelo.next());
-				}				
-				Iterator<AnioModelo> iteratorAnioModelo = gestorVehiculo.sortAniosModelo(altaPoliza1.getModelo()).iterator();
-				while(iteratorAnioModelo.hasNext()){
-					altaPoliza1.addAnioModelo(iteratorAnioModelo.next());
-				}			
-				altaPoliza1.habilitarSeleccionModelo(true);
-				altaPoliza1.habilitarSeleccionAnioModelo(true);
-				altaPoliza1.setSumaAsegurada(altaPoliza1.getAnioModelo().getSumaAsegurada().toString());
-			}
-		}
-	}
-	
-	class ListenerModelo implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			if(altaPoliza1.habilitadaSeleccionModelo()) {
-				altaPoliza1.habilitarSeleccionAnioModelo(false);
-				Modelo modelo = altaPoliza1.getModelo();		
-				Iterator<AnioModelo> iteratorAnioModelo = gestorVehiculo.sortAniosModelo(modelo).iterator();
-				while(iteratorAnioModelo.hasNext()){
-					altaPoliza1.addAnioModelo(iteratorAnioModelo.next());
-				}
-				altaPoliza1.habilitarSeleccionAnioModelo(true);
-				altaPoliza1.setSumaAsegurada(altaPoliza1.getAnioModelo().getSumaAsegurada().toString());
-			}
-		}
-	}
-	
-	class ListenerAnioModelo implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			if(altaPoliza1.habilitadaSeleccionAnioModelo()) {
-				altaPoliza1.setSumaAsegurada(altaPoliza1.getAnioModelo().getSumaAsegurada().toString());
-			}
-			else {
-				altaPoliza1.setSumaAsegurada("");
-			}
-		}
-	}
+	private Boolean condicionesConfirmarDatos(){
+		String errorTipoCobertura = "";
+		String errorFechaVigencia = "";
+		Boolean tipoCoberturaError = false, inicioVigenciaError = false;
 
-	public void agregarHijoTabla(HijoDeclarado hijo) {
-		if(hijo != null) {
-			hijo.setPoliza(poliza);
-			poliza.getHijosDeclarado().add(hijo);
-			hijosDeclarados = poliza.getHijosDeclarado();
-			cargarTabla();
-			altaPoliza1.componentesAlDeclararHijos(true, hijosDeclarados.size());
-		}
-	}
-	
-	//------------------------------------------------------------------------------CU01_DeclararHijo
-	
-	public void setDeclararHijos() {
-		declararHijo = new CU01View3();
-		declararHijo.setResizable(false);
-		declararHijo.setBounds(0, 0, 400, 250);
-		declararHijo.setLocationRelativeTo(null);
-		declararHijo.setTitle("Dar de alta póliza: AGREGAR DATOS HIJOS");
-		declararHijo.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		if (altaPoliza2.getTipoCobertura().equals(new TipoCobertura("Seleccionar tipo cobertura"))) {
+			tipoCoberturaError = true;
+			errorTipoCobertura = "Seleccione un tipo de cobertura.\n";
+		}	
 		
+		SimpleDateFormat formato = new SimpleDateFormat("dd MMM yyyy");
+		Date fechaInicioVigenciaDate = null;
+
+		try {
+			fechaInicioVigenciaDate = formato.parse(formato.format(altaPoliza2.getInicioVigencia()));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+
+		LocalDate fechaInicioVigenciaLocalDate = fechaInicioVigenciaDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		int anioActual = LocalDate.now().getYear();
+		int mesActual = LocalDate.now().getMonthValue();
+		int diaActual = LocalDate.now().getDayOfMonth();
+		
+		int anioInicioVigencia = fechaInicioVigenciaLocalDate.getYear();
+		int mesInicioVigencia = fechaInicioVigenciaLocalDate.getMonthValue();
+		int diaInicioVigencia = fechaInicioVigenciaLocalDate.getDayOfMonth();
+		
+		if (!((anioActual == anioInicioVigencia && mesActual == mesInicioVigencia && diaActual < diaInicioVigencia)
+			|| (anioActual == anioInicioVigencia && mesActual == mesInicioVigencia-1 && diaActual > diaInicioVigencia)
+			|| (anioActual == anioInicioVigencia-1 && mesActual == 12 && mesInicioVigencia == 1 && diaActual >= diaInicioVigencia)
+			)){
+			errorFechaVigencia = "La fecha de inicio de vigencia debe estar dentro del mes próximo respecto a la fecha actual.\n";
+			inicioVigenciaError = true;
+		}
+		
+		altaPoliza2.componentesAlConfirmarDatos(tipoCoberturaError, inicioVigenciaError, poliza.getCliente().getPolizas().size());
+		if(tipoCoberturaError || inicioVigenciaError) {
+			JOptionPane.showConfirmDialog(ventana, errorTipoCobertura + errorFechaVigencia , "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+		}
+		
+		return !(tipoCoberturaError || inicioVigenciaError);
+	}
+
+	//-------- MÉTODOS QUE TRABAJAN SOBRE CU01View3 - DeclararHijo
+	
+	private void setFechaInicioDefault() {
 		try {
 			//TODO elegir como fecha inicial el último día aceptado como fecha válida de cumpleaños
 			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
@@ -544,27 +481,35 @@ public class CU01Controller {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
+	}
+	
+	private void addSelecccionSexo() {
 		declararHijo.addSexo("Seleccionar");
 		EnumSexo[] sexos = EnumSexo.values();
 		for(int i=0; i<sexos.length; i++){
 			declararHijo.addSexo(gestorEnum.parseString(sexos[i]));
 		}
-		
+	}
+	
+	private void addSeleccionEstadoCivil() {
 		declararHijo.addEstadoCivil("Seleccionar");
 		EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
 		for(int i=0; i<estadosCivil.length; i++){
 			declararHijo.addEstadoCivil(gestorEnum.parseStringMasc(estadosCivil[i]));
 		}
-		
-		addListenerVentanaDeclararHijo();
-		declararHijo.addListenerSeleccionSexo(new ListenerSexo());
-		declararHijo.addListenerBtnAgregarHijo(new ListenerAgregarHijo());
-		declararHijo.addListenerBtnCancelar(new ListenerCancelarDeclararHijo());
-		declararHijo.setVisible(true);
 	}
 	
-	public Boolean validarEdad(LocalDate fechaNacLocalDate) {
+	private void addListenerVentanaDeclararHijo() {
+		declararHijo.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	declararHijo.setVisible(false);
+				altaPoliza1.componentesAlDeclararHijos(true, poliza.getHijosDeclarado().size());
+		    }
+		});
+	}
+	
+	private Boolean validarEdad(LocalDate fechaNacLocalDate) {
 		
 		int anioHoy = LocalDate.now().getYear();
 		int diaDelAnioHoy = LocalDate.now().getDayOfYear();
@@ -616,21 +561,290 @@ public class CU01Controller {
 		}
 	}
 	
-	public void addListenerVentanaDeclararHijo() {
-		declararHijo.addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		    	declararHijo.setVisible(false);
-				altaPoliza1.componentesAlDeclararHijos(true, hijosDeclarados.size());
-		    }
-		});
+	//-------- LISTENER VIEW 1
+	private class ListenerView1BuscarCliente implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {
+				CU17Controller a = new CU17Controller(ventana);	
+				a.setAltaPolizaController(instancia);
+				ventana.revalidate();
+			}catch(Exception ex) {
+            	JOptionPane.showMessageDialog(ventana, "No se pudo obtener el cliente desde la base de datos",
+                          "Error.", JOptionPane.ERROR_MESSAGE);       	
+			}
+		}
+	}
+
+	private class ListenerView1AltaCliente implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {				
+				new CU04Controller(ventana);
+				ventana.revalidate();
+			}catch(Exception ex) {
+				JOptionPane.showMessageDialog(ventana, "No se pudo obtener el cliente desde la base de datos",
+                        "Error.", JOptionPane.ERROR_MESSAGE);    
+			}
+		}
 	}
 	
-	class ListenerSexo implements ActionListener{
+	private class ListenerView1DeclararHijo implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {				
+				altaPoliza1.componentesAlDeclararHijos(false, 0);
+				setView3_DeclararHijos();
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private class ListenerView1QuitarHijo implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {			
+				if(poliza.getHijosDeclarado().size() > 0) {
+					gestorPoliza.removeHijo(poliza, altaPoliza1.getFilaSeleccionada());
+					cargarTabla();
+					return;
+				}
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private class ListenerView1ConfirmarDatos implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {	
+				if(!condicionesGenerarPoliza()) {
+					return;
+				}
+				
+				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
+					gestorPoliza.actualizarPoliza(poliza, altaPoliza1.getCiudad(), altaPoliza1.getAnioModelo(), altaPoliza1.getMotor(),
+							altaPoliza1.getChasis(), altaPoliza1.getPatente(), Float.parseFloat(altaPoliza1.getSumaAsegurada()), 
+							altaPoliza1.getKmAnio(), gestorEnum.parseEnumSiniestros(altaPoliza1.getNumeroSiniestros()), altaPoliza1.getGarage(),
+							altaPoliza1.getAlarma(), altaPoliza1.getRastreo(), altaPoliza1.getTuercasAntirrobo());
+					
+					//TODO ver o quitar
+					/*poliza.setCiudad(altaPoliza1.getCiudad());
+					poliza.setAnioModelo(altaPoliza1.getAnioModelo());
+					poliza.setMotor(altaPoliza1.getMotor());
+					poliza.setChasis(altaPoliza1.getChasis());
+					poliza.setPatente(altaPoliza1.getPatente());
+					poliza.setSumaAsegurada(Float.parseFloat(altaPoliza1.getSumaAsegurada()));
+					poliza.setKmRealizadosPorAnio(altaPoliza1.getKmAnio());
+					poliza.setNumerosSiniestrosUltimoAnios(gestorEnum.parseEnumSiniestros(altaPoliza1.getNumeroSiniestros()));
+					poliza.setGuardaGarage(altaPoliza1.getGarage());
+					poliza.setTieneAlarma(altaPoliza1.getAlarma());
+					poliza.setTieneRastreoVehicular(altaPoliza1.getRastreo());
+					poliza.setTieneTuercasAntirobo(altaPoliza1.getTuercasAntirrobo());*/
+					setView2_AltaPoliza2();
+				}
+				
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private class ListenerView1CancelarAltaPoliza implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {			
+				ventana.setContentPane(panelAnterior);	
+				ventana.setTitle(tituloAnterior);
+				altaPoliza1.setVisible(false);
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private class ListenerView1Provincia implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			Provincia provincia = altaPoliza1.getProvincia();
+			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(provincia).iterator();
+			altaPoliza1.addCiudad(iteratorCiudad.next(), true);
+			while(iteratorCiudad.hasNext()){
+				altaPoliza1.addCiudad(iteratorCiudad.next(), false);
+			}
+		}
+	}
+	
+	private class ListenerView1Marca implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			
+			Marca marca = altaPoliza1.getMarca();
+			altaPoliza1.habilitarSeleccionModelo(false);
+			altaPoliza1.habilitarSeleccionAnioModelo(false);
+			if(!marca.equals(new Marca("Seleccionar marca"))) {
+				Iterator<Modelo> iteratorModelo = marca.getModelos().iterator();
+				while(iteratorModelo.hasNext()){
+					altaPoliza1.addModelo(iteratorModelo.next());
+				}				
+				Iterator<AnioModelo> iteratorAnioModelo = gestorVehiculo.sortAniosModelo(altaPoliza1.getModelo()).iterator();
+				while(iteratorAnioModelo.hasNext()){
+					altaPoliza1.addAnioModelo(iteratorAnioModelo.next());
+				}			
+				altaPoliza1.habilitarSeleccionModelo(true);
+				altaPoliza1.habilitarSeleccionAnioModelo(true);
+				altaPoliza1.setSumaAsegurada(altaPoliza1.getAnioModelo().getSumaAsegurada().toString());
+			}
+		}
+	}
+	
+	private class ListenerView1Modelo implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			if(altaPoliza1.habilitadaSeleccionModelo()) {
+				altaPoliza1.habilitarSeleccionAnioModelo(false);
+				Modelo modelo = altaPoliza1.getModelo();		
+				Iterator<AnioModelo> iteratorAnioModelo = gestorVehiculo.sortAniosModelo(modelo).iterator();
+				while(iteratorAnioModelo.hasNext()){
+					altaPoliza1.addAnioModelo(iteratorAnioModelo.next());
+				}
+				altaPoliza1.habilitarSeleccionAnioModelo(true);
+				altaPoliza1.setSumaAsegurada(altaPoliza1.getAnioModelo().getSumaAsegurada().toString());
+			}
+		}
+	}
+	
+	private class ListenerView1AnioModelo implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			if(altaPoliza1.habilitadaSeleccionAnioModelo()) {
+				altaPoliza1.setSumaAsegurada(altaPoliza1.getAnioModelo().getSumaAsegurada().toString());
+			}
+			else {
+				altaPoliza1.setSumaAsegurada("");
+			}
+		}
+	}
+	
+	//-------- LISTENER VIEW 2
+	private class ListenerView2ConfirmarDatos implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			
+			if(!condicionesConfirmarDatos()) {
+				return;
+			}
+			altaPoliza2.setApellido(poliza.getCliente().getApellido());
+			altaPoliza2.setNombre(poliza.getCliente().getNombre());
+			altaPoliza2.setModelo(poliza.getAnioModelo().getModelo().getNombre());
+			altaPoliza2.setMarca(poliza.getAnioModelo().getModelo().getMarca().getNombre());
+			altaPoliza2.setMotor(poliza.getMotor());
+			altaPoliza2.setChasis(poliza.getChasis());
+			//deshabilito parte superior		
+			/*
+			//calculo premio, prima derechoEmision y descuento
+			GestorParametroPoliza gpp = GestorParametroPoliza.getGestorParametroPoliza();
+			GestorSuperIntendenciaSeguros gsis = GestorSuperIntendenciaSeguros.getGestorSuperIntendenciaSeguros();
+			float sumaAsegurada = gsis.getSumaAsegurada(poliza.getAnioModelo().getModelo().getMarca().getNombre(), poliza.getAnioModelo().getModelo().getNombre(), poliza.getAnioModelo().getAnio());
+			GestorTipoCobertura gtc = GestorTipoCobertura.getGestorTipoCobertura();
+			GestorParametrosVehiculo gpv = GestorParametrosVehiculo.getGestorParametroPoliza();
+			GestorDomicilio gd = GestorDomicilio.getGestorDomicilio();
+			float prima = gpp.calcularPrima(gtc.getRiesgoCobertura(poliza.getTipoCobertura()), gpv.getRiesgoModelo(poliza.getAnioModelo().getModelo()), gd.getRiesgoCiudad(poliza.getCiudad()));
+			float derechoEmision = gpp.getDerechoEmision();
+			float premio = gpp.calcularPremio(prima, derechoEmision);
+			Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;
+			if (poliza.getCliente().getPolizas().size() > 1)
+				descuentoMasDeUnaUnidad = true;
+			if (semestral.isSelected())
+				descuentoSemestral = true;
+			float descuento = gpp.calcularDescuento(descuentoMasDeUnaUnidad, descuentoSemestral);
+			tfSumaAsegurada.setText(Float.toString(sumaAsegurada));
+			tfPremio.setText(Float.toString(premio));
+			tfDescuentos.setText(Float.toString(descuento));*/
+
+			String pattern = "dd-MM-yyyy";
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+
+			//seteo datos tabla
+			altaPoliza2.setFechaInicio(simpleDateFormat.format(altaPoliza2.getInicioVigencia()));
+			Calendar fechaFinVigencia = Calendar.getInstance();
+			fechaFinVigencia.setTime(altaPoliza2.getInicioVigencia());
+			fechaFinVigencia.add(Calendar.MONTH, 6);
+			altaPoliza2.setFechaFin(simpleDateFormat.format(fechaFinVigencia.getTime()));
+			Calendar fechaAnteriorAInicioVigencia = Calendar.getInstance();
+			fechaAnteriorAInicioVigencia.setTime(altaPoliza2.getInicioVigencia());
+			fechaAnteriorAInicioVigencia.add(Calendar.DATE, -1);
+			
+			/*
+			if(mensual.isSelected()) {
+				Float montoTotal = 0f;
+				for (int contador=0; contador<6; contador++) {
+					SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
+					Calendar fechaAux = Calendar.getInstance(); 
+					fechaAux.setTime(fechaAnteriorAInicioVigencia.getTime());
+					fechaAux.add(Calendar.MONTH, contador);
+					
+					model.setValueAt(dateFormat.format(fechaAux.getTime()), contador, 0);
+					model.setValueAt("$ " + "2", contador, 1);				//CAMBIAR 2 POR MONTO DE LA CUOTA
+					String auxMonto[] = ((String)model.getValueAt(contador, 1)).split(" ");
+					montoTotal += Float.parseFloat(auxMonto[1]);
+				}
+				campoMontoTotal.setHorizontalAlignment(JTextField.RIGHT);
+				campoMontoTotal.setText("$ " + Float.toString(montoTotal));
+			} else {
+				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
+				model.setValueAt(dateFormat.format(fechaAnteriorAInicioVigencia.getTime()), 0, 0);
+				model.setValueAt("$ " + "5", 0, 1);							//CAMBIAR 5 POR MONTO TOTAL
+				campoMontoTotal.setHorizontalAlignment(JTextField.RIGHT);
+				campoMontoTotal.setText("$ " + "5");							//CAMBIAR 5 POR MONTO TOTAL
+			}*/
+		}
+	}
+	
+	private class ListenerView2GenerarPoliza implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			if(JOptionPane.showConfirmDialog(ventana, "¿Desea generar la póliza?","Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
+				GestorPoliza gp = GestorPoliza.get();
+				gp.altaPoliza(poliza);
+
+				//veo si es cliente Plata o Activo
+				Boolean esPlata = true;
+
+				//TODO actualizar para siniestros
+			//	if (!poliza.getCliente().getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO))
+				//	esPlata = false;
+
+				for (Cuota cuota : poliza.getCuotas()) {
+					if (cuota.getEstado() == EnumEstadoCuota.IMPAGO)
+						esPlata = false;
+				}
+
+				GestorCliente gc = GestorCliente.get();
+				//TODO implementar calcularTiempoActivo
+				if (gc.calcularTiempoActivo(poliza.getCliente()) < 365*2)
+					esPlata = false;
+
+				//TODO implementar actualizarCondicion
+				if (esPlata)
+					//diria que si modificas el cliente de la poliza, se actualiza el cliente de la base de datos al persistir la poliza
+					gc.actualizarCondicion(poliza.getCliente(), EnumCondicion.PLATA);
+				else
+					gc.actualizarCondicion(poliza.getCliente(), EnumCondicion.ACTIVO);
+
+				System.out.println(poliza.getCliente().getCondicion());
+
+				JOptionPane.showConfirmDialog(ventana, "Póliza generada correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+			}
+		}
+	}
+	
+	private class ListenerView2Volver implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			if(JOptionPane.showConfirmDialog(ventana, "¿Desea corregir algún dato ingresado?", "Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
+				ventana.setContentPane(altaPoliza1);
+				ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");
+				altaPoliza2.setVisible(false);
+			}
+		}
+	}
+	
+	//-------- LISTENER VIEW 3
+	private class ListenerView3Sexo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(!declararHijo.getSexo().equals("Seleccionar")) {
 				Integer index = declararHijo.indexSeleccionEstadoCivil();
-				declararHijo.habilitarSeleccionEstadoCivil(false);
+				
 				if(gestorEnum.parseEnumSexo(declararHijo.getSexo()).equals(EnumSexo.FEMENINO)) {
 					declararHijo.addEstadoCivil("Seleccionar");
 					EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
@@ -647,12 +861,11 @@ public class CU01Controller {
 					}
 				}
 				declararHijo.setEstadoCivil(index);
-				declararHijo.habilitarSeleccionEstadoCivil(true);
 			}
 		}
 	}
 	
-	class ListenerAgregarHijo implements ActionListener{
+	private class ListenerView3AgregarHijo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 
 			String fechaNac = "";
@@ -707,10 +920,10 @@ public class CU01Controller {
 		}
 	}
 
-	class ListenerCancelarDeclararHijo implements ActionListener{
+	private class ListenerView3Cancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			declararHijo.setVisible(false);
-			altaPoliza1.componentesAlDeclararHijos(true, hijosDeclarados.size());
+			altaPoliza1.componentesAlDeclararHijos(true, poliza.getHijosDeclarado().size());
 		}
 	}
 }

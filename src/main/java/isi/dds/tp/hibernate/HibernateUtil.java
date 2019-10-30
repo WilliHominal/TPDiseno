@@ -17,6 +17,7 @@ public class HibernateUtil {
 	private static StandardServiceRegistry registryBis;
     private static SessionFactory sessionFactoryBis;
     
+    //TODO si se da una excepcion por no tener datos, cargar la base
     public static SessionFactory getSessionFactoryValidate() {
 		//desactiva que se abra la consola cada vez que se inicia
 		Logger log = Logger.getLogger("org.hibernate");

@@ -22,20 +22,20 @@ import isi.dds.tp.view.CU17View1;
 import isi.dds.tp.view.CU17View2;
 
 public class CU17Controller {    
-	private JFrame ventana;
-	private JPanel panelAnterior;
 	private CU17View1 buscarCliente;
 	private CU17View2 mostrarCliente;
-	
 	private CU01Controller altaPolizaController = null;
 	
+	private JFrame ventana;
+	private JPanel panelAnterior;
+	private String tituloAnterior = "";
+		
 	private GestorTema tema = GestorTema.get();
 	private GestorEnum gestorEnum = GestorEnum.get();
-	
-	private String tituloAnterior = "";
+
 	private Boolean esAltaPoliza = false;
-	private List<Cliente> clientes = new ArrayList<Cliente>();
 	private Cliente clienteObtenido = null;
+	private List<Cliente> clientes = new ArrayList<Cliente>();
 	
 	public CU17Controller(JFrame ventana) {
 		this.ventana = ventana;
@@ -48,10 +48,10 @@ public class CU17Controller {
 		}catch(Exception ex) {
 		    panelAnterior = null;
 		}
-		setBuscarCliente();
+		setView1_BuscarCliente();
 	}
 	
-	private void setBuscarCliente() {
+	private void setView1_BuscarCliente() {
 		tema.setTema(ventana, "Buscar cliente");
 		this.buscarCliente = new CU17View1();
 
@@ -68,7 +68,7 @@ public class CU17Controller {
 		ventana.setContentPane(buscarCliente);
 	}
 	
-	private void setMostrarCliente(Cliente cliente) {
+	private void setView2_MostrarCliente(Cliente cliente) {
 		this.mostrarCliente = new CU17View2();
 		cargarClienteSeleccionado(cliente);
 		mostrarCliente.addListenerBtn_Volver(new ListenerVolver());
@@ -78,86 +78,7 @@ public class CU17Controller {
 		ventana.revalidate();
 	}
 
-	class ListenerBuscar implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {
-				Long numeroCliente = null;
-				String apellido = buscarCliente.getApellido();
-				String nombre = buscarCliente.getNombre();
-				EnumTipoDocumento tipoDocumento= null;
-				String numeroDocumento = buscarCliente.getNumeroDocumento(); 	
-				
-				if(!(buscarCliente.getNumeroCliente().isEmpty())) {
-					numeroCliente = Long.parseLong(buscarCliente.getNumeroCliente());
-				}
-				
-				if(!buscarCliente.getTipoDocumento().equals("Selecionar tipo documento")) {
-					tipoDocumento = GestorEnum.get().parseEnumTipoDocumento(buscarCliente.getTipoDocumento());
-				}
-				
-				clientes = GestorCliente.get().buscarClientes(numeroCliente, apellido, nombre, tipoDocumento, numeroDocumento);
-				
-				cargarTabla(clientes);
-
-					
-			}catch(Exception ex) {
-            	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
-                          "Error.", JOptionPane.ERROR_MESSAGE);       	
-			}
-		}
-	}
-	
-	class ListenerCancelar implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {
-				ventana.setContentPane(panelAnterior);	
-				ventana.setTitle(tituloAnterior);
-				buscarCliente.setVisible(false);
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-	
-	class ListenerTablaClientes implements MouseListener{			
-		@Override
-		public void mousePressed(MouseEvent e) {
-	        JTable table = (JTable) e.getSource();
-	        Point point = e.getPoint();
-	        int row = buscarCliente.getRowTablaClientes(point);
-	        if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
-	    		clienteObtenido = clientes.get(row);
-	    		setMostrarCliente(clienteObtenido);
-	        }
-		}
-		@Override public void mouseClicked(MouseEvent e) {} 
-		@Override public void mouseReleased(MouseEvent e) {}
-		@Override public void mouseEntered(MouseEvent e) {}
-		@Override public void mouseExited(MouseEvent e) {}
-	}
-	
-	class ListenerElegirCliente implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {			
-				obtenidoCliente(); 
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}  	
-		}
-	}
-	
-	class ListenerVolver implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {			
-				mostrarCliente.setVisible(false);
-				ventana.setContentPane(buscarCliente);	
-				ventana.setTitle("Buscar cliente");
-			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-			}
-		}
-	}
-	
+	//---------- MÉTODOS
 	private void cargarTabla(List<Cliente> clientes) {
 		if(clientes == null) {
 			buscarCliente.addTablaClientes(0);
@@ -217,7 +138,7 @@ public class CU17Controller {
 		}
 	}
 	
-	public void obtenidoCliente() {
+	private void obtenidoCliente() {
 		if(esAltaPoliza) {
 	    	ventana.setContentPane(panelAnterior);
 	    	ventana.setTitle(tituloAnterior);
@@ -235,5 +156,86 @@ public class CU17Controller {
 
 	public void setAltaPolizaController(CU01Controller altaPolizaController) {
 		this.altaPolizaController = altaPolizaController;
-	}	
+	}
+	//---------- LISTENERS USADOS
+	
+	private class ListenerBuscar implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {
+				Long numeroCliente = null;
+				String apellido = buscarCliente.getApellido();
+				String nombre = buscarCliente.getNombre();
+				EnumTipoDocumento tipoDocumento= null;
+				String numeroDocumento = buscarCliente.getNumeroDocumento(); 	
+				
+				if(!(buscarCliente.getNumeroCliente().isEmpty())) {
+					numeroCliente = Long.parseLong(buscarCliente.getNumeroCliente());
+				}
+				
+				if(!buscarCliente.getTipoDocumento().equals("Selecionar tipo documento")) {
+					tipoDocumento = GestorEnum.get().parseEnumTipoDocumento(buscarCliente.getTipoDocumento());
+				}
+				
+				clientes = GestorCliente.get().buscarClientes(numeroCliente, apellido, nombre, tipoDocumento, numeroDocumento);
+				
+				cargarTabla(clientes);
+
+					
+			}catch(Exception ex) {
+            	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
+                          "Error.", JOptionPane.ERROR_MESSAGE);       	
+			}
+		}
+	}
+	
+	private class ListenerCancelar implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {
+				ventana.setContentPane(panelAnterior);	
+				ventana.setTitle(tituloAnterior);
+				buscarCliente.setVisible(false);
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	private class ListenerTablaClientes implements MouseListener{			
+		@Override
+		public void mousePressed(MouseEvent e) {
+	        JTable table = (JTable) e.getSource();
+	        Point point = e.getPoint();
+	        int row = buscarCliente.getRowTablaClientes(point);
+	        if (e.getClickCount() == 2 && table.getSelectedRow() != -1) {
+	    		clienteObtenido = clientes.get(row);
+	    		setView2_MostrarCliente(clienteObtenido);
+	        }
+		}
+		@Override public void mouseClicked(MouseEvent e) {} 
+		@Override public void mouseReleased(MouseEvent e) {}
+		@Override public void mouseEntered(MouseEvent e) {}
+		@Override public void mouseExited(MouseEvent e) {}
+	}
+	
+	private class ListenerElegirCliente implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {			
+				obtenidoCliente(); 
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}  	
+		}
+	}
+	
+	private class ListenerVolver implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {			
+				mostrarCliente.setVisible(false);
+				ventana.setContentPane(buscarCliente);	
+				ventana.setTitle("Buscar cliente");
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
 }

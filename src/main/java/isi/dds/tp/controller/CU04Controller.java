@@ -22,13 +22,14 @@ import isi.dds.tp.modelo.Provincia;
 import isi.dds.tp.view.CU04View;
 
 public class CU04Controller {
-
+	private CU04View altaCliente;
+	
+	private GestorEnum gestorEnum = GestorEnum.get();
+	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
+	
 	private JFrame ventana;
 	private JPanel panelAnterior;
 	private String tituloAnterior = "";
-	private GestorEnum gestorEnum = GestorEnum.get();
-	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
-	private CU04View altaCliente;
 	
 	public CU04Controller(JFrame ventana){
 		this.ventana = ventana;
@@ -41,52 +42,18 @@ public class CU04Controller {
 		setDarAltaCliente();
 	}
 	
-	public void setDarAltaCliente() {
+	private void setDarAltaCliente() {
 		altaCliente = new CU04View();
 		GestorTema.get().setTema(ventana, "Dar de alta cliente");
 		ventana.setContentPane(altaCliente);
 		
-		altaCliente.addTipoDocumento("Seleccionar tipo doc.");
-		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
-		for(int i=0; i<tipoDocumentos.length; i++){
-			altaCliente.addTipoDocumento(gestorEnum.parseString(tipoDocumentos[i]));
-		}
-		
-		altaCliente.addSexo("Seleccionar sexo");
-		EnumSexo[] sexos = EnumSexo.values();
-		for(int i=0; i<sexos.length; i++){
-			altaCliente.addSexo(gestorEnum.parseString(sexos[i]));
-		}
-		
-		List<Pais> paises = gestorDomicilio.getPaises();
-		Iterator<Pais> iteradorPais = paises.iterator();
-		while(iteradorPais.hasNext()){
-			altaCliente.addPais(iteradorPais.next());
-		}
-		
-		List<Provincia> provincias = altaCliente.getPais().getProvincias();
-		Iterator<Provincia> iteradorProvincias = provincias.iterator();
-		while(iteradorProvincias.hasNext()){
-			altaCliente.addProvincia(iteradorProvincias.next());
-		}
-		
-		List<Ciudad> ciudades = gestorDomicilio.sortCiudades(altaCliente.getProvincia());
-		Iterator<Ciudad> iteradorCiudades = ciudades.iterator();
-		while(iteradorCiudades.hasNext()){
-			altaCliente.addCiudad(iteradorCiudades.next());
-		}
-		
-		altaCliente.addCondicionIva("Seleccionar cond. de IVA");
-		EnumCondicionIVA[] condicionesIva = EnumCondicionIVA.values();
-		for(int i=0; i<condicionesIva.length; i++){
-			altaCliente.addCondicionIva(gestorEnum.parseString(condicionesIva[i]));
-		}
-		
-		altaCliente.addEstadoCivil("Seleccionar estado civil");
-		EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
-		for(int i=0; i<estadosCivil.length; i++){
-			altaCliente.addEstadoCivil(gestorEnum.parseStringMasc(estadosCivil[i]));
-		}
+		addSeleccionTipoDocumento();
+		addSeleccionSexo();
+		addSeleccionPais();
+		addSeleccionProvincia();
+		addSeleccionCiudad();
+		addSeleccionCondicionIva();
+		addSeleccionEstadoCivil();
 		
 		altaCliente.addListenerBtnConfirmar(new ListenerConfirmar());
 		altaCliente.addListenerBtnCancelar(new ListenerCancelar());
@@ -94,7 +61,65 @@ public class CU04Controller {
 		altaCliente.addListenerSeleccionProvincia(new ListenerProvincia());
 		altaCliente.addListenerSeleccionSexo(new ListenerSexo());
 	}
+
+	//------ METODOS
+	private void addSeleccionTipoDocumento() {
+		altaCliente.addTipoDocumento("Seleccionar tipo doc.");
+		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
+		for(int i=0; i<tipoDocumentos.length; i++){
+			altaCliente.addTipoDocumento(gestorEnum.parseString(tipoDocumentos[i]));
+		}
+	}
 	
+	private void addSeleccionSexo() {
+		altaCliente.addSexo("Seleccionar sexo");
+		EnumSexo[] sexos = EnumSexo.values();
+		for(int i=0; i<sexos.length; i++){
+			altaCliente.addSexo(gestorEnum.parseString(sexos[i]));
+		}
+	}
+	
+	private void addSeleccionPais() {
+		List<Pais> paises = gestorDomicilio.getPaises();
+		Iterator<Pais> iteradorPais = paises.iterator();
+		while(iteradorPais.hasNext()){
+			altaCliente.addPais(iteradorPais.next());
+		}
+	}
+	
+	private void addSeleccionProvincia() {
+		List<Provincia> provincias = altaCliente.getPais().getProvincias();
+		Iterator<Provincia> iteradorProvincias = provincias.iterator();
+		while(iteradorProvincias.hasNext()){
+			altaCliente.addProvincia(iteradorProvincias.next());
+		}
+	}
+	
+	private void addSeleccionCiudad() {
+		List<Ciudad> ciudades = gestorDomicilio.sortCiudades(altaCliente.getProvincia());
+		Iterator<Ciudad> iteradorCiudades = ciudades.iterator();
+		while(iteradorCiudades.hasNext()){
+			altaCliente.addCiudad(iteradorCiudades.next());
+		}
+	}
+	
+	private void addSeleccionCondicionIva() {
+		altaCliente.addCondicionIva("Seleccionar cond. de IVA");
+		EnumCondicionIVA[] condicionesIva = EnumCondicionIVA.values();
+		for(int i=0; i<condicionesIva.length; i++){
+			altaCliente.addCondicionIva(gestorEnum.parseString(condicionesIva[i]));
+		}
+	}
+	
+	private void addSeleccionEstadoCivil() {
+		altaCliente.addEstadoCivil("Seleccionar estado civil");
+		EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
+		for(int i=0; i<estadosCivil.length; i++){
+			altaCliente.addEstadoCivil(gestorEnum.parseStringMasc(estadosCivil[i]));
+		}
+	}
+	
+	//------- LISTENERS USADOS
 	class ListenerConfirmar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			JOptionPane.showMessageDialog(null, "Solo se implementó el mockup del caso de uso 04:  Dar de Alta Cliente.", "Aviso", JOptionPane.INFORMATION_MESSAGE);       	

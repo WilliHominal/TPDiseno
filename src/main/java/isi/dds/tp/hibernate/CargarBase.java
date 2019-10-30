@@ -11,7 +11,6 @@ public class CargarBase {
 	public static void load() {
 		HibernateUtil.shutdown();
 		HibernateUtil.getSessionFactoryCreate();	
-		
 		GestorDomicilio.get().cargarUbicaciones();
 		GestorCliente.get().cargarClientes();
 		GestorSubsistemaSiniestros.get().cargarSiniestros();
