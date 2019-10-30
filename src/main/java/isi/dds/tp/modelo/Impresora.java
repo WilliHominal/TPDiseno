@@ -3,9 +3,7 @@ package isi.dds.tp.modelo;
 public class Impresora {
 	private static Impresora impresora = null;
 	 
-    private Impresora() {
-
-    }
+    private Impresora() { }
 
     public static Impresora getGestorBitacora() {
         if (impresora == null){

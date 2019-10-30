@@ -1,6 +1,6 @@
 package isi.dds.tp.gestor;
 
-import isi.dds.tp.dao.UsuarioDAO;
+import isi.dds.tp.dao.DAOUsuario;
 import isi.dds.tp.modelo.Usuario;
 
 public class GestorUsuario {
@@ -20,7 +20,7 @@ public class GestorUsuario {
     
     public void addUsuario(Usuario u) {
     	
-    	UsuarioDAO.getDAO().addUsuario(u);
+    	DAOUsuario.getDAO().addUsuario(u);
     	
     }
 }

@@ -2,6 +2,7 @@ package isi.dds.tp.modelo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -14,7 +15,7 @@ import javax.persistence.Table;
 @Table(name = "anio_modelo")
 public class AnioModelo {
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn (name = "id_modelo")
 	private Modelo modelo;
 
@@ -32,21 +33,18 @@ public class AnioModelo {
 
 	public AnioModelo() { }
 	
-	public AnioModelo(Modelo modelo, Integer anio, Float suma) {
-		modelo.getAnios().add(this);
-		this.anio = anio;
-		this.sumaAsegurada = suma;
-	}
-	
 	public Modelo getModelo() {
 		return modelo;
 	}
+	
 	public Integer getAnio() {
 		return anio;
 	}
+	
 	public void setModelo(Modelo modelo) {
 		this.modelo = modelo;
 	}
+	
 	public void setAnio(Integer anio) {
 		this.anio = anio;
 	}

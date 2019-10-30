@@ -1,7 +1,7 @@
 package isi.dds.tp.gestor;
 
 import java.util.List;
-import isi.dds.tp.dao.TipoCoberturaDAO;
+import isi.dds.tp.dao.DAOTipoCobertura;
 import isi.dds.tp.enums.EnumTipoCobertura;
 import isi.dds.tp.modelo.TipoCobertura;
 import isi.dds.tp.modelo.RiesgoTipoCobertura;
@@ -20,22 +20,22 @@ public class GestorTipoCobertura {
     }
     
     public void addTipoCobertura(TipoCobertura t) {
-    	TipoCoberturaDAO.getDAO().addTipoCobertura(t);
+    	DAOTipoCobertura.getDAO().addTipoCobertura(t);
     }
     
     public void addRiesgoCobertura(RiesgoTipoCobertura r) {
-    	TipoCoberturaDAO.getDAO().addRiesgoCobertura(r);
+    	DAOTipoCobertura.getDAO().addRiesgoCobertura(r);
     }
     
 	public List<TipoCobertura> getTiposCobertura(){
-		return TipoCoberturaDAO.getDAO().getTiposCobertura();
+		return DAOTipoCobertura.getDAO().getTiposCobertura();
     }
     
     public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipo) {
-    	return TipoCoberturaDAO.getDAO().getUltimoRiesgoTipoCobertura(tipo); 
+    	return DAOTipoCobertura.getDAO().getUltimoRiesgoTipoCobertura(tipo); 
     }
     
     public void cargarTiposCoberturas() {
-    	TipoCoberturaDAO.getDAO().cargarTiposCoberturas();
+    	DAOTipoCobertura.getDAO().cargarTiposCoberturas();
     }
 }

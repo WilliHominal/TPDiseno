@@ -36,14 +36,7 @@ public class Siniestro {
 	@Column(nullable = false)
 	private String documento;
 	
-	public Siniestro() { }
-	
-	public Siniestro(EnumSiniestros siniestros, Integer anio, EnumTipoDocumento tipoDocumento, String documento) {
-		this.siniestros = siniestros;
-		this.anio = anio;
-		this.tipoDocumento = tipoDocumento;
-		this.documento = documento;
-	}
+	public Siniestro() { } 
 	
 	public EnumTipoDocumento getTipoDocumento() {
 		return tipoDocumento;

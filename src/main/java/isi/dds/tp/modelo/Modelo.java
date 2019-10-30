@@ -1,9 +1,10 @@
 package isi.dds.tp.modelo;
-import java.util.ArrayList;
+
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,16 +20,16 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Modelo {
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="id_marca")
 	private Marca marca;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="id_modelo")
 	@IndexColumn(name="idx")
 	private List<AnioModelo> anios;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="id_modelo")
 	@IndexColumn(name="idx")
 	private List<RiesgoModelo> riesgos;
@@ -42,52 +43,49 @@ public class Modelo {
 	@Column(nullable = false)
 	private String nombre;
 	
-	public Modelo() {
-		
-	}
+	public Modelo() { }
 	
 	//es para los combobox
 	public Modelo(String nombre) {
 		this.nombre = nombre;
 	}
 	
-	
-	public Modelo(Marca marca,  String nombre,  Float riesgo) {
-		this.marca = marca;
-		marca.getModelos().add(this);
-		this.anios = new ArrayList<AnioModelo>();
-		this.riesgos = new ArrayList<RiesgoModelo>();
-		this.riesgos.add(new RiesgoModelo(this, riesgo));
-		this.nombre = nombre;		
-	}
-	
 	public Marca getMarca() {
 		return marca;
 	}
+	
 	public List<AnioModelo> getAnios() {
 		return anios;
 	}
+	
 	public List<RiesgoModelo> getRiesgos() {
 		return riesgos;
 	}
+	
 	public Integer getIdModelo() {
 		return idModelo;
 	}
+	
 	public String getNombre() {
 		return nombre;
 	}
+	
 	public void setMarca(Marca marca) {
 		this.marca = marca;
 	}
+	
 	public void setAnios(List<AnioModelo> anios) {
 		this.anios = anios;
 	}
+	
 	public void setRiesgos(List<RiesgoModelo> riesgos) {
 		this.riesgos = riesgos;
 	}
+	
 	public void setIdModelo(Integer idModelo) {
 		this.idModelo = idModelo;
 	}
+	
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}	

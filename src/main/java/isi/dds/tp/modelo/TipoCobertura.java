@@ -1,6 +1,5 @@
 package isi.dds.tp.modelo;
 
-import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.enums.EnumTipoCobertura;
 import javax.persistence.CascadeType;
@@ -8,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -19,7 +19,7 @@ import org.hibernate.annotations.IndexColumn;
 @Table(name = "tipo_cobertura")
 public class TipoCobertura {
 	
-	@OneToMany(cascade= CascadeType.ALL)
+	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="tipo_cobertura")
 	@IndexColumn(name="idx")
 	private List<RiesgoTipoCobertura> riesgo;
@@ -35,21 +35,12 @@ public class TipoCobertura {
 	@Column(nullable = false)
 	private String nombre;
 
-	public TipoCobertura() {
-		
-	}
+	public TipoCobertura() { }
 	
+	//para los comboBox
 	public TipoCobertura(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	public TipoCobertura(EnumTipoCobertura tipoCobertura, String nombre, String descripcion, Float riesgo) {
-		this.riesgo =  new  ArrayList<RiesgoTipoCobertura>();
-		this.riesgo.add(new RiesgoTipoCobertura(this, riesgo));
-		this.tipoCobertura = tipoCobertura;
-		this.nombre = nombre;
-		this.descripcion = descripcion;
-		}	
 
 	public List<RiesgoTipoCobertura> getRiesgo() {
 		return riesgo;
@@ -82,11 +73,35 @@ public class TipoCobertura {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
+	
+	
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((nombre == null) ? 0 : nombre.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		TipoCobertura other = (TipoCobertura) obj;
+		if (nombre == null) {
+			if (other.nombre != null)
+				return false;
+		} else if (!nombre.equals(other.nombre))
+			return false;
+		return true;
+	}
 
 	@Override
 	public String toString() {
 		return nombre;
 	}
-	
-	
 }

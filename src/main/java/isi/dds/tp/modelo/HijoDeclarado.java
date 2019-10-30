@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,7 +20,7 @@ import javax.persistence.Table;
 @Table(name = "hijo_declarado")
 public class HijoDeclarado {
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "numero_poliza")
 	private Poliza poliza;
 	
@@ -40,37 +41,44 @@ public class HijoDeclarado {
 	@Column(nullable = false, name = "estado_civil")
 	private EnumEstadoCivil estadoCivil;
 	
-	public HijoDeclarado () {
-	
-	}
+	public HijoDeclarado () { }
 	
 	public Integer getIdHijo() {
 		return idHijo;
 	}
+	
 	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
+	
 	public EnumSexo getSexo() {
 		return sexo;
 	}
+	
 	public EnumEstadoCivil getEstadoCivil() {
 		return estadoCivil;
 	}
+	
 	public void setIdHijo(Integer idHijo) {
 		this.idHijo = idHijo;
 	}
+	
 	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
+	
 	public void setSexo(EnumSexo sexo) {
 		this.sexo = sexo;
 	}
+	
 	public void setEstadoCivil(EnumEstadoCivil estadoCivil) {
 		this.estadoCivil = estadoCivil;
 	}
+	
 	public Poliza getPoliza() {
 		return poliza;
 	}
+	
 	public void setPoliza(Poliza poliza) {
 		this.poliza = poliza;
 	}

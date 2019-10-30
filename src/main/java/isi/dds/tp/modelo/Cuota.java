@@ -8,6 +8,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,11 +21,11 @@ import javax.persistence.Table;
 @Table
 public class Cuota{
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "numero_poliza")
 	private Poliza poliza;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="numero_recibo")
 	private Pago pago;
 	
@@ -54,61 +55,76 @@ public class Cuota{
 	@Enumerated(EnumType.STRING)
 	private EnumPagoCuota estadoPagoCuota;
 
-	public Cuota() {
-		
-	}
+	public Cuota() { }
 	
 	public Poliza getPoliza() {
 		return poliza;
 	}
+	
 	public Float getMonto() {
 		return monto;
 	}
+	
 	public LocalDate getUltimoDiaPago() {
 		return ultimoDiaPago;
 	}
+	
 	public EnumEstadoCuota getEstado() {
 		return estado;
 	}
+	
 	public void setPoliza(Poliza poliza) {
 		this.poliza = poliza;
 	}
+	
 	public void setMonto(Float monto) {
 		this.monto = monto;
 	}
+	
 	public void setUltimoDiaPago(LocalDate ultimoDiaPago) {
 		this.ultimoDiaPago = ultimoDiaPago;
 	}
+	
 	public void setEstado(EnumEstadoCuota estado) {
 		this.estado = estado;
 	}
+	
 	public Pago getPago() {
 		return pago;
 	}
+	
 	public void setPago(Pago pago) {
 		this.pago = pago;
 	}
+	
 	public Integer getIdCuota() {
 		return idCuota;
 	}
+	
 	public void setIdCuota(Integer idCuota) {
 		this.idCuota = idCuota;
 	}
+	
 	public Float getBonificacionPagoAdelantado() {
 		return bonificacionPagoAdelantado;
 	}
+	
 	public void setBonificacionPagoAdelantado(Float bonificacionPagoAdelantado) {
 		this.bonificacionPagoAdelantado = bonificacionPagoAdelantado;
 	}
+	
 	public Float getRecargoPorMora() {
 		return recargoPorMora;
 	}
+	
 	public void setRecargoPorMora(Float recargoPorMora) {
 		this.recargoPorMora = recargoPorMora;
 	}
+	
 	public EnumPagoCuota getEstadoPagoCuota() {
 		return estadoPagoCuota;
 	}
+	
 	public void setEstadoPagoCuota(EnumPagoCuota estadoPagoCuota) {
 		this.estadoPagoCuota = estadoPagoCuota;
 	}

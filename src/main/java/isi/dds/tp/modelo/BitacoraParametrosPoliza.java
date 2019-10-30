@@ -1,11 +1,11 @@
 package isi.dds.tp.modelo;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,26 +21,26 @@ import org.hibernate.annotations.IndexColumn;
 @Table(name = "bitacora_parametros_poliza")
 public class BitacoraParametrosPoliza {
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="id_usuario")
 	private Usuario usuario;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name ="codigo_bitacora")
 	@IndexColumn(name ="idx")
 	private List<RiesgoTipoCobertura> riesgosTipoCobertura;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name ="codigo_bitacora")
 	@IndexColumn(name ="idx")
 	private List<RiesgoModelo> riesgosModelo;
 	
-	@OneToMany(cascade= CascadeType.ALL)
+	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name ="codigo_bitacora")
 	@IndexColumn(name ="idx")
 	private List<RiesgoCiudad> riesgosCiudad;
 	
-	@OneToMany(cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name ="codigo_bitacora")
 	@IndexColumn(name ="idx")
 	private List<ParametrosPoliza> parametrosPoliza;
@@ -54,58 +54,60 @@ public class BitacoraParametrosPoliza {
 	@Column(nullable = false, name = "fecha_modificacion")
 	private LocalDate fechaModificacion;
 	
-	public BitacoraParametrosPoliza(){
-		
-	}
-	
-	public BitacoraParametrosPoliza(Usuario usuario, Integer codigo){
-		this.usuario = usuario;
-		this.codigoBitacora = codigo;
-		this.fechaModificacion = LocalDate.now();
-		this.riesgosTipoCobertura = new ArrayList<RiesgoTipoCobertura>();
-		this.riesgosModelo = new ArrayList<RiesgoModelo>();
-		this.riesgosCiudad = new ArrayList<RiesgoCiudad>();
-	}
+	public BitacoraParametrosPoliza(){ }
 	
 	public Usuario getUsuario() {
 		return usuario;
 	}
+	
 	public List<RiesgoTipoCobertura> getRiesgosTipoCobertura() {
 		return riesgosTipoCobertura;
 	}
+	
 	public List<RiesgoModelo> getRiesgosModelo() {
 		return riesgosModelo;
 	}
+	
 	public List<RiesgoCiudad> getRiesgosCiudad() {
 		return riesgosCiudad;
 	}
+	
 	public List<ParametrosPoliza> getParametrosPoliza() {
 		return parametrosPoliza;
 	}
+	
 	public Integer getCodigoBitacora() {
 		return codigoBitacora;
 	}
+	
 	public LocalDate getFechaModificacion() {
 		return fechaModificacion;
 	}
+	
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
+	
 	public void setRiesgosTipoCobertura(List<RiesgoTipoCobertura> riesgosTipoCobertura) {
 		this.riesgosTipoCobertura = riesgosTipoCobertura;
 	}
+	
 	public void setRiesgosModelo(List<RiesgoModelo> riesgosModelo) {
 		this.riesgosModelo = riesgosModelo;
 	}
+	
 	public void setRiesgosCiudad(List<RiesgoCiudad> riesgosCiudad) {
 		this.riesgosCiudad = riesgosCiudad;
 	}
+	
 	public void setParametrosPoliza(List<ParametrosPoliza> parametrosPoliza) {
 		this.parametrosPoliza = parametrosPoliza;
 	}
+	
 	public void setCodigoBitacora(Integer codigoBitacora) {
 		this.codigoBitacora = codigoBitacora;
 	}
+	
 	public void setFechaModificacion(LocalDate fechaModificacion) {
 		this.fechaModificacion = fechaModificacion;
 	}

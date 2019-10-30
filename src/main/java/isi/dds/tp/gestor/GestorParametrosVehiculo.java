@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.List;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
-import isi.dds.tp.dao.ParametrosVehiculosDAO;
+import isi.dds.tp.dao.DAOParametrosVehiculos;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.RiesgoModelo;
 
@@ -25,40 +25,44 @@ public class GestorParametrosVehiculo {
     }
 
     public void addRiesgoModelo(RiesgoModelo r) {
-    	ParametrosVehiculosDAO.getDAO().addRiesgoModelo(r);
+    	DAOParametrosVehiculos.getDAO().addRiesgoModelo(r);
     }
     
     public void addMarca(Marca m){
-		Iterator<Modelo> iteratorModelo = sortModelos(m.getModelos()).iterator();
+		Iterator<Modelo> iteratorModelo = sortModelos(m).iterator();
 		while(iteratorModelo.hasNext()){
-			sortAniosModelo(iteratorModelo.next().getAnios());
+			sortAniosModelo(iteratorModelo.next());
 		}	
-    	ParametrosVehiculosDAO.getDAO().addMarca(m);
+    	DAOParametrosVehiculos.getDAO().addMarca(m);
     }
     
     public void addModelo(Modelo m) {
-		Iterator<Modelo> iteratorModelo = sortModelos(m.getMarca().getModelos()).iterator();
+		Iterator<Modelo> iteratorModelo = sortModelos(m.getMarca()).iterator();
 		while(iteratorModelo.hasNext()){
-			sortAniosModelo(iteratorModelo.next().getAnios());
+			sortAniosModelo(iteratorModelo.next());
 		}	
-    	ParametrosVehiculosDAO.getDAO().addModelo(m);
+    	DAOParametrosVehiculos.getDAO().addModelo(m);
     }
     
     public void addAnioModelo(AnioModelo a) {
-		Iterator<Modelo> iteratorModelo = sortModelos(a.getModelo().getMarca().getModelos()).iterator();
+		Iterator<Modelo> iteratorModelo = sortModelos(a.getModelo().getMarca()).iterator();
 		while(iteratorModelo.hasNext()){
-			sortAniosModelo(iteratorModelo.next().getAnios());
+			sortAniosModelo(iteratorModelo.next());
 		}
-    	ParametrosVehiculosDAO.getDAO().addAnioModelo(a);
+    	DAOParametrosVehiculos.getDAO().addAnioModelo(a);
     }
    
 	public List<Marca> getMarcas() {
-		return ParametrosVehiculosDAO.getDAO().getMarcas();
+		return DAOParametrosVehiculos.getDAO().getMarcas();
+    }
+	
+	public AnioModelo getAnioModelo(Integer id) {
+		return DAOParametrosVehiculos.getDAO().getAnioModelo(id);
     }
 	
     public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
     	
-    	RiesgoModelo riesgo = ParametrosVehiculosDAO.getDAO().getUltimoRiesgoModelo(id_modelo);
+    	RiesgoModelo riesgo = DAOParametrosVehiculos.getDAO().getUltimoRiesgoModelo(id_modelo);
 
     	return riesgo;
     }
@@ -74,28 +78,29 @@ public class GestorParametrosVehiculo {
 	    return lista;
     }
     
-    private List<Modelo> sortModelos(List<Modelo> lista){
-    	lista.sort(Comparator.comparing(Modelo::getNombre));
-	    Collections.sort(lista, new Comparator<Modelo>() {
+    private List<Modelo> sortModelos(Marca marca){
+    	marca.getModelos().sort(Comparator.comparing(Modelo::getNombre));
+	    Collections.sort(marca.getModelos(), new Comparator<Modelo>() {
 	    	@Override
 	    	public int compare(Modelo m1, Modelo m2) {
 	    		return m1.getNombre().compareTo(m2.getNombre());
 	    	}
 	    });
-	    return lista;
+	    return marca.getModelos();
     }
     
-    private void sortAniosModelo(List<AnioModelo> lista){
-    	lista.sort(Comparator.comparing(AnioModelo::getAnio));
-	    Collections.sort(lista, new Comparator<AnioModelo>() {
+    public List<AnioModelo> sortAniosModelo(Modelo modelo){
+    	modelo.getAnios().sort(Comparator.comparing(AnioModelo::getAnio));
+	    Collections.sort(modelo.getAnios(), new Comparator<AnioModelo>() {
 	    	@Override
 	    	public int compare(AnioModelo o1, AnioModelo o2) {
 	    		return o1.getAnio().compareTo(o2.getAnio());
 	    	}
 	    });
+	    return modelo.getAnios();
     }
 
 	public void cargarParametrosVehiculos() {
-		ParametrosVehiculosDAO.getDAO().cargarParametrosVehiculos();
+		DAOParametrosVehiculos.getDAO().cargarParametrosVehiculos();
 	}
 }

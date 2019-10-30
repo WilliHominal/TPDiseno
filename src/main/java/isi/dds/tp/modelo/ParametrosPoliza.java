@@ -69,10 +69,9 @@ public class ParametrosPoliza {
 	@Column(nullable = false, name = "valor_derecho_emision")
 	private Float valorDerechoEmision;
 	
-	public ParametrosPoliza (){
-		
-	}
+	public ParametrosPoliza (){ }
 	
+	//TODO quitar
 	public ParametrosPoliza(Integer codigoParametroPoliza, Float porcentajeTuercasAntirobo, 
 			Float porcentajeGuardaEnGarage, Float porcentajeAlarma, Float porcentajeRastreoVehicular,
 			Float porcentajeAjusteKm, Float porcentajeNingunSiniestro, Float porcentajeUnSiniestro,

@@ -20,11 +20,11 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Ciudad {
 	
-	@ManyToOne (fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="id_provincia")
 	private Provincia provincia;
 
-	@OneToMany(cascade= CascadeType.ALL)
+	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="id_ciudad")
 	@IndexColumn(name="idx")
 	private List<RiesgoCiudad> riesgos;

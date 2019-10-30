@@ -15,9 +15,9 @@ import javax.persistence.Table;
 @Table(name = "riesgo_tipo_cobertura")
 public class RiesgoTipoCobertura {
 	
-	@ManyToOne (fetch = FetchType.LAZY)
+	/*@ManyToOne (fetch = FetchType.LAZY)
 	@JoinColumn (name = "tipo_cobertura")
-	private TipoCobertura tipoCobertura;
+	private TipoCobertura tipoCobertura;*/
 	
 	//optional permita que la relacion pueda ser nual, que seria el caso cuando se crea por primera vez una ciudad
 	@ManyToOne (optional = true, fetch = FetchType.LAZY)
@@ -42,68 +42,52 @@ public class RiesgoTipoCobertura {
 	@Column(nullable = false)
 	private Boolean ultimo;
 
-	public RiesgoTipoCobertura() {
-		
-	}
-	
-	public RiesgoTipoCobertura(TipoCobertura tipoCobertura,	Float valorPorcentual) {
-		this.tipoCobertura = tipoCobertura;
-		this.bitacoraParametros = null;
-		this.fechaInicioVigencia = LocalDate.now();
-		this.fechaFinVigencia = null;
-		this.valorPorcentual = valorPorcentual;
-		this.ultimo = true;
-	}
-	
-	public RiesgoTipoCobertura(BitacoraParametrosPoliza b, TipoCobertura tipoCobertura,	Float valorPorcentual) {
-		this.tipoCobertura = tipoCobertura;
-		this.bitacoraParametros = b;
-		this.fechaInicioVigencia = LocalDate.now();
-		this.fechaFinVigencia = null;
-		this.valorPorcentual = valorPorcentual;
-		this.ultimo = true;
-		b.getRiesgosTipoCobertura().add(this);
-	}
-	
-	public TipoCobertura getTipoCobertura() {
-		return tipoCobertura;
-	}
+	public RiesgoTipoCobertura() { }
+
 	public BitacoraParametrosPoliza getBitacoraParametros() {
 		return bitacoraParametros;
 	}
+	
 	public LocalDate getFechaInicioVigencia() {
 		return fechaInicioVigencia;
 	}
+	
 	public LocalDate getFechaFinVigencia() {
 		return fechaFinVigencia;
 	}
+	
 	public Float getValorPorcentual() {
 		return valorPorcentual;
 	}
-	public void setTipoCobertura(TipoCobertura tipoCobertura) {
-		this.tipoCobertura = tipoCobertura;
-	}
+
 	public void setBitacoraParametros(BitacoraParametrosPoliza bitacoraParametros) {
 		this.bitacoraParametros = bitacoraParametros;
 	}
+	
 	public void setFechaInicioVigencia(LocalDate fechaInicioVigencia) {
 		this.fechaInicioVigencia = fechaInicioVigencia;
 	}
+	
 	public void setFechaFinVigencia(LocalDate fechaFinVigencia) {
 		this.fechaFinVigencia = fechaFinVigencia;
 	}
+	
 	public void setValorPorcentual(Float valorPorcentual) {
 		this.valorPorcentual = valorPorcentual;
 	}
+	
 	public Integer getId() {
 		return id;
 	}
+	
 	public Boolean getUltimo() {
 		return ultimo;
 	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
+	
 	public void setUltimo(Boolean ultimo) {
 		this.ultimo = ultimo;
 	}
