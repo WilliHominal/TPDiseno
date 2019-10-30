@@ -31,8 +31,8 @@ public class GestorTipoCobertura {
 		return DAOTipoCobertura.getDAO().getTiposCobertura();
     }
     
-    public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipo) {
-    	return DAOTipoCobertura.getDAO().getUltimoRiesgoTipoCobertura(tipo); 
+    public Float getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipo) {
+    	return DAOTipoCobertura.getDAO().getUltimoRiesgoTipoCobertura(tipo).getValorPorcentual(); 
     }
     
     public void cargarTiposCoberturas() {

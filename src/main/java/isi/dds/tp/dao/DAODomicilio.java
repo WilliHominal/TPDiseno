@@ -111,11 +111,9 @@ public class DAODomicilio {
 
     public RiesgoCiudad getUltimoRiesgoCiudad(Integer id_ciudad) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
         	session.beginTransaction();
         	return session.createQuery("SELECT p FROM RiesgoCiudad p where id_ciudad="+id_ciudad+" and ultimo=true", RiesgoCiudad.class).uniqueResult();
-            
         }
         catch (HibernateException e) {
         	e.printStackTrace();
@@ -137,5 +135,17 @@ public class DAODomicilio {
 		}
 		session.close();
     }
+
+	public Ciudad getCiudad(Integer id_ciudad) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+            session.beginTransaction();
+            return session.get(Ciudad.class, id_ciudad);
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }	
+    	return null;
+	}
     
 }

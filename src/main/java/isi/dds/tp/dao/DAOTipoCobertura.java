@@ -54,32 +54,25 @@ public class DAOTipoCobertura {
     
 	public List<TipoCobertura> getTiposCobertura(){
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
             session.beginTransaction();
             return session.createQuery("SELECT t FROM TipoCobertura t order by nombre", TipoCobertura.class).list();
-            
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
-    	
     	return null;
 	}
     
-    public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipo) {
+    public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipoCobertura) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-
         try {
             session.beginTransaction();
-            //TODO HACER SUBCONSULTA PARA OBTENER EL ULTIMO RIESGO
-            return session.createQuery("SELECT p FROM RiesgoTipoCobertura p where tipo_cobertura="+tipo, RiesgoTipoCobertura.class).uniqueResult();
-            
+            return session.createNativeQuery("SELECT * FROM riesgo_tipo_cobertura where tipo_cobertura='"+tipoCobertura+"' and ultimo=true", RiesgoTipoCobertura.class).getSingleResult();
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
-    	
     	return null;
     }
 

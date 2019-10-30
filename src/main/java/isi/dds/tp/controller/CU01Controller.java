@@ -725,25 +725,36 @@ public class CU01Controller {
 			if(!condicionesConfirmarDatos()) {
 				return;
 			}
+			
+			Calendar fechaFinVigencia = Calendar.getInstance();
+			fechaFinVigencia.setTime(altaPoliza2.getInicioVigencia());
+			fechaFinVigencia.add(Calendar.MONTH, 6);
+			LocalDate inicioVigencia = altaPoliza2.getInicioVigencia().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate finVigencia = fechaFinVigencia.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			/*Calendar fechaAnteriorAInicioVigencia = Calendar.getInstance();
+			fechaAnteriorAInicioVigencia.setTime(altaPoliza2.getInicioVigencia());
+			fechaAnteriorAInicioVigencia.add(Calendar.DATE, -1);*/
+			
+			gestorPoliza.actualizarPoliza(poliza, altaPoliza2.getTipoCobertura(), inicioVigencia, finVigencia);
+			Float premio = gestorPoliza.calcularPremio(poliza);
+			
 			altaPoliza2.setApellido(poliza.getCliente().getApellido());
 			altaPoliza2.setNombre(poliza.getCliente().getNombre());
 			altaPoliza2.setModelo(poliza.getAnioModelo().getModelo().getNombre());
 			altaPoliza2.setMarca(poliza.getAnioModelo().getModelo().getMarca().getNombre());
 			altaPoliza2.setMotor(poliza.getMotor());
 			altaPoliza2.setChasis(poliza.getChasis());
-			//deshabilito parte superior		
-			/*
-			//calculo premio, prima derechoEmision y descuento
-			GestorParametroPoliza gpp = GestorParametroPoliza.getGestorParametroPoliza();
-			GestorSuperIntendenciaSeguros gsis = GestorSuperIntendenciaSeguros.getGestorSuperIntendenciaSeguros();
-			float sumaAsegurada = gsis.getSumaAsegurada(poliza.getAnioModelo().getModelo().getMarca().getNombre(), poliza.getAnioModelo().getModelo().getNombre(), poliza.getAnioModelo().getAnio());
-			GestorTipoCobertura gtc = GestorTipoCobertura.getGestorTipoCobertura();
-			GestorParametrosVehiculo gpv = GestorParametrosVehiculo.getGestorParametroPoliza();
-			GestorDomicilio gd = GestorDomicilio.getGestorDomicilio();
-			float prima = gpp.calcularPrima(gtc.getRiesgoCobertura(poliza.getTipoCobertura()), gpv.getRiesgoModelo(poliza.getAnioModelo().getModelo()), gd.getRiesgoCiudad(poliza.getCiudad()));
-			float derechoEmision = gpp.getDerechoEmision();
-			float premio = gpp.calcularPremio(prima, derechoEmision);
-			Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;
+			altaPoliza2.setSumaAsegurada(poliza.getSumaAsegurada().toString());
+				
+			String pattern = "dd-MM-yyyy";
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+			altaPoliza2.setFechaInicio(simpleDateFormat.format(altaPoliza2.getInicioVigencia()));
+			altaPoliza2.setFechaFin(simpleDateFormat.format(fechaFinVigencia.getTime()));
+			altaPoliza2.setPremio(premio.toString());
+			
+			//TODO seteo datos tabla
+			
+			/*Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;
 			if (poliza.getCliente().getPolizas().size() > 1)
 				descuentoMasDeUnaUnidad = true;
 			if (semestral.isSelected())
@@ -752,19 +763,6 @@ public class CU01Controller {
 			tfSumaAsegurada.setText(Float.toString(sumaAsegurada));
 			tfPremio.setText(Float.toString(premio));
 			tfDescuentos.setText(Float.toString(descuento));*/
-
-			String pattern = "dd-MM-yyyy";
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-
-			//seteo datos tabla
-			altaPoliza2.setFechaInicio(simpleDateFormat.format(altaPoliza2.getInicioVigencia()));
-			Calendar fechaFinVigencia = Calendar.getInstance();
-			fechaFinVigencia.setTime(altaPoliza2.getInicioVigencia());
-			fechaFinVigencia.add(Calendar.MONTH, 6);
-			altaPoliza2.setFechaFin(simpleDateFormat.format(fechaFinVigencia.getTime()));
-			Calendar fechaAnteriorAInicioVigencia = Calendar.getInstance();
-			fechaAnteriorAInicioVigencia.setTime(altaPoliza2.getInicioVigencia());
-			fechaAnteriorAInicioVigencia.add(Calendar.DATE, -1);
 			
 			/*
 			if(mensual.isSelected()) {

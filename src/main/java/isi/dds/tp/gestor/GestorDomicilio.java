@@ -23,6 +23,10 @@ public class GestorDomicilio {
         }    
         return instanciaGestor;
     }
+    
+    public void cargarUbicaciones() {
+    	DAODomicilio.getDAO().cargarUbicaciones();
+    }
 
     public Boolean validarAjustePorcentual(RiesgoCiudad r){
 		return null;    	
@@ -40,10 +44,14 @@ public class GestorDomicilio {
     	return sortProvincias(DAODomicilio.getDAO().getProvincias(id_pais));
     }
     
-    public RiesgoCiudad ultimoRiesgoCiudad(Integer id_ciudad) {
-    	return DAODomicilio.getDAO().getUltimoRiesgoCiudad(id_ciudad);
+    public Float getUltimoRiesgoCiudad(Integer id_ciudad) {
+    	return DAODomicilio.getDAO().getUltimoRiesgoCiudad(id_ciudad).getValorPorcentual();
     }
     
+	public Ciudad getCiudad(Integer id_ciudad) {
+		return DAODomicilio.getDAO().getCiudad(id_ciudad);
+	}
+	
     public List<Pais> sortPaises(List<Pais> lista){
     	lista.sort(Comparator.comparing(Pais::getNombre));
 	    Collections.sort(lista, new Comparator<Pais>() {
@@ -75,9 +83,5 @@ public class GestorDomicilio {
 	    	}
 	    });
 	    return provincia.getCiudades();
-    }
-    
-    public void cargarUbicaciones() {
-    	DAODomicilio.getDAO().cargarUbicaciones();
     }
 }

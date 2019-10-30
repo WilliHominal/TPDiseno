@@ -11,9 +11,7 @@ public class GestorCliente {
 	
 	private static GestorCliente instanciaGestor = null;
 	 
-    private GestorCliente() {
-
-    }
+    private GestorCliente() { }
 
     public static GestorCliente get() {
         if (instanciaGestor == null){
@@ -23,9 +21,7 @@ public class GestorCliente {
     }
 
     public void AltaCliente(Cliente c) {
-    	
     	DAOCliente.getDAO().addCliente(c);
-    	
     }
     
     public Integer calcularTiempoActivo(Cliente c) {
@@ -45,7 +41,7 @@ public class GestorCliente {
     }
     
     public void actualizarCondicion(Cliente c, EnumCondicion e) {
-
+    	//TODO implementar
     }
     
     public Boolean validarFechaVigencia(Cliente c) {

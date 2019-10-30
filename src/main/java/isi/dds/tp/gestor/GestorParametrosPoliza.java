@@ -16,27 +16,23 @@ public class GestorParametrosPoliza {
         return instanciaGestor;
     }
     
-    public Float calcularPrima(Float porcentajeCobertura, Float porcentajeAjusteModelo, Float porcentajeAjusteDomicilio){
-    	return null;
-    }
-    
-    public Float calcularPremio() {
-    	return null;
-    }
-    
     public Boolean verificarValorPorcentual() {
+    	//TODO implementar
     	return null;
     }
     
     public Boolean verificarDerechoEmision() {
+    	//TODO implementar
     	return null;
     }
     
     public Boolean verificarDescuentoPorUnidad() {
+    	//TODO implementar
     	return null;
     }	
     
     public Float calcularDescuento() {
+    	//TODO implementar
     	return null;
     }
 	
@@ -46,5 +42,9 @@ public class GestorParametrosPoliza {
 
 	public void cargarParametrosPoliza() {
 		DAOParametrosPoliza.getDAO().cargarParametrosPoliza();
+	}
+	
+	public ParametrosPoliza getUltimoParametrosPoliza() {
+		return DAOParametrosPoliza.getDAO().getUltimoParametrosPoliza();
 	}
 }

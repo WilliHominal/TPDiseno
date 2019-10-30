@@ -97,12 +97,10 @@ public class DAOParametrosVehiculos {
 	
     public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
             session.beginTransaction();
             //TODO HACER SUBCONSULTA PARA OBTENER EL ULTIMO RIESGO
             return session.createQuery("SELECT p FROM RiesgoModelo p where id_modelo="+id_modelo+" and ultimo=true", RiesgoModelo.class).uniqueResult();
-            
         }
         catch (HibernateException e) {
             e.printStackTrace();

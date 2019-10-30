@@ -24,6 +24,7 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 import isi.dds.tp.controller.CU01Controller;
 import isi.dds.tp.gestor.GestorCliente;
+import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.Poliza;
@@ -40,6 +41,8 @@ public class CU01View2 extends JPanel  {
 					poliza.setMotor("2222222222222222");
 					poliza.setChasis("222222222");
 					poliza.setAnioModelo(GestorParametrosVehiculo.get().getAnioModelo(112));
+					poliza.setCiudad(GestorDomicilio.get().getCiudad(112));
+					poliza.setSumaAsegurada(332444f);
 
 					
 					JFrame frame = new JFrame();
@@ -445,6 +448,11 @@ public class CU01View2 extends JPanel  {
 	public void setSumaAsegurada(String sumaAsegurada) {
 		//TODO agregar el signo monetario
 		this.campoSumaAsegurada.setText(sumaAsegurada);
+	}
+	
+	public void setPremio(String premio) {
+		//TODO agregar el signo monetario
+		this.campoPremio.setText(premio);
 	}
 	
 	public Date getInicioVigencia() {

@@ -22,9 +22,9 @@ public class ParametrosPoliza {
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codigo_parametros")
-	@SequenceGenerator(name="codigo_parametros", sequenceName = "codigo_parametros_seq", initialValue = 64, allocationSize = 3)
-	@Column(nullable = false, name = "codigo_parametros")
+	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codigo_parametros_poliza")
+	@SequenceGenerator(name="codigo_parametros_poliza", sequenceName = "codigo_parametros_poliza_seq", initialValue = 100, allocationSize = 1)
+	@Column(nullable = false, name = "codigo_parametros_poliza")
 	private Integer codigoParametroPoliza;
 	
 	@Column(nullable = false, name = "inicio_vigencia")

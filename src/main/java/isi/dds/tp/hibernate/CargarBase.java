@@ -2,7 +2,9 @@ package isi.dds.tp.hibernate;
 
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
+import isi.dds.tp.gestor.GestorParametrosPoliza;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
+import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
 import isi.dds.tp.gestor.GestorTipoCobertura;
 
@@ -16,7 +18,7 @@ public class CargarBase {
 		GestorSubsistemaSiniestros.get().cargarSiniestros();
 		GestorTipoCobertura.get().cargarTiposCoberturas();
 		GestorParametrosVehiculo.get().cargarParametrosVehiculos();
-	//	GestorParametrosPoliza.get().cargarParametrosPoliza();
-	//	GestorPoliza.get().cargarPolizas();
+		GestorParametrosPoliza.get().cargarParametrosPoliza();
+		GestorPoliza.get().cargarPolizas();
     }
 }

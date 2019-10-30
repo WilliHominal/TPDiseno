@@ -371,7 +371,7 @@ public class Poliza {
 	public Float getValorRiesgoCobertura() {
 		return valorRiesgoCobertura;
 	}
-	public void setValorRiesgoCobertura(Float valorRiesgoCobertura) {
+	public void setValorRiesgoTipoCobertura(Float valorRiesgoCobertura) {
 		this.valorRiesgoCobertura = valorRiesgoCobertura;
 	}
 	public Float getValorDerechoEmison() {

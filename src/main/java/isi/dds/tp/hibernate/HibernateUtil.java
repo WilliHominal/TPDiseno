@@ -34,7 +34,7 @@ public class HibernateUtil {
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
                 
             } catch (Exception e) {
-            	sessionFactory = HibernateUtil.getSessionFactoryCreate();
+            	sessionFactory = getSessionFactoryCreate();
             }
         }
         return sessionFactory;
