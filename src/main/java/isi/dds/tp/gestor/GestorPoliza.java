@@ -150,16 +150,17 @@ public class GestorPoliza {
 	}
 
 	public Boolean validarMotor(String textoPatente) {
-		// TODO implementar
+		// TODO implementar validarMotor(String textoPatente)
 		return false;
 	}
 	
 	public Boolean validarChasis(String textoChasis) {
-		// TODO implementar
+		// TODO implementar validarChasis(String textoChasis)
 		return false;
 	}
 
 	public Boolean validarPatente(String textoPatente/*, String errores, Integer errorNumero*/) {
+		//TODO implementar validarPatente(String textoPatente)
 		/*switch (textoPatente.length()) {
 	        case 6: //para patente longitud 6
 	        	for(int i = 0; i < 6; i++) {

@@ -38,7 +38,7 @@ public class GestorCliente {
     			//veo si es cliente Plata o Activo
     			Boolean esPlata = true;
 
-    			//TODO actualizar para siniestros
+    			
     		/*	if (!poliza.getCliente().getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO))
     				esPlata = false;
 
@@ -59,7 +59,7 @@ public class GestorCliente {
     }
     
     public Integer calcularTiempoActivo(Cliente c) {
-    	//TODO implementar
+    	//TODO implementar calcularTiempoActivo(Cliente c)
     	return 0;
     }
 

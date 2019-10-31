@@ -16,24 +16,9 @@ public class GestorParametrosPoliza {
         return instanciaGestor;
     }
     
-    public Boolean verificarValorPorcentual() {
-    	//TODO implementar
-    	return null;
-    }
-    
-    public Boolean verificarDerechoEmision() {
-    	//TODO implementar
-    	return null;
-    }
-    
-    public Boolean verificarDescuentoPorUnidad() {
-    	//TODO implementar
-    	return null;
-    }	
-    
     public Float calcularDescuento() {
-    	//TODO implementar
-    	return null;
+    	//TODO implementar calcularDescuento()
+    	return 0f;
     }
 	
     public void addParametrosPoliza(ParametrosPoliza p) {

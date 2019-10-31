@@ -70,31 +70,7 @@ public class ParametrosPoliza {
 	private Float valorDerechoEmision;
 	
 	public ParametrosPoliza (){ }
-	
-	//TODO quitar
-	public ParametrosPoliza(Integer codigoParametroPoliza, Float porcentajeTuercasAntirobo, 
-			Float porcentajeGuardaEnGarage, Float porcentajeAlarma, Float porcentajeRastreoVehicular,
-			Float porcentajeAjusteKm, Float porcentajeNingunSiniestro, Float porcentajeUnSiniestro,
-			Float porcentajeDosSiniestro, Float porcentajeMayorADosSiniestro, Float porcentajePorHijoRegistrado,
-			Float descuentoUnidadAdicional, Float valorDerechoEmision) {
-		this.bitacoraParametros = null;
-		this.codigoParametroPoliza = codigoParametroPoliza;
-		this.fechaInicioVigencia = LocalDate.now();
-		this.fechaFinVigencia = null;
-		this.porcentajeTuercasAntirobo = porcentajeTuercasAntirobo;
-		this.porcentajeGuardaEnGarage = porcentajeGuardaEnGarage;
-		this.porcentajeAlarma = porcentajeAlarma;
-		this.porcentajeRastreoVehicular = porcentajeRastreoVehicular;
-		this.porcentajeAjusteKm = porcentajeAjusteKm;
-		this.porcentajeNingunSiniestro = porcentajeNingunSiniestro;
-		this.porcentajeUnSiniestro = porcentajeUnSiniestro;
-		this.porcentajeDosSiniestro = porcentajeDosSiniestro;
-		this.porcentajeMayorADosSiniestro = porcentajeMayorADosSiniestro;
-		this.porcentajePorHijoRegistrado = porcentajePorHijoRegistrado;
-		this.descuentoUnidadAdicional = descuentoUnidadAdicional;
-		this.valorDerechoEmision = valorDerechoEmision;
-	}
-	
+		
 	public BitacoraParametrosPoliza getBitacoraParametros() {
 		return bitacoraParametros;
 	}
