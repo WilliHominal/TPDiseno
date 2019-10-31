@@ -56,6 +56,22 @@ public class MenuController {
 		menuView2.addSalirListener(new ListenerSalir());		
 	}
 
+	public MenuView1 getMenu() {
+		return menuView1;
+	}
+
+	//--------- LISTENER USADOS
+	private void addListenerVentana() {
+		ventana.addWindowListener(new java.awt.event.WindowAdapter() {
+		    @Override
+		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+		    	ventana.setVisible(false);
+				HibernateUtil.shutdown();
+				System.exit(0);
+		    }
+		});
+	}
+	
 	class ListenerFuncionNoDisponible implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			JOptionPane.showMessageDialog(ventana, "Función temporalmente no disponible.\n", "Aviso", JOptionPane.INFORMATION_MESSAGE);
@@ -114,20 +130,5 @@ public class MenuController {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-	}
-	
-	private void addListenerVentana() {
-		ventana.addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		    	ventana.setVisible(false);
-				HibernateUtil.shutdown();
-				System.exit(0);
-		    }
-		});
-	}
-
-	public MenuView1 getMenu() {
-		return menuView1;
 	}
 }

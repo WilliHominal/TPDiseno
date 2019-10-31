@@ -554,7 +554,6 @@ public class CU01View1 extends JPanel {
 	 * @param hijosDeclarado
 	 */
 	public void cargarTabla(Integer cantHijos) {
-		
 		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, cantHijos) {
 			private static final long serialVersionUID = 1L;
 
@@ -773,6 +772,10 @@ public class CU01View1 extends JPanel {
 	
 	public void setSumaAsegurada(String sumaAsegurada) {
 		campoSumaAsegurada.setText(sumaAsegurada);
+	}
+	
+	public void setNumeroSiniestros(String numerosSinietros) {
+		campoNumerosSiniestros.setText(numerosSinietros);
 	}
 	
 	public Provincia getProvincia() {

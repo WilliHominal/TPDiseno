@@ -291,6 +291,7 @@ public class GestorTema {
 	
 	public void setTema(JDateChooser calendario, Boolean habilitado) {
 		calendario.setPreferredSize(DIMENSION_CALENDARIO);
+		calendario.setDateFormatString("dd/MM/yyyy");;
 		if(habilitado) {
 			calendario.setEnabled(habilitado);
 			((JTextFieldDateEditor)calendario.getDateEditor()).setBackground(COLOR_FONDO_TEXTO);

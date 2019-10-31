@@ -24,7 +24,6 @@ public class HibernateUtil {
 		log.setLevel(Level.OFF); 
         if (sessionFactory == null) {
             try {
-            	
                 registry = new StandardServiceRegistryBuilder().configure("hibernateValidate.cfg.xml").build();
 
                 MetadataSources sources = new MetadataSources(registry);
@@ -46,7 +45,6 @@ public class HibernateUtil {
 		log.setLevel(Level.OFF); 
         if (sessionFactoryBis == null) {
             try {
-            	
             	registryBis = new StandardServiceRegistryBuilder().configure("hibernateCreate.cfg.xml").build();
             	
                 MetadataSources sources = new MetadataSources(registryBis);
@@ -64,10 +62,16 @@ public class HibernateUtil {
     
     public static void shutdown() {
         if (registry != null) {
-        	sessionFactory = null;
+        	if(sessionFactory != null) {
+        		sessionFactory.close();
+        	}        	
+        	sessionFactory = null;        	
             StandardServiceRegistryBuilder.destroy(registry);
         }
         if (registryBis != null) {
+        	if(sessionFactoryBis != null) {
+        		sessionFactoryBis.close();
+        	}   
         	sessionFactoryBis = null;
             StandardServiceRegistryBuilder.destroy(registryBis);
         }

@@ -1,8 +1,10 @@
 package isi.dds.tp.dao;
 
+import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import javax.swing.JOptionPane;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import isi.dds.tp.hibernate.HibernateUtil;
@@ -33,9 +35,10 @@ public class DAOPoliza {
             session.getTransaction().commit();
         }
         catch (HibernateException e) {
+        	JOptionPane.showConfirmDialog(new Frame(), "No se ha podido dar de alta a la póliza,\nverificar los datos ingresados.", "Error", JOptionPane.ERROR_MESSAGE, JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
-            session.getTransaction().rollback();
-        }
+            session.getTransaction().rollback();	
+		}
     }
     
     public void addSolicitudPoliza(SolicitudPoliza s) {

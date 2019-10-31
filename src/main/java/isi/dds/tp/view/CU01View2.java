@@ -8,7 +8,6 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.util.Date;
 import javax.swing.ButtonGroup;
-import javax.swing.DefaultCellEditor;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
@@ -82,7 +81,6 @@ public class CU01View2 extends JPanel  {
 	private JLabel lImportePorDescuento = new JLabel("Importe por descuento:");
 	private JLabel lDescUnidad = new JLabel("-Descuento por más de una unidad");
 	private JLabel lDescSemestral = new JLabel("-Descuento por pago semestral");
-	private JLabel lDescPorPermancencia = new JLabel("-Descuento por por permanencia en la compañía");
 	private JLabel lMontoTotal = new JLabel("Monto total:");
 	
 	private JTextField campoApellido = new JTextField(16);
@@ -110,11 +108,10 @@ public class CU01View2 extends JPanel  {
 	private JRadioButton mensual = new JRadioButton("Mensual");
 	private JRadioButton semestral = new JRadioButton("Semestral");
 	
-	private JScrollPane scrollTablaPagos;
-	//TODO agregar signo monetario en la tablas
 	private JTable tablaPagos = new JTable(6, 2);
-	@SuppressWarnings("unused")
-	private DefaultTableModel model = (DefaultTableModel) tablaPagos.getModel();
+	private JScrollPane scrollTablaPagos = new JScrollPane(tablaPagos);
+	private DefaultTableModel model;
+	private Object[][] datosTabla = {{""},{""}};
 
 	public CU01View2() {
 		iniciabilizarTema();
@@ -264,8 +261,6 @@ public class CU01View2 extends JPanel  {
 		add(lDescUnidad, constraints);
 		constraints.insets.set(35, 700, 5, 5);
 		add(lDescSemestral, constraints);
-		constraints.insets.set(60, 700, 5, 5);
-		add(lDescPorPermancencia, constraints);
 
 		constraints.gridy=20;
 		constraints.gridheight = 1;
@@ -285,25 +280,8 @@ public class CU01View2 extends JPanel  {
 		rbFormaPago.add(semestral);
 		mensual.setSelected(true);
 		lDescUnidad.setVisible(false);
-		lDescSemestral.setVisible(false);
-		lDescPorPermancencia.setVisible(false);
-				
-		DefaultTableCellRenderer rightRenderer = new DefaultTableCellRenderer();
-		rightRenderer.setHorizontalAlignment( JLabel.RIGHT );
-
-		scrollTablaPagos = new JScrollPane(tablaPagos,JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollTablaPagos.setPreferredSize(new Dimension(325, 119));
-
-		tablaPagos.getColumnModel().getColumn(0).setCellRenderer(rightRenderer);
-		tablaPagos.getColumnModel().getColumn(1).setCellRenderer(rightRenderer);
-		tablaPagos.getColumnModel().getColumn(0).setPreferredWidth(200);
-		tablaPagos.getColumnModel().getColumn(1).setPreferredWidth(100);
-		tablaPagos.getColumnModel().getColumn(0).setHeaderValue("Último día de pago");
-		tablaPagos.getColumnModel().getColumn(1).setHeaderValue("Monto");
-		
-		DefaultCellEditor editor = (DefaultCellEditor) tablaPagos.getDefaultEditor(Object.class);
-		editor.setClickCountToStart(10000);
-		
+		lDescSemestral.setVisible(false);				
+		cargarTabla(0);
 		tema.setTema(this);
 		tema.setTemaSubrayado(lTipoCobertura);
 		tema.setTemaSubrayado(lFechaInicioVigencia);
@@ -317,7 +295,6 @@ public class CU01View2 extends JPanel  {
 		tema.setTema(lFechaFin);
 		tema.setTema(lDescUnidad);
 		tema.setTema(lDescSemestral);
-		tema.setTema(lDescPorPermancencia);
 		tema.setTema(lApellido);
 		tema.setTema(lNombre);
 		tema.setTema(lModelo);
@@ -342,17 +319,46 @@ public class CU01View2 extends JPanel  {
 		tema.setTema(campoPremio, false);
 		tema.setTema(campoImportPorDescuentos, false);
 		tema.setTema(campoMontoTotal, false);
+		campoMontoTotal.setHorizontalAlignment(JTextField.RIGHT);
 		tema.setTema(btnConfirmarDatos, true);
 		tema.setTema(btnGenerarPoliza, false);
 		tema.setTema(btnVolver, true);
 		tema.setComboBoxGrande(seleccionTipoCobertura, true);
-		tema.setTema(mensual);
-		tema.setTema(semestral);
 		tema.setTema(tablaPagos, false);
 		tema.setTema(scrollTablaPagos, false);
+		tema.setTema(mensual);
+		tema.setTema(semestral);
 		tema.setTema(dcInicioVigencia, true);
+		scrollTablaPagos.setPreferredSize(new Dimension(270, 120));
+
+		//calendario.setSelectableDateRange(arg0, arg1);
+		//TODO setear fechas maximas y minimas
+	}	
+	
+	public void cargarTabla(Integer cantidadCuotas) {
+		DefaultTableModel tableModel = new DefaultTableModel( datosTabla, 6) {
+			private static final long serialVersionUID = 1L;
+
+			@Override
+		    public boolean isCellEditable(int row, int column) {
+		       return false;
+		    }
+		};
+		model = tableModel;		
+		tablaPagos.setModel(tableModel);
+		DefaultTableCellRenderer centrado = new DefaultTableCellRenderer();
+		centrado.setHorizontalAlignment( JLabel.CENTER );
+		tablaPagos.getColumnModel().getColumn(0).setCellRenderer(centrado);
+		tablaPagos.getColumnModel().getColumn(1).setCellRenderer(centrado);
+		tablaPagos.getColumnModel().getColumn(0).setPreferredWidth(135);
+		tablaPagos.getColumnModel().getColumn(1).setPreferredWidth(135);
+		tablaPagos.getColumnModel().getColumn(0).setHeaderValue("Último día de pago");
+		tablaPagos.getColumnModel().getColumn(1).setHeaderValue("Monto");
 	}
 	
+	public void cargarDatosTabla(String fecha, Integer x, Integer y) {
+		model.setValueAt(fecha, x, y);	
+	}
 	
 	public void componentesAlConfirmarDatos(Boolean tipoCoberturaError, Boolean inicioVigenciaError, Integer cantPolizas) {
 		if((tipoCoberturaError || inicioVigenciaError)) {
@@ -387,7 +393,6 @@ public class CU01View2 extends JPanel  {
 		btnVolver.addActionListener(listener);
 	}
 	
-
 	private void addListenerSeleccionTipoCobertura() {
 		seleccionTipoCobertura.addActionListener (a -> {
 			//listener para sacar color rojo cuando lo selecciona
@@ -455,6 +460,14 @@ public class CU01View2 extends JPanel  {
 		this.campoPremio.setText(premio);
 	}
 	
+	public void setDescuento(String descuento) {
+		campoImportPorDescuentos.setText(descuento);
+	}
+	
+	public void setMontoTotal(String montoTotal) {
+		campoMontoTotal.setText(montoTotal);
+	}
+	
 	public Date getInicioVigencia() {
 		return dcInicioVigencia.getDate();
 	}
@@ -463,4 +476,16 @@ public class CU01View2 extends JPanel  {
 		return seleccionTipoCobertura.getItemAt(seleccionTipoCobertura.getSelectedIndex());
 	}
 	
+	public String[] getValorTabla(Integer x) {
+		return ((String)model.getValueAt(x, 1)).split(" ");
+	}
+	
+	public Boolean eligioMensual() {
+		return mensual.isSelected();
+	}
+
+	public void visualizarDescuentos(Boolean descuentoMasDeUnaUnidad, Boolean descuentoSemestral) {
+		lDescSemestral.setVisible(descuentoSemestral);
+		lDescUnidad.setVisible(descuentoMasDeUnaUnidad);
+	}
 }

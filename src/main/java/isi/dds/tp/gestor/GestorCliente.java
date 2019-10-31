@@ -2,9 +2,9 @@ package isi.dds.tp.gestor;
 
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.modelo.Poliza;
+import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.dao.DAOCliente;
-import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.EnumTipoDocumento;
 
 public class GestorCliente {
@@ -24,36 +24,43 @@ public class GestorCliente {
     	DAOCliente.getDAO().addCliente(c);
     }
     
-    public Integer calcularTiempoActivo(Cliente c) {
-    	return null;
+    public void actualizarCliente(Cliente cliente, Poliza poliza) {
+    	if(cliente.getPolizas() == null) {
+			cliente.setPolizas(new ArrayList<Poliza>());
+		}
+    	cliente.getPolizas().add(poliza);
+    	
+    	actualizarCondicion(cliente);    	
     }
     
-    public Boolean validacionDatosCliente(Cliente c) {
-		return null;
-    }
-    
-    public Boolean validacionCUIL(Cliente c) {
-    	return null;
-    }
-    
-    public Boolean comprobarEdad(Cliente c) {
-    	return null;
-    }
-    
-    public void actualizarCondicion(Cliente c, EnumCondicion e) {
-    	//TODO implementar
-    }
-    
-    public Boolean validarFechaVigencia(Cliente c) {
-    	return null;
-    }
-    
-    public void generarNumeroCliente(Cliente c) {
+    public void actualizarCondicion(Cliente cliente) {
+    	//TODO implementar actualizarCondicion
+    			//veo si es cliente Plata o Activo
+    			Boolean esPlata = true;
 
+    			//TODO actualizar para siniestros
+    		/*	if (!poliza.getCliente().getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO))
+    				esPlata = false;
+
+    			for (Cuota cuota : poliza.getCuotas()) {
+    				if (cuota.getEstado() == EnumEstadoCuota.IMPAGO)
+    					esPlata = false;
+    			}
+*/
+    			if (calcularTiempoActivo(cliente) < 365*2)
+    				esPlata = false;
+
+    			
+    			//if (esPlata)
+    				//diria que si modificas el cliente de la poliza, se actualiza el cliente de la base de datos al persistir la poliza
+    				//actualizarCondicion(cliente, EnumCondicion.PLATA);
+    			//else
+    				//actualizarCondicion(cliente, EnumCondicion.ACTIVO);
     }
     
-    public Cliente actualizarCliente(Cliente c) {
-    	return null;
+    public Integer calcularTiempoActivo(Cliente c) {
+    	//TODO implementar
+    	return 0;
     }
 
     public Cliente getCliente(Long numeroCliente) {
@@ -74,7 +81,6 @@ public class GestorCliente {
     	
     	if(!apellido.isEmpty()) {
     		condicionesConsulta += " and to_ascii(apellido, 'latin1') ilike  to_ascii('"+apellido+"%', 'latin1') ";
-
     	}
     	
     	if(!nombre.isEmpty()) {
@@ -91,7 +97,6 @@ public class GestorCliente {
 
     	condicionesConsulta += " order by numero_cliente asc";
 	
-    	
     	return DAOCliente.getDAO().getClientes(condicionesConsulta);
     }
 	

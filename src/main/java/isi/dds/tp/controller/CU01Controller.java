@@ -15,21 +15,19 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
-import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.EnumEstadoCivil;
-import isi.dds.tp.enums.EnumEstadoCuota;
+import isi.dds.tp.enums.EnumFormaPago;
 import isi.dds.tp.enums.EnumSexo;
-import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.gestor.GestorPoliza;
+import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.gestor.GestorTipoCobertura;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Cliente;
-import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
@@ -54,6 +52,7 @@ public class CU01Controller {
 	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
 	private GestorParametrosVehiculo gestorVehiculo = GestorParametrosVehiculo.get();
 	private GestorPoliza gestorPoliza = GestorPoliza.get();
+	private GestorSubsistemaSiniestros gestorSubsistemaSiniestros = GestorSubsistemaSiniestros.get();
 	
 	private Boolean primerCliente = true;
 	private Poliza poliza;
@@ -86,6 +85,7 @@ public class CU01Controller {
 	}
 	
 	private void setView1_AltaPoliza1() {
+		//TODO agregar $ a string suma asegurada
 		GestorTema.get().setTema(ventana, "Dar de alta póliza: INGRESAR DATOS");
 		this.altaPoliza1 = new CU01View1();
 		altaPoliza1.addListenerBtn_BuscarCliente(new ListenerView1BuscarCliente());;
@@ -169,6 +169,8 @@ public class CU01Controller {
 		altaPoliza1.setNumeroDocumento(cliente.getNumeroDocumento());
 		altaPoliza1.setCalle(cliente.getCalle()) ;
 		altaPoliza1.setNumeroCalle(cliente.getNumeroCalle().toString());
+		String numeroSiniestros = gestorEnum.parseString(gestorSubsistemaSiniestros.getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()));
+		altaPoliza1.setNumeroSiniestros(numeroSiniestros);
 		
 		if(cliente.getPiso() == null) {
 			altaPoliza1.setPiso("-");
@@ -226,180 +228,172 @@ public class CU01Controller {
 	 * @return
 	 */
 	private  Boolean condicionesGenerarPoliza() {
-		String patenteLargo = "", patenteFormato6 = "", patenteFormato7 = "";
-		String chasisBlanco = "", chasisLargo = "", chasisFormato = "";
-		String motorBlanco = "", motorLargo = "", motorFormato = "";
-		String marcaSelecciono = "", kmSelecciono = "";
-		
-		//los valores boolean son para luego la interfaz establezca los colores de los campos mal validados
-		Boolean marca = false, motor = false, chasis = false, patente = false, km = false;
-		
-		Boolean valido = true;
-		
-		int errorNumero = 1;
-	
-		if (altaPoliza1.getMarca().equals(new Marca("Seleccionar marca"))) {
-			marca  = true;
-			marcaSelecciono = errorNumero+") No se ha seleccionado un valor del campo marca.\n";
-			errorNumero++;
-			valido = false;
-		}
-		
 		String textoMotor = altaPoliza1.getMotor();
 		String textoChasis = altaPoliza1.getChasis();
 		String textoPatente = altaPoliza1.getPatente();
+		String textoErrorPatente = "", textoErrorChasis = "", textoErrorMotor = "",  textoErrorMarca = "",  textoErrorKm = "";
 		
-		if(textoMotor.isEmpty()) {
-			motor = true;
-			motorBlanco = errorNumero+") No se ha introducido un número de motor\n";
+		//los valores boolean son para luego la interfaz establezca los colores de los campos mal validados
+		Boolean errorEnMarca = false, errorEnMotor = false, errorEnChasis = false, errorEnPatente = false, errorEnKm = false;
+		
+		Integer errorNumero = 1;
+	
+		//---------- posible error en seleccionar marca
+		if (altaPoliza1.getMarca().equals(new Marca("Seleccionar marca"))) {
+			errorEnMarca  = true;
+			textoErrorMarca = errorNumero+") No se ha seleccionado un valor del campo marca.\n";
 			errorNumero++;
-			valido = false;
+		}
+		
+		//---------- posible error en la introdución del número de motor
+		if(textoMotor.isEmpty()) {
+			errorEnMotor = true;
+			textoErrorMotor = errorNumero+") No se ha introducido un número de motor\n";
+			errorNumero++;
 		}
 		else {
 			if(textoMotor.length() == 17) {
 				for(int i = 10; i < 17; i++) {
 					if(Character.isLetter(textoMotor.charAt(i))) {
-						motor = true;
-						motorFormato = errorNumero+") Formato de motor incorrecto. El formato de un número de chasis es CCCCCCCCCC9999999, donde\n"
+						errorEnMotor = true;
+						textoErrorMotor = errorNumero+") Formato de motor incorrecto. El formato de un número de chasis es CCCCCCCCCC9999999, donde\n"
 								+ "las C debe indican que debe escribirse un dígito o una letra los 9 indican que deb escrirse un dígito.\n";
 						errorNumero++;
-						valido = false;
-						i = 17;
+						break;
 					}
-					else { motor = false; }
+				}
+				if(!errorEnMotor) {
+					errorEnMotor = gestorPoliza.validarMotor(textoPatente);
+					textoErrorMotor = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
+					errorNumero++;
 				}
 			}
 			else {
-				motor = false;
-				motorLargo = errorNumero+") La definición de un número de motor debe ser de longitud 17.\n";
+				errorEnMotor = false;
+				textoErrorMotor = errorNumero+") La definición de un número de motor debe ser de longitud 17.\n";
 				errorNumero++;
-				valido = false;
 			}	
 		}
 		
+		//---------- posible error en la introdución del numero de chasis
 		if(textoChasis.isEmpty()) {
-			chasis = true;
-			chasisBlanco = errorNumero+") No se ha introducido un número de chasis.\n";
+			errorEnChasis = true;
+			textoErrorChasis = errorNumero+") No se ha introducido un número de chasis.\n";
 			errorNumero++;
-			valido = false;
 		}
 		else{
 			if(textoChasis.length() == 8) {
 				for(int i = 1; i < 8; i++) {
 					if(!Character.isDigit(textoChasis.charAt(i))) {
-						chasis = true;
-						chasisFormato = errorNumero+") Formato de chasis incorrecto. El formato de un número de chasis es C9999999, donde C indica\n"
+						errorEnChasis = true;
+						textoErrorChasis = errorNumero+") Formato de chasis incorrecto. El formato de un número de chasis es C9999999, donde C indica\n"
 								+ "que debe escribirse un dígito o una letra y los 9 indican quedebe escribirse un dígito.\n";
 						errorNumero++;
-						valido = false;
-						i = 8;
+						break;
 					}
-					else { chasis = false; }
+				}
+				if(!errorEnChasis) {
+					errorEnChasis = gestorPoliza.validarChasis(textoChasis);
+					textoErrorChasis = errorNumero+") El valor ingresado del número de chasis, ya está registrado como parte de otra póliza.\n";
+					errorNumero++;
 				}
 			}
 			else {
-				chasis = true;
-				chasisLargo = errorNumero+") La definición de un número de chasis debe ser de longitud 8.\n";
+				errorEnChasis = true;
+				textoErrorChasis = errorNumero+") La definición de un número de chasis debe ser de longitud 8.\n";
 				errorNumero++;
-				valido = false;
 			}			
 		}
 		
+		//---------- posible error en la introducción del número de patente
 		if(!textoPatente.isEmpty()) {
 			switch (textoPatente.length()) {
-	        case 6: //para patente longitud 6
-	        	for(int i = 0; i < 6; i++) {
-	        		
-		        	switch(i) {
-		        		case 0:
-		        		case 1:
-		        		case 2:
-		    				if(!Character.isLetter(textoPatente.charAt(i))) {
-		    					patente = true;
-		    					patenteFormato6 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 6 es LLL999, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
-		    					errorNumero++;
-		    					valido = false;
-		    					i = 6;
-		    				}
-		    				else { patente = false; }
-		        		break;
-		        		
-		        		case 3:
-		        		case 4:
-		        		case 5:
-		    				if(!Character.isDigit(textoPatente.charAt(i))) {
-		    					patente = true;
-		    					patenteFormato6 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 6 es LLL999, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
-		    					errorNumero++;
-		    					valido = false;
-		    					i = 6;
-		    				}
-		    				else { patente = false; }
-		        		break;
+		        case 6: //para patente longitud 6
+		        	for(int i = 0; i < 6; i++) {	        		
+			        	switch(i) {
+			        		case 0: case 1: case 2:
+			    				if(!Character.isLetter(textoPatente.charAt(i))) {
+			    					errorEnPatente = true;
+			    					textoErrorPatente = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 6 es LLL999, donde\n"
+			    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
+			    					errorNumero++;
+			    				}
+			        		break;
+			        		
+			        		case 3: case 4: case 5:
+			    				if(!Character.isDigit(textoPatente.charAt(i))) {
+			    					errorEnPatente = true;
+			    					textoErrorPatente = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 6 es LLL999, donde\n"
+			    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
+			    					errorNumero++;
+			    				}
+			        		break;
+			        	}
+			        	if(errorEnPatente) {
+			        		break;
+			        	}
 		        	}
-	        		
-	        	}
-	        break;     
-	        
-	        case 7:  //para patente longitud 7
-	        	for(int j = 0; j < 7; j++) {
-	        		
-		        	switch(j) {
-		        		case 0:
-		        		case 1:
-		        		case 5:
-		        		case 6:
-		    				if(Character.isDigit(textoPatente.charAt(j))) {
-		    					patente = true;
-		    					patenteFormato7 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 7 es LL999LL, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
-		    					errorNumero++;
-		    					valido = false;
-		    					j = 7;
-		    				}else { patente = false; }
-		        		break;
+					if(!errorEnPatente) {
+						errorEnPatente = gestorPoliza.validarPatente(textoPatente);
+						textoErrorPatente = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
+						errorNumero++;
+					}
+		        break;     
 		        
-		        		case 2:
-		        		case 3:
-		        		case 4:
-		    				if(Character.isLetter(textoPatente.charAt(j))) {
-		    					patente = true;
-		    					patenteFormato7 = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 7 es LL999LL, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";	
-		    					errorNumero++;
-		    					valido = false;
-		    					j = 7;
-		    				}else { patente = false; }
-		        		break;
+		        case 7:  //para patente longitud 7
+		        	for(int j = 0; j < 7; j++) {
+			        	switch(j) {
+			        		case 0: case 1: case 5: case 6:
+			    				if(Character.isDigit(textoPatente.charAt(j))) {
+			    					errorEnPatente = true;
+			    					textoErrorPatente = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 7 es LL999LL, donde\n"
+			    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
+			    					errorNumero++;
+			    				}
+			        		break;
+			        
+			        		case 2: case 3: case 4:
+			    				if(Character.isLetter(textoPatente.charAt(j))) {
+			    					errorEnPatente = true;
+			    					textoErrorPatente = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 7 es LL999LL, donde\n"
+			    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";	
+			    					errorNumero++;
+			    				}
+			        		break;
+			        	}		    
+			        	if(errorEnPatente) {
+			        		break;
+			        	}
 		        	}
-	        	}
-	        break;
-
-	        default:
-	        	patente = true;
-				patenteLargo = errorNumero+") La definición de una patente debe ser de longitud 6 o 7.\n";
-				errorNumero++;
-				valido = false;
-			break;
-			}		
+					if(!errorEnPatente) {
+						errorEnPatente = gestorPoliza.validarPatente(textoPatente);
+						textoErrorPatente = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
+						errorNumero++;
+					}
+		        break;
+	
+		        default:
+		        	errorEnPatente = true;
+		        	textoErrorPatente = errorNumero+") La definición de una patente debe ser de longitud 6 o 7.\n";
+					errorNumero++;
+				break;
+			}	
 		}
-		else { patente = false; }
 		
+		//---------- posible error en la no selección de un kilometraje
 		if (altaPoliza1.getKmAnio().equals("Selecionar kilometraje")) {
-			km = true;
-			kmSelecciono = errorNumero+") No se ha seleccionado un valor del campo km realizados por año.\n";
-			valido = false;
+			errorEnKm = true;
+			textoErrorKm = errorNumero+") No se ha seleccionado un valor del campo km realizados por año.\n";
 		}
-
-		String mensajeError = marcaSelecciono + motorBlanco + motorFormato + motorLargo + chasisBlanco + chasisFormato + chasisLargo + patenteFormato6 + patenteFormato7 + patenteLargo + kmSelecciono;
 		
-		if(!valido) {
-			altaPoliza1.noValido(marca, motor, chasis,patente, km);
+		String mensajeError = textoErrorMarca + textoErrorMotor + textoErrorChasis + textoErrorPatente + textoErrorKm;
+		
+		if(errorEnMarca || errorEnMotor || errorEnChasis || errorEnPatente || errorEnKm) {
+			altaPoliza1.noValido(errorEnMarca, errorEnMotor, errorEnChasis, errorEnPatente, errorEnKm);
 			JOptionPane.showConfirmDialog(ventana, mensajeError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+			return false;
 		}
-		return valido;
+		return true;
 	}
 	
 	//-------- MÉTODOS QUE TRABAJAN SOBRE CU01View2 - AltaPoliza2
@@ -618,26 +612,21 @@ public class CU01Controller {
 				if(!condicionesGenerarPoliza()) {
 					return;
 				}
-				
+				//TODO mayuscula a las patentes chasis y motor
 				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
-					gestorPoliza.actualizarPoliza(poliza, altaPoliza1.getCiudad(), altaPoliza1.getAnioModelo(), altaPoliza1.getMotor(),
-							altaPoliza1.getChasis(), altaPoliza1.getPatente(), Float.parseFloat(altaPoliza1.getSumaAsegurada()), 
-							altaPoliza1.getKmAnio(), gestorEnum.parseEnumSiniestros(altaPoliza1.getNumeroSiniestros()), altaPoliza1.getGarage(),
-							altaPoliza1.getAlarma(), altaPoliza1.getRastreo(), altaPoliza1.getTuercasAntirrobo());
+					String patente = null;
 					
-					//TODO ver o quitar
-					/*poliza.setCiudad(altaPoliza1.getCiudad());
-					poliza.setAnioModelo(altaPoliza1.getAnioModelo());
-					poliza.setMotor(altaPoliza1.getMotor());
-					poliza.setChasis(altaPoliza1.getChasis());
-					poliza.setPatente(altaPoliza1.getPatente());
-					poliza.setSumaAsegurada(Float.parseFloat(altaPoliza1.getSumaAsegurada()));
-					poliza.setKmRealizadosPorAnio(altaPoliza1.getKmAnio());
-					poliza.setNumerosSiniestrosUltimoAnios(gestorEnum.parseEnumSiniestros(altaPoliza1.getNumeroSiniestros()));
-					poliza.setGuardaGarage(altaPoliza1.getGarage());
-					poliza.setTieneAlarma(altaPoliza1.getAlarma());
-					poliza.setTieneRastreoVehicular(altaPoliza1.getRastreo());
-					poliza.setTieneTuercasAntirobo(altaPoliza1.getTuercasAntirrobo());*/
+					if(!altaPoliza1.getPatente().equalsIgnoreCase("")) {
+						patente = altaPoliza1.getPatente();
+					}
+					
+					
+					gestorPoliza.actualizarPoliza(
+							poliza, altaPoliza1.getCiudad(), altaPoliza1.getAnioModelo(), altaPoliza1.getMotor(),
+							altaPoliza1.getChasis(), patente, Float.parseFloat(altaPoliza1.getSumaAsegurada()), 
+							altaPoliza1.getKmAnio(), gestorEnum.parseEnumSiniestros(altaPoliza1.getNumeroSiniestros()), altaPoliza1.getGarage(),
+							altaPoliza1.getAlarma(), altaPoliza1.getRastreo(), altaPoliza1.getTuercasAntirrobo()
+					);
 					setView2_AltaPoliza2();
 				}
 				
@@ -721,22 +710,40 @@ public class CU01Controller {
 	//-------- LISTENER VIEW 2
 	private class ListenerView2ConfirmarDatos implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			
 			if(!condicionesConfirmarDatos()) {
 				return;
 			}
 			
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			
 			Calendar fechaFinVigencia = Calendar.getInstance();
 			fechaFinVigencia.setTime(altaPoliza2.getInicioVigencia());
 			fechaFinVigencia.add(Calendar.MONTH, 6);
+			
+			Calendar fechaAnteriorAInicioVigencia = Calendar.getInstance();
+			fechaAnteriorAInicioVigencia.setTime(altaPoliza2.getInicioVigencia());
+			fechaAnteriorAInicioVigencia.add(Calendar.DATE, -1);
+			
 			LocalDate inicioVigencia = altaPoliza2.getInicioVigencia().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			LocalDate finVigencia = fechaFinVigencia.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			/*Calendar fechaAnteriorAInicioVigencia = Calendar.getInstance();
-			fechaAnteriorAInicioVigencia.setTime(altaPoliza2.getInicioVigencia());
-			fechaAnteriorAInicioVigencia.add(Calendar.DATE, -1);*/
+						
+			Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;
+			if (poliza.getCliente().getPolizas().size() > 1) descuentoMasDeUnaUnidad = true;
+			if (!altaPoliza2.eligioMensual()) descuentoSemestral = true;
 			
-			gestorPoliza.actualizarPoliza(poliza, altaPoliza2.getTipoCobertura(), inicioVigencia, finVigencia);
+			if(altaPoliza2.eligioMensual()) {
+				gestorPoliza.actualizarPoliza(poliza, altaPoliza2.getTipoCobertura(), inicioVigencia, finVigencia, EnumFormaPago.MENSUAL);
+			}
+			else {
+				gestorPoliza.actualizarPoliza(poliza, altaPoliza2.getTipoCobertura(), inicioVigencia, finVigencia,EnumFormaPago.SEMESTRAL );
+			}
+			
+			
 			Float premio = gestorPoliza.calcularPremio(poliza);
+			Float descuento = gestorPoliza.calcularDescuento(poliza, descuentoSemestral);
+			Float montoCuota = 2f;
+			Float montoTotal = 0f;
+			
 			
 			altaPoliza2.setApellido(poliza.getCliente().getApellido());
 			altaPoliza2.setNombre(poliza.getCliente().getNombre());
@@ -744,85 +751,45 @@ public class CU01Controller {
 			altaPoliza2.setMarca(poliza.getAnioModelo().getModelo().getMarca().getNombre());
 			altaPoliza2.setMotor(poliza.getMotor());
 			altaPoliza2.setChasis(poliza.getChasis());
+			altaPoliza2.setPatente(poliza.getPatente());
 			altaPoliza2.setSumaAsegurada(poliza.getSumaAsegurada().toString());
-				
-			String pattern = "dd-MM-yyyy";
-			SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
-			altaPoliza2.setFechaInicio(simpleDateFormat.format(altaPoliza2.getInicioVigencia()));
-			altaPoliza2.setFechaFin(simpleDateFormat.format(fechaFinVigencia.getTime()));
 			altaPoliza2.setPremio(premio.toString());
+			altaPoliza2.setDescuento(Float.toString(descuento));
+			altaPoliza2.visualizarDescuentos(descuentoMasDeUnaUnidad, descuentoSemestral);
+			altaPoliza2.setFechaInicio(dateFormat.format(altaPoliza2.getInicioVigencia()));
+			altaPoliza2.setFechaFin(dateFormat.format(fechaFinVigencia.getTime()));
 			
-			//TODO seteo datos tabla
-			
-			/*Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;
-			if (poliza.getCliente().getPolizas().size() > 1)
-				descuentoMasDeUnaUnidad = true;
-			if (semestral.isSelected())
-				descuentoSemestral = true;
-			float descuento = gpp.calcularDescuento(descuentoMasDeUnaUnidad, descuentoSemestral);
-			tfSumaAsegurada.setText(Float.toString(sumaAsegurada));
-			tfPremio.setText(Float.toString(premio));
-			tfDescuentos.setText(Float.toString(descuento));*/
-			
-			/*
-			if(mensual.isSelected()) {
-				Float montoTotal = 0f;
+			if(altaPoliza2.eligioMensual()) {
+				altaPoliza2.cargarTabla(6);
 				for (int contador=0; contador<6; contador++) {
-					SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy");
 					Calendar fechaAux = Calendar.getInstance(); 
 					fechaAux.setTime(fechaAnteriorAInicioVigencia.getTime());
 					fechaAux.add(Calendar.MONTH, contador);
-					
-					model.setValueAt(dateFormat.format(fechaAux.getTime()), contador, 0);
-					model.setValueAt("$ " + "2", contador, 1);				//CAMBIAR 2 POR MONTO DE LA CUOTA
-					String auxMonto[] = ((String)model.getValueAt(contador, 1)).split(" ");
+					altaPoliza2.cargarDatosTabla(dateFormat.format(fechaAux.getTime()), contador, 0);
+					altaPoliza2.cargarDatosTabla("$ " + montoCuota, contador, 1); //CAMBIAR 2 POR MONTO DE LA CUOTA
+					String auxMonto[] = altaPoliza2.getValorTabla(contador);
 					montoTotal += Float.parseFloat(auxMonto[1]);
-				}
-				campoMontoTotal.setHorizontalAlignment(JTextField.RIGHT);
-				campoMontoTotal.setText("$ " + Float.toString(montoTotal));
+				}				
+				altaPoliza2.setMontoTotal("$ " + Float.toString(montoTotal));
 			} else {
-				SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MMM-yyyy");
-				model.setValueAt(dateFormat.format(fechaAnteriorAInicioVigencia.getTime()), 0, 0);
-				model.setValueAt("$ " + "5", 0, 1);							//CAMBIAR 5 POR MONTO TOTAL
-				campoMontoTotal.setHorizontalAlignment(JTextField.RIGHT);
-				campoMontoTotal.setText("$ " + "5");							//CAMBIAR 5 POR MONTO TOTAL
-			}*/
+				montoTotal = 5f;
+				altaPoliza2.cargarTabla(1);
+				altaPoliza2.cargarDatosTabla(dateFormat.format(fechaAnteriorAInicioVigencia.getTime()), 0, 0);
+				altaPoliza2.cargarDatosTabla("$ " + montoTotal, 0, 1);
+				altaPoliza2.setMontoTotal("$ " + montoTotal);
+			}
+			
+			setFechaInicioVigenciaDefault();
 		}
 	}
 	
 	private class ListenerView2GenerarPoliza implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if(JOptionPane.showConfirmDialog(ventana, "¿Desea generar la póliza?","Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
-				GestorPoliza gp = GestorPoliza.get();
-				gp.altaPoliza(poliza);
-
-				//veo si es cliente Plata o Activo
-				Boolean esPlata = true;
-
-				//TODO actualizar para siniestros
-			//	if (!poliza.getCliente().getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO))
-				//	esPlata = false;
-
-				for (Cuota cuota : poliza.getCuotas()) {
-					if (cuota.getEstado() == EnumEstadoCuota.IMPAGO)
-						esPlata = false;
-				}
-
-				GestorCliente gc = GestorCliente.get();
-				//TODO implementar calcularTiempoActivo
-				if (gc.calcularTiempoActivo(poliza.getCliente()) < 365*2)
-					esPlata = false;
-
-				//TODO implementar actualizarCondicion
-				if (esPlata)
-					//diria que si modificas el cliente de la poliza, se actualiza el cliente de la base de datos al persistir la poliza
-					gc.actualizarCondicion(poliza.getCliente(), EnumCondicion.PLATA);
-				else
-					gc.actualizarCondicion(poliza.getCliente(), EnumCondicion.ACTIVO);
-
-				System.out.println(poliza.getCliente().getCondicion());
-
+			if(JOptionPane.showConfirmDialog(ventana, "¿Desea generar la póliza?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)==0) {
+				gestorPoliza.altaPoliza(poliza);
+				//TODO cuando no se genere una poliza, no lanzar el joptionpane
 				JOptionPane.showConfirmDialog(ventana, "Póliza generada correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+				//TODO mostrar poliza
 			}
 		}
 	}
