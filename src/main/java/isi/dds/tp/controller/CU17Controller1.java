@@ -21,10 +21,10 @@ import isi.dds.tp.view.CU01View1;
 import isi.dds.tp.view.CU17View1;
 import isi.dds.tp.view.CU17View2;
 
-public class CU17Controller {    
+public class CU17Controller1 {    
 	private CU17View1 buscarCliente;
 	private CU17View2 mostrarCliente;
-	private CU01Controller altaPolizaController = null;
+	private CU01Controller1 altaPolizaController = null;
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
@@ -37,7 +37,7 @@ public class CU17Controller {
 	private Cliente clienteObtenido = null;
 	private List<Cliente> clientes = new ArrayList<Cliente>();
 	
-	public CU17Controller(JFrame ventana) {
+	public CU17Controller1(JFrame ventana) {
 		this.ventana = ventana;
 		try {		
 			if(ventana.getContentPane() instanceof CU01View1) {
@@ -154,7 +154,7 @@ public class CU17Controller {
 		}
 	}
 
-	public void setAltaPolizaController(CU01Controller altaPolizaController) {
+	public void setAltaPolizaController(CU01Controller1 altaPolizaController) {
 		this.altaPolizaController = altaPolizaController;
 	}
 	//---------- LISTENERS USADOS

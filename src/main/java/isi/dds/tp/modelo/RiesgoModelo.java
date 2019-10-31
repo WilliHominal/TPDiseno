@@ -39,9 +39,6 @@ public class RiesgoModelo {
 	
 	@Column(nullable = false, name = "valor_porcentual")
 	private Float valorPorcentual;
-	
-	@Column(nullable = false)
-	private Boolean ultimo;
 
 	public RiesgoModelo() { }
 
@@ -65,10 +62,6 @@ public class RiesgoModelo {
 		return valorPorcentual;
 	}
 	
-	public Boolean getUltimo() {
-		return ultimo;
-	}
-
 	public void setBitacoraParametros(BitacoraParametrosPoliza bitacoraParametros) {
 		this.bitacoraParametros = bitacoraParametros;
 	}
@@ -85,16 +78,7 @@ public class RiesgoModelo {
 		this.valorPorcentual = valorPorcentual;
 	}
 	
-	public void setUlitmo(Boolean ultimo) {
-		this.ultimo = ultimo;		
-	}
-	
 	public void setId(Integer id) {
 		this.id = id;
 	}
-	
-	public void setUltimo(Boolean ultimo) {
-		this.ultimo = ultimo;
-	}
-	
 }

@@ -43,21 +43,27 @@ public class Ciudad {
 	public Provincia getProvincia() {
 		return provincia;
 	}
+	
 	public List<RiesgoCiudad> getRiesgos() {
 		return riesgos;
 	}
+	
 	public Integer getIdCiudad() {
 		return idCiudad;
 	}
+	
 	public String getNombre() {
 		return nombre;
 	}
+	
 	public void setProvincia(Provincia provincia) {
 		this.provincia = provincia;
 	}
+	
 	public void setRiesgos(List<RiesgoCiudad> riesgos) {
 		this.riesgos = riesgos;
 	}
+	
 	public void setIdCiudad(Integer idCiudad) {
 		this.idCiudad = idCiudad;
 	}

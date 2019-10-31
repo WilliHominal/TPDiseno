@@ -3,14 +3,14 @@ package isi.dds.tp.controller;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import isi.dds.tp.view.CU18View;
+import isi.dds.tp.view.CU18View1;
 
 @SuppressWarnings("unused")
 public class CU18Controller {
 	
 	
 	private CU18Controller instancia;
-	private CU18View buscarPoliza;
+	private CU18View1 buscarPoliza;
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
@@ -29,6 +29,6 @@ public class CU18Controller {
 	}
 
 	private void setBuscarPoliza() {
-		buscarPoliza = new CU18View();
+		buscarPoliza = new CU18View1();
 	}
 }

@@ -6,16 +6,16 @@ import javax.swing.JPanel;
 import isi.dds.tp.view.CU12View1;
 
 @SuppressWarnings("unused")
-public class CU12Controller {
+public class CU12Controller1 {
 
-	private CU12Controller instancia;
+	private CU12Controller1 instancia;
 	private CU12View1 registrarPago1;
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
 	private String tituloAnterior = "";
 	
-	public CU12Controller(JFrame ventana) {
+	public CU12Controller1(JFrame ventana) {
 		instancia = this;
 		this.ventana = ventana;
 		this.tituloAnterior = ventana.getTitle();

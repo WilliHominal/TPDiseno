@@ -20,19 +20,21 @@ public class DAOCliente {
         }    
         return instanciaDAO;
     }
+    
+	public void cargarClientes() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/clientes.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		
+		session.beginTransaction();
+		
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
 
-    public void addCliente(Cliente c) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        try {
-            session.beginTransaction();
-            session.save(c);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+
+		}
+		session.close();
+	}
     
     public Cliente getCliente(Long numeroCliente) {    	
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -55,21 +57,5 @@ public class DAOCliente {
             e.printStackTrace();
         }
     	return null;
-    }
-	
-	public void cargarClientes() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/clientes.sql");
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-		
-		session.beginTransaction();
-		
-		Iterator<String> iteradorqueries = queries.iterator();
-		while(iteradorqueries.hasNext()){
-
-			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
-
-		}
-		session.close();
-	}
-    
+    }    
 }

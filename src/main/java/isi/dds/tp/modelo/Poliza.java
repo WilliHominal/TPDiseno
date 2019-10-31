@@ -117,12 +117,6 @@ public class Poliza {
 	@Enumerated(EnumType.STRING)
 	private EnumFormaPago formaPago; 
 	
-	@Column(name = "es_propuesta")
-	private Boolean esPropuesta;
-	
-	@Column(name = "esta_emitida")
-	private Boolean estaEmitida;
-	
 	@Column(nullable = false, name = "valor_descuento_por_unidad_adicional")
 	private Float valorDescuentoPorUnidadAdicional;
 	
@@ -138,9 +132,6 @@ public class Poliza {
 	@Column(nullable = false, name = "valor_bonificacion_pago_semestral")
 	private Float valorBonificacionPagoSemestral;
 	
-	/*@Column(nullable = false, name = "valor_interes_genero")
-	private Float valorInteresGenero;*/
-	
 	@Column(nullable = false, name = "valor_riesgo_ciudad")
 	private Float valorRiesgoCiudad;
 	
@@ -152,10 +143,6 @@ public class Poliza {
 	
 	@Column(nullable = false, name = "valor_derecho_emision")
 	private Float valorDerechoEmison;
-	
-	/* TODO preguntar
-	@Column(nullable = false, name = "porcentaje_valor_asegurado")
-	private Float porcentajeValorAsegurado;*/
 		
 	public Poliza() { }
 	
@@ -249,14 +236,6 @@ public class Poliza {
 	
 	public EnumFormaPago getFormaPago() {
 		return formaPago;
-	}
-	
-	public Boolean getEsPropuesta() {
-		return esPropuesta;
-	}
-	
-	public Boolean getEstaEmitida() {
-		return estaEmitida;
 	}
 	
 	public Float getValorDescuentoPorUnidadAdicional() {
@@ -368,14 +347,6 @@ public class Poliza {
 	}
 	public void setFormaPago(EnumFormaPago formaPago) {
 		this.formaPago = formaPago;
-	}
-	
-	public void setEsPropuesta(Boolean esPropuesta) {
-		this.esPropuesta = esPropuesta;
-	}
-	
-	public void setEstaEmitida(Boolean estaEmitida) {
-		this.estaEmitida = estaEmitida;
 	}
 	
 	public void setValorDescuentoPorUnidadAdicional(Float valorDescuentoPorUnidadAdicional) {

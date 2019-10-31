@@ -38,10 +38,9 @@ import isi.dds.tp.view.CU01View1;
 import isi.dds.tp.view.CU01View2;
 import isi.dds.tp.view.CU01View3;
 
-public class CU01Controller {	
-	private CU01Controller instancia;
+public class CU01Controller1 {	
+	private CU01Controller1 instancia;
 	private CU01View1 altaPoliza1;
-	private CU01View2 altaPoliza2;
 	private CU01View3 declararHijo;
 	
 	private JFrame ventana;
@@ -57,7 +56,7 @@ public class CU01Controller {
 	private Boolean primerCliente = true;
 	private Poliza poliza;
 	
-	public CU01Controller(JFrame ventana) {
+	public CU01Controller1(JFrame ventana) {
 		instancia = this;
 		this.ventana = ventana;
 		this.tituloAnterior = ventana.getTitle();
@@ -68,20 +67,6 @@ public class CU01Controller {
 		}
 			
 		setView1_AltaPoliza1();
-	}
-	
-	public CU01Controller(JFrame ventana, Poliza poliza) {
-		instancia = this;
-		this.poliza = poliza;
-		this.ventana = ventana;
-		this.tituloAnterior = ventana.getTitle();
-		try {
-			panelAnterior = (JPanel) ventana.getContentPane();
-		}catch(Exception ex) {
-			panelAnterior = null;
-		}
-			
-		setView2_AltaPoliza2();
 	}
 	
 	private void setView1_AltaPoliza1() {
@@ -101,35 +86,7 @@ public class CU01Controller {
 		ventana.setContentPane(altaPoliza1);
 		ventana.revalidate();
 	}
-	
-	private void setView2_AltaPoliza2() {
-		altaPoliza2 = new CU01View2();
-		setFechaInicioVigenciaDefault();
-		addSeleccionTipoCobertura();
-		altaPoliza2.addListenerBtnConfirmarDatos(new ListenerView2ConfirmarDatos());
-		altaPoliza2.addListenerBtnGenerarPoliza(new ListenerView2GenerarPoliza());
-		altaPoliza2.addListenerBtnVolver(new ListenerView2Volver());
-		ventana.setContentPane(altaPoliza2);
-		ventana.revalidate();
-	}
-	
-	private void setView3_DeclararHijos() {
-		declararHijo = new CU01View3();
-		declararHijo.setResizable(false);
-		declararHijo.setBounds(0, 0, 400, 250);
-		declararHijo.setLocationRelativeTo(null);
-		declararHijo.setTitle("Dar de alta póliza: AGREGAR DATOS HIJOS");
-		declararHijo.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		setFechaInicioDefault();
-		addSelecccionSexo();
-		addSeleccionEstadoCivil();
-		addListenerVentanaDeclararHijo();
-		declararHijo.addListenerSeleccionSexo(new ListenerView3Sexo());
-		declararHijo.addListenerBtnAgregarHijo(new ListenerView3AgregarHijo());
-		declararHijo.addListenerBtnCancelar(new ListenerView3Cancelar());
-		declararHijo.setVisible(true);
-	}
-	
+		
 	//-------- MÉTODOS QUE TRABAJAN SOBRE CU01View1 - AltaPoliza1
 	private  void cargarTabla(){
 		Integer cantHijos = poliza.getHijosDeclarado().size();
@@ -160,7 +117,7 @@ public class CU01Controller {
 	 * @param cliente
 	 */
 	public void obtenidoCliente(Cliente cliente) {
-		poliza = new Poliza();
+		poliza = new Poliza();//TODO hacer en gestor
 		gestorPoliza.actualizarPoliza(poliza, cliente);
 		altaPoliza1.setNumeroCliente(cliente.getNumeroCliente().toString());
 		altaPoliza1.setApellido(cliente.getApellido());
@@ -202,6 +159,7 @@ public class CU01Controller {
 		altaPoliza1.setProvinciaInicio(cliente.getCiudad().getProvincia());
 		altaPoliza1.habilitarSeleccionModelo(false);
 		altaPoliza1.habilitarSeleccionAnioModelo(false);
+		
 		Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(cliente.getCiudad().getProvincia()).iterator();
 		altaPoliza1.addCiudad(iteratorCiudad.next(), true);
 		while(iteratorCiudad.hasNext()){
@@ -211,7 +169,7 @@ public class CU01Controller {
 		altaPoliza1.setCiudadInicio(cliente.getCiudad());
 	}
 
-	private  void agregarHijoTabla(HijoDeclarado hijo) {
+	public void agregarHijoTabla(HijoDeclarado hijo) {
 		if(hijo != null) {
 			gestorPoliza.addHijo(poliza, hijo);
 			cargarTabla();
@@ -263,13 +221,15 @@ public class CU01Controller {
 					}
 				}
 				if(!errorEnMotor) {
-					errorEnMotor = gestorPoliza.validarMotor(textoPatente);
-					textoErrorMotor = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
-					errorNumero++;
+					if(gestorPoliza.validarMotor(textoPatente)) {
+						errorEnMotor = true;
+						textoErrorMotor = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
+						errorNumero++;
+					}
 				}
 			}
 			else {
-				errorEnMotor = false;
+				errorEnMotor = true;
 				textoErrorMotor = errorNumero+") La definición de un número de motor debe ser de longitud 17.\n";
 				errorNumero++;
 			}	
@@ -293,9 +253,11 @@ public class CU01Controller {
 					}
 				}
 				if(!errorEnChasis) {
-					errorEnChasis = gestorPoliza.validarChasis(textoChasis);
-					textoErrorChasis = errorNumero+") El valor ingresado del número de chasis, ya está registrado como parte de otra póliza.\n";
-					errorNumero++;
+					if(gestorPoliza.validarChasis(textoChasis)) {
+						errorEnChasis = true;
+						textoErrorChasis = errorNumero+") El valor ingresado del número de chasis, ya está registrado como parte de otra póliza.\n";
+						errorNumero++;
+					}
 				}
 			}
 			else {
@@ -334,9 +296,11 @@ public class CU01Controller {
 			        	}
 		        	}
 					if(!errorEnPatente) {
-						errorEnPatente = gestorPoliza.validarPatente(textoPatente);
-						textoErrorPatente = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
-						errorNumero++;
+						if(gestorPoliza.validarPatente(textoPatente)) {
+							errorEnPatente = true;
+							textoErrorPatente = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
+							errorNumero++;
+						}
 					}
 		        break;     
 		        
@@ -366,9 +330,11 @@ public class CU01Controller {
 			        	}
 		        	}
 					if(!errorEnPatente) {
-						errorEnPatente = gestorPoliza.validarPatente(textoPatente);
-						textoErrorPatente = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
-						errorNumero++;
+						if(gestorPoliza.validarPatente(textoPatente)) {
+							errorEnPatente = true;
+							textoErrorPatente = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
+							errorNumero++;
+						}
 					}
 		        break;
 	
@@ -396,170 +362,17 @@ public class CU01Controller {
 		return true;
 	}
 	
-	//-------- MÉTODOS QUE TRABAJAN SOBRE CU01View2 - AltaPoliza2
-	
-	private void setFechaInicioVigenciaDefault() {
-		try {
-			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
-		      Calendar calendar = Calendar.getInstance();
-		      calendar.setTime(fechaParseada); 
-		      calendar.add(Calendar.DAY_OF_YEAR, 1);  
-		      calendar.getTime(); 
-		      altaPoliza2.setInicioVigencia(calendar.getTime());
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+	public Poliza getPoliza() {
+		return poliza;
 	}
-	
-	private void addSeleccionTipoCobertura() {
-		ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) GestorTipoCobertura.get().getTiposCobertura();
-		Iterator<TipoCobertura> iteradorTipoCoberturas = tipoCoberturas.iterator();
-		altaPoliza2.addTipoCobertura(new TipoCobertura("Seleccionar tipo cobertura"));
-		while(iteradorTipoCoberturas.hasNext()){
-			altaPoliza2.addTipoCobertura(iteradorTipoCoberturas.next());
-		}
-	}
-
-	private Boolean condicionesConfirmarDatos(){
-		String errorTipoCobertura = "";
-		String errorFechaVigencia = "";
-		Boolean tipoCoberturaError = false, inicioVigenciaError = false;
-
-		if (altaPoliza2.getTipoCobertura().equals(new TipoCobertura("Seleccionar tipo cobertura"))) {
-			tipoCoberturaError = true;
-			errorTipoCobertura = "Seleccione un tipo de cobertura.\n";
-		}	
-		
-		SimpleDateFormat formato = new SimpleDateFormat("dd MMM yyyy");
-		Date fechaInicioVigenciaDate = null;
-
-		try {
-			fechaInicioVigenciaDate = formato.parse(formato.format(altaPoliza2.getInicioVigencia()));
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-
-		LocalDate fechaInicioVigenciaLocalDate = fechaInicioVigenciaDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		
-		int anioActual = LocalDate.now().getYear();
-		int mesActual = LocalDate.now().getMonthValue();
-		int diaActual = LocalDate.now().getDayOfMonth();
-		
-		int anioInicioVigencia = fechaInicioVigenciaLocalDate.getYear();
-		int mesInicioVigencia = fechaInicioVigenciaLocalDate.getMonthValue();
-		int diaInicioVigencia = fechaInicioVigenciaLocalDate.getDayOfMonth();
-		
-		if (!((anioActual == anioInicioVigencia && mesActual == mesInicioVigencia && diaActual < diaInicioVigencia)
-			|| (anioActual == anioInicioVigencia && mesActual == mesInicioVigencia-1 && diaActual > diaInicioVigencia)
-			|| (anioActual == anioInicioVigencia-1 && mesActual == 12 && mesInicioVigencia == 1 && diaActual >= diaInicioVigencia)
-			)){
-			errorFechaVigencia = "La fecha de inicio de vigencia debe estar dentro del mes próximo respecto a la fecha actual.\n";
-			inicioVigenciaError = true;
-		}
-		
-		altaPoliza2.componentesAlConfirmarDatos(tipoCoberturaError, inicioVigenciaError, poliza.getCliente().getPolizas().size());
-		if(tipoCoberturaError || inicioVigenciaError) {
-			JOptionPane.showConfirmDialog(ventana, errorTipoCobertura + errorFechaVigencia , "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-		}
-		
-		return !(tipoCoberturaError || inicioVigenciaError);
-	}
-
 	//-------- MÉTODOS QUE TRABAJAN SOBRE CU01View3 - DeclararHijo
 	
-	private void setFechaInicioDefault() {
-		try {
-			//TODO elegir como fecha inicial el último día aceptado como fecha válida de cumpleaños
-			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
-			declararHijo.setFecha(fechaParseada);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	private void addSelecccionSexo() {
-		declararHijo.addSexo("Seleccionar");
-		EnumSexo[] sexos = EnumSexo.values();
-		for(int i=0; i<sexos.length; i++){
-			declararHijo.addSexo(gestorEnum.parseString(sexos[i]));
-		}
-	}
-	
-	private void addSeleccionEstadoCivil() {
-		declararHijo.addEstadoCivil("Seleccionar");
-		EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
-		for(int i=0; i<estadosCivil.length; i++){
-			declararHijo.addEstadoCivil(gestorEnum.parseStringMasc(estadosCivil[i]));
-		}
-	}
-	
-	private void addListenerVentanaDeclararHijo() {
-		declararHijo.addWindowListener(new java.awt.event.WindowAdapter() {
-		    @Override
-		    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-		    	declararHijo.setVisible(false);
-				altaPoliza1.componentesAlDeclararHijos(true, poliza.getHijosDeclarado().size());
-		    }
-		});
-	}
-	
-	private Boolean validarEdad(LocalDate fechaNacLocalDate) {
-		
-		int anioHoy = LocalDate.now().getYear();
-		int diaDelAnioHoy = LocalDate.now().getDayOfYear();
-		int anioDeclarado = fechaNacLocalDate.getYear();
-		int diaDelAnioDeclarado = fechaNacLocalDate.getDayOfYear();
-		
-		Boolean valido1 = false;
-		Boolean valido2 = false;
-		
-		if(anioHoy > (anioDeclarado+18)) {
-			valido1 = true;
-		}
-		else {
-			if(anioHoy < (anioDeclarado+18)) {
-				valido1 = false;
-			}
-			else {
-				if(diaDelAnioHoy >= diaDelAnioDeclarado) {
-					valido1 = true;
-				}
-				else {
-					valido1 = false;
-				}
-			}
-		}
-		
-		if(anioHoy < (anioDeclarado+30)) {
-			valido2 = true;
-		}
-		else {
-			if(anioHoy > (anioDeclarado+30)) {
-				valido2 = false;
-			}
-			else {
-				if(diaDelAnioHoy < diaDelAnioDeclarado) {
-					valido2 = true;
-				}
-				else {
-					valido2 = false;
-				}
-			}
-		}
-		
-		if(valido1&&valido2){
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
 	
 	//-------- LISTENER VIEW 1
 	private class ListenerView1BuscarCliente implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
-				CU17Controller a = new CU17Controller(ventana);	
+				CU17Controller1 a = new CU17Controller1(ventana);	
 				a.setAltaPolizaController(instancia);
 				ventana.revalidate();
 			}catch(Exception ex) {
@@ -585,7 +398,8 @@ public class CU01Controller {
 		public void actionPerformed(ActionEvent e) {
 			try {				
 				altaPoliza1.componentesAlDeclararHijos(false, 0);
-				setView3_DeclararHijos();
+				CU01Controller3 declararHijo = new CU01Controller3();
+				declararHijo.setController1(instancia);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -627,7 +441,7 @@ public class CU01Controller {
 							altaPoliza1.getKmAnio(), gestorEnum.parseEnumSiniestros(altaPoliza1.getNumeroSiniestros()), altaPoliza1.getGarage(),
 							altaPoliza1.getAlarma(), altaPoliza1.getRastreo(), altaPoliza1.getTuercasAntirrobo()
 					);
-					setView2_AltaPoliza2();
+					new CU01Controller2(ventana, poliza);
 				}
 				
 			}catch(Exception ex) {
@@ -706,189 +520,7 @@ public class CU01Controller {
 			}
 		}
 	}
-	
-	//-------- LISTENER VIEW 2
-	private class ListenerView2ConfirmarDatos implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			if(!condicionesConfirmarDatos()) {
-				return;
-			}
-			
-			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-			
-			Calendar fechaFinVigencia = Calendar.getInstance();
-			fechaFinVigencia.setTime(altaPoliza2.getInicioVigencia());
-			fechaFinVigencia.add(Calendar.MONTH, 6);
-			
-			Calendar fechaAnteriorAInicioVigencia = Calendar.getInstance();
-			fechaAnteriorAInicioVigencia.setTime(altaPoliza2.getInicioVigencia());
-			fechaAnteriorAInicioVigencia.add(Calendar.DATE, -1);
-			
-			LocalDate inicioVigencia = altaPoliza2.getInicioVigencia().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			LocalDate finVigencia = fechaFinVigencia.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-						
-			Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;
-			if (poliza.getCliente().getPolizas().size() > 1) descuentoMasDeUnaUnidad = true;
-			if (!altaPoliza2.eligioMensual()) descuentoSemestral = true;
-			
-			if(altaPoliza2.eligioMensual()) {
-				gestorPoliza.actualizarPoliza(poliza, altaPoliza2.getTipoCobertura(), inicioVigencia, finVigencia, EnumFormaPago.MENSUAL);
-			}
-			else {
-				gestorPoliza.actualizarPoliza(poliza, altaPoliza2.getTipoCobertura(), inicioVigencia, finVigencia,EnumFormaPago.SEMESTRAL );
-			}
-			
-			
-			Float premio = gestorPoliza.calcularPremio(poliza);
-			Float descuento = gestorPoliza.calcularDescuento(poliza, descuentoSemestral);
-			Float montoCuota = 2f;
-			Float montoTotal = 0f;
-			
-			
-			altaPoliza2.setApellido(poliza.getCliente().getApellido());
-			altaPoliza2.setNombre(poliza.getCliente().getNombre());
-			altaPoliza2.setModelo(poliza.getAnioModelo().getModelo().getNombre());
-			altaPoliza2.setMarca(poliza.getAnioModelo().getModelo().getMarca().getNombre());
-			altaPoliza2.setMotor(poliza.getMotor());
-			altaPoliza2.setChasis(poliza.getChasis());
-			altaPoliza2.setPatente(poliza.getPatente());
-			altaPoliza2.setSumaAsegurada(poliza.getSumaAsegurada().toString());
-			altaPoliza2.setPremio(premio.toString());
-			altaPoliza2.setDescuento(Float.toString(descuento));
-			altaPoliza2.visualizarDescuentos(descuentoMasDeUnaUnidad, descuentoSemestral);
-			altaPoliza2.setFechaInicio(dateFormat.format(altaPoliza2.getInicioVigencia()));
-			altaPoliza2.setFechaFin(dateFormat.format(fechaFinVigencia.getTime()));
-			
-			if(altaPoliza2.eligioMensual()) {
-				altaPoliza2.cargarTabla(6);
-				for (int contador=0; contador<6; contador++) {
-					Calendar fechaAux = Calendar.getInstance(); 
-					fechaAux.setTime(fechaAnteriorAInicioVigencia.getTime());
-					fechaAux.add(Calendar.MONTH, contador);
-					altaPoliza2.cargarDatosTabla(dateFormat.format(fechaAux.getTime()), contador, 0);
-					altaPoliza2.cargarDatosTabla("$ " + montoCuota, contador, 1); //CAMBIAR 2 POR MONTO DE LA CUOTA
-					String auxMonto[] = altaPoliza2.getValorTabla(contador);
-					montoTotal += Float.parseFloat(auxMonto[1]);
-				}				
-				altaPoliza2.setMontoTotal("$ " + Float.toString(montoTotal));
-			} else {
-				montoTotal = 5f;
-				altaPoliza2.cargarTabla(1);
-				altaPoliza2.cargarDatosTabla(dateFormat.format(fechaAnteriorAInicioVigencia.getTime()), 0, 0);
-				altaPoliza2.cargarDatosTabla("$ " + montoTotal, 0, 1);
-				altaPoliza2.setMontoTotal("$ " + montoTotal);
-			}
-			
-			setFechaInicioVigenciaDefault();
-		}
-	}
-	
-	private class ListenerView2GenerarPoliza implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			if(JOptionPane.showConfirmDialog(ventana, "¿Desea generar la póliza?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)==0) {
-				gestorPoliza.altaPoliza(poliza);
-				//TODO cuando no se genere una poliza, no lanzar el joptionpane
-				JOptionPane.showConfirmDialog(ventana, "Póliza generada correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
-				//TODO mostrar poliza
-			}
-		}
-	}
-	
-	private class ListenerView2Volver implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			if(JOptionPane.showConfirmDialog(ventana, "¿Desea corregir algún dato ingresado?", "Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
-				ventana.setContentPane(altaPoliza1);
-				ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");
-				altaPoliza2.setVisible(false);
-			}
-		}
-	}
-	
-	//-------- LISTENER VIEW 3
-	private class ListenerView3Sexo implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			if(!declararHijo.getSexo().equals("Seleccionar")) {
-				Integer index = declararHijo.indexSeleccionEstadoCivil();
-				
-				if(gestorEnum.parseEnumSexo(declararHijo.getSexo()).equals(EnumSexo.FEMENINO)) {
-					declararHijo.addEstadoCivil("Seleccionar");
-					EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
-					for(int i=0; i<estadosCivil.length; i++){
-						declararHijo.addEstadoCivil(gestorEnum.parseStringFem(estadosCivil[i]));
-					}
-				}
-				
-				if(gestorEnum.parseEnumSexo(declararHijo.getSexo()).equals(EnumSexo.MASCULINO)) {
-					declararHijo.addEstadoCivil("Seleccionar");
-					EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
-					for(int i=0; i<estadosCivil.length; i++){
-						declararHijo.addEstadoCivil(gestorEnum.parseStringMasc(estadosCivil[i]));
-					}
-				}
-				declararHijo.setEstadoCivil(index);
-			}
-		}
-	}
-	
-	private class ListenerView3AgregarHijo implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
 
-			String fechaNac = "";
-			String sexo = "";
-			String estadoCivil = "";
-			Boolean huboError = false;
-			Boolean fechaError = false, sexoError = false, estadoCivilError = false;
-			SimpleDateFormat formato = new SimpleDateFormat("dd MMM yyyy");
-			
-			Date fechaNacDate = null;
 	
-			try {
-				fechaNacDate = formato.parse(formato.format(declararHijo.getFechaNac()));
-			} catch (ParseException e1) {
-				e1.printStackTrace();
-			}
-
-			LocalDate fechaNacLocalDate = fechaNacDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-
-			if(!validarEdad(fechaNacLocalDate)) {
-				fechaError = true;
-				fechaNac = "La fecha de nacimiento que se introdujo dicta una edad que no se encuentra en el rango adecuado (18 a 30 años).\n";
-				huboError = true;
-			}
-			
-			if (declararHijo.getSexo().equals("Seleccionar")) {
-				sexoError = true;
-				sexo = "No ha seleccionado un valor del campo sexo.\n";
-				huboError = true;
-			}
-			
-			if (declararHijo.getEstadoCivil().equals("Seleccionar")) {
-				estadoCivilError = true;
-				estadoCivil = "No ha seleccionado un valor del campo estado civil.";
-				huboError = true;
-			}
-			
-			if(huboError) {
-				declararHijo.noValido(fechaError, sexoError, estadoCivilError);
-				JOptionPane.showConfirmDialog(declararHijo, fechaNac + sexo + estadoCivil , "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-			}
-			else {
-				HijoDeclarado hijo = new HijoDeclarado();
-				
-				hijo.setFechaNacimiento(fechaNacLocalDate);
-				hijo.setSexo(gestorEnum.parseEnumSexo(declararHijo.getSexo()));
-				hijo.setEstadoCivil(gestorEnum.parseEnumEstadoCivil(declararHijo.getEstadoCivil()));
-				agregarHijoTabla(hijo);
-				declararHijo.setVisible(false);
-				
-			}
-		}
-	}
-
-	private class ListenerView3Cancelar implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			declararHijo.setVisible(false);
-			altaPoliza1.componentesAlDeclararHijos(true, poliza.getHijosDeclarado().size());
-		}
-	}
+	
 }

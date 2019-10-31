@@ -620,7 +620,7 @@ public class CU01View1 extends JPanel {
 		campoMotor.addKeyListener(new KeyAdapter(){
 			public void keyTyped(KeyEvent e){
 				tema.setTema(campoMotor, true);
-				char caracter = e.getKeyChar();
+				Character caracter = e.getKeyChar();
 				if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
 						&& campoMotor.getText().length() < 17 ){
 				}
@@ -628,6 +628,13 @@ public class CU01View1 extends JPanel {
 					e.consume();  // ignorar el evento de teclado
 					getToolkit().beep();
 				}
+			}
+			//TODO cambiar para que sea al teclear un tekla cambie el carcater sin tener que leer el campo
+			public void keyPressed(KeyEvent e){
+				campoMotor.setText(campoMotor.getText().toUpperCase());	
+			}
+			public void keyReleased(KeyEvent e){
+				campoMotor.setText(campoMotor.getText().toUpperCase());	
 			}
 		}); 
 	}
@@ -646,6 +653,13 @@ public class CU01View1 extends JPanel {
 					getToolkit().beep();
 				}
 	    	}
+	    	//TODO cambiar para que sea al teclear un tekla cambie el carcater sin tener que leer el campo
+			public void keyPressed(KeyEvent e){
+				campoChasis.setText(campoChasis.getText().toUpperCase());	
+			}
+			public void keyReleased(KeyEvent e){
+				campoChasis.setText(campoChasis.getText().toUpperCase());	
+			}
 	    });
 	}
 	
@@ -663,6 +677,13 @@ public class CU01View1 extends JPanel {
 					getToolkit().beep();
 				}
 	    	}
+	    	//TODO cambiar para que sea al teclear un tekla cambie el carcater sin tener que leer el campo
+			public void keyPressed(KeyEvent e){
+				campoPatente.setText(campoPatente.getText().toUpperCase());	
+			}
+			public void keyReleased(KeyEvent e){
+				campoPatente.setText(campoPatente.getText().toUpperCase());	
+			}
 	    }); 
 	}
 	

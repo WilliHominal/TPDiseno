@@ -2,7 +2,6 @@ package isi.dds.tp.gestor;
 
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Iterator;
 import java.util.List;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
@@ -23,35 +22,15 @@ public class GestorParametrosVehiculo {
         }    
         return instanciaGestor;
     }
+    
+	public void cargarParametrosVehiculos() {
+		DAOParametrosVehiculos.getDAO().cargarParametrosVehiculos();
+	}
 
     public void addRiesgoModelo(RiesgoModelo r) {
     	DAOParametrosVehiculos.getDAO().addRiesgoModelo(r);
     }
     
-    public void addMarca(Marca m){
-		Iterator<Modelo> iteratorModelo = sortModelos(m).iterator();
-		while(iteratorModelo.hasNext()){
-			sortAniosModelo(iteratorModelo.next());
-		}	
-    	DAOParametrosVehiculos.getDAO().addMarca(m);
-    }
-    
-    public void addModelo(Modelo m) {
-		Iterator<Modelo> iteratorModelo = sortModelos(m.getMarca()).iterator();
-		while(iteratorModelo.hasNext()){
-			sortAniosModelo(iteratorModelo.next());
-		}	
-    	DAOParametrosVehiculos.getDAO().addModelo(m);
-    }
-    
-    public void addAnioModelo(AnioModelo a) {
-		Iterator<Modelo> iteratorModelo = sortModelos(a.getModelo().getMarca()).iterator();
-		while(iteratorModelo.hasNext()){
-			sortAniosModelo(iteratorModelo.next());
-		}
-    	DAOParametrosVehiculos.getDAO().addAnioModelo(a);
-    }
-   
 	public List<Marca> getMarcas() {
 		return DAOParametrosVehiculos.getDAO().getMarcas();
     }
@@ -75,7 +54,8 @@ public class GestorParametrosVehiculo {
 	    return lista;
     }
     
-    private List<Modelo> sortModelos(Marca marca){
+    //TODO añadir a altapolzia
+    public List<Modelo> sortModelos(Marca marca){
     	marca.getModelos().sort(Comparator.comparing(Modelo::getNombre));
 	    Collections.sort(marca.getModelos(), new Comparator<Modelo>() {
 	    	@Override
@@ -96,8 +76,4 @@ public class GestorParametrosVehiculo {
 	    });
 	    return modelo.getAnios();
     }
-
-	public void cargarParametrosVehiculos() {
-		DAOParametrosVehiculos.getDAO().cargarParametrosVehiculos();
-	}
 }

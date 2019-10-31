@@ -24,19 +24,16 @@ public class DAOTipoCobertura {
         return instanciaDAO;
     }
     
-    public void addTipoCobertura(TipoCobertura t) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
-        try {
-            session.beginTransaction();
-            session.save(t);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
+	public void cargarTiposCoberturas() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/tiposCobertura.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		session.beginTransaction();
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+		}
+		session.close();
+	}
     
     public void addRiesgoCobertura(RiesgoTipoCobertura r) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -68,23 +65,11 @@ public class DAOTipoCobertura {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
             session.beginTransaction();
-            return session.createNativeQuery("SELECT * FROM riesgo_tipo_cobertura where tipo_cobertura='"+tipoCobertura+"' and ultimo=true", RiesgoTipoCobertura.class).getSingleResult();
+            return session.createNativeQuery("SELECT * FROM riesgo_tipo_cobertura where tipo_cobertura='"+tipoCobertura+"'  and fin_vigencia is NULL", RiesgoTipoCobertura.class).getSingleResult();
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
     	return null;
     }
-
-	public void cargarTiposCoberturas() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/tiposCobertura.sql");
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-		session.beginTransaction();
-		Iterator<String> iteradorqueries = queries.iterator();
-		while(iteradorqueries.hasNext()){
-			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
-		}
-		session.close();
-	}
-    
 }

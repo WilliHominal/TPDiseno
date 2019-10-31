@@ -38,7 +38,8 @@ public class CU04Controller {
 			panelAnterior = (JPanel) ventana.getContentPane();
 		}catch(Exception ex) {
 		    panelAnterior = null;
-		}
+		}		
+		
 		setDarAltaCliente();
 	}
 	

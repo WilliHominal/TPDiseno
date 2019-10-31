@@ -21,7 +21,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
-import isi.dds.tp.controller.CU01Controller;
+import isi.dds.tp.controller.CU01Controller2;
 import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
@@ -45,7 +45,7 @@ public class CU01View2 extends JPanel  {
 
 					
 					JFrame frame = new JFrame();
-					new CU01Controller(frame, poliza);
+					new CU01Controller2(frame, poliza);
 					GestorTema.get().setTema(frame, "Dar de alta póliza: 22222222");
 					frame.setVisible(true);
 				} catch (Exception e) {

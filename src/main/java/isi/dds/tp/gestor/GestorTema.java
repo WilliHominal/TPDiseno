@@ -58,7 +58,7 @@ public class GestorTema {
 	private static Font FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
 	
     private GestorTema() {
-    	ToolTipManager.sharedInstance().setInitialDelay(1000);
+    	ToolTipManager.sharedInstance().setInitialDelay(200);
     	tema1();
     }
 
@@ -93,6 +93,7 @@ public class GestorTema {
     	COLOR_LETRA = Color.BLACK;
     	COLOR_LETRA_ERRONEA = COLOR_FONDO_ERRONEO.darker().darker();
     	COLOR_LETRA_DESHABILITADA = COLOR_FONDO_TEXTO.darker();
+    	COLOR_LETRA_BOTON_DESHABILITADA = Color.DARK_GRAY;
     }
 
     public void setTema(JPanel panel) {
@@ -139,9 +140,9 @@ public class GestorTema {
     
     public void setTema(JButton btn, Boolean habilitado) {
     	btn.setPreferredSize(DIMENSION_BOTON);
+    	btn.setFont(FUENTE_LETRA_NORMAL);
     	if(habilitado) {
         	btn.setBackground(COLOR_BOTON);
-        	btn.setFont(FUENTE_LETRA_NORMAL);
         	btn.setForeground(COLOR_LETRA);
         	btn.setEnabled(true);
         	btn.setContentAreaFilled(false);
@@ -150,7 +151,6 @@ public class GestorTema {
     	else {
         	btn.setBackground(COLOR_BOTON_DESHABILITADO);
     		UIManager.put( "Button.disabledText", COLOR_LETRA_BOTON_DESHABILITADA);
-        	btn.setFont(FUENTE_LETRA_NORMAL);
         	btn.setEnabled(false);
     	}
     }
@@ -174,7 +174,6 @@ public class GestorTema {
 	   	}
     	else {
     		btn.setDisabledIcon(icono);
-    		btn.setBackground(COLOR_FONDO_PANTALLA);
     		UIManager.put( "Button.disabledText", COLOR_LETRA_BOTON_DESHABILITADA);
 			btn.setEnabled(false);
     	}

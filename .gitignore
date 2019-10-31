@@ -5,3 +5,10 @@ target/classes/pruebas/Main.class
 *.java
 target/classes/META-INF/maven/5/1/pom.properties
 target/classes/META-INF/MANIFEST.MF
+target/classes/database/RESPALDI/clientes.sql
+target/classes/database/RESPALDI/domicilio - copia.sql
+target/classes/database/RESPALDI/parametrosVehiculo.sql
+target/classes/database/RESPALDI/siniestros.sql
+target/classes/database/RESPALDI/polizas _ original.sql
+target/classes/database/RESPALDI/parametrosPoliza.sql
+target/classes/database/RESPALDI/tiposCobertura.sql

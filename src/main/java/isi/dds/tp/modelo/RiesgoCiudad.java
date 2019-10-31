@@ -14,12 +14,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "riesgo_ciudad")
-public class RiesgoCiudad {
-	/*
-	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn (name = "id_ciudad")
-	private Ciudad ciudad;*/
-		
+public class RiesgoCiudad {		
 	//optional permita que la relacion pueda ser nual, que seria el caso cuando se crea por primera vez una ciudad
 	@ManyToOne (optional = true, fetch = FetchType.LAZY)
 	@JoinColumn (name = "codigo_bitacora")
@@ -39,32 +34,13 @@ public class RiesgoCiudad {
 	
 	@Column(nullable = false, name = "valor_porcentual")
 	private Float valorPorcentual;
-	
-	@Column(nullable = false)
-	private Boolean ultimo;
 
 	public RiesgoCiudad() { }
-	
-	public RiesgoCiudad(Ciudad ciudad,  Float valorPorcentual) {
-		this.bitacoraParametros = null;
-		this.fechaInicioVigencia = LocalDate.now();
-		this.fechaFinVigencia = null;
-		this.valorPorcentual = valorPorcentual;
-		this.ultimo = true;
-	}
-	
-	public RiesgoCiudad(BitacoraParametrosPoliza b,Ciudad ciudad,  Float valorPorcentual) {
-		this.bitacoraParametros = b;
-		this.fechaInicioVigencia = LocalDate.now();
-		this.fechaFinVigencia = null;
-		this.valorPorcentual = valorPorcentual;
-		this.ultimo = true;
-		b.getRiesgosCiudad().add(this);
-	}
 	
 	public Integer getId() {
 		return id;
 	}
+	
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -84,10 +60,6 @@ public class RiesgoCiudad {
 	public Float getValorPorcentual() {
 		return valorPorcentual;
 	}
-	
-	public Boolean getUltimo() {
-		return ultimo;
-	}
 
 	public void setBitacoraParametros(BitacoraParametrosPoliza bitacoraParametros) {
 		this.bitacoraParametros = bitacoraParametros;
@@ -103,9 +75,5 @@ public class RiesgoCiudad {
 	
 	public void setValorPorcentual(Float valorPorcentual) {
 		this.valorPorcentual = valorPorcentual;
-	}
-	
-	public void setUltimo(Boolean ultimo) {
-		this.ultimo = ultimo;
 	}
 }

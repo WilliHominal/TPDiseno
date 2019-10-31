@@ -38,9 +38,6 @@ public class RiesgoTipoCobertura {
 	
 	@Column(nullable = false, name = "valor_porcentual")
 	private Float valorPorcentual;
-	
-	@Column(nullable = false)
-	private Boolean ultimo;
 
 	public RiesgoTipoCobertura() { }
 
@@ -80,15 +77,7 @@ public class RiesgoTipoCobertura {
 		return id;
 	}
 	
-	public Boolean getUltimo() {
-		return ultimo;
-	}
-	
 	public void setId(Integer id) {
 		this.id = id;
-	}
-	
-	public void setUltimo(Boolean ultimo) {
-		this.ultimo = ultimo;
 	}
 }

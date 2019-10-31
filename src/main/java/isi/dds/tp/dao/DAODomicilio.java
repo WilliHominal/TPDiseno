@@ -25,102 +25,6 @@ public class DAODomicilio {
         return instanciaDAO;
     }
     
-    public void addPais(Pais p) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            session.save(p);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-    
-    public void addProvincia(Provincia p) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            session.save(p);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-	
-    public void addCiudad(Ciudad c) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            session.save(c);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-    
-    public void addRiesgoCiudad(RiesgoCiudad r) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            session.save(r);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-
-	public List<Pais> getPaises() {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            return session.createQuery("SELECT p FROM Pais p", Pais.class).list();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-
-	public List<Provincia> getProvincias(Integer id_pais) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            return session.createQuery("SELECT p FROM Provincia p where id_pais="+id_pais+" order by nombre", Provincia.class).list();
-
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
-    	return null;
-    }
-
-    public RiesgoCiudad getUltimoRiesgoCiudad(Integer id_ciudad) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        try {
-        	session.beginTransaction();
-        	return session.createQuery("SELECT p FROM RiesgoCiudad p where id_ciudad="+id_ciudad+" and ultimo=true", RiesgoCiudad.class).uniqueResult();
-        }
-        catch (HibernateException e) {
-        	e.printStackTrace();
-        }
-    	return null;
-    }
-
     public void cargarUbicaciones() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/domicilio.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -135,7 +39,45 @@ public class DAODomicilio {
 		}
 		session.close();
     }
+    
+    public void addRiesgoCiudad(RiesgoCiudad r) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+            session.beginTransaction();
+            session.save(r);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+            session.getTransaction().rollback();
+        }
+    }
 
+	public List<Pais> getPaises() {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();  
+        try {
+            session.beginTransaction();
+            return session.createQuery("SELECT p FROM Pais p order by nombre", Pais.class).list();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }    
+
+	public List<Provincia> getProvincias(Integer id_pais) {
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+                  
+        try {
+            session.beginTransaction();
+            return session.createQuery("SELECT p FROM Provincia p where id_pais="+id_pais+" order by nombre", Provincia.class).list();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    }
+	
 	public Ciudad getCiudad(Integer id_ciudad) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
@@ -147,5 +89,16 @@ public class DAODomicilio {
         }	
     	return null;
 	}
-    
+
+    public RiesgoCiudad getUltimoRiesgoCiudad(Integer id_ciudad) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+        	session.beginTransaction();
+        	return session.createQuery("SELECT p FROM RiesgoCiudad p where id_ciudad="+id_ciudad+" and fin_vigencia is NULL", RiesgoCiudad.class).uniqueResult();
+        }
+        catch (HibernateException e) {
+        	e.printStackTrace();
+        }
+    	return null;
+    }    
 }

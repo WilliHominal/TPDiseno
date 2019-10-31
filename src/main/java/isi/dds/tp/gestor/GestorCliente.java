@@ -19,10 +19,10 @@ public class GestorCliente {
         }    
         return instanciaGestor;
     }
-
-    public void AltaCliente(Cliente c) {
-    	DAOCliente.getDAO().addCliente(c);
-    }
+    
+	public void cargarClientes() {
+		DAOCliente.getDAO().cargarClientes();
+	}
     
     public void actualizarCliente(Cliente cliente, Poliza poliza) {
     	if(cliente.getPolizas() == null) {
@@ -31,6 +31,15 @@ public class GestorCliente {
     	cliente.getPolizas().add(poliza);
     	
     	actualizarCondicion(cliente);    	
+    }
+    
+    public Cliente getCliente(Long numeroCliente) {
+    	Cliente cliente = DAOCliente.getDAO().getCliente(numeroCliente);
+    	return cliente;
+    }
+    
+    public List<Poliza> getPoliza(Long numeroCliente) {
+    	return null;
     }
     
     public void actualizarCondicion(Cliente cliente) {
@@ -63,15 +72,6 @@ public class GestorCliente {
     	return 0;
     }
 
-    public Cliente getCliente(Long numeroCliente) {
-    	Cliente cliente = DAOCliente.getDAO().getCliente(numeroCliente);
-    	return cliente;
-    }
-    
-    public List<Poliza> getPoliza(Long numeroCliente) {
-    	return null;
-    }
-
 	public List<Cliente> buscarClientes(Long numeroCliente, String apellido, String nombre, EnumTipoDocumento tipoDocumento, String numeroDocumento) {
     	String condicionesConsulta = "";
     	
@@ -99,8 +99,4 @@ public class GestorCliente {
 	
     	return DAOCliente.getDAO().getClientes(condicionesConsulta);
     }
-	
-	public void cargarClientes() {
-		DAOCliente.getDAO().cargarClientes();
-	}
 }

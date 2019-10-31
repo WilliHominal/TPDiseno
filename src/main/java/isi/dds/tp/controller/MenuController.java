@@ -11,9 +11,7 @@ import isi.dds.tp.view.MenuView2;
 import isi.dds.tp.view.MenuView1;
 
 public class MenuController {
-	
 	//para ejecutar esto, ejecutar "AppPrincipal"
-	
 	private MenuView1 menuView1;
 	private MenuView2 menuView2;
 	private JFrame ventana;
@@ -85,9 +83,9 @@ public class MenuController {
 					HibernateUtil.recargarBaseDatos();
 					menuView1.yaCargoBaseDatos();
 				}
-				new CU01Controller(ventana);
+				new CU01Controller1(ventana);
 			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "No se puede acceder a Dar de alta póliza.", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
@@ -113,7 +111,7 @@ public class MenuController {
 					HibernateUtil.recargarBaseDatos();
 					menuView1.yaCargoBaseDatos();
 				}
-				new CU17Controller(ventana);
+				new CU17Controller1(ventana);
 				ventana.revalidate();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);

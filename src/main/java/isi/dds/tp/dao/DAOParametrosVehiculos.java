@@ -9,7 +9,6 @@ import isi.dds.tp.modelo.RiesgoModelo;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.AnioModelo;
-import isi.dds.tp.modelo.Modelo;
 import isi.dds.tp.modelo.Marca;
 
 public class DAOParametrosVehiculos {
@@ -25,9 +24,19 @@ public class DAOParametrosVehiculos {
         return instanciaDAO;
     }
     
+    public void cargarParametrosVehiculos() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/parametrosVehiculo.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		session.beginTransaction();
+		Iterator<String> iteradorqueries = queries.iterator();
+		while(iteradorqueries.hasNext()){
+			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+		}
+		session.close();
+	}
+    
     public void addRiesgoModelo(RiesgoModelo r) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
         try {
             session.beginTransaction();
             session.save(r);
@@ -39,72 +48,16 @@ public class DAOParametrosVehiculos {
         }
     }
     
-    public void addModelo(Modelo m) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            session.save(m);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-    
-    public void addMarca(Marca m){
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-    	
-        try {
-            session.beginTransaction();
-            session.save(m);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-    
-    public void addAnioModelo(AnioModelo a) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
-        try {
-            session.beginTransaction();
-            session.save(a);            
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-
 	public List<Marca> getMarcas() {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
         try {
             session.beginTransaction();
             return session.createQuery("SELECT m FROM Marca m order by nombre", Marca.class).list();
-            
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
         return null;
-    }
-	
-    public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        try {
-            session.beginTransaction();
-            return session.createQuery("SELECT p FROM RiesgoModelo p where id_modelo="+id_modelo+" and ultimo=true", RiesgoModelo.class).uniqueResult();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
-    	return null;
     }
     
     public Marca getMarca(Integer id_marca) {
@@ -120,17 +73,6 @@ public class DAOParametrosVehiculos {
         return null;
     }
 
-	public void cargarParametrosVehiculos() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/parametrosVehiculo.sql");
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-		session.beginTransaction();
-		Iterator<String> iteradorqueries = queries.iterator();
-		while(iteradorqueries.hasNext()){
-			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
-		}
-		session.close();
-	}
-
 	public AnioModelo getAnioModelo(Integer id) {
 	  	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
@@ -142,4 +84,16 @@ public class DAOParametrosVehiculos {
         }	
     	return null;
 	}
+	
+    public RiesgoModelo getUltimoRiesgoModelo(Integer id_modelo) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+            session.beginTransaction();
+            return session.createQuery("SELECT p FROM RiesgoModelo p where id_modelo="+id_modelo+" and ultimo=true", RiesgoModelo.class).uniqueResult();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+    	return null;
+    }
 }

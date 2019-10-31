@@ -2,7 +2,6 @@ package isi.dds.tp.hibernate;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.Metadata;
 import org.hibernate.boot.MetadataSources;
