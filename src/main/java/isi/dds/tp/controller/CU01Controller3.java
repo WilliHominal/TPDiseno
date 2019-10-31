@@ -7,13 +7,11 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
-import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import isi.dds.tp.enums.EnumEstadoCivil;
 import isi.dds.tp.enums.EnumSexo;
 import isi.dds.tp.gestor.GestorEnum;
-import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.view.CU01View1;
 import isi.dds.tp.view.CU01View3;
@@ -24,13 +22,8 @@ public class CU01Controller3 {
 	private CU01View3 declararHijo;
 	
 	private GestorEnum gestorEnum = GestorEnum.get();
-	private GestorPoliza gestorPoliza = GestorPoliza.get();
 	
 	public CU01Controller3() {
-		setView3_DeclararHijos();
-	}
-	
-	private void setView3_DeclararHijos() {
 		declararHijo = new CU01View3();
 		declararHijo.setResizable(false);
 		declararHijo.setBounds(0, 0, 400, 250);

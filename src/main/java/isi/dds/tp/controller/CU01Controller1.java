@@ -2,29 +2,19 @@ package isi.dds.tp.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.WindowConstants;
-import isi.dds.tp.enums.EnumEstadoCivil;
-import isi.dds.tp.enums.EnumFormaPago;
-import isi.dds.tp.enums.EnumSexo;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
 import isi.dds.tp.gestor.GestorTema;
-import isi.dds.tp.gestor.GestorTipoCobertura;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Cliente;
@@ -33,15 +23,11 @@ import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.Provincia;
-import isi.dds.tp.modelo.TipoCobertura;
 import isi.dds.tp.view.CU01View1;
-import isi.dds.tp.view.CU01View2;
-import isi.dds.tp.view.CU01View3;
 
 public class CU01Controller1 {	
 	private CU01Controller1 instancia;
 	private CU01View1 altaPoliza1;
-	private CU01View3 declararHijo;
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
@@ -86,8 +72,11 @@ public class CU01Controller1 {
 		ventana.setContentPane(altaPoliza1);
 		ventana.revalidate();
 	}
-		
-	//-------- MÉTODOS QUE TRABAJAN SOBRE CU01View1 - AltaPoliza1
+	
+	public Poliza getPoliza() {
+		return poliza;
+	}
+	
 	private  void cargarTabla(){
 		Integer cantHijos = poliza.getHijosDeclarado().size();
 		altaPoliza1.cargarTabla(cantHijos);
@@ -362,13 +351,7 @@ public class CU01Controller1 {
 		return true;
 	}
 	
-	public Poliza getPoliza() {
-		return poliza;
-	}
-	//-------- MÉTODOS QUE TRABAJAN SOBRE CU01View3 - DeclararHijo
-	
-	
-	//-------- LISTENER VIEW 1
+	//-------- LISTENER
 	private class ListenerView1BuscarCliente implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
@@ -519,8 +502,5 @@ public class CU01Controller1 {
 				altaPoliza1.setSumaAsegurada("");
 			}
 		}
-	}
-
-	
-	
+	}	
 }

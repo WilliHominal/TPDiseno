@@ -42,10 +42,12 @@ public class GestorCliente {
     	return null;
     }
     
+    @SuppressWarnings("unused")
     public void actualizarCondicion(Cliente cliente) {
     	//TODO implementar actualizarCondicion
     			//veo si es cliente Plata o Activo
-    			Boolean esPlata = true;
+    			
+				Boolean esPlata = true;
 
     			
     		/*	if (!poliza.getCliente().getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO))

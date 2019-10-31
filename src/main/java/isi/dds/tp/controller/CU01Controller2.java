@@ -10,34 +10,26 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import isi.dds.tp.enums.EnumFormaPago;
-import isi.dds.tp.gestor.GestorDomicilio;
-import isi.dds.tp.gestor.GestorEnum;
-import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.gestor.GestorPoliza;
-import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
 import isi.dds.tp.gestor.GestorTipoCobertura;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.TipoCobertura;
-import isi.dds.tp.view.CU01View1;
 import isi.dds.tp.view.CU01View2;
-import isi.dds.tp.view.CU01View3;
 
 public class CU01Controller2 {
 	private CU01View2 altaPoliza2;
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
+	@SuppressWarnings("unused")
 	private String tituloAnterior = "";
 	
 	private GestorPoliza gestorPoliza = GestorPoliza.get();
 	
-	private Boolean primerCliente = true;
 	private Poliza poliza;
 	
 	public CU01Controller2(JFrame ventana, Poliza poliza) {
@@ -130,7 +122,6 @@ public class CU01Controller2 {
 		
 		return !(tipoCoberturaError || inicioVigenciaError);
 	}
-
 
 	//----------------- LISTENER
 	private class ListenerView2ConfirmarDatos implements ActionListener{
@@ -227,6 +218,5 @@ public class CU01Controller2 {
 				altaPoliza2.setVisible(false);
 			}
 		}
-	}
-		
+	}	
 }
