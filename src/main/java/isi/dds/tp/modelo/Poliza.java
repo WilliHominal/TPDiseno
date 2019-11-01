@@ -52,7 +52,7 @@ public class Poliza {
 	
 	@JoinColumn(name = "parametros_poliza")
     @OneToOne
-	private ParametrosPoliza parametroPoliza;
+	private ParametrosPoliza parametrosPoliza;
     
 	@JoinColumn(name = "solicitud_poliza")
     @OneToOne(cascade=CascadeType.ALL)
@@ -117,9 +117,6 @@ public class Poliza {
 	@Enumerated(EnumType.STRING)
 	private EnumFormaPago formaPago; 
 	
-	@Column(nullable = false, name = "valor_descuento_por_unidad_adicional")
-	private Float valorDescuentoPorUnidadAdicional;
-	
 	@Column(nullable = false, name = "valor_premio")
 	private Float valorPremio;
 	
@@ -140,10 +137,7 @@ public class Poliza {
 
 	@Column(nullable = false, name = "valor_riesgo_cobertura")
 	private Float valorRiesgoCobertura;
-	
-	@Column(nullable = false, name = "valor_derecho_emision")
-	private Float valorDerechoEmison;
-		
+
 	public Poliza() { }
 	
 	public Cliente getCliente() {
@@ -162,8 +156,8 @@ public class Poliza {
 		return ciudad;
 	}
 	
-	public ParametrosPoliza getParametroPoliza() {
-		return parametroPoliza;
+	public ParametrosPoliza getParametrosPoliza() {
+		return parametrosPoliza;
 	}
 	
 	public Long getNumeroPoliza() {
@@ -238,10 +232,6 @@ public class Poliza {
 		return formaPago;
 	}
 	
-	public Float getValorDescuentoPorUnidadAdicional() {
-		return valorDescuentoPorUnidadAdicional;
-	}
-	
 	public Float getValorPremio() {
 		return valorPremio;
 	}
@@ -282,8 +272,8 @@ public class Poliza {
 		this.ciudad = ciudad;
 	}
 	
-	public void setParametroPoliza(ParametrosPoliza parametroPoliza) {
-		this.parametroPoliza = parametroPoliza;
+	public void setParametrosPoliza(ParametrosPoliza parametroPoliza) {
+		this.parametrosPoliza = parametroPoliza;
 	}
 	
 	public void setNumeroPoliza(Long numeroPoliza) {
@@ -349,9 +339,6 @@ public class Poliza {
 		this.formaPago = formaPago;
 	}
 	
-	public void setValorDescuentoPorUnidadAdicional(Float valorDescuentoPorUnidadAdicional) {
-		this.valorDescuentoPorUnidadAdicional = valorDescuentoPorUnidadAdicional;
-	}
 	public void setValorPremio(Float valorPremio) {
 		this.valorPremio = valorPremio;
 	}
@@ -398,14 +385,6 @@ public class Poliza {
 	
 	public void setValorRiesgoTipoCobertura(Float valorRiesgoCobertura) {
 		this.valorRiesgoCobertura = valorRiesgoCobertura;
-	}
-	
-	public Float getValorDerechoEmison() {
-		return valorDerechoEmison;
-	}
-	
-	public void setValorDerechoEmison(Float valorDerechoEmison) {
-		this.valorDerechoEmison = valorDerechoEmison;
 	}
 
 	@Override

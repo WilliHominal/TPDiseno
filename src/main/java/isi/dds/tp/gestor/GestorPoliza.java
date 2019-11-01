@@ -4,13 +4,12 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.enums.EnumFormaPago;
-import isi.dds.tp.enums.EnumSiniestros;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.HijoDeclarado;
+import isi.dds.tp.modelo.ParametrosPoliza;
 import isi.dds.tp.modelo.SolicitudPoliza;
 import isi.dds.tp.modelo.TipoCobertura;
 import isi.dds.tp.modelo.AnioModelo;
@@ -73,17 +72,18 @@ public class GestorPoliza {
     	poliza.getHijosDeclarado().remove(indexHijo);
     }
     
-    public Poliza actualizarPoliza(Poliza poliza, Cliente cliente){
+    public Poliza actualizarPoliza(Poliza poliza, Cliente cliente, String numeroSiniestros){
     	poliza = new Poliza();
     	poliza.setCliente(cliente);
+    	poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().parseEnumSiniestros(numeroSiniestros));
     	poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
     	poliza.setCuotas(new ArrayList<Cuota>());
     	return poliza;
     }
     
 	public void actualizarPoliza(Poliza poliza, Ciudad ciudad, AnioModelo anioModelo, String motor, String chasis, 
-			String patente, Float sumaAsegurada, String kmRealizadosPorAnio, EnumSiniestros numerosSiniestrosUltimoAnios,
-			Boolean guardaGarage, Boolean tieneAlarma, Boolean tieneRastreoVehicular, Boolean tieneTuercasAntirobo) {
+			String patente, Float sumaAsegurada, String kmRealizadosPorAnio, Boolean guardaGarage, Boolean tieneAlarma,
+			Boolean tieneRastreoVehicular, Boolean tieneTuercasAntirobo) {
 		poliza.setCiudad(ciudad);
 		poliza.setAnioModelo(anioModelo);
 		poliza.setMotor(motor);
@@ -91,30 +91,86 @@ public class GestorPoliza {
 		poliza.setPatente(patente);
 		poliza.setSumaAsegurada(sumaAsegurada);
 		poliza.setKmRealizadosPorAnio(kmRealizadosPorAnio);
-		poliza.setNumerosSiniestrosUltimoAnios(numerosSiniestrosUltimoAnios);
 		poliza.setGuardaGarage(guardaGarage);
 		poliza.setTieneAlarma(tieneAlarma);
 		poliza.setTieneRastreoVehicular(tieneRastreoVehicular);
 		poliza.setTieneTuercasAntirobo(tieneTuercasAntirobo);
 	}
 	
-	public void actualizarPoliza(Poliza poliza, TipoCobertura tipoCobertura, LocalDate inicioVigencia, LocalDate finVigencia, EnumFormaPago formaPago) {
+	public void actualizarPoliza(Poliza poliza, TipoCobertura tipoCobertura, LocalDate inicioVigencia, EnumFormaPago formaPago) {
 		poliza.setTipoCobertura(tipoCobertura);
 		poliza.setFechaEmision(LocalDate.now());
 		poliza.setInicioVigencia(inicioVigencia);
+		
+		LocalDate finVigencia = inicioVigencia.plusMonths(6);
 		poliza.setFinVigencia(finVigencia);
+		
 		poliza.setFormaPago(formaPago);
 	}
 	
 	public Float calcularPrima(Poliza poliza) {
-		Float prima = 285400f;
+		ParametrosPoliza param = gestorParametrosPoliza.getUltimoParametrosPoliza();
 		Float riesgoModelo = gestorVehiculo.getUltimoRiesgoModelo(poliza.getAnioModelo().getModelo().getIdModelo());
 		Float riesgoCiudad  = gestorDomicilio.getUltimoRiesgoCiudad(poliza.getCiudad().getIdCiudad());
 		Float riesgoTipoCobertura = gestorTipoCobertura.getUltimoRiesgoTipoCobertura(poliza.getTipoCobertura().getTipoCobertura());
+		Float ajusteKm = param.getPorcentajeAjusteKm(), ajusteTuerca = 0f, ajusteAlarma = 0f, ajusteGarage = 0f, ajusteRastreo = 0f, ajusteSiniestros = 0f, ajusteHijosRegistrados = 0f;
+		
+		String kilometraje = poliza.getKmRealizadosPorAnio();
+		//el rango va de 0 - 29
+		Integer valorRangoKilometraje = Integer.parseInt( kilometraje.substring( 0, kilometraje.indexOf(" - ") ).replace(".", "") ) / 10000;
+		
+		
+		if(!poliza.getGuardaGarage()) {
+			ajusteGarage = param.getPorcentajeGuardaEnGarage();
+		}
+		
+		if(!poliza.getTieneAlarma()) {
+			ajusteAlarma = param.getPorcentajeAlarma();
+		}
+		
+		if(!poliza.getTieneTuercasAntirobo()) {
+			ajusteTuerca = param.getPorcentajeTuercasAntirobo();
+		}
+		
+		if(!poliza.getTieneRastreoVehicular()) {
+			ajusteRastreo = param.getPorcentajeRastreoVehicular();
+		}
+		
+		switch(poliza.getNumerosSiniestrosUltimoAnios()) {
+			case NINGUNO:
+				ajusteSiniestros = param.getPorcentajeNingunSiniestros();
+			break;
+			
+			case UNO:
+				ajusteSiniestros = param.getPorcentajeNingunSiniestros();
+			break;
+				
+			case DOS:
+				ajusteSiniestros = param.getPorcentajeDosSiniestros();
+			break;
+				
+			case MAS_DE_DOS:
+				ajusteSiniestros = param.getPorcentajeMayorADosSiniestros();
+			break;
+		}
+		
+		ajusteHijosRegistrados = poliza.getHijosDeclarado().size() * param.getPorcentajePorHijoRegistrado();
+		
+		Float prima = poliza.getSumaAsegurada() * riesgoModelo
+				+ poliza.getSumaAsegurada() * riesgoCiudad 
+				+ poliza.getSumaAsegurada() * riesgoTipoCobertura
+				+ poliza.getSumaAsegurada() * valorRangoKilometraje.floatValue() * ajusteKm
+				+ poliza.getSumaAsegurada() * ajusteGarage
+				+ poliza.getSumaAsegurada() * ajusteAlarma
+				+ poliza.getSumaAsegurada() * ajusteTuerca
+				+ poliza.getSumaAsegurada() * ajusteRastreo
+				+ poliza.getSumaAsegurada() * ajusteSiniestros
+				+ poliza.getSumaAsegurada() * ajusteHijosRegistrados;
+
 		poliza.setValorRiesgoCiudad(riesgoCiudad);
 		poliza.setValorRiesgoModelo(riesgoModelo);
 		poliza.setValorRiesgoTipoCobertura(riesgoTipoCobertura);
-		//TODO calcular prima
+		poliza.setParametrosPoliza(param);
 		return prima;
 	}
 
@@ -122,23 +178,27 @@ public class GestorPoliza {
 		Float prima = calcularPrima(poliza);
 		poliza.setValorPrima(prima);
 		
-		Float derechoEmision = gestorParametrosPoliza.getUltimoParametrosPoliza().getValorDerechoEmision();
-		poliza.setValorDerechoEmison(derechoEmision);
+		Float derechoEmision = poliza.getParametrosPoliza().getValorDerechoEmision();
 		
-		Float premio = 325000f;
+		Float premio = prima + derechoEmision;
 		//TODO calcular premio
 		poliza.setValorPremio(premio);
 		return premio;
 	}
 	
 	public Float calcularDescuento(Poliza poliza, Boolean semestral) {
-		Float valorDescuento = 1000f;
-		Float valorDescuentoPorUnidadAdicional = 220f;
-		Float valorBonificacionPagoSemestral = 1220f;
-
-		//TODO calcular descuento bonificacion etc
+	
+		Float valorDescuentoPorUnidadAdicional = poliza.getParametrosPoliza().getDescuentoUnidadAdicional();
 		
-		poliza.setValorDescuentoPorUnidadAdicional(valorDescuentoPorUnidadAdicional);
+		//TODO obtener del gestorfinanciero - crear dicho gestor
+		Float valorBonificacionPagoSemestral = 0f;
+
+		if(semestral) {
+			valorBonificacionPagoSemestral = 0.35f;
+		}
+		//TODO verificar
+		Float valorDescuento = valorDescuentoPorUnidadAdicional * poliza.getCliente().getPolizas().size() + valorBonificacionPagoSemestral;
+		
 		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
 		poliza.setValorDescuento(valorDescuento);
 		

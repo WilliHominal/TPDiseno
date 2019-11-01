@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -110,7 +111,6 @@ public class CU01Controller1 {
 	 * CU01View y asocia ese cliente a la póliza a generar.
 	 */
 	public void obtenidoCliente(Cliente cliente) {
-		poliza = gestorPoliza.actualizarPoliza(poliza, cliente);
 		view1.setNumeroCliente(cliente.getNumeroCliente().toString());
 		view1.setApellido(cliente.getApellido());
 		view1.setNombre(cliente.getNombre());
@@ -118,8 +118,11 @@ public class CU01Controller1 {
 		view1.setNumeroDocumento(cliente.getNumeroDocumento());
 		view1.setCalle(cliente.getCalle()) ;
 		view1.setNumeroCalle(cliente.getNumeroCalle().toString());
+		
 		String numeroSiniestros = gestorEnum.parseString(gestorSubsistemaSiniestros.getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()));
+		poliza = gestorPoliza.actualizarPoliza(poliza, cliente, numeroSiniestros);
 		view1.setNumeroSiniestros(numeroSiniestros);
+		
 		
 		if(cliente.getPiso() == null) {
 			view1.setPiso("-");
@@ -430,9 +433,8 @@ public class CU01Controller1 {
 						patente = view1.getPatente();
 					}	
 					gestorPoliza.actualizarPoliza(
-							poliza, view1.getCiudad(), view1.getAnioModelo(), view1.getMotor(),
-							view1.getChasis(), patente, view1.getAnioModelo().getSumaAsegurada(), 
-							view1.getKmAnio(), gestorEnum.parseEnumSiniestros(view1.getNumeroSiniestros()), view1.getGarage(),
+							poliza, view1.getCiudad(), view1.getAnioModelo(), view1.getMotor(), view1.getChasis(), patente, 
+							view1.getAnioModelo().getSumaAsegurada(), view1.getKmAnio(), view1.getGarage(),
 							view1.getAlarma(), view1.getRastreo(), view1.getTuercasAntirrobo()
 					);
 					new CU01Controller2(ventana, poliza).setCU01Controller1(instancia);
@@ -482,7 +484,8 @@ public class CU01Controller1 {
 				}			
 				view1.habilitarSeleccionModelo(true);
 				view1.habilitarSeleccionAnioModelo(true);
-				view1.setSumaAsegurada(view1.getAnioModelo().getSumaAsegurada().toString());
+				DecimalFormat num = new DecimalFormat("#,###.00");
+				view1.setSumaAsegurada(num.format(view1.getAnioModelo().getSumaAsegurada()));
 			}
 		}
 	}
@@ -498,6 +501,8 @@ public class CU01Controller1 {
 				}
 				view1.habilitarSeleccionAnioModelo(true);
 				view1.setSumaAsegurada(view1.getAnioModelo().getSumaAsegurada().toString());
+				DecimalFormat num = new DecimalFormat("#,###.00");
+				view1.setSumaAsegurada(num.format(view1.getAnioModelo().getSumaAsegurada()));
 			}
 		}
 	}
@@ -505,7 +510,8 @@ public class CU01Controller1 {
 	private class ListenerSeleccionAnioModelo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(view1.habilitadaSeleccionAnioModelo()) {
-				view1.setSumaAsegurada(view1.getAnioModelo().getSumaAsegurada().toString());
+				DecimalFormat num = new DecimalFormat("#,###.00");
+				view1.setSumaAsegurada(num.format(view1.getAnioModelo().getSumaAsegurada()));
 			}
 			else {
 				view1.setSumaAsegurada("");

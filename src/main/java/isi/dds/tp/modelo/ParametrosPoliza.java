@@ -25,7 +25,7 @@ public class ParametrosPoliza {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codigo_parametros_poliza")
 	@SequenceGenerator(name="codigo_parametros_poliza", sequenceName = "codigo_parametros_poliza_seq", initialValue = 100, allocationSize = 1)
 	@Column(nullable = false, name = "codigo_parametros_poliza")
-	private Integer codigoParametroPoliza;
+	private Integer codigoParametrosPoliza;
 	
 	@Column(nullable = false, name = "inicio_vigencia")
 	private LocalDate fechaInicioVigencia;
@@ -52,13 +52,13 @@ public class ParametrosPoliza {
 	private Float porcentajeNingunSiniestro;
 	
 	@Column(nullable = false, name = "porcentaje_un_siniestro")
-	private Float porcentajeUnSiniestro;
+	private Float porcentajeUnSiniestros;
 	
 	@Column(nullable = false, name = "porcentaje_dos_siniestro")
-	private Float porcentajeDosSiniestro; 
+	private Float porcentajeDosSiniestros; 
 	
 	@Column(nullable = false, name = "porcentaje_mayor_a_dos_siniestro")
-	private Float porcentajeMayorADosSiniestro;
+	private Float porcentajeMayorADosSiniestros;
 	
 	@Column(nullable = false, name = "porcentaje_por_hijo_registrado")
 	private Float porcentajePorHijoRegistrado;
@@ -74,97 +74,129 @@ public class ParametrosPoliza {
 	public BitacoraParametrosPoliza getBitacoraParametros() {
 		return bitacoraParametros;
 	}
-	public Integer getCodigoParametroPoliza() {
-		return codigoParametroPoliza;
+	
+	public Integer getCodigoParametrosPoliza() {
+		return codigoParametrosPoliza;
 	}
+	
 	public LocalDate getFechaInicioVigencia() {
 		return fechaInicioVigencia;
 	}
+	
 	public LocalDate getFechaFinVigencia() {
 		return fechaFinVigencia;
 	}
+	
 	public Float getPorcentajeTuercasAntirobo() {
 		return porcentajeTuercasAntirobo;
 	}
+	
 	public Float getPorcentajeGuardaEnGarage() {
 		return porcentajeGuardaEnGarage;
 	}
+	
 	public Float getPorcentajeAlarma() {
 		return porcentajeAlarma;
 	}
+	
 	public Float getPorcentajeRastreoVehicular() {
 		return porcentajeRastreoVehicular;
 	}
+	
 	public Float getPorcentajeAjusteKm() {
 		return porcentajeAjusteKm;
 	}
-	public Float getPorcentajeNingunSiniestro() {
+	
+	public Float getPorcentajeNingunSiniestros() {
 		return porcentajeNingunSiniestro;
 	}
-	public Float getPorcentajeUnSiniestro() {
-		return porcentajeUnSiniestro;
+	
+	public Float getPorcentajeUnSiniestros() {
+		return porcentajeUnSiniestros;
 	}
-	public Float getPorcentajeDosSiniestro() {
-		return porcentajeDosSiniestro;
+	
+	public Float getPorcentajeDosSiniestros() {
+		return porcentajeDosSiniestros;
 	}
-	public Float getPorcentajeMayorADosSiniestro() {
-		return porcentajeMayorADosSiniestro;
+	
+	public Float getPorcentajeMayorADosSiniestros() {
+		return porcentajeMayorADosSiniestros;
 	}
+	
 	public Float getPorcentajePorHijoRegistrado() {
 		return porcentajePorHijoRegistrado;
 	}
+	
 	public Float getDescuentoUnidadAdicional() {
 		return descuentoUnidadAdicional;
 	}
+	
 	public Float getValorDerechoEmision() {
 		return valorDerechoEmision;
 	}
+	
 	public void setBitacoraParametros(BitacoraParametrosPoliza bitacoraParametros) {
 		this.bitacoraParametros = bitacoraParametros;
 	}
-	public void setCodigoParametroPoliza(Integer codigoParametroPoliza) {
-		this.codigoParametroPoliza = codigoParametroPoliza;
+	
+	public void setCodigoParametrosPoliza(Integer codigoParametroPoliza) {
+		this.codigoParametrosPoliza = codigoParametroPoliza;
 	}
+	
 	public void setFechaInicioVigencia(LocalDate fechaInicioVigencia) {
 		this.fechaInicioVigencia = fechaInicioVigencia;
 	}
+	
 	public void setFechaFinVigencia(LocalDate fechaFinVigencia) {
 		this.fechaFinVigencia = fechaFinVigencia;
 	}
+	
 	public void setPorcentajeTuercasAntirobo(Float porcentajeTuercasAntirobo) {
 		this.porcentajeTuercasAntirobo = porcentajeTuercasAntirobo;
 	}
+	
 	public void setPorcentajeGuardaEnGarage(Float porcentajeGuardaEnGarage) {
 		this.porcentajeGuardaEnGarage = porcentajeGuardaEnGarage;
 	}
+	
 	public void setPorcentajeAlarma(Float porcentajeAlarma) {
 		this.porcentajeAlarma = porcentajeAlarma;
 	}
+	
 	public void setPorcentajeRastreoVehicular(Float porcentajeRastreoVehicular) {
 		this.porcentajeRastreoVehicular = porcentajeRastreoVehicular;
 	}
+	
 	public void setPorcentajeAjusteKm(Float porcentajeAjusteKm) {
 		this.porcentajeAjusteKm = porcentajeAjusteKm;
 	}
+	
 	public void setPorcentajeNingunSiniestro(Float porcentajeNingunSiniestro) {
 		this.porcentajeNingunSiniestro = porcentajeNingunSiniestro;
 	}
-	public void setPorcentajeUnSiniestro(Float porcentajeUnSiniestro) {
-		this.porcentajeUnSiniestro = porcentajeUnSiniestro;
+	
+	public void setPorcentajeUnSiniestros(Float porcentajeUnSiniestro) {
+		this.porcentajeUnSiniestros = porcentajeUnSiniestro;
 	}
-	public void setPorcentajeDosSiniestro(Float porcentajeDosSiniestro) {
-		this.porcentajeDosSiniestro = porcentajeDosSiniestro;
+	
+	public void setPorcentajeDosSiniestros(Float porcentajeDosSiniestro) {
+		this.porcentajeDosSiniestros = porcentajeDosSiniestro;
 	}
-	public void setPorcentajeMayorADosSiniestro(Float porcentajeMayorADosSiniestro) {
-		this.porcentajeMayorADosSiniestro = porcentajeMayorADosSiniestro;
+	
+	public void setPorcentajeMayorADosSiniestros(Float porcentajeMayorADosSiniestro) {
+		this.porcentajeMayorADosSiniestros = porcentajeMayorADosSiniestro;
 	}
+	
 	public void setPorcentajePorHijoRegistrado(Float porcentajePorHijoRegistrado) {
 		this.porcentajePorHijoRegistrado = porcentajePorHijoRegistrado;
 	}
+	
 	public void setDescuentoUnidadAdicional(Float descuentoUnidadAdicional) {
 		this.descuentoUnidadAdicional = descuentoUnidadAdicional;
 	}
+	
 	public void setValorDerechoEmision(Float valorDerechoEmision) {
 		this.valorDerechoEmision = valorDerechoEmision;
 	}
+	
 }

@@ -4,7 +4,6 @@ import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorDomicilio;
 import isi.dds.tp.gestor.GestorParametrosPoliza;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
-import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
 import isi.dds.tp.gestor.GestorTipoCobertura;
 
@@ -19,6 +18,6 @@ public class CargarBase {
 		GestorTipoCobertura.get().cargarTiposCoberturas();
 		GestorParametrosVehiculo.get().cargarParametrosVehiculos();
 		GestorParametrosPoliza.get().cargarParametrosPoliza();
-		GestorPoliza.get().cargarPolizas();
+		//GestorPoliza.get().cargarPolizas();
     }
 }

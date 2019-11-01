@@ -2,6 +2,7 @@ package isi.dds.tp.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -10,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.Locale;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -141,34 +144,37 @@ public class CU01Controller2 {
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			
-			Calendar fechaFinVigencia = Calendar.getInstance();
-			fechaFinVigencia.setTime(view2.getInicioVigencia());
-			fechaFinVigencia.add(Calendar.MONTH, 6);
-			
 			Calendar fechaAnteriorAInicioVigencia = Calendar.getInstance();
 			fechaAnteriorAInicioVigencia.setTime(view2.getInicioVigencia());
 			fechaAnteriorAInicioVigencia.add(Calendar.DATE, -1);
 			
 			LocalDate inicioVigencia = view2.getInicioVigencia().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			LocalDate finVigencia = fechaFinVigencia.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			
 						
 			Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;
+			
+			if(poliza.getCliente().getPolizas() == null) {
+				//TODO hacer en gestor
+				poliza.getCliente().setPolizas(new ArrayList<Poliza>());
+			}
+			
 			if (poliza.getCliente().getPolizas().size() > 1) descuentoMasDeUnaUnidad = true;
-			if (!view2.eligioMensual()) descuentoSemestral = true;
+			
 			
 			if(view2.eligioMensual()) {
-				gestorPoliza.actualizarPoliza(poliza, view2.getTipoCobertura(), inicioVigencia, finVigencia, EnumFormaPago.MENSUAL);
+				gestorPoliza.actualizarPoliza(poliza, view2.getTipoCobertura(), inicioVigencia, EnumFormaPago.MENSUAL);
 			}
 			else {
-				gestorPoliza.actualizarPoliza(poliza, view2.getTipoCobertura(), inicioVigencia, finVigencia,EnumFormaPago.SEMESTRAL );
+				gestorPoliza.actualizarPoliza(poliza, view2.getTipoCobertura(), inicioVigencia, EnumFormaPago.SEMESTRAL );
+				descuentoSemestral = true;
 			}
 			
 			//TODO crear cuota
 			Float premio = gestorPoliza.calcularPremio(poliza);
 			Float descuento = gestorPoliza.calcularDescuento(poliza, descuentoSemestral);
-			Float montoCuota = premio/6;
-			Float montoTotal = premio - descuento;
-			
+			Float valorDescontado = premio * descuento;
+			Float montoTotal = premio - valorDescontado;
+			Float montoCuota = montoTotal / 6;			
 			
 			view2.setApellido(poliza.getCliente().getApellido());
 			view2.setNombre(poliza.getCliente().getNombre());
@@ -177,32 +183,33 @@ public class CU01Controller2 {
 			view2.setMotor(poliza.getMotor());
 			view2.setChasis(poliza.getChasis());
 			view2.setPatente(poliza.getPatente());
-			view2.setSumaAsegurada(poliza.getSumaAsegurada().toString());
-			view2.setPremio(premio.toString());
-			view2.setDescuento(Float.toString(descuento));
+
 			view2.visualizarDescuentos(descuentoMasDeUnaUnidad, descuentoSemestral);
 			view2.setFechaInicio(dateFormat.format(view2.getInicioVigencia()));
-			view2.setFechaFin(dateFormat.format(fechaFinVigencia.getTime()));
+			view2.setFechaFin(dateFormat.format(Date.from(inicioVigencia.plusMonths(6).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
+			
+			Locale.setDefault(Locale.US);
+			DecimalFormat num = new DecimalFormat("#,###.00");
+			
+			view2.setPremio(num.format(premio));
+			view2.setSumaAsegurada(num.format(poliza.getSumaAsegurada()));
+			view2.setDescuento(num.format(valorDescontado));
+			
 			
 			if(view2.eligioMensual()) {
 				view2.cargarTabla(6);
-				for (int contador=0; contador<6; contador++) {
-					Calendar fechaAux = Calendar.getInstance(); 
-					fechaAux.setTime(fechaAnteriorAInicioVigencia.getTime());
-					fechaAux.add(Calendar.MONTH, contador);
-					view2.cargarDatosTabla(dateFormat.format(fechaAux.getTime()), contador, 0);
-					view2.cargarDatosTabla("$ " + montoCuota, contador, 1); //CAMBIAR 2 POR MONTO DE LA CUOTA
-					String auxMonto[] = view2.getValorTabla(contador);
-					montoTotal += Float.parseFloat(auxMonto[1]);
+				LocalDate fechaMensual = inicioVigencia.minusDays(1);
+				for (int contador=0; contador<6; contador++) {	
+					view2.cargarDatosTabla(dateFormat.format(Date.from(fechaMensual.minusDays(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())), contador, 0);
+					view2.cargarDatosTabla("$ " + num.format(montoCuota), contador, 1);
+					fechaMensual = fechaMensual.plusMonths(1);					
 				}				
-				view2.setMontoTotal(montoTotal.toString());
 			} else {
-				montoTotal = 5f;
 				view2.cargarTabla(1);
 				view2.cargarDatosTabla(dateFormat.format(fechaAnteriorAInicioVigencia.getTime()), 0, 0);
-				view2.cargarDatosTabla("$ " + montoTotal, 0, 1);
-				view2.setMontoTotal(montoTotal.toString());
+				view2.cargarDatosTabla("$ " + num.format(montoTotal), 0, 1);
 			}
+			view2.setMontoTotal(num.format(montoTotal));
 			
 			setFechaInicioVigenciaDefault();
 		}
