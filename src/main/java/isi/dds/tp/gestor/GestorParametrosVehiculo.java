@@ -43,18 +43,6 @@ public class GestorParametrosVehiculo {
     	return DAOParametrosVehiculos.getDAO().getUltimoRiesgoModelo(id_modelo).getValorPorcentual();
     }
     
-    public List<Marca> sortMarca(List<Marca> lista){
-    	lista.sort(Comparator.comparing(Marca::getNombre));
-	    Collections.sort(lista, new Comparator<Marca>() {
-	    	@Override
-	    	public int compare(Marca o1, Marca o2) {
-	    		return o1.getNombre().compareTo(o2.getNombre());
-	    	}
-	    });
-	    return lista;
-    }
-    
-    //TODO añadir a altapolzia
     public List<Modelo> sortModelos(Marca marca){
     	marca.getModelos().sort(Comparator.comparing(Modelo::getNombre));
 	    Collections.sort(marca.getModelos(), new Comparator<Modelo>() {

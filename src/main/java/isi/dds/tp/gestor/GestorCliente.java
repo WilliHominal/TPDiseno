@@ -70,6 +70,7 @@ public class GestorCliente {
     }
     
     public Integer calcularTiempoActivo(Cliente c) {
+    	//supongo que se hace mirando las polizas activas
     	//TODO implementar calcularTiempoActivo(Cliente c)
     	return 0;
     }

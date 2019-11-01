@@ -5,42 +5,110 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.Random;
 
-@SuppressWarnings("unused")
 public class Reordenar {
 
 	 public static void main(String[] args) {
-			Integer marca1=0, marca2=0, marca3 = 0, marca4=0, marca5=0, marca6 = 0, marca7=0, marca8=0, marca9 = 0, marca10=0, marca11=0;
+			
 
+
+			String content = "", lineaLeida = "";
+			
+			String tuercasAntiRobo = "tuercasAntiRobo", guardaEnGarage = "guardaEnGarage", tieneAlarma = "tieneAlarma", tieneRastreo = "tieneRastreo",
+					ajusteKm = "ajusteKm", ceroSiniestros = "ceroSiniestros", unSiniestro = "unSiniestro", dosSiniestros = "dosSiniestros", 
+					muchosSiniestros = "muchosSiniestros", 	ajusteHijo = "ajusteHijo", descuentoUniti = "descuentoUniti", 	derechoEmision = "derechoEmision";
+			
+			 DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
+	            separadoresPersonalizados.setDecimalSeparator('.');
+	            DecimalFormat formato = new DecimalFormat("0.00000000", separadoresPersonalizados);
+	            
 	        try {
 	            final BufferedReader reader = new BufferedReader(
-	                new FileReader("src/main/resources/database/parametrosVehiculo.sql")
+	                new FileReader("src/main/resources/database/parametrosPoliza.sql")
 	            );
-
-	            String content = "", lineaLeida = "", anio1 = "ANIO1", anio2 = "ANIO2",
-	            		anio3 = "ANIO3";
-
+	            
+	            Double ftuercasAntiRobo = 0.0038d, fguardaEnGarage = 0.0048d, ftieneAlarma = 0.0032d, ftieneRastreo = 0.0028d, fajusteKm = 0.0012d,
+	            		fceroSiniestros = 0.0005d, funSiniestro = 0.0022d,
+						fdosSiniestros = 0.00352d, fmuchosSiniestros = 0.00532d, fajusteHijo = 0.003d, fdescuentoUniti = 0.08d;
+	            
+	            
 	            
 	            while((lineaLeida = reader.readLine())!= null) 
 	            {
-	            	
-	            	if (lineaLeida.contains(anio1)) {
+	            	            	
+	            	if (lineaLeida.contains(tuercasAntiRobo)) {
 	            		Random r = new Random();
-	            		Integer randomNum = 2017 + r.nextInt(3);	
-	            		lineaLeida = lineaLeida.replaceAll(anio1, randomNum.toString());
+	            		Double randomNum = ftuercasAntiRobo + r.nextDouble() * 0.001;
+	            		lineaLeida = lineaLeida.replaceAll(tuercasAntiRobo, formato.format(randomNum));
 	                }
 	            	
-	            	if (lineaLeida.contains(anio2)) {
+	            	if (lineaLeida.contains(guardaEnGarage)) {	
 	            		Random r = new Random();
-	            		Integer randomNum = 2014 + r.nextInt(3);	
-	            		lineaLeida = lineaLeida.replaceAll(anio2, randomNum.toString());
+	            		Double randomNum = fguardaEnGarage + r.nextDouble() * ( 0.001 );
+	            		lineaLeida = lineaLeida.replaceAll(guardaEnGarage, formato.format(randomNum));
 	                }
 	            	
-	            	if (lineaLeida.contains(anio3)) {
+	            	if (lineaLeida.contains(tieneAlarma)) {
 	            		Random r = new Random();
-	            		Integer randomNum = 2011 + r.nextInt(3);	
-	            		lineaLeida = lineaLeida.replaceAll(anio3, randomNum.toString());
+	            		Double randomNum = ftieneAlarma + r.nextDouble() * (0.001);
+	            		lineaLeida = lineaLeida.replaceAll(tieneAlarma, formato.format(randomNum));
+	                }
+	            	
+	            	if (lineaLeida.contains(tieneRastreo)) {
+	            		Random r = new Random();
+	            		Double randomNum = ftieneRastreo + r.nextDouble() * 0.001;
+	            		lineaLeida = lineaLeida.replaceAll(tieneRastreo, formato.format(randomNum));
+	                }
+	            	
+	            	if (lineaLeida.contains(ajusteKm)) {	
+	            		Random r = new Random();
+	            		Double randomNum = fajusteKm + r.nextDouble() * 0.0012;
+	            		lineaLeida = lineaLeida.replaceAll(ajusteKm, formato.format(randomNum));
+	                }	            	
+	            	
+	            	if (lineaLeida.contains(ceroSiniestros)) {
+	            		Random r = new Random();
+	            		Double randomNum = fceroSiniestros + r.nextDouble() * 0.001;
+	            		lineaLeida = lineaLeida.replaceAll(ceroSiniestros, formato.format(randomNum));
+	                }
+	            	
+	            	if (lineaLeida.contains(unSiniestro)) {
+	            		Random r = new Random();
+	            		Double randomNum = funSiniestro + r.nextDouble() * 0.0015;
+	            		lineaLeida = lineaLeida.replaceAll(unSiniestro, formato.format(randomNum));
+	                }
+	            	
+	            	if (lineaLeida.contains(dosSiniestros)) {	
+	            		Random r = new Random();
+	            		Double randomNum = fdosSiniestros + r.nextDouble() * 0.0015;
+	            		lineaLeida = lineaLeida.replaceAll(dosSiniestros, formato.format(randomNum));
+	                }
+	            	
+	            	if (lineaLeida.contains(muchosSiniestros)) {
+	            		Random r = new Random();
+	            		Double randomNum = fmuchosSiniestros + r.nextDouble() * 0.0015;
+	            		lineaLeida = lineaLeida.replaceAll(muchosSiniestros, formato.format(randomNum));
+	                }
+	            	
+	            	if (lineaLeida.contains(ajusteHijo)) {
+	            		Random r = new Random();
+	            		Double randomNum = fajusteHijo + r.nextDouble() * 0.003;
+	            		lineaLeida = lineaLeida.replaceAll(ajusteHijo, formato.format(randomNum));
+	                }
+	            	
+	            	if (lineaLeida.contains(descuentoUniti)) {
+	            		Random r = new Random();
+	            		Double randomNum = fdescuentoUniti + r.nextDouble() * 0.04;
+	            		lineaLeida = lineaLeida.replaceAll(descuentoUniti, formato.format(randomNum));
+	                }
+	            	
+	            	if (lineaLeida.contains(derechoEmision)) {
+	            		Random r = new Random();
+	            		Integer randomNum = 100 + r.nextInt(300);	
+	            		lineaLeida = lineaLeida.replaceAll(derechoEmision, randomNum.toString());
 	                }
 	            	
 	            	/*if (lineaLeida.contains(riesgo)) {
@@ -48,109 +116,18 @@ public class Reordenar {
 	            		Double randomNum = 0.05 + r.nextDouble() * ( 0.60 - 0.05 );	
 	            		lineaLeida = lineaLeida.replaceAll(riesgo, formato.format(randomNum));
 	            		marca1++;
-	                }
-	            		            
-	            	if (lineaLeida.contains(marquita1)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita1, 101+", "+marca1);
-	            		marca1++;
-	                }
-	            	
-	            	if (lineaLeida.contains(marquita2)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita2, 102+", "+marca2);
-	            		marca2++;
-	                }
-	            	
-	            	if (lineaLeida.contains(marquita3)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita3, 103+", "+marca3);
-	            		marca3++;
-	                }
-	            	
-	            	if (lineaLeida.contains(marquita4)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita4, 104+", "+marca4);
-	            		marca4++;
-	                }
-	            	
-	            	if (lineaLeida.contains(marquita5)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita5, 105+", "+marca5);
-	            		marca5++;
-	                }
-	            	
-	            	if (lineaLeida.contains(marquita5)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita5, 101+", "+marca5);
-	            		marca5++;
-	                }
-	            	
-	            	if (lineaLeida.contains(marquita6)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita6, 106+", "+marca6);
-	            		marca6++;
-	                }
-	            	
-	            	
-	            	if (lineaLeida.contains(marquita7)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita7, 107+", "+marca7);
-	            		marca7++;
-	                }
-	            	
-	            	if (lineaLeida.contains(marquita8)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita8, 108+", "+marca8);
-	            		marca8++;
-	                }
-	            	
-	            	if (lineaLeida.contains(marquita9)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita9, 109+", "+marca9);
-	            		marca9++;
-	                }
-	            	
-	            	if (lineaLeida.contains(marquita10)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita10, 110+", "+marca10);
-	            		marca10++;
-	                }
-	            	
-	            	if (lineaLeida.contains(marquita11)) {
-	            		lineaLeida = lineaLeida.replaceAll(marquita11, 111+", "+marca11);
-	            		marca11++;
-	                }*/
+	               */
 
 
 	                content += lineaLeida + "\r\n";
 	               
 	            }
 	            reader.close();
-/*
-	            DecimalFormatSymbols separadoresPersonalizados = new DecimalFormatSymbols();
-	            separadoresPersonalizados.setDecimalSeparator('.');
-	            DecimalFormat formato = new DecimalFormat("0.0000", separadoresPersonalizados);
-	            
-	            
-	            while(contCiudades>0){
-	            	content += "INSERT INTO riesgo_ciudad (id, inicio_vigencia, valor_porcentual, ultimo, id_ciudad, idx) VALUES" + "\r\n";
-	            	Boolean condicion  = true;
-	            	while(condicion) {
-	            		contCiudades--;
-	            		contRiesgos++;
-
-	            		Random r = new Random();
-	            		
-	            		Double randomNum = 0.05 + r.nextDouble() * ( 0.60 - 0.05 );
-	            		
-	            		if(contRiesgos<500&&contCiudades>0) {
-	            			condicion = true;
-	            			content += "("+contRiesgosTotal+", '2019-10-23', "+formato.format(randomNum)+", true, "+contCiudades+", 0),"+"\r\n"; 
-	            		}
-	            		else {
-	            			content += "("+contRiesgosTotal+", '2019-10-23', "+formato.format(randomNum)+", true, "+contCiudades+", 0);"+"\r\n"; 
-	            			condicion = false;
-	            		}
-	            		contRiesgosTotal++;
-	            	}
-	            	contRiesgos = 0 ;
-	            	//contCiudades--;
-	            }*/
 	            
 	            
 	            String newContent = content;
 
-	            FileWriter writer = new FileWriter("src/main/resources/database/parametrosVehiculo.sql");
+	            FileWriter writer = new FileWriter("src/main/resources/database/parametrosPoliza2.sql");
 
 	            writer.write(newContent);
 

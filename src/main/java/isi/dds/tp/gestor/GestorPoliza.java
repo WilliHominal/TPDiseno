@@ -10,7 +10,6 @@ import isi.dds.tp.enums.EnumFormaPago;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.ParametrosPoliza;
-import isi.dds.tp.modelo.SolicitudPoliza;
 import isi.dds.tp.modelo.TipoCobertura;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Ciudad;
@@ -54,11 +53,7 @@ public class GestorPoliza {
 	public List<Cuota> getCuotas(Long numeroPoliza) {
 		return DAOPoliza.getDAO().getCuotas(numeroPoliza);
     }
-    
-    public SolicitudPoliza getSolicitudPoliza(Long numeroPoliza) {
-    	return DAOPoliza.getDAO().getSolicitudPoliza(numeroPoliza);
-    }
-    
+        
 	public List<HijoDeclarado> getHijosDeclarados(Long numeroPoliza) {
 		return DAOPoliza.getDAO().getHijosDeclarados(numeroPoliza);
     }
@@ -72,8 +67,8 @@ public class GestorPoliza {
     	poliza.getHijosDeclarado().remove(indexHijo);
     }
     
-    public Poliza actualizarPoliza(Poliza poliza, Cliente cliente, String numeroSiniestros){
-    	poliza = new Poliza();
+    public Poliza newPoliza(Cliente cliente, String numeroSiniestros){
+    	Poliza poliza = new Poliza();
     	poliza.setCliente(cliente);
     	poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().parseEnumSiniestros(numeroSiniestros));
     	poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
@@ -117,6 +112,7 @@ public class GestorPoliza {
 		
 		String kilometraje = poliza.getKmRealizadosPorAnio();
 		//el rango va de 0 - 29
+		//al guardarse como se guardo se tiene que hacer esto
 		Integer valorRangoKilometraje = Integer.parseInt( kilometraje.substring( 0, kilometraje.indexOf(" - ") ).replace(".", "") ) / 10000;
 		
 		
@@ -176,32 +172,24 @@ public class GestorPoliza {
 
 	public Float calcularPremio(Poliza poliza) {
 		Float prima = calcularPrima(poliza);
-		poliza.setValorPrima(prima);
-		
 		Float derechoEmision = poliza.getParametrosPoliza().getValorDerechoEmision();
-		
 		Float premio = prima + derechoEmision;
-		//TODO calcular premio
+		poliza.setValorPrima(prima);
 		poliza.setValorPremio(premio);
 		return premio;
 	}
 	
 	public Float calcularDescuento(Poliza poliza, Boolean semestral) {
-	
-		Float valorDescuentoPorUnidadAdicional = poliza.getParametrosPoliza().getDescuentoUnidadAdicional();
-		
-		//TODO obtener del gestorfinanciero - crear dicho gestor
-		Float valorBonificacionPagoSemestral = 0f;
+		Float valorDescuentoPorUnidadAdicional = poliza.getParametrosPoliza().getDescuentoUnidadAdicional() / 2; //divide por 2 porque el interes es anual
+		Float valorBonificacionPagoSemestral = GestorSistemaFinanciero.get().getTasaInteresAnual();
 
 		if(semestral) {
 			valorBonificacionPagoSemestral = 0.35f;
 		}
 		//TODO verificar
 		Float valorDescuento = valorDescuentoPorUnidadAdicional * poliza.getCliente().getPolizas().size() + valorBonificacionPagoSemestral;
-		
 		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
 		poliza.setValorDescuento(valorDescuento);
-		
 		return valorDescuento;
 	}
 
@@ -215,7 +203,8 @@ public class GestorPoliza {
 		return false;
 	}
 
-	public Boolean validarPatente(String textoPatente/*, String errores, Integer errorNumero*/) {
+	public Boolean validarPatente(String textoPatente) {
+		
 		//TODO implementar validarPatente(String textoPatente)
 		return false;	
 	}

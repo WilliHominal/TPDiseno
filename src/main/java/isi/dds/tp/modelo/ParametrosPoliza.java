@@ -8,7 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
@@ -16,9 +16,8 @@ import javax.persistence.Table;
 @Table(name = "parametros_poliza")
 public class ParametrosPoliza {
 	
-	//optional permita que la relacion pueda ser nual, que seria el caso cuando se crea por primera vez una ciudad
-	@ManyToOne (optional = true, fetch = FetchType.LAZY)
-	@JoinColumn (name = "codigo_bitacora")
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="codigo_bitacora")
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
 	@Id

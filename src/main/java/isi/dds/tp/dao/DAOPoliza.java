@@ -12,7 +12,6 @@ import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.Poliza;
-import isi.dds.tp.modelo.SolicitudPoliza;
 
 public class DAOPoliza {
 	
@@ -40,20 +39,6 @@ public class DAOPoliza {
             session.getTransaction().rollback();	
 		}
     }
-    
-    public void addSolicitudPoliza(SolicitudPoliza s) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        try {
-            session.beginTransaction();
-            session.save(s);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
-
 
 	public List<Poliza> getPolizas(Long numeroCliente) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -73,18 +58,6 @@ public class DAOPoliza {
             session.beginTransaction();
             return session.createQuery("SELECT c FROM Cuota c WHERE numero_poliza="+numeroPoliza, Cuota.class).list();
             
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-    
-    public SolicitudPoliza getSolicitudPoliza(Long numeroPoliza) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        try {
-            session.beginTransaction();
-            return session.createQuery("SELECT s FROM SolicitudPoliza s WHERE numero_poliza="+numeroPoliza, SolicitudPoliza.class).getSingleResult();
         }
         catch (HibernateException e) {
             e.printStackTrace();

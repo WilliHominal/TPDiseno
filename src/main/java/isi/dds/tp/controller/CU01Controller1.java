@@ -120,7 +120,7 @@ public class CU01Controller1 {
 		view1.setNumeroCalle(cliente.getNumeroCalle().toString());
 		
 		String numeroSiniestros = gestorEnum.parseString(gestorSubsistemaSiniestros.getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()));
-		poliza = gestorPoliza.actualizarPoliza(poliza, cliente, numeroSiniestros);
+		poliza = gestorPoliza.newPoliza(cliente, numeroSiniestros);
 		view1.setNumeroSiniestros(numeroSiniestros);
 		
 		
@@ -474,7 +474,7 @@ public class CU01Controller1 {
 			view1.habilitarSeleccionModelo(false);
 			view1.habilitarSeleccionAnioModelo(false);
 			if(!marca.equals(new Marca("Seleccionar marca"))) {
-				Iterator<Modelo> iteratorModelo = marca.getModelos().iterator();
+				Iterator<Modelo> iteratorModelo = gestorVehiculo.sortModelos(marca).iterator();
 				while(iteratorModelo.hasNext()){
 					view1.addModelo(iteratorModelo.next());
 				}				

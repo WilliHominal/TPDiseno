@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import org.hibernate.annotations.IndexColumn;
@@ -40,10 +41,9 @@ public class BitacoraParametrosPoliza {
 	@IndexColumn(name ="idx")
 	private List<RiesgoCiudad> riesgosCiudad;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name ="codigo_bitacora")
-	@IndexColumn(name ="idx")
-	private List<ParametrosPoliza> parametrosPoliza;
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name="codigo_bitacora")
+	private ParametrosPoliza parametrosPoliza;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "codigo_bitacora_parametro")
@@ -72,10 +72,6 @@ public class BitacoraParametrosPoliza {
 		return riesgosCiudad;
 	}
 	
-	public List<ParametrosPoliza> getParametrosPoliza() {
-		return parametrosPoliza;
-	}
-	
 	public Integer getCodigoBitacora() {
 		return codigoBitacora;
 	}
@@ -100,10 +96,14 @@ public class BitacoraParametrosPoliza {
 		this.riesgosCiudad = riesgosCiudad;
 	}
 	
-	public void setParametrosPoliza(List<ParametrosPoliza> parametrosPoliza) {
+	public ParametrosPoliza getParametrosPoliza() {
+		return parametrosPoliza;
+	}
+
+	public void setParametrosPoliza(ParametrosPoliza parametrosPoliza) {
 		this.parametrosPoliza = parametrosPoliza;
 	}
-	
+
 	public void setCodigoBitacora(Integer codigoBitacora) {
 		this.codigoBitacora = codigoBitacora;
 	}
