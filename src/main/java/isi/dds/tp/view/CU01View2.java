@@ -265,9 +265,9 @@ public class CU01View2 extends JPanel  {
 		constraints.gridy=20;
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(15, 145, 5, 5);
+		constraints.insets.set(5, 92, 5, 5);
 		add(lMontoTotal, constraints);
-		constraints.insets.set(15, 215, 5, 5);
+		constraints.insets.set(5, 162, 5, 5);
 		add(campoMontoTotal, constraints);
 		constraints.insets.set(15, 645, 5, 5);
 		add(btnGenerarPoliza, constraints);
@@ -330,9 +330,6 @@ public class CU01View2 extends JPanel  {
 		tema.setTema(semestral);
 		tema.setTema(dcInicioVigencia, true);
 		scrollTablaPagos.setPreferredSize(new Dimension(270, 120));
-
-		//calendario.setSelectableDateRange(arg0, arg1);
-		//TODO setear fechas maximas y minimas
 	}	
 	
 	public void cargarTabla(Integer cantidadCuotas) {
@@ -356,8 +353,8 @@ public class CU01View2 extends JPanel  {
 		tablaPagos.getColumnModel().getColumn(1).setHeaderValue("Monto");
 	}
 	
-	public void cargarDatosTabla(String fecha, Integer x, Integer y) {
-		model.setValueAt(fecha, x, y);	
+	public void cargarDatosTabla(String valorAgregado, Integer x, Integer y) {
+		model.setValueAt(valorAgregado, x, y);	
 	}
 	
 	public void componentesAlConfirmarDatos(Boolean tipoCoberturaError, Boolean inicioVigenciaError, Integer cantPolizas) {
@@ -410,8 +407,9 @@ public class CU01View2 extends JPanel  {
 		seleccionTipoCobertura.addItem(tipoCobertura);
 	}
 	
-	public void setInicioVigencia(Date inicioVigencia) {
-		this.dcInicioVigencia.setDate(inicioVigencia);
+	public void setInicioVigencia(Date minimoInicioVigencia, Date maximoInicioVigencia) {
+		dcInicioVigencia.setDate(minimoInicioVigencia);
+		dcInicioVigencia.setSelectableDateRange(minimoInicioVigencia, maximoInicioVigencia);
 	}
 	
 	public void setFechaInicio(String fechaInicio) {
@@ -451,21 +449,19 @@ public class CU01View2 extends JPanel  {
 	}
 
 	public void setSumaAsegurada(String sumaAsegurada) {
-		//TODO agregar el signo monetario
-		this.campoSumaAsegurada.setText(sumaAsegurada);
+		this.campoSumaAsegurada.setText("$ "+sumaAsegurada);
 	}
 	
 	public void setPremio(String premio) {
-		//TODO agregar el signo monetario
-		this.campoPremio.setText(premio);
+		this.campoPremio.setText("$ "+premio);
 	}
 	
 	public void setDescuento(String descuento) {
-		campoImportPorDescuentos.setText(descuento);
+		campoImportPorDescuentos.setText("$ "+descuento);
 	}
 	
 	public void setMontoTotal(String montoTotal) {
-		campoMontoTotal.setText(montoTotal);
+		campoMontoTotal.setText("$ "+montoTotal);
 	}
 	
 	public Date getInicioVigencia() {

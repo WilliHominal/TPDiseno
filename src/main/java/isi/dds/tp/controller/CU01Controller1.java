@@ -2,6 +2,8 @@ package isi.dds.tp.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -26,12 +28,9 @@ import isi.dds.tp.modelo.Provincia;
 import isi.dds.tp.view.CU01View1;
 
 public class CU01Controller1 {	
-	private CU01Controller1 instancia;
-	private CU01View1 altaPoliza1;
 	
-	private JFrame ventana;
-	private JPanel panelAnterior;
-	private String tituloAnterior = "";
+	private CU01Controller1 instancia;
+	private CU01View1 view1;
 	
 	private GestorEnum gestorEnum = GestorEnum.get();
 	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
@@ -42,44 +41,49 @@ public class CU01Controller1 {
 	private Boolean primerCliente = true;
 	private Poliza poliza;
 	
+	private JFrame ventana;
+	private JPanel panelAnteriorAPoliza;
+	private String tituloAnteriorAPoliza = "";
+	
 	public CU01Controller1(JFrame ventana) {
 		instancia = this;
 		this.ventana = ventana;
-		this.tituloAnterior = ventana.getTitle();
+		this.tituloAnteriorAPoliza = ventana.getTitle();
 		try {
-			panelAnterior = (JPanel) ventana.getContentPane();
+			panelAnteriorAPoliza = (JPanel) ventana.getContentPane();
 		}catch(Exception ex) {
-			panelAnterior = null;
+			panelAnteriorAPoliza = null;
 		}
 			
-		setView1_AltaPoliza1();
+		setView1();
 	}
 	
-	private void setView1_AltaPoliza1() {
-		//TODO agregar $ a string suma asegurada
+	private void setView1() {
 		GestorTema.get().setTema(ventana, "Dar de alta póliza: INGRESAR DATOS");
-		this.altaPoliza1 = new CU01View1();
-		altaPoliza1.addListenerBtn_BuscarCliente(new ListenerView1BuscarCliente());;
-		altaPoliza1.addListenerBtn_AltaCliente(new ListenerView1AltaCliente());
-		altaPoliza1.addListenerBtn_AgregarHijo(new ListenerView1DeclararHijo());
-		altaPoliza1.addListenerBtn_QuitarHijo(new ListenerView1QuitarHijo());
-		altaPoliza1.addListenerSeleccionProvincia(new ListenerView1Provincia());
-		altaPoliza1.addListenerSeleccionMarca(new ListenerView1Marca());
-		altaPoliza1.addListenerSeleccionModelo(new ListenerView1Modelo());
-		altaPoliza1.addListenerSeleccionAnioModelo(new ListenerView1AnioModelo());
-		altaPoliza1.addListenerBtn_ConfirmarDatos(new ListenerView1ConfirmarDatos());
-		altaPoliza1.addListenerBtn_Cancelar(new ListenerView1CancelarAltaPoliza());
-		ventana.setContentPane(altaPoliza1);
+		this.view1 = new CU01View1();
+		view1.addListenerBtn_BuscarCliente(new ListenerBtnBuscarCliente());;
+		view1.addListenerBtn_AltaCliente(new ListenerBtnAltaCliente());
+		view1.addListenerBtn_AgregarHijo(new ListenerBtnDeclararHijo());
+		view1.addListenerBtn_QuitarHijo(new ListenerBtnQuitarHijo());
+		view1.addListenerSeleccionProvincia(new ListenerSeleccionProvincia());
+		view1.addListenerSeleccionMarca(new ListenerSeleccionMarca());
+		view1.addListenerSeleccionModelo(new ListenerSeleccionModelo());
+		view1.addListenerSeleccionAnioModelo(new ListenerSeleccionAnioModelo());
+		view1.addListenerCampoMotor(new ListenerCampoMotor());
+		view1.addListenerCampoChasis(new ListenerCampoChasis());
+		view1.addListenerCampoPatente(new ListenerCampoPatente());
+		view1.addListenerBtn_ConfirmarDatos(new ListenerBtnConfirmarDatos());
+		view1.addListenerBtn_Cancelar(new ListenerBtnCancelar());
+		ventana.setContentPane(view1);
 		ventana.revalidate();
 	}
 	
-	public Poliza getPoliza() {
-		return poliza;
-	}
-	
+	/**
+	 * Dicha función recarga todos los hijos declarados de la póliza actual en la tabla del panel
+	 */
 	private  void cargarTabla(){
 		Integer cantHijos = poliza.getHijosDeclarado().size();
-		altaPoliza1.cargarTabla(cantHijos);
+		view1.cargarTabla(cantHijos);
 		if(cantHijos > 0) {
 			for(int fila = 0; fila < cantHijos; fila++) {
 				LocalDate date = poliza.getHijosDeclarado().get(fila).getFechaNacimiento();
@@ -93,91 +97,92 @@ public class CU01Controller1 {
 				else {
 					estadoCivil = gestorEnum.parseStringMasc(poliza.getHijosDeclarado().get(fila).getEstadoCivil());
 				}
-				altaPoliza1.cargarHijosTabla(fila, formattedString, sexo, estadoCivil);
+				view1.cargarHijosTabla(fila, formattedString, sexo, estadoCivil);
 			}
 		}
 	}	
 
 	/**
-	 * Éste método es invocado una vez obtenido el cliente buscado o que fue dado de alta.
-	 * Setea los campos correspondientes a los atributos del cliente, inhabilita/habilita
-	 * ciertos componentes del panel, y recargar ciertos valores para la generación de la 
-	 * póliza.
-	 * @param cliente
+	 * Éste método es invocado una vez obtenido el cliente buscado o que fue dado de alta. Setea los campos
+	 * correspondientes a los atributos del cliente, habilita componentes del panel que permiten introducir
+	 * valores para la generación de al póliza, y carga objetos a los correspondientes JComboBox.
+	 * @param cliente Este parámetro es solicitado por el método, ya que con el setea los campos del panel 
+	 * CU01View y asocia ese cliente a la póliza a generar.
 	 */
 	public void obtenidoCliente(Cliente cliente) {
-		poliza = new Poliza();//TODO hacer en gestor
-		gestorPoliza.actualizarPoliza(poliza, cliente);
-		altaPoliza1.setNumeroCliente(cliente.getNumeroCliente().toString());
-		altaPoliza1.setApellido(cliente.getApellido());
-		altaPoliza1.setNombre(cliente.getNombre());
-		altaPoliza1.setTipoDocumento(gestorEnum.parseString(cliente.getTipoDocumento()));
-		altaPoliza1.setNumeroDocumento(cliente.getNumeroDocumento());
-		altaPoliza1.setCalle(cliente.getCalle()) ;
-		altaPoliza1.setNumeroCalle(cliente.getNumeroCalle().toString());
+		poliza = gestorPoliza.actualizarPoliza(poliza, cliente);
+		view1.setNumeroCliente(cliente.getNumeroCliente().toString());
+		view1.setApellido(cliente.getApellido());
+		view1.setNombre(cliente.getNombre());
+		view1.setTipoDocumento(gestorEnum.parseString(cliente.getTipoDocumento()));
+		view1.setNumeroDocumento(cliente.getNumeroDocumento());
+		view1.setCalle(cliente.getCalle()) ;
+		view1.setNumeroCalle(cliente.getNumeroCalle().toString());
 		String numeroSiniestros = gestorEnum.parseString(gestorSubsistemaSiniestros.getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()));
-		altaPoliza1.setNumeroSiniestros(numeroSiniestros);
+		view1.setNumeroSiniestros(numeroSiniestros);
 		
 		if(cliente.getPiso() == null) {
-			altaPoliza1.setPiso("-");
-			altaPoliza1.setDepartamento("-");
+			view1.setPiso("-");
+			view1.setDepartamento("-");
 		}else {
-			altaPoliza1.setPiso(cliente.getPiso().toString());
-			altaPoliza1.setDepartamento(cliente.getDepartamento());
+			view1.setPiso(cliente.getPiso().toString());
+			view1.setDepartamento(cliente.getDepartamento());
 		}
 		
 		if(primerCliente) {
-			altaPoliza1.componentesAlObtenerCliente();
+			view1.componentesAlObtenerCliente();
 			
 			ArrayList<Provincia> provincias = (ArrayList<Provincia>) gestorDomicilio.getProvincias(cliente.getCiudad().getProvincia().getPais().getIdPais());
 			Iterator<Provincia> iteradorProvincias = provincias.iterator();
 			while(iteradorProvincias.hasNext()){
-				altaPoliza1.addProvincia(iteradorProvincias.next());
+				view1.addProvincia(iteradorProvincias.next());
 			}
 			
 			ArrayList<Marca> marcas = (ArrayList<Marca>) gestorVehiculo.getMarcas();
-			altaPoliza1.addMarca(new Marca("Seleccionar marca"));
+			view1.addMarca(new Marca("Seleccionar marca"));
 			Iterator<Marca> marcasIterator = marcas.iterator();
 			while(marcasIterator.hasNext()){
-				altaPoliza1.addMarca(marcasIterator.next());
+				view1.addMarca(marcasIterator.next());
 			}
 			
-			altaPoliza1.addKmsAnio();
+			view1.addKmsAnio();
 		}
 
-		altaPoliza1.setProvinciaInicio(cliente.getCiudad().getProvincia());
-		altaPoliza1.habilitarSeleccionModelo(false);
-		altaPoliza1.habilitarSeleccionAnioModelo(false);
+		view1.setProvinciaInicio(cliente.getCiudad().getProvincia());
+		view1.habilitarSeleccionModelo(false);
+		view1.habilitarSeleccionAnioModelo(false);
 		
 		Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(cliente.getCiudad().getProvincia()).iterator();
-		altaPoliza1.addCiudad(iteratorCiudad.next(), true);
+		view1.addCiudad(iteratorCiudad.next(), true);
 		while(iteratorCiudad.hasNext()){
-			altaPoliza1.addCiudad(iteratorCiudad.next(), false);
+			view1.addCiudad(iteratorCiudad.next(), false);
 		}
 		
-		altaPoliza1.setCiudadInicio(cliente.getCiudad());
-	}
-
-	public void agregarHijoTabla(HijoDeclarado hijo) {
-		if(hijo != null) {
-			gestorPoliza.addHijo(poliza, hijo);
-			cargarTabla();
-			altaPoliza1.componentesAlDeclararHijos(true, poliza.getHijosDeclarado().size());
-		}
+		view1.setCiudadInicio(cliente.getCiudad());
 	}
 
 	/**
-	 * Este método retorna un valor Boolean de acuerdo a sí
-	 * se dan las condiciones necesarias para generar una
-	 * póliza. Si no se dan las condiciones necesarias 
-	 * genera un aviso de error, distiguiendo que se está
+	 * Éste método asocia la póliza a generar con el hijo recientemente declarado y luego lo carga en la tabla
+	 * de hijos declarados del panel CU01View.
+	 * @param hijoDeclarado Hijo declarado a asociar con la póliza y a cargar en la tabla.
+	 */
+	public void agregarHijoTabla(HijoDeclarado hijoDeclarado) {
+		if(hijoDeclarado != null) {
+			gestorPoliza.addHijo(poliza, hijoDeclarado);
+			cargarTabla();
+			componentesAlDeclararHijos(true);
+		}
+	}
+
+	/** 
+	 * Este método retorna un valor Boolean de acuerdo a sí se dan las condiciones necesarias para generar una
+	 * póliza. Si no se dan las condiciones necesarias genera un aviso de error, distiguiendo que se está
 	 * incumpliendo para poder generar póliza.
-	 * @return
 	 */
 	private  Boolean condicionesGenerarPoliza() {
-		String textoMotor = altaPoliza1.getMotor();
-		String textoChasis = altaPoliza1.getChasis();
-		String textoPatente = altaPoliza1.getPatente();
+		String textoMotor = view1.getMotor();
+		String textoChasis = view1.getChasis();
+		String textoPatente = view1.getPatente();
 		String textoErrorPatente = "", textoErrorChasis = "", textoErrorMotor = "",  textoErrorMarca = "",  textoErrorKm = "";
 		
 		//los valores boolean son para luego la interfaz establezca los colores de los campos mal validados
@@ -186,7 +191,7 @@ public class CU01Controller1 {
 		Integer errorNumero = 1;
 	
 		//---------- posible error en seleccionar marca
-		if (altaPoliza1.getMarca().equals(new Marca("Seleccionar marca"))) {
+		if (view1.getMarca().equals(new Marca("Seleccionar marca"))) {
 			errorEnMarca  = true;
 			textoErrorMarca = errorNumero+") No se ha seleccionado un valor del campo marca.\n";
 			errorNumero++;
@@ -336,7 +341,7 @@ public class CU01Controller1 {
 		}
 		
 		//---------- posible error en la no selección de un kilometraje
-		if (altaPoliza1.getKmAnio().equals("Selecionar kilometraje")) {
+		if (view1.getKmAnio().equals("Selecionar kilometraje")) {
 			errorEnKm = true;
 			textoErrorKm = errorNumero+") No se ha seleccionado un valor del campo km realizados por año.\n";
 		}
@@ -344,15 +349,25 @@ public class CU01Controller1 {
 		String mensajeError = textoErrorMarca + textoErrorMotor + textoErrorChasis + textoErrorPatente + textoErrorKm;
 		
 		if(errorEnMarca || errorEnMotor || errorEnChasis || errorEnPatente || errorEnKm) {
-			altaPoliza1.noValido(errorEnMarca, errorEnMotor, errorEnChasis, errorEnPatente, errorEnKm);
+			view1.noValido(errorEnMarca, errorEnMotor, errorEnChasis, errorEnPatente, errorEnKm);
 			JOptionPane.showConfirmDialog(ventana, mensajeError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 			return false;
 		}
 		return true;
 	}
 	
+	public void componentesAlDeclararHijos(Boolean estaDeclarando) { 
+		view1.componentesAlDeclararHijos(estaDeclarando, poliza.getHijosDeclarado().size());
+	}
+	
+	public void volver() {
+		ventana.setContentPane(panelAnteriorAPoliza);
+		ventana.setTitle(tituloAnteriorAPoliza);
+		view1.setVisible(false);
+	}
+	
 	//-------- LISTENER
-	private class ListenerView1BuscarCliente implements ActionListener{
+	private class ListenerBtnBuscarCliente implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				CU17Controller1 a = new CU17Controller1(ventana);	
@@ -365,7 +380,7 @@ public class CU01Controller1 {
 		}
 	}
 
-	private class ListenerView1AltaCliente implements ActionListener{
+	private class ListenerBtnAltaCliente implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {				
 				new CU04Controller(ventana);
@@ -377,23 +392,22 @@ public class CU01Controller1 {
 		}
 	}
 	
-	private class ListenerView1DeclararHijo implements ActionListener{
+	private class ListenerBtnDeclararHijo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {				
-				altaPoliza1.componentesAlDeclararHijos(false, 0);
-				CU01Controller3 declararHijo = new CU01Controller3();
-				declararHijo.setController1(instancia);
+				view1.componentesAlDeclararHijos(false, 0);
+				new CU01Controller3().setCU01Controller1(instancia);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
 	
-	private class ListenerView1QuitarHijo implements ActionListener{
+	private class ListenerBtnQuitarHijo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {			
 				if(poliza.getHijosDeclarado().size() > 0) {
-					gestorPoliza.removeHijo(poliza, altaPoliza1.getFilaSeleccionada());
+					gestorPoliza.removeHijo(poliza, view1.getFilaSeleccionada());
 					cargarTabla();
 					return;
 				}
@@ -403,28 +417,25 @@ public class CU01Controller1 {
 		}
 	}
 	
-	private class ListenerView1ConfirmarDatos implements ActionListener{
+	private class ListenerBtnConfirmarDatos implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {	
 				if(!condicionesGenerarPoliza()) {
 					return;
 				}
-				//TODO mayuscula a las patentes chasis y motor
 				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 					String patente = null;
 					
-					if(!altaPoliza1.getPatente().equalsIgnoreCase("")) {
-						patente = altaPoliza1.getPatente();
-					}
-					
-					
+					if(!view1.getPatente().equalsIgnoreCase("")) {
+						patente = view1.getPatente();
+					}	
 					gestorPoliza.actualizarPoliza(
-							poliza, altaPoliza1.getCiudad(), altaPoliza1.getAnioModelo(), altaPoliza1.getMotor(),
-							altaPoliza1.getChasis(), patente, Float.parseFloat(altaPoliza1.getSumaAsegurada()), 
-							altaPoliza1.getKmAnio(), gestorEnum.parseEnumSiniestros(altaPoliza1.getNumeroSiniestros()), altaPoliza1.getGarage(),
-							altaPoliza1.getAlarma(), altaPoliza1.getRastreo(), altaPoliza1.getTuercasAntirrobo()
+							poliza, view1.getCiudad(), view1.getAnioModelo(), view1.getMotor(),
+							view1.getChasis(), patente, view1.getAnioModelo().getSumaAsegurada(), 
+							view1.getKmAnio(), gestorEnum.parseEnumSiniestros(view1.getNumeroSiniestros()), view1.getGarage(),
+							view1.getAlarma(), view1.getRastreo(), view1.getTuercasAntirrobo()
 					);
-					new CU01Controller2(ventana, poliza);
+					new CU01Controller2(ventana, poliza).setCU01Controller1(instancia);
 				}
 				
 			}catch(Exception ex) {
@@ -433,74 +444,128 @@ public class CU01Controller1 {
 		}
 	}
 	
-	private class ListenerView1CancelarAltaPoliza implements ActionListener{
+	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {			
-				ventana.setContentPane(panelAnterior);	
-				ventana.setTitle(tituloAnterior);
-				altaPoliza1.setVisible(false);
+				volver();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
 	
-	private class ListenerView1Provincia implements ActionListener{
+	private class ListenerSeleccionProvincia implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			Provincia provincia = altaPoliza1.getProvincia();
+			Provincia provincia = view1.getProvincia();
 			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(provincia).iterator();
-			altaPoliza1.addCiudad(iteratorCiudad.next(), true);
+			view1.addCiudad(iteratorCiudad.next(), true);
 			while(iteratorCiudad.hasNext()){
-				altaPoliza1.addCiudad(iteratorCiudad.next(), false);
+				view1.addCiudad(iteratorCiudad.next(), false);
 			}
 		}
 	}
 	
-	private class ListenerView1Marca implements ActionListener{
+	private class ListenerSeleccionMarca implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			
-			Marca marca = altaPoliza1.getMarca();
-			altaPoliza1.habilitarSeleccionModelo(false);
-			altaPoliza1.habilitarSeleccionAnioModelo(false);
+			Marca marca = view1.getMarca();
+			view1.habilitarSeleccionModelo(false);
+			view1.habilitarSeleccionAnioModelo(false);
 			if(!marca.equals(new Marca("Seleccionar marca"))) {
 				Iterator<Modelo> iteratorModelo = marca.getModelos().iterator();
 				while(iteratorModelo.hasNext()){
-					altaPoliza1.addModelo(iteratorModelo.next());
+					view1.addModelo(iteratorModelo.next());
 				}				
-				Iterator<AnioModelo> iteratorAnioModelo = gestorVehiculo.sortAniosModelo(altaPoliza1.getModelo()).iterator();
+				Iterator<AnioModelo> iteratorAnioModelo = gestorVehiculo.sortAniosModelo(view1.getModelo()).iterator();
 				while(iteratorAnioModelo.hasNext()){
-					altaPoliza1.addAnioModelo(iteratorAnioModelo.next());
+					view1.addAnioModelo(iteratorAnioModelo.next());
 				}			
-				altaPoliza1.habilitarSeleccionModelo(true);
-				altaPoliza1.habilitarSeleccionAnioModelo(true);
-				altaPoliza1.setSumaAsegurada(altaPoliza1.getAnioModelo().getSumaAsegurada().toString());
+				view1.habilitarSeleccionModelo(true);
+				view1.habilitarSeleccionAnioModelo(true);
+				view1.setSumaAsegurada(view1.getAnioModelo().getSumaAsegurada().toString());
 			}
 		}
 	}
 	
-	private class ListenerView1Modelo implements ActionListener{
+	private class ListenerSeleccionModelo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if(altaPoliza1.habilitadaSeleccionModelo()) {
-				altaPoliza1.habilitarSeleccionAnioModelo(false);
-				Modelo modelo = altaPoliza1.getModelo();		
+			if(view1.habilitadaSeleccionModelo()) {
+				view1.habilitarSeleccionAnioModelo(false);
+				Modelo modelo = view1.getModelo();		
 				Iterator<AnioModelo> iteratorAnioModelo = gestorVehiculo.sortAniosModelo(modelo).iterator();
 				while(iteratorAnioModelo.hasNext()){
-					altaPoliza1.addAnioModelo(iteratorAnioModelo.next());
+					view1.addAnioModelo(iteratorAnioModelo.next());
 				}
-				altaPoliza1.habilitarSeleccionAnioModelo(true);
-				altaPoliza1.setSumaAsegurada(altaPoliza1.getAnioModelo().getSumaAsegurada().toString());
+				view1.habilitarSeleccionAnioModelo(true);
+				view1.setSumaAsegurada(view1.getAnioModelo().getSumaAsegurada().toString());
 			}
 		}
 	}
 	
-	private class ListenerView1AnioModelo implements ActionListener{
+	private class ListenerSeleccionAnioModelo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if(altaPoliza1.habilitadaSeleccionAnioModelo()) {
-				altaPoliza1.setSumaAsegurada(altaPoliza1.getAnioModelo().getSumaAsegurada().toString());
+			if(view1.habilitadaSeleccionAnioModelo()) {
+				view1.setSumaAsegurada(view1.getAnioModelo().getSumaAsegurada().toString());
 			}
 			else {
-				altaPoliza1.setSumaAsegurada("");
+				view1.setSumaAsegurada("");
 			}
 		}
 	}	
+
+	private class ListenerCampoMotor implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			Character caracter = e.getKeyChar();
+			if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+					&& view1.getMotor().length() < 17 ){
+				if(Character.isLowerCase(caracter)){
+			    	 caracter = Character.toUpperCase(caracter);
+				}
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();
+			}
+		} 
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+	}
+	
+	private class ListenerCampoChasis implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if(( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+					&& view1.getChasis().length() < 8 ){
+				if(Character.isLowerCase(caracter)){
+			    	 caracter = Character.toUpperCase(caracter);
+				}
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();  // ignorar el evento de teclado
+				//getToolkit().beep();
+			}
+		} 
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+	}
+	
+	private class ListenerCampoPatente implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
+					&& view1.getPatente().length() < 7 ){
+				if(Character.isLowerCase(caracter)){
+			    	 caracter = Character.toUpperCase(caracter);
+				}
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();  // ignorar el evento de teclado
+			//	getToolkit().beep();
+			}
+		} 
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+	}
 }

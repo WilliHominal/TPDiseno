@@ -15,11 +15,6 @@ public class GestorParametrosPoliza {
         }    
         return instanciaGestor;
     }
-    
-    public Float calcularDescuento() {
-    	//TODO implementar calcularDescuento()
-    	return 0f;
-    }
 	
     public void addParametrosPoliza(ParametrosPoliza p) {
     	DAOParametrosPoliza.getDAO().addParametrosPoliza(p);

@@ -41,7 +41,7 @@ public class GestorPoliza {
     
     public void altaPoliza(Poliza poliza) {
     	generarNumeroPoliza(poliza);
-    	setEstadoPoliza(poliza);
+    	poliza.setEstado(EnumEstadoPoliza.GENERADA);
     	GestorCliente.get().actualizarCliente(poliza.getCliente(), poliza);
     	DAOPoliza.getDAO().addPoliza(poliza);
     }
@@ -50,11 +50,6 @@ public class GestorPoliza {
 		Random r = new Random();
 		Long randomNum = r.nextLong();	
 		poliza.setNumeroPoliza(randomNum);
-    }
-    
-    private void setEstadoPoliza(Poliza poliza) {
-    	//TODO implementar estado
-    	poliza.setEstado(EnumEstadoPoliza.GENERADA);
     }
 
 	public List<Cuota> getCuotas(Long numeroPoliza) {
@@ -78,10 +73,12 @@ public class GestorPoliza {
     	poliza.getHijosDeclarado().remove(indexHijo);
     }
     
-    public void actualizarPoliza(Poliza poliza, Cliente cliente){
+    public Poliza actualizarPoliza(Poliza poliza, Cliente cliente){
+    	poliza = new Poliza();
     	poliza.setCliente(cliente);
     	poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
     	poliza.setCuotas(new ArrayList<Cuota>());
+    	return poliza;
     }
     
 	public void actualizarPoliza(Poliza poliza, Ciudad ciudad, AnioModelo anioModelo, String motor, String chasis, 
@@ -110,7 +107,7 @@ public class GestorPoliza {
 	}
 	
 	public Float calcularPrima(Poliza poliza) {
-		Float prima = 0f;
+		Float prima = 285400f;
 		Float riesgoModelo = gestorVehiculo.getUltimoRiesgoModelo(poliza.getAnioModelo().getModelo().getIdModelo());
 		Float riesgoCiudad  = gestorDomicilio.getUltimoRiesgoCiudad(poliza.getCiudad().getIdCiudad());
 		Float riesgoTipoCobertura = gestorTipoCobertura.getUltimoRiesgoTipoCobertura(poliza.getTipoCobertura().getTipoCobertura());
@@ -128,18 +125,17 @@ public class GestorPoliza {
 		Float derechoEmision = gestorParametrosPoliza.getUltimoParametrosPoliza().getValorDerechoEmision();
 		poliza.setValorDerechoEmison(derechoEmision);
 		
-		Float premio = 0f;
+		Float premio = 325000f;
 		//TODO calcular premio
 		poliza.setValorPremio(premio);
 		return premio;
 	}
 	
 	public Float calcularDescuento(Poliza poliza, Boolean semestral) {
-		Float valorDescuento = 0f;
-		Float valorDescuentoPorUnidadAdicional = 0f;
-		Float valorBonificacionPagoSemestral = 0f;
+		Float valorDescuento = 1000f;
+		Float valorDescuentoPorUnidadAdicional = 220f;
+		Float valorBonificacionPagoSemestral = 1220f;
 
-		
 		//TODO calcular descuento bonificacion etc
 		
 		poliza.setValorDescuentoPorUnidadAdicional(valorDescuentoPorUnidadAdicional);
@@ -161,73 +157,52 @@ public class GestorPoliza {
 
 	public Boolean validarPatente(String textoPatente/*, String errores, Integer errorNumero*/) {
 		//TODO implementar validarPatente(String textoPatente)
-		/*switch (textoPatente.length()) {
-	        case 6: //para patente longitud 6
-	        	for(int i = 0; i < 6; i++) {
-	        		
-		        	switch(i) {
-		        		case 0:
-		        		case 1:
-		        		case 2:
-		    				if(!Character.isLetter(textoPatente.charAt(i))) {
-		    					errores = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 6 es LLL999, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
-		    					errorNumero++;
-		    					return true;
-		    				}
-		        		break;
-		        		
-		        		case 3:
-		        		case 4:
-		        		case 5:
-		    				if(!Character.isDigit(textoPatente.charAt(i))) {
-		    					errores = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 6 es LLL999, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
-		    					errorNumero++;
-		    					return true;
-		    				}
-		        		break;
-		        	}
-	        	}
-	        break;     
-	        
-	        case 7:  //para patente longitud 7
-	        	for(int j = 0; j < 7; j++) {
-	        		
-		        	switch(j) {
-		        		case 0:
-		        		case 1:
-		        		case 5:
-		        		case 6:
-		    				if(Character.isDigit(textoPatente.charAt(j))) {
-		    					errores = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 7 es LL999LL, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";
-		    					errorNumero++;
-		    					return true;
-		    				}
-		        		break;
-		        
-		        		case 2:
-		        		case 3:
-		        		case 4:
-		    				if(Character.isLetter(textoPatente.charAt(j))) {
-		    					errores = errorNumero+") Formato de patente incorrecto. El formato de una patente con longitud 7 es LL999LL, donde\n"
-		    							+ "las L indican que debe escribirse un letra y los 9 indican que debe escribirse un dígito.\n";	
-		    					errorNumero++;
-		    					return true;
-		    				}
-		        		break;
-		        	}
-	        	}
-	        break;
-	
-	        default:
-	        	errores = errorNumero+") La definición de una patente debe ser de longitud 6 o 7.\n";
-				errorNumero++;
-				return true;
-			
-		}		*/
 		return false;	
 	}
 
+	public Boolean validadEdadHijo(LocalDate fechaNacLocalDate) {
+		int anioHoy = LocalDate.now().getYear();
+		int diaDelAnioHoy = LocalDate.now().getDayOfYear();
+		int anioDeclarado = fechaNacLocalDate.getYear();
+		int diaDelAnioDeclarado = fechaNacLocalDate.getDayOfYear();
+		
+		Boolean valido1 = false;
+		Boolean valido2 = false;
+		
+		if(anioHoy > (anioDeclarado+18)) {
+			valido1 = true;
+		}
+		else {
+			if(anioHoy < (anioDeclarado+18)) {
+				valido1 = false;
+			}
+			else {
+				if(diaDelAnioHoy >= diaDelAnioDeclarado) {
+					valido1 = true;
+				}
+				else {
+					valido1 = false;
+				}
+			}
+		}
+		
+		if(anioHoy < (anioDeclarado+30)) {
+			valido2 = true;
+		}
+		else {
+			if(anioHoy > (anioDeclarado+30)) {
+				valido2 = false;
+			}
+			else {
+				if(diaDelAnioHoy < diaDelAnioDeclarado) {
+					valido2 = true;
+				}
+				else {
+					valido2 = false;
+				}
+			}
+		}
+		
+		return (valido1 && valido2);
+	}
 }

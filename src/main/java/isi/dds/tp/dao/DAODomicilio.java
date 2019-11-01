@@ -66,8 +66,7 @@ public class DAODomicilio {
     }    
 
 	public List<Provincia> getProvincias(Integer id_pais) {
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-                  
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();                  
         try {
             session.beginTransaction();
             return session.createQuery("SELECT p FROM Provincia p where id_pais="+id_pais+" order by nombre", Provincia.class).list();

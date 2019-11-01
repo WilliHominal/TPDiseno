@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -108,9 +110,6 @@ public class CU01View1 extends JPanel {
 		ubicarComponentes();
 		inicializarTema();
 		cargarTabla(0);
-		addListenerCampoMotor();
-		addListenerCampoChasis();
-		addListenerCampoPatente();
 		addListenerSeleccionKm();
 	}
 
@@ -255,7 +254,6 @@ public class CU01View1 extends JPanel {
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(5, 0, 0, 0);
 		add(campoDepartamento, constraints);
-
 		
 		constraints.gridy = 3;
 		constraints.gridx = 0;
@@ -290,7 +288,7 @@ public class CU01View1 extends JPanel {
 		add(lanio, constraints);
 		constraints.insets.set(5, 660, 5, 5);
 		add(seleccionAnio, constraints);
-
+		
 		constraints.gridy = 6;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lmotor, constraints);
@@ -304,14 +302,12 @@ public class CU01View1 extends JPanel {
 		add(lpatente, constraints);
 		constraints.insets.set(5, 636, 5, 5);
 		add(campoPatente, constraints);
-
+		
 		constraints.gridy = 7;
 		constraints.insets.set(5, 5, 5, 5);
 		add(lsumaAseg, constraints);
 		constraints.insets.set(5, 108, 5, 5);
 		add(campoSumaAsegurada, constraints);
-		constraints.insets.set(5, 273, 5, 5);
-		add(lmoneda, constraints);
 
 		constraints.gridy = 8;
 		constraints.insets.set(5, 5, 5, 5);
@@ -421,6 +417,7 @@ public class CU01View1 extends JPanel {
 		tema.setTema(campoDepartamento, false);
 		tema.setTema(campoPiso, false);
 		tema.setTema(campoSumaAsegurada, false);
+		campoSumaAsegurada.setToolTipText("Seleccione un modelo de vehículo");
 		tema.setTema(campoNumerosSiniestros, false);
 		tema.setTema(campoMotor, false);
 		campoMotor.setToolTipText("CCCCCCCCCC9999999");
@@ -452,6 +449,9 @@ public class CU01View1 extends JPanel {
 		tema.setTema(tablaHijosScroll, false);
 	}
 
+	/**
+	 * Habilita los componente una vez obtenido el cliente buscado o dado de alta.
+	 */
 	public void componentesAlObtenerCliente() {
 		rbtnGarageSi.setEnabled(true);
 		rbtnGarageNo.setEnabled(true);
@@ -483,52 +483,61 @@ public class CU01View1 extends JPanel {
 	/**
 	 * Éste método inhabilita o habilita los componetes de este frame de
 	 * acuerdo a sí está o no declarandose un hijo.
-	 * @param val
+	 * @param estaDeclarando Valor Boolean que indica si se está declarando o no un hijo.
+	 * @param cantHijos Integer que indica cuantos hijos están declarados en la póliza.
 	 */
-	public void componentesAlDeclararHijos(Boolean val, Integer canHijos) {
+	public void componentesAlDeclararHijos(Boolean estaDeclarando, Integer cantHijos) {
 		if(seleccionMarca.getSelectedIndex()!=0) {
-			tema.setTema(seleccionModelo, val);
-			tema.setTema(seleccionAnio, val);
+			tema.setTema(seleccionModelo, estaDeclarando);
+			tema.setTema(seleccionAnio, estaDeclarando);
 		}else {
 			tema.setTema(seleccionModelo, false);
 			tema.setTema(seleccionAnio, false);
 		}
 			
-		tema.setTema(seleccionKm, val);
-		tema.setTema(seleccionProvincia, val);
-		tema.setTema(seleccionCiudad, val);
-		tema.setTema(seleccionMarca, val);
+		tema.setTema(seleccionKm, estaDeclarando);
+		tema.setTema(seleccionProvincia, estaDeclarando);
+		tema.setTema(seleccionCiudad, estaDeclarando);
+		tema.setTema(seleccionMarca, estaDeclarando);
 
-		tema.setTema(campoMotor, val);
-		tema.setTema(campoChasis, val);
-		tema.setTema(campoPatente, val);
+		tema.setTema(campoMotor, estaDeclarando);
+		tema.setTema(campoChasis, estaDeclarando);
+		tema.setTema(campoPatente, estaDeclarando);
 		
-		tema.setTema(tablaHijos, val);
-		tema.setTema(tablaHijosScroll, val);
+		tema.setTema(tablaHijos, estaDeclarando);
+		tema.setTema(tablaHijosScroll, estaDeclarando);
 		
-		rbtnGarageSi.setEnabled(val);
-		rbtnGarageNo.setEnabled(val);
-		rbtnAlarmaSi.setEnabled(val);
-		rbtnAlarmaNo.setEnabled(val);
-		rbtnRastreoNo.setEnabled(val);
-		rbtnRastreoSi.setEnabled(val);
-		rbtnTuercasSi.setEnabled(val);
-		rbtnTuercasNo.setEnabled(val);
+		rbtnGarageSi.setEnabled(estaDeclarando);
+		rbtnGarageNo.setEnabled(estaDeclarando);
+		rbtnAlarmaSi.setEnabled(estaDeclarando);
+		rbtnAlarmaNo.setEnabled(estaDeclarando);
+		rbtnRastreoNo.setEnabled(estaDeclarando);
+		rbtnRastreoSi.setEnabled(estaDeclarando);
+		rbtnTuercasSi.setEnabled(estaDeclarando);
+		rbtnTuercasNo.setEnabled(estaDeclarando);
 		
-		tema.setTema(btnBuscarCliente, val);
-		tema.setTema(btnAltaCliente, val);
-		tema.setTema(btnConfirmarDatos, val);
-		tema.setTema(btnCancelar, val);
-		tema.setTema(btnAgregarHijo, val);
+		tema.setTema(btnBuscarCliente, estaDeclarando);
+		tema.setTema(btnAltaCliente, estaDeclarando);
+		tema.setTema(btnConfirmarDatos, estaDeclarando);
+		tema.setTema(btnCancelar, estaDeclarando);
+		tema.setTema(btnAgregarHijo, estaDeclarando);
 		
-		if(canHijos == 0) {
-			tema.setTema(btnQuitarHijo, false);
+		if(cantHijos > 0 && estaDeclarando) {
+			tema.setTema(btnQuitarHijo, true);
 		}
 		else {
-			tema.setTema(btnQuitarHijo, true);
+			tema.setTema(btnQuitarHijo, false);
 		}
 	}
 
+	/**
+	 * Con éste método se cambia el tema de aquellos componentes erróneos en el intento de la generación de la póliza.
+	 * @param marca
+	 * @param motor
+	 * @param chasis
+	 * @param patente
+	 * @param km
+	 */
 	public void noValido(Boolean marca, Boolean motor, Boolean chasis, Boolean patente, Boolean km) {
 		if(marca) {
 			tema.erroneo(seleccionMarca);
@@ -585,6 +594,13 @@ public class CU01View1 extends JPanel {
 		tablaHijos.getColumnModel().getColumn(3).setHeaderValue("Estado civil");
 	}
 	
+	/**
+	 * Carga el hijo declarado en la tabla de hijos del panel.
+	 * @param fila
+	 * @param fechaNac
+	 * @param sexo
+	 * @param estadoCivil
+	 */
 	public void cargarHijosTabla(Integer fila, String fechaNac, String sexo, String estadoCivil) {
 		model.setValueAt(fila+1, fila, 0);
 		model.setValueAt(fechaNac, fila, 1);
@@ -616,75 +632,32 @@ public class CU01View1 extends JPanel {
 		btnCancelar.addActionListener(listener);
 	}
 	
-	public void addListenerCampoMotor() {
+	public void addListenerCampoMotor(KeyListener listener) {
 		campoMotor.addKeyListener(new KeyAdapter(){
 			public void keyTyped(KeyEvent e){
 				tema.setTema(campoMotor, true);
-				Character caracter = e.getKeyChar();
-				if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
-						&& campoMotor.getText().length() < 17 ){
-				}
-				else{
-					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
-				}
-			}
-			//TODO cambiar para que sea al teclear un tekla cambie el carcater sin tener que leer el campo
-			public void keyPressed(KeyEvent e){
-				campoMotor.setText(campoMotor.getText().toUpperCase());	
-			}
-			public void keyReleased(KeyEvent e){
-				campoMotor.setText(campoMotor.getText().toUpperCase());	
 			}
 		}); 
+		campoMotor.addKeyListener(listener); 
 	}
 	
-	public void addListenerCampoChasis() {
+	public void addListenerCampoChasis(KeyListener listener) {
 	    campoChasis.addKeyListener(new KeyAdapter(){ 
 	    	public void keyTyped(KeyEvent e){
 				tema.setTema(campoChasis, true);
-				char caracter = e.getKeyChar();
-				if(( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
-						&& campoChasis.getText().length() < 8 ){
-					
-				}
-				else{
-					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
-				}
-	    	}
-	    	//TODO cambiar para que sea al teclear un tekla cambie el carcater sin tener que leer el campo
-			public void keyPressed(KeyEvent e){
-				campoChasis.setText(campoChasis.getText().toUpperCase());	
-			}
-			public void keyReleased(KeyEvent e){
-				campoChasis.setText(campoChasis.getText().toUpperCase());	
 			}
 	    });
+	    campoChasis.addKeyListener(listener);
+	    
 	}
 	
-	public void addListenerCampoPatente() {
+	public void addListenerCampoPatente(KeyListener listener) {
 	    campoPatente.addKeyListener(new KeyAdapter(){
 	    	public void keyTyped(KeyEvent e){
 				tema.setTema(campoPatente, true);
-				char caracter = e.getKeyChar();
-				if( ( Character.isDigit(caracter) || (caracter >='a' && caracter <= 'z') || (caracter >='A' && caracter <= 'Z') || caracter == 'ñ' || caracter == 'Ñ' )
-						&& campoPatente.getText().length() < 7 ){
-					
-				}
-				else{
-					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
-				}
 	    	}
-	    	//TODO cambiar para que sea al teclear un tekla cambie el carcater sin tener que leer el campo
-			public void keyPressed(KeyEvent e){
-				campoPatente.setText(campoPatente.getText().toUpperCase());	
-			}
-			public void keyReleased(KeyEvent e){
-				campoPatente.setText(campoPatente.getText().toUpperCase());	
-			}
 	    }); 
+	    campoPatente.addKeyListener(listener);
 	}
 	
 	public void addListenerSeleccionProvincia(ActionListener listener) {
@@ -792,7 +765,7 @@ public class CU01View1 extends JPanel {
 	}
 	
 	public void setSumaAsegurada(String sumaAsegurada) {
-		campoSumaAsegurada.setText(sumaAsegurada);
+		campoSumaAsegurada.setText("$ "+sumaAsegurada);
 	}
 	
 	public void setNumeroSiniestros(String numerosSinietros) {
@@ -885,7 +858,4 @@ public class CU01View1 extends JPanel {
 	public Boolean habilitadaSeleccionAnioModelo() {
 		return seleccionAnio.isEnabled();
 	}
-
 }
-
-

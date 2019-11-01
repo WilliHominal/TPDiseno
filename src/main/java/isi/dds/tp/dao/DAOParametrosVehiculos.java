@@ -89,7 +89,7 @@ public class DAOParametrosVehiculos {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
             session.beginTransaction();
-            return session.createQuery("SELECT p FROM RiesgoModelo p where id_modelo="+id_modelo+" and ultimo=true", RiesgoModelo.class).uniqueResult();
+            return session.createQuery("SELECT p FROM RiesgoModelo p where id_modelo="+id_modelo+" and fin_vigencia is NULL", RiesgoModelo.class).uniqueResult();
         }
         catch (HibernateException e) {
             e.printStackTrace();

@@ -21,16 +21,15 @@ import isi.dds.tp.modelo.TipoCobertura;
 import isi.dds.tp.view.CU01View2;
 
 public class CU01Controller2 {
-	private CU01View2 altaPoliza2;
+	private CU01View2 view2;
+	private CU01Controller1 controller1;
+	
+	private GestorPoliza gestorPoliza = GestorPoliza.get();
+	private Poliza poliza;
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
-	@SuppressWarnings("unused")
 	private String tituloAnterior = "";
-	
-	private GestorPoliza gestorPoliza = GestorPoliza.get();
-	
-	private Poliza poliza;
 	
 	public CU01Controller2(JFrame ventana, Poliza poliza) {
 		this.poliza = poliza;
@@ -42,20 +41,24 @@ public class CU01Controller2 {
 			panelAnterior = null;
 		}
 			
-		setView2_AltaPoliza2();
+		setView2();
 	}
 
-	private void setView2_AltaPoliza2() {
-		altaPoliza2 = new CU01View2();
+	private void setView2() {
+		view2 = new CU01View2();
 		setFechaInicioVigenciaDefault();
 		addSeleccionTipoCobertura();
-		altaPoliza2.addListenerBtnConfirmarDatos(new ListenerView2ConfirmarDatos());
-		altaPoliza2.addListenerBtnGenerarPoliza(new ListenerView2GenerarPoliza());
-		altaPoliza2.addListenerBtnVolver(new ListenerView2Volver());
-		ventana.setContentPane(altaPoliza2);
+		view2.addListenerBtnConfirmarDatos(new ListenerBtnConfirmarDatos());
+		view2.addListenerBtnGenerarPoliza(new ListenerBtnGenerarPoliza());
+		view2.addListenerBtnVolver(new ListenerBtnVolver());
+		ventana.setContentPane(view2);
 		ventana.revalidate();
 	}
 	
+	public void setCU01Controller1(CU01Controller1 controller1) {
+		this.controller1 = controller1;
+	}
+
 	private void setFechaInicioVigenciaDefault() {
 		try {
 			java.util.Date fechaParseada = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.now().toString());
@@ -63,7 +66,13 @@ public class CU01Controller2 {
 		      calendar.setTime(fechaParseada); 
 		      calendar.add(Calendar.DAY_OF_YEAR, 1);  
 		      calendar.getTime(); 
-		      altaPoliza2.setInicioVigencia(calendar.getTime());
+		      
+		      Calendar calendar2 = Calendar.getInstance();
+		      calendar2.setTime(fechaParseada); 
+		      calendar2.add(Calendar.MONTH, 1); 
+		      calendar2.getTime(); 
+		      
+		      view2.setInicioVigencia(calendar.getTime(), calendar2.getTime());
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -72,9 +81,9 @@ public class CU01Controller2 {
 	private void addSeleccionTipoCobertura() {
 		ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) GestorTipoCobertura.get().getTiposCobertura();
 		Iterator<TipoCobertura> iteradorTipoCoberturas = tipoCoberturas.iterator();
-		altaPoliza2.addTipoCobertura(new TipoCobertura("Seleccionar tipo cobertura"));
+		view2.addTipoCobertura(new TipoCobertura("Seleccionar tipo cobertura"));
 		while(iteradorTipoCoberturas.hasNext()){
-			altaPoliza2.addTipoCobertura(iteradorTipoCoberturas.next());
+			view2.addTipoCobertura(iteradorTipoCoberturas.next());
 		}
 	}
 
@@ -83,16 +92,16 @@ public class CU01Controller2 {
 		String errorFechaVigencia = "";
 		Boolean tipoCoberturaError = false, inicioVigenciaError = false;
 
-		if (altaPoliza2.getTipoCobertura().equals(new TipoCobertura("Seleccionar tipo cobertura"))) {
+		if (view2.getTipoCobertura().equals(new TipoCobertura("Seleccionar tipo cobertura"))) {
 			tipoCoberturaError = true;
 			errorTipoCobertura = "Seleccione un tipo de cobertura.\n";
 		}	
 		
-		SimpleDateFormat formato = new SimpleDateFormat("dd MMM yyyy");
+		SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
 		Date fechaInicioVigenciaDate = null;
 
 		try {
-			fechaInicioVigenciaDate = formato.parse(formato.format(altaPoliza2.getInicioVigencia()));
+			fechaInicioVigenciaDate = formato.parse(formato.format(view2.getInicioVigencia()));
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -115,7 +124,7 @@ public class CU01Controller2 {
 			inicioVigenciaError = true;
 		}
 		
-		altaPoliza2.componentesAlConfirmarDatos(tipoCoberturaError, inicioVigenciaError, poliza.getCliente().getPolizas().size());
+		view2.componentesAlConfirmarDatos(tipoCoberturaError, inicioVigenciaError, poliza.getCliente().getPolizas().size());
 		if(tipoCoberturaError || inicioVigenciaError) {
 			JOptionPane.showConfirmDialog(ventana, errorTipoCobertura + errorFechaVigencia , "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 		}
@@ -124,7 +133,7 @@ public class CU01Controller2 {
 	}
 
 	//----------------- LISTENER
-	private class ListenerView2ConfirmarDatos implements ActionListener{
+	private class ListenerBtnConfirmarDatos implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(!condicionesConfirmarDatos()) {
 				return;
@@ -133,89 +142,90 @@ public class CU01Controller2 {
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			
 			Calendar fechaFinVigencia = Calendar.getInstance();
-			fechaFinVigencia.setTime(altaPoliza2.getInicioVigencia());
+			fechaFinVigencia.setTime(view2.getInicioVigencia());
 			fechaFinVigencia.add(Calendar.MONTH, 6);
 			
 			Calendar fechaAnteriorAInicioVigencia = Calendar.getInstance();
-			fechaAnteriorAInicioVigencia.setTime(altaPoliza2.getInicioVigencia());
+			fechaAnteriorAInicioVigencia.setTime(view2.getInicioVigencia());
 			fechaAnteriorAInicioVigencia.add(Calendar.DATE, -1);
 			
-			LocalDate inicioVigencia = altaPoliza2.getInicioVigencia().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+			LocalDate inicioVigencia = view2.getInicioVigencia().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 			LocalDate finVigencia = fechaFinVigencia.getTime().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 						
 			Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;
 			if (poliza.getCliente().getPolizas().size() > 1) descuentoMasDeUnaUnidad = true;
-			if (!altaPoliza2.eligioMensual()) descuentoSemestral = true;
+			if (!view2.eligioMensual()) descuentoSemestral = true;
 			
-			if(altaPoliza2.eligioMensual()) {
-				gestorPoliza.actualizarPoliza(poliza, altaPoliza2.getTipoCobertura(), inicioVigencia, finVigencia, EnumFormaPago.MENSUAL);
+			if(view2.eligioMensual()) {
+				gestorPoliza.actualizarPoliza(poliza, view2.getTipoCobertura(), inicioVigencia, finVigencia, EnumFormaPago.MENSUAL);
 			}
 			else {
-				gestorPoliza.actualizarPoliza(poliza, altaPoliza2.getTipoCobertura(), inicioVigencia, finVigencia,EnumFormaPago.SEMESTRAL );
+				gestorPoliza.actualizarPoliza(poliza, view2.getTipoCobertura(), inicioVigencia, finVigencia,EnumFormaPago.SEMESTRAL );
 			}
 			
-			
+			//TODO crear cuota
 			Float premio = gestorPoliza.calcularPremio(poliza);
 			Float descuento = gestorPoliza.calcularDescuento(poliza, descuentoSemestral);
-			Float montoCuota = 2f;
-			Float montoTotal = 0f;
+			Float montoCuota = premio/6;
+			Float montoTotal = premio - descuento;
 			
 			
-			altaPoliza2.setApellido(poliza.getCliente().getApellido());
-			altaPoliza2.setNombre(poliza.getCliente().getNombre());
-			altaPoliza2.setModelo(poliza.getAnioModelo().getModelo().getNombre());
-			altaPoliza2.setMarca(poliza.getAnioModelo().getModelo().getMarca().getNombre());
-			altaPoliza2.setMotor(poliza.getMotor());
-			altaPoliza2.setChasis(poliza.getChasis());
-			altaPoliza2.setPatente(poliza.getPatente());
-			altaPoliza2.setSumaAsegurada(poliza.getSumaAsegurada().toString());
-			altaPoliza2.setPremio(premio.toString());
-			altaPoliza2.setDescuento(Float.toString(descuento));
-			altaPoliza2.visualizarDescuentos(descuentoMasDeUnaUnidad, descuentoSemestral);
-			altaPoliza2.setFechaInicio(dateFormat.format(altaPoliza2.getInicioVigencia()));
-			altaPoliza2.setFechaFin(dateFormat.format(fechaFinVigencia.getTime()));
+			view2.setApellido(poliza.getCliente().getApellido());
+			view2.setNombre(poliza.getCliente().getNombre());
+			view2.setModelo(poliza.getAnioModelo().getModelo().getNombre());
+			view2.setMarca(poliza.getAnioModelo().getModelo().getMarca().getNombre());
+			view2.setMotor(poliza.getMotor());
+			view2.setChasis(poliza.getChasis());
+			view2.setPatente(poliza.getPatente());
+			view2.setSumaAsegurada(poliza.getSumaAsegurada().toString());
+			view2.setPremio(premio.toString());
+			view2.setDescuento(Float.toString(descuento));
+			view2.visualizarDescuentos(descuentoMasDeUnaUnidad, descuentoSemestral);
+			view2.setFechaInicio(dateFormat.format(view2.getInicioVigencia()));
+			view2.setFechaFin(dateFormat.format(fechaFinVigencia.getTime()));
 			
-			if(altaPoliza2.eligioMensual()) {
-				altaPoliza2.cargarTabla(6);
+			if(view2.eligioMensual()) {
+				view2.cargarTabla(6);
 				for (int contador=0; contador<6; contador++) {
 					Calendar fechaAux = Calendar.getInstance(); 
 					fechaAux.setTime(fechaAnteriorAInicioVigencia.getTime());
 					fechaAux.add(Calendar.MONTH, contador);
-					altaPoliza2.cargarDatosTabla(dateFormat.format(fechaAux.getTime()), contador, 0);
-					altaPoliza2.cargarDatosTabla("$ " + montoCuota, contador, 1); //CAMBIAR 2 POR MONTO DE LA CUOTA
-					String auxMonto[] = altaPoliza2.getValorTabla(contador);
+					view2.cargarDatosTabla(dateFormat.format(fechaAux.getTime()), contador, 0);
+					view2.cargarDatosTabla("$ " + montoCuota, contador, 1); //CAMBIAR 2 POR MONTO DE LA CUOTA
+					String auxMonto[] = view2.getValorTabla(contador);
 					montoTotal += Float.parseFloat(auxMonto[1]);
 				}				
-				altaPoliza2.setMontoTotal("$ " + Float.toString(montoTotal));
+				view2.setMontoTotal(montoTotal.toString());
 			} else {
 				montoTotal = 5f;
-				altaPoliza2.cargarTabla(1);
-				altaPoliza2.cargarDatosTabla(dateFormat.format(fechaAnteriorAInicioVigencia.getTime()), 0, 0);
-				altaPoliza2.cargarDatosTabla("$ " + montoTotal, 0, 1);
-				altaPoliza2.setMontoTotal("$ " + montoTotal);
+				view2.cargarTabla(1);
+				view2.cargarDatosTabla(dateFormat.format(fechaAnteriorAInicioVigencia.getTime()), 0, 0);
+				view2.cargarDatosTabla("$ " + montoTotal, 0, 1);
+				view2.setMontoTotal(montoTotal.toString());
 			}
 			
 			setFechaInicioVigenciaDefault();
 		}
 	}
 	
-	private class ListenerView2GenerarPoliza implements ActionListener{
+	private class ListenerBtnGenerarPoliza implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(JOptionPane.showConfirmDialog(ventana, "¿Desea generar la póliza?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)==0) {
 				gestorPoliza.altaPoliza(poliza);
 				//TODO cuando no se genere una poliza, no lanzar el joptionpane
 				JOptionPane.showConfirmDialog(ventana, "Póliza generada correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
-				//TODO mostrar poliza
+				controller1.volver();
+				view2.setVisible(false);				
 			}
 		}
 	}
 	
-	private class ListenerView2Volver implements ActionListener{
+	private class ListenerBtnVolver implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(JOptionPane.showConfirmDialog(ventana, "¿Desea corregir algún dato ingresado?", "Confirmación",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
 				ventana.setContentPane(panelAnterior);
-				ventana.setTitle("Dar de alta póliza: INGRESAR DATOS");
-				altaPoliza2.setVisible(false);
+				ventana.setTitle(tituloAnterior);
+				view2.setVisible(false);
 			}
 		}
 	}	

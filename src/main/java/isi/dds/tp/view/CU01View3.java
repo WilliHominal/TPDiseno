@@ -3,6 +3,7 @@ package isi.dds.tp.view;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyListener;
 import java.util.Date;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -35,8 +36,6 @@ public class CU01View3 extends JFrame  {
 	public CU01View3() {
 		ubicarComponentes();
 		inicializarTema();
-		addListenerSeleccionEstadoCivil();
-		addListenerDcFechaNacimiento();
 		setContentPane(panel);	
 	}
 
@@ -107,12 +106,11 @@ public class CU01View3 extends JFrame  {
 		tema.setComboBoxChico(seleccionEstadoCivil, true);
 		tema.setTema(btnAgregarHijo, true);
 		tema.setTema(btnCancelar, true);
+		
+		panel.setFocusable(true);
 	}
 	
-	public void noValido(Boolean fechaError, Boolean sexoError, Boolean estadoCivilError) {
-		if(fechaError) {
-			tema.erroneo(((JTextFieldDateEditor)dcFechaNacimiento.getDateEditor()));
-		}
+	public void noValido(Boolean sexoError, Boolean estadoCivilError) {
 		if(sexoError) {
 			tema.erroneo(seleccionSexo);	
 		}
@@ -144,6 +142,10 @@ public class CU01View3 extends JFrame  {
 		});
 	}
 	
+	public void addListenerPane(KeyListener listener) {
+		panel.addKeyListener(listener);
+	}
+	
 	public void addListenerBtnAgregarHijo(ActionListener listener) {
 		btnAgregarHijo.addActionListener(listener);
 	}
@@ -160,8 +162,9 @@ public class CU01View3 extends JFrame  {
 		seleccionEstadoCivil.addItem(estadoCivil);
 	}
 	
-	public void setFecha(Date fecha) {
-		dcFechaNacimiento.setDate(fecha);
+	public void setFecha(Date fechaMinima, Date fechaMaximo) {
+		dcFechaNacimiento.setDate(fechaMinima);
+		dcFechaNacimiento.setSelectableDateRange(fechaMinima, fechaMaximo);
 	}
 	
 	public void setEstadoCivil(Integer index) {

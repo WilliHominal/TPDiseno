@@ -105,6 +105,7 @@ public class GestorTema {
     }
     
 	public void setTema(JFrame ventana, String titulo) {
+		ventana.setResizable(false);
 		ventana.setSize(DIMENSION_VENTANA);
 		ventana.setTitle(titulo);
 		ventana.setLocationRelativeTo(null);
