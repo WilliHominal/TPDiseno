@@ -12,12 +12,12 @@ public class CargarBase {
 	public static void load() {
 		HibernateUtil.shutdown();
 		HibernateUtil.getSessionFactoryCreate();	
+		GestorParametrosPoliza.get().cargarParametrosPoliza();
 		GestorDomicilio.get().cargarUbicaciones();
-		GestorCliente.get().cargarClientes();
 		GestorSubsistemaSiniestros.get().cargarSiniestros();
 		GestorTipoCobertura.get().cargarTiposCoberturas();
 		GestorParametrosVehiculo.get().cargarParametrosVehiculos();
-		GestorParametrosPoliza.get().cargarParametrosPoliza();
+		GestorCliente.get().cargarClientes();
 		//GestorPoliza.get().cargarPolizas();
     }
 }

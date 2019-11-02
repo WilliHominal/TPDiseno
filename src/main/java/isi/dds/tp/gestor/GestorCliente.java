@@ -2,14 +2,20 @@ package isi.dds.tp.gestor;
 
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.modelo.Poliza;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.dao.DAOCliente;
+import isi.dds.tp.enums.EnumCondicion;
+import isi.dds.tp.enums.EnumSiniestros;
 import isi.dds.tp.enums.EnumTipoDocumento;
 
 public class GestorCliente {
 	
 	private static GestorCliente instanciaGestor = null;
+	
+	private GestorPoliza gestorPoliza = GestorPoliza.get();
 	 
     private GestorCliente() { }
 
@@ -28,9 +34,8 @@ public class GestorCliente {
     	if(cliente.getPolizas() == null) {
 			cliente.setPolizas(new ArrayList<Poliza>());
 		}
+    	actualizarCondicion(cliente); 
     	cliente.getPolizas().add(poliza);
-    	
-    	actualizarCondicion(cliente);    	
     }
     
     public Cliente getCliente(Long numeroCliente) {
@@ -42,37 +47,26 @@ public class GestorCliente {
     	return null;
     }
     
-    @SuppressWarnings("unused")
     public void actualizarCondicion(Cliente cliente) {
-    	//TODO implementar actualizarCondicion
-    			//veo si es cliente Plata o Activo
-    			
-				Boolean esPlata = true;
-
-    			
-    		/*	if (!poliza.getCliente().getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO))
-    				esPlata = false;
-
-    			for (Cuota cuota : poliza.getCuotas()) {
-    				if (cuota.getEstado() == EnumEstadoCuota.IMPAGO)
-    					esPlata = false;
+    	if(cliente.getPolizas().size() == 0) {
+    		cliente.setCondicion(EnumCondicion.NORMAL);
+    	}else {
+    		Boolean polizasVigentes = gestorPoliza.vigenciaPolizas(cliente.getNumeroCliente());
+    		if(!polizasVigentes) {
+    			cliente.setCondicion(EnumCondicion.NORMAL);
+    		}
+    		else {
+    			Boolean noTieneSiniestros = GestorSubsistemaSiniestros.get().getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()).equals(EnumSiniestros.NINGUNO);
+    			Boolean cuotasImpagas = gestorPoliza.omisionPago(cliente.getNumeroCliente());
+    			Boolean esClienteActivo = 500 < 365*2;
+    			if(!noTieneSiniestros && cuotasImpagas && esClienteActivo) {
+    				cliente.setCondicion(EnumCondicion.NORMAL);
     			}
-*/
-    			if (calcularTiempoActivo(cliente) < 365*2)
-    				esPlata = false;
-
-    			
-    			//if (esPlata)
-    				//diria que si modificas el cliente de la poliza, se actualiza el cliente de la base de datos al persistir la poliza
-    				//actualizarCondicion(cliente, EnumCondicion.PLATA);
-    			//else
-    				//actualizarCondicion(cliente, EnumCondicion.ACTIVO);
-    }
-    
-    public Integer calcularTiempoActivo(Cliente c) {
-    	//supongo que se hace mirando las polizas activas
-    	//TODO implementar calcularTiempoActivo(Cliente c)
-    	return 0;
+    			else{
+    				cliente.setCondicion(EnumCondicion.PLATA);
+    			}
+    		}
+    	}
     }
 
 	public List<Cliente> buscarClientes(Long numeroCliente, String apellido, String nombre, EnumTipoDocumento tipoDocumento, String numeroDocumento) {

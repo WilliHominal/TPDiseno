@@ -45,10 +45,7 @@ public class SolicitudPoliza {
 	private List<BitacoraSolicitudPoliza> bitacorasSolicitud;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "numero_solicitud")
-	@SequenceGenerator(name="numero_solicitud", sequenceName = "numero_solicitud_seq", initialValue = 100, allocationSize = 1)
 	@Column(name = "numero_solicitud")
-	/*TODO definir NUMERO_SOLICITUD*/
 	private Integer numeroSolicitud;
 	
 	@Column(nullable = false)

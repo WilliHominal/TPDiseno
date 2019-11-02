@@ -72,4 +72,16 @@ public class DAOTipoCobertura {
         }
     	return null;
     }
+
+	public TipoCobertura getTipoCobertura(EnumTipoCobertura tipo) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+            session.beginTransaction();
+            return session.get(TipoCobertura.class, tipo);
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }	
+    	return null;
+	}
 }

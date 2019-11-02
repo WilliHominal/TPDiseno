@@ -58,15 +58,8 @@ public class Poliza {
     @OneToOne(cascade=CascadeType.ALL)
 	private SolicitudPoliza solicitudPoliza;
 	
-	
-	/*
-		-- 4 dígitos correspondientes a la sucursal.
-		-- 7 dígitos correspondientes a una secuencia de la asociación del auto con el cliente (Solicitud de Póliza).
-		-- 2 dígitos correspondientes a una secuencia para la renovación de cada póliza
-	 */
 	@Id
 	@Column(name = "numero_poliza")
-	/*TODO definir NUMERO_POLIZA*/
 	private Long numeroPoliza;
 	
 	@Column(nullable = false, name = "suma_asegurada")

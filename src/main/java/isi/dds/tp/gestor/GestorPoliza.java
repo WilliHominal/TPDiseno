@@ -4,7 +4,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+
 import isi.dds.tp.dao.DAOPoliza;
+import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.enums.EnumFormaPago;
 import isi.dds.tp.modelo.Poliza;
@@ -19,6 +21,8 @@ import isi.dds.tp.modelo.Cuota;
 public class GestorPoliza {
 	
 	private static GestorPoliza instanciaGestor = null;
+	
+	private DAOPoliza dao = DAOPoliza.getDAO();
 	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
 	private GestorParametrosVehiculo gestorVehiculo = GestorParametrosVehiculo.get();
 	private GestorParametrosPoliza gestorParametrosPoliza  = GestorParametrosPoliza.get();
@@ -34,46 +38,52 @@ public class GestorPoliza {
     }
     
 	public void cargarPolizas() {
-		DAOPoliza.getDAO().cargarPolizas();
+		dao.cargarPolizas();
 	}
-    
-    public void altaPoliza(Poliza poliza) {
-    	generarNumeroPoliza(poliza);
-    	poliza.setEstado(EnumEstadoPoliza.GENERADA);
-    	GestorCliente.get().actualizarCliente(poliza.getCliente(), poliza);
-    	DAOPoliza.getDAO().addPoliza(poliza);
-    }
-    
-    private void generarNumeroPoliza(Poliza poliza) {
-		Random r = new Random();
-		Long randomNum = r.nextLong();	
-		poliza.setNumeroPoliza(randomNum);
-    }
-
-	public List<Cuota> getCuotas(Long numeroPoliza) {
-		return DAOPoliza.getDAO().getCuotas(numeroPoliza);
-    }
-        
-	public List<HijoDeclarado> getHijosDeclarados(Long numeroPoliza) {
-		return DAOPoliza.getDAO().getHijosDeclarados(numeroPoliza);
-    }
-    
-    public void addHijo(Poliza poliza, HijoDeclarado hijo){
-		hijo.setPoliza(poliza);
-		poliza.getHijosDeclarado().add(hijo);
-    }
-    
-    public void removeHijo(Poliza poliza, int indexHijo){
-    	poliza.getHijosDeclarado().remove(indexHijo);
-    }
-    
+	
     public Poliza newPoliza(Cliente cliente, String numeroSiniestros){
     	Poliza poliza = new Poliza();
+		if(cliente.getPolizas() == null) {
+			cliente.setPolizas(new ArrayList<Poliza>());
+		}
     	poliza.setCliente(cliente);
     	poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().parseEnumSiniestros(numeroSiniestros));
     	poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
     	poliza.setCuotas(new ArrayList<Cuota>());
     	return poliza;
+    }
+    
+    public void altaPoliza(Poliza poliza) {
+    	generarNumeroPoliza(poliza);
+    	poliza.setEstado(EnumEstadoPoliza.GENERADA);
+    	GestorCliente.get().actualizarCliente(poliza.getCliente(), poliza);
+    	dao.addPoliza(poliza);
+    }
+    
+    private void generarNumeroPoliza(Poliza poliza) {
+    	String numeroSucursal = "3528";
+    	String numeroRelacionClientePoliza = dao.generateNumeroRelacionClientePoliza().toString();
+    	String numeroRenovacionPoliza = "00";
+    	Long numeroPoliza = Long.parseLong(numeroSucursal + numeroRelacionClientePoliza + numeroRenovacionPoliza);
+    	poliza.setNumeroPoliza(numeroPoliza);
+    	
+    	Random r = new Random();
+		Long randomNum = r.nextLong();	
+		poliza.setNumeroPoliza(randomNum);
+	}
+
+	public void addHijo(Poliza poliza, HijoDeclarado hijo){
+		hijo.setPoliza(poliza);
+		poliza.getHijosDeclarado().add(hijo);
+    }
+    
+    public void addCuota(Poliza poliza, Float monto, LocalDate ultimoDiaPago) {
+    	Cuota cuota = new Cuota();
+    	cuota.setPoliza(poliza);
+    	poliza.getCuotas().add(cuota);
+    	cuota.setMonto(monto);
+    	cuota.setEstado(EnumEstadoCuota.IMPAGO);
+    	cuota.setUltimoDiaPago(ultimoDiaPago);
     }
     
 	public void actualizarPoliza(Poliza poliza, Ciudad ciudad, AnioModelo anioModelo, String motor, String chasis, 
@@ -96,10 +106,8 @@ public class GestorPoliza {
 		poliza.setTipoCobertura(tipoCobertura);
 		poliza.setFechaEmision(LocalDate.now());
 		poliza.setInicioVigencia(inicioVigencia);
-		
 		LocalDate finVigencia = inicioVigencia.plusMonths(6);
 		poliza.setFinVigencia(finVigencia);
-		
 		poliza.setFormaPago(formaPago);
 	}
 	
@@ -111,10 +119,8 @@ public class GestorPoliza {
 		Float ajusteKm = param.getPorcentajeAjusteKm(), ajusteTuerca = 0f, ajusteAlarma = 0f, ajusteGarage = 0f, ajusteRastreo = 0f, ajusteSiniestros = 0f, ajusteHijosRegistrados = 0f;
 		
 		String kilometraje = poliza.getKmRealizadosPorAnio();
-		//el rango va de 0 - 29
-		//al guardarse como se guardo se tiene que hacer esto
+		//el rango va de 0 - 29 - al guardarse como se guardo se tiene que hacer esto
 		Integer valorRangoKilometraje = Integer.parseInt( kilometraje.substring( 0, kilometraje.indexOf(" - ") ).replace(".", "") ) / 10000;
-		
 		
 		if(!poliza.getGuardaGarage()) {
 			ajusteGarage = param.getPorcentajeGuardaEnGarage();
@@ -161,7 +167,7 @@ public class GestorPoliza {
 				+ poliza.getSumaAsegurada() * ajusteTuerca
 				+ poliza.getSumaAsegurada() * ajusteRastreo
 				+ poliza.getSumaAsegurada() * ajusteSiniestros
-				+ poliza.getSumaAsegurada() * ajusteHijosRegistrados;
+				+ poliza.getSumaAsegurada() * ajusteHijosRegistrados * poliza.getHijosDeclarado().size();
 
 		poliza.setValorRiesgoCiudad(riesgoCiudad);
 		poliza.setValorRiesgoModelo(riesgoModelo);
@@ -180,13 +186,13 @@ public class GestorPoliza {
 	}
 	
 	public Float calcularDescuento(Poliza poliza, Boolean semestral) {
-		Float valorDescuentoPorUnidadAdicional = poliza.getParametrosPoliza().getDescuentoUnidadAdicional() / 2; //divide por 2 porque el interes es anual
-		Float valorBonificacionPagoSemestral = GestorSistemaFinanciero.get().getTasaInteresAnual();
+		Float valorDescuentoPorUnidadAdicional = poliza.getParametrosPoliza().getDescuentoUnidadAdicional();
+		Float valorBonificacionPagoSemestral = 0f;
 
 		if(semestral) {
-			valorBonificacionPagoSemestral = 0.35f;
+			valorBonificacionPagoSemestral = GestorSistemaFinanciero.get().getTasaInteresAnual() / 2; //divide por 2 porque el interes es anual
 		}
-		//TODO verificar
+		
 		Float valorDescuento = valorDescuentoPorUnidadAdicional * poliza.getCliente().getPolizas().size() + valorBonificacionPagoSemestral;
 		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
 		poliza.setValorDescuento(valorDescuento);
@@ -253,5 +259,29 @@ public class GestorPoliza {
 		}
 		
 		return (valido1 && valido2);
+	}
+
+	public List<Cuota> getCuotas(Long numeroPoliza) {
+		return dao.getCuotas(numeroPoliza);
+    }
+	
+	public void removeHijo(Poliza poliza, int indexHijo){
+    	poliza.getHijosDeclarado().remove(indexHijo);
+	}
+
+	public Boolean vigenciaPolizas(Long numeroCliente) {
+		//TODO implementar - true si estas vigentes - false sino lo están
+		return true;
+	}
+	
+	public Boolean omisionPago(Long numeroCliente) {
+		// TODO implementar omisionPago
+		return true;
+	}
+
+
+	public Boolean esModeloViejo(Poliza poliza) {
+		Integer anioActual = LocalDate.now().getYear();
+		return poliza.getAnioModelo().getAnio() >= (anioActual - 10); 
 	}
 }

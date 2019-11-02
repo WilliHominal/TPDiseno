@@ -10,7 +10,6 @@ import org.hibernate.Session;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Cuota;
-import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.Poliza;
 
 public class DAOPoliza {
@@ -64,19 +63,6 @@ public class DAOPoliza {
         }
         return null;
     }
-    
-	public List<HijoDeclarado> getHijosDeclarados(Long numeroPoliza) {
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        try {
-            session.beginTransaction();
-            return session.createQuery("SELECT h FROM HijoDeclarado h WHERE numero_poliza="+numeroPoliza, HijoDeclarado.class).list();
-            
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
 
 	public void cargarPolizas() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/polizas.sql");
@@ -87,5 +73,10 @@ public class DAOPoliza {
 			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
 		}
 		session.close();
+	}
+
+	public Long generateNumeroRelacionClientePoliza() {
+		// TODO implementar generateNumeroRelacionClientePoliza
+		return 0l;
 	}
 }

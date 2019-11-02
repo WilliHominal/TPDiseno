@@ -484,4 +484,8 @@ public class CU01View2 extends JPanel  {
 		lDescSemestral.setVisible(descuentoSemestral);
 		lDescUnidad.setVisible(descuentoMasDeUnaUnidad);
 	}
+
+	public void inhabilitarSeleccion() {
+		tema.setTema(seleccionTipoCobertura, false);
+	}
 }

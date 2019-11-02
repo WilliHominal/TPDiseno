@@ -27,6 +27,10 @@ public class GestorTipoCobertura {
     	DAOTipoCobertura.getDAO().addRiesgoCobertura(r);
     }
     
+	public TipoCobertura getTipoCobertura(EnumTipoCobertura tipo){
+		return DAOTipoCobertura.getDAO().getTipoCobertura(tipo);
+    }
+    
 	public List<TipoCobertura> getTiposCobertura(){
 		return DAOTipoCobertura.getDAO().getTiposCobertura();
     }

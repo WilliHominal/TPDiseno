@@ -17,6 +17,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import isi.dds.tp.enums.EnumFormaPago;
+import isi.dds.tp.enums.EnumTipoCobertura;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorTipoCobertura;
 import isi.dds.tp.modelo.Poliza;
@@ -43,7 +44,6 @@ public class CU01Controller2 {
 		}catch(Exception ex) {
 			panelAnterior = null;
 		}
-			
 		setView2();
 	}
 
@@ -82,11 +82,18 @@ public class CU01Controller2 {
 	}
 	
 	private void addSeleccionTipoCobertura() {
-		ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) GestorTipoCobertura.get().getTiposCobertura();
-		Iterator<TipoCobertura> iteradorTipoCoberturas = tipoCoberturas.iterator();
-		view2.addTipoCobertura(new TipoCobertura("Seleccionar tipo cobertura"));
-		while(iteradorTipoCoberturas.hasNext()){
-			view2.addTipoCobertura(iteradorTipoCoberturas.next());
+		GestorTipoCobertura gestorTipoCobertura = GestorTipoCobertura.get();
+		if(gestorPoliza.esModeloViejo(poliza)) {
+			view2.addTipoCobertura(gestorTipoCobertura.getTipoCobertura(EnumTipoCobertura.RESPONSABILIDAD_CIVIL));
+			view2.inhabilitarSeleccion();
+		}
+		else {
+			ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) gestorTipoCobertura.getTiposCobertura();
+			Iterator<TipoCobertura> iteradorTipoCoberturas = tipoCoberturas.iterator();
+			view2.addTipoCobertura(new TipoCobertura("Seleccionar tipo cobertura"));
+			while(iteradorTipoCoberturas.hasNext()){
+				view2.addTipoCobertura(iteradorTipoCoberturas.next());
+			}	
 		}
 	}
 
@@ -98,7 +105,7 @@ public class CU01Controller2 {
 		if (view2.getTipoCobertura().equals(new TipoCobertura("Seleccionar tipo cobertura"))) {
 			tipoCoberturaError = true;
 			errorTipoCobertura = "Seleccione un tipo de cobertura.\n";
-		}	
+		}
 		
 		SimpleDateFormat formato = new SimpleDateFormat("dd-MM-yyyy");
 		Date fechaInicioVigenciaDate = null;
@@ -149,17 +156,8 @@ public class CU01Controller2 {
 			fechaAnteriorAInicioVigencia.add(Calendar.DATE, -1);
 			
 			LocalDate inicioVigencia = view2.getInicioVigencia().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-			
 						
-			Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;
-			
-			if(poliza.getCliente().getPolizas() == null) {
-				//TODO hacer en gestor
-				poliza.getCliente().setPolizas(new ArrayList<Poliza>());
-			}
-			
-			if (poliza.getCliente().getPolizas().size() > 1) descuentoMasDeUnaUnidad = true;
-			
+			Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;	
 			
 			if(view2.eligioMensual()) {
 				gestorPoliza.actualizarPoliza(poliza, view2.getTipoCobertura(), inicioVigencia, EnumFormaPago.MENSUAL);
@@ -169,7 +167,10 @@ public class CU01Controller2 {
 				descuentoSemestral = true;
 			}
 			
-			//TODO crear cuota
+			if (poliza.getCliente().getPolizas().size() > 1) {
+				descuentoMasDeUnaUnidad = true;
+			}
+
 			Float premio = gestorPoliza.calcularPremio(poliza);
 			Float descuento = gestorPoliza.calcularDescuento(poliza, descuentoSemestral);
 			Float valorDescontado = premio * descuento;
@@ -202,12 +203,15 @@ public class CU01Controller2 {
 				for (int contador=0; contador<6; contador++) {	
 					view2.cargarDatosTabla(dateFormat.format(Date.from(fechaMensual.minusDays(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())), contador, 0);
 					view2.cargarDatosTabla("$ " + num.format(montoCuota), contador, 1);
+					gestorPoliza.addCuota(poliza, montoCuota, fechaMensual);
 					fechaMensual = fechaMensual.plusMonths(1);					
 				}				
 			} else {
+				LocalDate fechaSemestral = inicioVigencia.minusDays(1);
 				view2.cargarTabla(1);
-				view2.cargarDatosTabla(dateFormat.format(fechaAnteriorAInicioVigencia.getTime()), 0, 0);
+				view2.cargarDatosTabla(dateFormat.format(Date.from(fechaSemestral.minusDays(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())), 0, 0);
 				view2.cargarDatosTabla("$ " + num.format(montoTotal), 0, 1);
+				gestorPoliza.addCuota(poliza, montoTotal, fechaSemestral);
 			}
 			view2.setMontoTotal(num.format(montoTotal));
 			
