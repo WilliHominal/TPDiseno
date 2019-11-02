@@ -11,35 +11,36 @@ import isi.dds.tp.modelo.Cliente;
 
 public class DAOCliente {
 	private static DAOCliente instanciaDAO = null;
-	 
+	private static Session session = null;
+	
     private DAOCliente() { }
 
     public static DAOCliente getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new DAOCliente();
-        }    
+        }
+        if(session == null) {
+    		session = HibernateUtil.getSessionFactoryValidate().openSession();
+        	session.beginTransaction();
+        }        
         return instanciaDAO;
     }
     
 	public void cargarClientes() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/clientes.sql");
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-		
-		session.beginTransaction();
-		
-		Iterator<String> iteradorqueries = queries.iterator();
-		while(iteradorqueries.hasNext()){
-
-			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
-
+		try {
+			Iterator<String> iteradorqueries = queries.iterator();
+			while(iteradorqueries.hasNext()){
+				session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+			}
+		}catch (HibernateException e) {
+			e.printStackTrace();
+            session.getTransaction().rollback();	
 		}
-		session.close();
 	}
     
     public Cliente getCliente(Long numeroCliente) {    	
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
-            session.beginTransaction();
             return session.get(Cliente.class, numeroCliente);
         }
         catch (HibernateException e) {
@@ -49,7 +50,6 @@ public class DAOCliente {
     }
     
 	public List<Cliente> getClientes(String consulta) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
             return session.createNativeQuery("SELECT * FROM cliente where (condicion='ACTIVO' or condicion='PLATA') "+consulta, Cliente.class).getResultList();
         }
@@ -57,5 +57,12 @@ public class DAOCliente {
             e.printStackTrace();
         }
     	return null;
-    }    
+    } 
+	
+    public void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
 }

@@ -698,6 +698,7 @@ public class CU01View1 extends JPanel {
 	}
 	
 	public void addProvincia(Provincia provincia) {
+		//TODO problemas
 		seleccionProvincia.addItem(provincia);
 	}
 	
@@ -834,6 +835,13 @@ public class CU01View1 extends JPanel {
 	
 	public Integer getFilaSeleccionada() {
 		return tablaHijos.getSelectedRow();
+	}
+
+	public void habilitarSeleccionCiuad(Boolean habilitar) {
+		tema.setTema(seleccionCiudad, habilitar);
+		if(!habilitar) {
+			seleccionCiudad.removeAllItems();
+		}
 	}
 	
 	public void habilitarSeleccionModelo(Boolean habilitar) {

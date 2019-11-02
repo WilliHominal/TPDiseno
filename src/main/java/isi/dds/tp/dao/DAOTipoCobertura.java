@@ -12,34 +12,37 @@ import isi.dds.tp.modelo.RiesgoTipoCobertura;
 import isi.dds.tp.modelo.TipoCobertura;
 
 public class DAOTipoCobertura {
-	
 	private static DAOTipoCobertura instanciaDAO = null;
+	private static Session session = null;
 	 
     private DAOTipoCobertura() { }
 
     public static DAOTipoCobertura getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new DAOTipoCobertura();
-        }    
+        }
+        if(session == null) {
+    		session = HibernateUtil.getSessionFactoryValidate().openSession();
+        	session.beginTransaction();
+        }        
         return instanciaDAO;
     }
     
 	public void cargarTiposCoberturas() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/tiposCobertura.sql");
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-		session.beginTransaction();
-		Iterator<String> iteradorqueries = queries.iterator();
-		while(iteradorqueries.hasNext()){
-			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+		try {
+			Iterator<String> iteradorqueries = queries.iterator();
+			while(iteradorqueries.hasNext()){
+				session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+			}
+		}catch (HibernateException e) {
+			e.printStackTrace();
+            session.getTransaction().rollback();	
 		}
-		session.close();
 	}
     
     public void addRiesgoCobertura(RiesgoTipoCobertura r) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
-            session.beginTransaction();
             session.save(r);
             session.getTransaction().commit();
         }
@@ -50,9 +53,7 @@ public class DAOTipoCobertura {
     }
     
 	public List<TipoCobertura> getTiposCobertura(){
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
-            session.beginTransaction();
             return session.createQuery("SELECT t FROM TipoCobertura t order by nombre", TipoCobertura.class).list();
         }
         catch (HibernateException e) {
@@ -62,9 +63,7 @@ public class DAOTipoCobertura {
 	}
     
     public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipoCobertura) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
-            session.beginTransaction();
             return session.createNativeQuery("SELECT * FROM riesgo_tipo_cobertura where tipo_cobertura='"+tipoCobertura+"'  and fin_vigencia is NULL", RiesgoTipoCobertura.class).getSingleResult();
         }
         catch (HibernateException e) {
@@ -74,9 +73,7 @@ public class DAOTipoCobertura {
     }
 
 	public TipoCobertura getTipoCobertura(EnumTipoCobertura tipo) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
-            session.beginTransaction();
             return session.get(TipoCobertura.class, tipo);
         }
         catch (HibernateException e) {
@@ -84,4 +81,11 @@ public class DAOTipoCobertura {
         }	
     	return null;
 	}
+	
+    public void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
 }

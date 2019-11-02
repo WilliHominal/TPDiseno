@@ -16,14 +16,6 @@ public class GestorParametrosPoliza {
         return instanciaGestor;
     }
 	
-    public void addParametrosPoliza(ParametrosPoliza p) {
-    	DAOParametrosPoliza.getDAO().addParametrosPoliza(p);
-    }
-
-	public void cargarParametrosPoliza() {
-		DAOParametrosPoliza.getDAO().cargarParametrosPoliza();
-	}
-	
 	public ParametrosPoliza getUltimoParametrosPoliza() {
 		return DAOParametrosPoliza.getDAO().getUltimoParametrosPoliza();
 	}

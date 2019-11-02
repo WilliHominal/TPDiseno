@@ -70,9 +70,9 @@ public class CU17Controller2 {
 		view2.setTipoDocumento(gestorEnum.parseString(cliente.getTipoDocumento()));
 		view2.setSexo(gestorEnum.parseString(cliente.getSexo()));
 		view2.setFechaNacimiento(cliente.getFechaNacimiento().toString());
-		view2.setCiudad(cliente.getCiudad().getProvincia().getPais().getNombre());
+		view2.setPais(cliente.getCiudad().getProvincia().getPais().getNombre());
 		view2.setProvincia(cliente.getCiudad().getProvincia().getNombre());
-		view2.setPais(cliente.getCiudad().getNombre());
+		view2.setCiudad(cliente.getCiudad().getNombre());
 		view2.setCondicionIva(gestorEnum.parseString(cliente.getCondicionIva()));
 		if(cliente.getSexo().equals(EnumSexo.FEMENINO)) {
 			view2.setEstadoCivil(gestorEnum.parseStringFem(cliente.getEstadoCivil()));
@@ -85,12 +85,12 @@ public class CU17Controller2 {
 	public void setCU17Controller1(CU17Controller1 controller1) {
 		this.controller1 = controller1;
 	}
-	//---------- LISTENERS USADOS
 	
+	//---------- LISTENERS USADOS
 	private class ListenerElegirCliente implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {	
-				controller1.obtenidoCliente();
+				controller1.obtenidoCliente(cliente);
 		    	view2.setVisible(false);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);

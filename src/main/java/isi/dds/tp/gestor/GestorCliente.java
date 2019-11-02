@@ -12,7 +12,6 @@ import isi.dds.tp.enums.EnumSiniestros;
 import isi.dds.tp.enums.EnumTipoDocumento;
 
 public class GestorCliente {
-	
 	private static GestorCliente instanciaGestor = null;
 	
 	private GestorPoliza gestorPoliza = GestorPoliza.get();
@@ -26,10 +25,6 @@ public class GestorCliente {
         return instanciaGestor;
     }
     
-	public void cargarClientes() {
-		DAOCliente.getDAO().cargarClientes();
-	}
-    
     public void actualizarCliente(Cliente cliente, Poliza poliza) {
     	if(cliente.getPolizas() == null) {
 			cliente.setPolizas(new ArrayList<Poliza>());
@@ -40,6 +35,9 @@ public class GestorCliente {
     
     public Cliente getCliente(Long numeroCliente) {
     	Cliente cliente = DAOCliente.getDAO().getCliente(numeroCliente);
+		if(cliente.getPolizas() == null) {
+			cliente.setPolizas(new ArrayList<Poliza>());
+		}
     	return cliente;
     }
     

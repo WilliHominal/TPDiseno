@@ -19,10 +19,6 @@ public class GestorTipoCobertura {
         return instanciaGestor;
     }
     
-    public void cargarTiposCoberturas() {
-    	DAOTipoCobertura.getDAO().cargarTiposCoberturas();
-    }
-    
     public void addRiesgoCobertura(RiesgoTipoCobertura r) {
     	DAOTipoCobertura.getDAO().addRiesgoCobertura(r);
     }

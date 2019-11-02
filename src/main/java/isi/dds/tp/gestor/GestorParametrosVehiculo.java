@@ -5,7 +5,7 @@ import java.util.Comparator;
 import java.util.List;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
-import isi.dds.tp.dao.DAOParametrosVehiculos;
+import isi.dds.tp.dao.DAOParametrosVehiculo;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.RiesgoModelo;
 
@@ -23,24 +23,20 @@ public class GestorParametrosVehiculo {
         return instanciaGestor;
     }
     
-	public void cargarParametrosVehiculos() {
-		DAOParametrosVehiculos.getDAO().cargarParametrosVehiculos();
-	}
-
     public void addRiesgoModelo(RiesgoModelo r) {
-    	DAOParametrosVehiculos.getDAO().addRiesgoModelo(r);
+    	DAOParametrosVehiculo.getDAO().addRiesgoModelo(r);
     }
     
 	public List<Marca> getMarcas() {
-		return DAOParametrosVehiculos.getDAO().getMarcas();
+		return DAOParametrosVehiculo.getDAO().getMarcas();
     }
 	
 	public AnioModelo getAnioModelo(Integer id) {
-		return DAOParametrosVehiculos.getDAO().getAnioModelo(id);
+		return DAOParametrosVehiculo.getDAO().getAnioModelo(id);
     }
 	
     public Float getUltimoRiesgoModelo(Integer id_modelo) {
-    	return DAOParametrosVehiculos.getDAO().getUltimoRiesgoModelo(id_modelo).getValorPorcentual();
+    	return DAOParametrosVehiculo.getDAO().getUltimoRiesgoModelo(id_modelo).getValorPorcentual();
     }
     
     public List<Modelo> sortModelos(Marca marca){

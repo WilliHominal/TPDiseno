@@ -10,5 +10,5 @@ insert into riesgo_tipo_cobertura values(NEXTVAL('id_riesgo_cobertura_seq'), nul
 insert into tipo_cobertura values('TERCEROS_COMPLETOS', 'Descripcion cuatro', 'Terceros completos');
 insert into riesgo_tipo_cobertura values(NEXTVAL('id_riesgo_cobertura_seq'), null,'2019-10-23',  0.1533, null, 'TERCEROS_COMPLETOS', 0);
 
-insert into tipo_cobertura values('TODO_RIESGO_CON_FRANQUICIA', 'Descripcion cinco', 'Todo riesgo con franquiia');
+insert into tipo_cobertura values('TODO_RIESGO_CON_FRANQUICIA', 'Descripcion cinco', 'Todo riesgo con franquicia');
 insert into riesgo_tipo_cobertura values(NEXTVAL('id_riesgo_cobertura_seq'), null, '2019-10-23', 0.2816, null, 'TODO_RIESGO_CON_FRANQUICIA', 0);

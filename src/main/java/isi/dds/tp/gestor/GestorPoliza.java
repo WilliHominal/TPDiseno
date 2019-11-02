@@ -18,8 +18,7 @@ import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.modelo.Cuota;
 
-public class GestorPoliza {
-	
+public class GestorPoliza {	
 	private static GestorPoliza instanciaGestor = null;
 	
 	private DAOPoliza dao = DAOPoliza.getDAO();
@@ -36,16 +35,9 @@ public class GestorPoliza {
         }    
         return instanciaGestor;
     }
-    
-	public void cargarPolizas() {
-		dao.cargarPolizas();
-	}
 	
     public Poliza newPoliza(Cliente cliente, String numeroSiniestros){
     	Poliza poliza = new Poliza();
-		if(cliente.getPolizas() == null) {
-			cliente.setPolizas(new ArrayList<Poliza>());
-		}
     	poliza.setCliente(cliente);
     	poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().parseEnumSiniestros(numeroSiniestros));
     	poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
@@ -282,6 +274,6 @@ public class GestorPoliza {
 
 	public Boolean esModeloViejo(Poliza poliza) {
 		Integer anioActual = LocalDate.now().getYear();
-		return poliza.getAnioModelo().getAnio() >= (anioActual - 10); 
+		return poliza.getAnioModelo().getAnio() <= (anioActual - 10); 
 	}
 }

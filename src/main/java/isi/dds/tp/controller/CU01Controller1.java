@@ -18,6 +18,7 @@ import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
 import isi.dds.tp.gestor.GestorTema;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Cliente;
@@ -64,16 +65,6 @@ public class CU01Controller1 {
 		this.view1 = new CU01View1();
 		view1.addListenerBtn_BuscarCliente(new ListenerBtnBuscarCliente());;
 		view1.addListenerBtn_AltaCliente(new ListenerBtnAltaCliente());
-		view1.addListenerBtn_AgregarHijo(new ListenerBtnDeclararHijo());
-		view1.addListenerBtn_QuitarHijo(new ListenerBtnQuitarHijo());
-		view1.addListenerSeleccionProvincia(new ListenerSeleccionProvincia());
-		view1.addListenerSeleccionMarca(new ListenerSeleccionMarca());
-		view1.addListenerSeleccionModelo(new ListenerSeleccionModelo());
-		view1.addListenerSeleccionAnioModelo(new ListenerSeleccionAnioModelo());
-		view1.addListenerCampoMotor(new ListenerCampoMotor());
-		view1.addListenerCampoChasis(new ListenerCampoChasis());
-		view1.addListenerCampoPatente(new ListenerCampoPatente());
-		view1.addListenerBtn_ConfirmarDatos(new ListenerBtnConfirmarDatos());
 		view1.addListenerBtn_Cancelar(new ListenerBtnCancelar());
 		ventana.setContentPane(view1);
 		ventana.revalidate();
@@ -123,7 +114,7 @@ public class CU01Controller1 {
 		poliza = gestorPoliza.newPoliza(cliente, numeroSiniestros);
 		view1.setNumeroSiniestros(numeroSiniestros);
 		
-		
+
 		if(cliente.getPiso() == null) {
 			view1.setPiso("-");
 			view1.setDepartamento("-");
@@ -134,7 +125,6 @@ public class CU01Controller1 {
 		
 		if(primerCliente) {
 			view1.componentesAlObtenerCliente();
-			
 			ArrayList<Provincia> provincias = (ArrayList<Provincia>) gestorDomicilio.getProvincias(cliente.getCiudad().getProvincia().getPais().getIdPais());
 			Iterator<Provincia> iteradorProvincias = provincias.iterator();
 			while(iteradorProvincias.hasNext()){
@@ -149,8 +139,8 @@ public class CU01Controller1 {
 			}
 			
 			view1.addKmsAnio();
+			primerCliente = false;
 		}
-
 		view1.setProvinciaInicio(cliente.getCiudad().getProvincia());
 		view1.habilitarSeleccionModelo(false);
 		view1.habilitarSeleccionAnioModelo(false);
@@ -162,6 +152,17 @@ public class CU01Controller1 {
 		}
 		
 		view1.setCiudadInicio(cliente.getCiudad());
+		
+		view1.addListenerBtn_AgregarHijo(new ListenerBtnDeclararHijo());
+		view1.addListenerBtn_QuitarHijo(new ListenerBtnQuitarHijo());
+		view1.addListenerSeleccionProvincia(new ListenerSeleccionProvincia());
+		view1.addListenerSeleccionMarca(new ListenerSeleccionMarca());
+		view1.addListenerSeleccionModelo(new ListenerSeleccionModelo());
+		view1.addListenerSeleccionAnioModelo(new ListenerSeleccionAnioModelo());
+		view1.addListenerCampoMotor(new ListenerCampoMotor());
+		view1.addListenerCampoChasis(new ListenerCampoChasis());
+		view1.addListenerCampoPatente(new ListenerCampoPatente());
+		view1.addListenerBtn_ConfirmarDatos(new ListenerBtnConfirmarDatos());
 	}
 
 	/**
@@ -367,6 +368,7 @@ public class CU01Controller1 {
 		ventana.setContentPane(panelAnteriorAPoliza);
 		ventana.setTitle(tituloAnteriorAPoliza);
 		view1.setVisible(false);
+		HibernateUtil.cerrarSessionesUsadas();
 	}
 	
 	//-------- LISTENER
@@ -459,17 +461,18 @@ public class CU01Controller1 {
 	private class ListenerSeleccionProvincia implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			Provincia provincia = view1.getProvincia();
+			view1.habilitarSeleccionCiuad(false);
 			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(provincia).iterator();
 			view1.addCiudad(iteratorCiudad.next(), true);
 			while(iteratorCiudad.hasNext()){
 				view1.addCiudad(iteratorCiudad.next(), false);
 			}
+			view1.habilitarSeleccionCiuad(true);
 		}
 	}
 	
 	private class ListenerSeleccionMarca implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			
 			Marca marca = view1.getMarca();
 			view1.habilitarSeleccionModelo(false);
 			view1.habilitarSeleccionAnioModelo(false);

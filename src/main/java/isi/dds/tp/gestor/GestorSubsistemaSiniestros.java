@@ -8,9 +8,7 @@ public class GestorSubsistemaSiniestros {
 
 	private static GestorSubsistemaSiniestros instanciaGestor = null;
 	 
-    private GestorSubsistemaSiniestros() {
-
-    }
+    private GestorSubsistemaSiniestros() { }
 
     public static GestorSubsistemaSiniestros get() {
         if (instanciaGestor == null){
@@ -21,9 +19,5 @@ public class GestorSubsistemaSiniestros {
 
 	public EnumSiniestros getSiniestroUltimosAnios(EnumTipoDocumento tipoDocumento, String documento, int anio) {
 		return DAOSiniestros.getDAO().getSiniestroUltimoAnio(tipoDocumento, documento, anio).getSiniestros();
-	}
-	
-	public void cargarSiniestros() {
-		DAOSiniestros.getDAO().cargarSiniestros();
 	}
 }

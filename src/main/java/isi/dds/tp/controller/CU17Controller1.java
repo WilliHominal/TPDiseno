@@ -16,6 +16,7 @@ import isi.dds.tp.gestor.GestorCliente;
 import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.Cliente;
+import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.view.CU01View1;
 import isi.dds.tp.view.CU17View1;
 
@@ -93,12 +94,15 @@ public class CU17Controller1 {
 		this.altaPolizaController = altaPolizaController;
 	}
 	
-	public void obtenidoCliente() {
+	public void obtenidoCliente(Cliente cliente) {
 		if(esAltaPoliza) {
-			altaPolizaController.obtenidoCliente(clienteObtenido);
+			altaPolizaController.obtenidoCliente(cliente);
+			if(cliente.getPolizas() == null) {
+				cliente.setPolizas(new ArrayList<Poliza>());
+			}
 		}
 		try {
-			ventana.setContentPane(panelAnterior);	
+			ventana.setContentPane(panelAnterior);
 			ventana.setTitle(tituloAnterior);
 			view1.setVisible(false);
 		}catch(Exception ex) {
@@ -131,7 +135,8 @@ public class CU17Controller1 {
 					
 			}catch(Exception ex) {
             	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
-                          "Error.", JOptionPane.ERROR_MESSAGE);       	
+                          "Error.", JOptionPane.ERROR_MESSAGE);  
+            	ex.printStackTrace(); //TODO eliminar
 			}
 		}
 	}

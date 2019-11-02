@@ -22,10 +22,6 @@ public class GestorDomicilio {
         return instanciaGestor;
     }
     
-    public void cargarUbicaciones() {
-    	DAODomicilio.getDAO().cargarUbicaciones();
-    }
-    
     public void addRiesgoCiudad(RiesgoCiudad r) {
     	DAODomicilio.getDAO().addRiesgoCiudad(r);
     }

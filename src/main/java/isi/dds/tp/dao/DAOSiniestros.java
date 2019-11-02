@@ -11,56 +11,49 @@ import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Siniestro;
 
 public class DAOSiniestros {
-	
 	private static DAOSiniestros instanciaDAO = null;
+	private static Session session = null;
 	 
-    private DAOSiniestros() {
-
-    }
+    private DAOSiniestros() { }
 
     public static DAOSiniestros getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new DAOSiniestros();
-        }    
+        }
+        if(session == null) {
+    		session = HibernateUtil.getSessionFactoryValidate().openSession();
+        	session.beginTransaction();
+        }        
         return instanciaDAO;
     }
-
-    public void addSiniestro(Siniestro s) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
-        try {
-            session.beginTransaction();
-            session.save(s);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-    }
     
-    public Siniestro getSiniestroUltimoAnio(EnumTipoDocumento tipoDocumento, String documento, Integer anio) {    	
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
+	public void cargarSiniestros() {
+		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/siniestros.sql");
+		try {
+			Iterator<String> iteradorqueries = queries.iterator();
+			while(iteradorqueries.hasNext()){
+				session.createSQLQuery(iteradorqueries.next()).executeUpdate();
+			}
+		}catch (HibernateException e) {
+			e.printStackTrace();
+            session.getTransaction().rollback();	
+		}	
+	}
+    
+    public Siniestro getSiniestroUltimoAnio(EnumTipoDocumento tipoDocumento, String documento, Integer anio) {
         try {
-            session.beginTransaction();
             return session.createQuery("SELECT s FROM Siniestro s where tipo_documento='"+tipoDocumento+"' and documento='"+documento+"' and anio="+anio, Siniestro.class).getSingleResult();
-            
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
         return null;
     }
-
-	public void cargarSiniestros() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/siniestros.sql");
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-		session.beginTransaction();
-		Iterator<String> iteradorqueries = queries.iterator();
-		while(iteradorqueries.hasNext()){
-			session.createSQLQuery(iteradorqueries.next()).executeUpdate();
-		}
-		session.close();
-	}
+    
+    public void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
 }

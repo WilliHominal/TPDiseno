@@ -2,31 +2,28 @@ package isi.dds.tp.dao;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Usuario;
 
 public class DAOUsuario {
-	
 	private static DAOUsuario instanciaDAO = null;
+	private static Session session = null;
 	 
-    private DAOUsuario() {
-
-    }
+    private DAOUsuario() { }
 
     public static DAOUsuario getDAO() {
         if (instanciaDAO == null){
         	instanciaDAO = new DAOUsuario();
-        }    
+        }
+        if(session == null) {
+    		session = HibernateUtil.getSessionFactoryValidate().openSession();
+        	session.beginTransaction();
+        }        
         return instanciaDAO;
     }
 
-
 	public void addUsuario(Usuario u) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        
         try {
-            session.beginTransaction();
             session.save(u);
             session.getTransaction().commit();
         }
@@ -35,5 +32,11 @@ public class DAOUsuario {
             session.getTransaction().rollback();
         }
 	}
-
+	
+    public void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
 }
