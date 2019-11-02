@@ -45,11 +45,11 @@ public class GestorPoliza {
     	return poliza;
     }
     
-    public void altaPoliza(Poliza poliza) {
+    public Boolean altaPoliza(Poliza poliza) {
     	generarNumeroPoliza(poliza);
     	poliza.setEstado(EnumEstadoPoliza.GENERADA);
     	GestorCliente.get().actualizarCliente(poliza.getCliente(), poliza);
-    	dao.addPoliza(poliza);
+    	return dao.addPoliza(poliza);
     }
     
     private void generarNumeroPoliza(Poliza poliza) {
@@ -191,19 +191,24 @@ public class GestorPoliza {
 		return valorDescuento;
 	}
 
-	public Boolean validarMotor(String textoPatente) {
-		// TODO implementar validarMotor(String textoPatente)
+	public Boolean validarMotor(String textoMotor) {
+		if(dao.getCantPolizaPorMotor(textoMotor)>0) {
+			return true;
+		}
 		return false;
 	}
 	
 	public Boolean validarChasis(String textoChasis) {
-		// TODO implementar validarChasis(String textoChasis)
+		if(dao.getCantPolizaPorChasis(textoChasis)>0) {
+			return true;
+		}
 		return false;
 	}
 
 	public Boolean validarPatente(String textoPatente) {
-		
-		//TODO implementar validarPatente(String textoPatente)
+		if(dao.getCantPolizaPorPatente(textoPatente)>0) {
+			return true;
+		}
 		return false;	
 	}
 

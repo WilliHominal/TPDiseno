@@ -66,8 +66,18 @@ public class CU01Controller1 {
 		view1.addListenerBtn_BuscarCliente(new ListenerBtnBuscarCliente());;
 		view1.addListenerBtn_AltaCliente(new ListenerBtnAltaCliente());
 		view1.addListenerBtn_Cancelar(new ListenerBtnCancelar());
+		view1.addListenerBtn_AgregarHijo(new ListenerBtnDeclararHijo());
+		view1.addListenerBtn_QuitarHijo(new ListenerBtnQuitarHijo());
+		view1.addListenerSeleccionProvincia(new ListenerSeleccionProvincia());
+		view1.addListenerSeleccionMarca(new ListenerSeleccionMarca());
+		view1.addListenerSeleccionModelo(new ListenerSeleccionModelo());
+		view1.addListenerSeleccionAnioModelo(new ListenerSeleccionAnioModelo());
+		view1.addListenerCampoMotor(new ListenerCampoMotor());
+		view1.addListenerCampoChasis(new ListenerCampoChasis());
+		view1.addListenerCampoPatente(new ListenerCampoPatente());
+		view1.addListenerBtn_ConfirmarDatos(new ListenerBtnConfirmarDatos());
 		ventana.setContentPane(view1);
-		ventana.revalidate();
+		ventana.revalidate();		
 	}
 	
 	/**
@@ -113,7 +123,6 @@ public class CU01Controller1 {
 		String numeroSiniestros = gestorEnum.parseString(gestorSubsistemaSiniestros.getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()));
 		poliza = gestorPoliza.newPoliza(cliente, numeroSiniestros);
 		view1.setNumeroSiniestros(numeroSiniestros);
-		
 
 		if(cliente.getPiso() == null) {
 			view1.setPiso("-");
@@ -138,12 +147,14 @@ public class CU01Controller1 {
 				view1.addMarca(marcasIterator.next());
 			}
 			
+			view1.setProvinciaInicio(cliente.getCiudad().getProvincia());
+			view1.habilitarSeleccionModelo(false);
+			view1.habilitarSeleccionAnioModelo(false);
+			
 			view1.addKmsAnio();
 			primerCliente = false;
 		}
-		view1.setProvinciaInicio(cliente.getCiudad().getProvincia());
-		view1.habilitarSeleccionModelo(false);
-		view1.habilitarSeleccionAnioModelo(false);
+
 		
 		Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(cliente.getCiudad().getProvincia()).iterator();
 		view1.addCiudad(iteratorCiudad.next(), true);
@@ -152,17 +163,6 @@ public class CU01Controller1 {
 		}
 		
 		view1.setCiudadInicio(cliente.getCiudad());
-		
-		view1.addListenerBtn_AgregarHijo(new ListenerBtnDeclararHijo());
-		view1.addListenerBtn_QuitarHijo(new ListenerBtnQuitarHijo());
-		view1.addListenerSeleccionProvincia(new ListenerSeleccionProvincia());
-		view1.addListenerSeleccionMarca(new ListenerSeleccionMarca());
-		view1.addListenerSeleccionModelo(new ListenerSeleccionModelo());
-		view1.addListenerSeleccionAnioModelo(new ListenerSeleccionAnioModelo());
-		view1.addListenerCampoMotor(new ListenerCampoMotor());
-		view1.addListenerCampoChasis(new ListenerCampoChasis());
-		view1.addListenerCampoPatente(new ListenerCampoPatente());
-		view1.addListenerBtn_ConfirmarDatos(new ListenerBtnConfirmarDatos());
 	}
 
 	/**
@@ -219,7 +219,7 @@ public class CU01Controller1 {
 					}
 				}
 				if(!errorEnMotor) {
-					if(gestorPoliza.validarMotor(textoPatente)) {
+					if(gestorPoliza.validarMotor(textoMotor)) {
 						errorEnMotor = true;
 						textoErrorMotor = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
 						errorNumero++;
@@ -427,8 +427,9 @@ public class CU01Controller1 {
 			try {	
 				if(!condicionesGenerarPoliza()) {
 					return;
-				}
-				if(JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE)==0) {
+				}				
+				int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+				if(seleccion == 0) {
 					String patente = null;
 					
 					if(!view1.getPatente().equalsIgnoreCase("")) {
@@ -440,8 +441,7 @@ public class CU01Controller1 {
 							view1.getAlarma(), view1.getRastreo(), view1.getTuercasAntirrobo()
 					);
 					new CU01Controller2(ventana, poliza).setCU01Controller1(instancia);
-				}
-				
+				}				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}

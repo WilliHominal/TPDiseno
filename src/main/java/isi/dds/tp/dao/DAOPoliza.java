@@ -23,13 +23,16 @@ public class DAOPoliza {
         if(session == null) {
     		session = HibernateUtil.getSessionFactoryValidate().openSession();
         	session.beginTransaction();
-        }        
+        }       
+        
         return instanciaDAO;
     }
     
 	public void cargarPolizas() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/polizas.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		try {
+			session.beginTransaction();
 			Iterator<String> iteradorqueries = queries.iterator();
 			while(iteradorqueries.hasNext()){
 				session.createSQLQuery(iteradorqueries.next()).executeUpdate();
@@ -38,17 +41,25 @@ public class DAOPoliza {
 			e.printStackTrace();
             session.getTransaction().rollback();	
 		}
+		session.close();
 	}
 
-    public void addPoliza(Poliza p) {
+    public Boolean addPoliza(Poliza p) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+    	Boolean altaPoliza = false;
         try {
+        	session.beginTransaction();
             session.save(p);
             session.getTransaction().commit();
+            altaPoliza = true;
         }
         catch (HibernateException e) {
+        	altaPoliza = false;
         	e.printStackTrace();
             session.getTransaction().rollback();	
 		}
+        session.close();
+        return altaPoliza;
     }
 
 	public List<Poliza> getPolizas(Long numeroCliente) {
@@ -61,9 +72,9 @@ public class DAOPoliza {
         return null;
     }
 	
-	public Poliza getPolizaPorMotor(String motor) {
+	public Long getCantPolizaPorMotor(String motor) {
         try {
-            return session.createQuery("SELECT p FROM Poliza p WHERE motor="+motor, Poliza.class).getSingleResult();
+            return (Long) session.createQuery("select count(*) from Poliza where motor='"+motor+"'").getSingleResult();
         }
         catch (HibernateException e) {
             e.printStackTrace();
@@ -71,24 +82,22 @@ public class DAOPoliza {
         return null;
     }
 	
-	public Poliza getPolizaPorChasis(String chasis) {
-		//TODO que retorne cantidad
+	public Long getCantPolizaPorChasis(String chasis) {
         try {
-            session.beginTransaction();
-            return session.createQuery("SELECT p FROM Poliza p WHERE chasis="+chasis, Poliza.class).getSingleResult();
+        	return (Long) session.createQuery("select count(*) from Poliza where chasis='"+chasis+"'").getSingleResult();
         }
         catch (HibernateException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }
 	
-	public Poliza getPolizaPorPatente(String patente) {
+	public Long getCantPolizaPorPatente(String patente) {
         try {
-            return session.createQuery("SELECT p FROM Poliza p WHERE patente="+patente, Poliza.class).getSingleResult();
+        	return (Long) session.createQuery("select count(*) from Poliza where patente='"+patente+"'").getSingleResult();
         }
         catch (HibernateException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         }
         return null;
     }
@@ -98,7 +107,7 @@ public class DAOPoliza {
             return session.createQuery("SELECT c FROM Cuota c WHERE numero_poliza="+numeroPoliza, Cuota.class).list();
         }
         catch (HibernateException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return null;
     }

@@ -45,7 +45,7 @@ public class HibernateUtil {
     
     public static SessionFactory getSessionFactoryValidate() {
 		//desactiva que se abra la consola cada vez que se inicia
-		Logger log = Logger.getLogger("org.hibernate");
+    	Logger log = Logger.getLogger("org.hibernate");
 		log.setLevel(Level.OFF); 
         if (sessionFactory == null) {
             try {

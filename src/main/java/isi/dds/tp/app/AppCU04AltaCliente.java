@@ -1,9 +1,7 @@
 package isi.dds.tp.app;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-
 import isi.dds.tp.controller.CU04Controller;
 
 public class AppCU04AltaCliente {

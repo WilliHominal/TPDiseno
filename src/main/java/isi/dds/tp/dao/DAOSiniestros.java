@@ -29,7 +29,9 @@ public class DAOSiniestros {
     
 	public void cargarSiniestros() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/siniestros.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		try {
+			session.beginTransaction();
 			Iterator<String> iteradorqueries = queries.iterator();
 			while(iteradorqueries.hasNext()){
 				session.createSQLQuery(iteradorqueries.next()).executeUpdate();
@@ -38,6 +40,7 @@ public class DAOSiniestros {
 			e.printStackTrace();
             session.getTransaction().rollback();	
 		}	
+		session.close();
 	}
     
     public Siniestro getSiniestroUltimoAnio(EnumTipoDocumento tipoDocumento, String documento, Integer anio) {

@@ -2,9 +2,7 @@ package isi.dds.tp.gestor;
 
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.modelo.Poliza;
-
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.dao.DAOCliente;
 import isi.dds.tp.enums.EnumCondicion;
@@ -26,19 +24,12 @@ public class GestorCliente {
     }
     
     public void actualizarCliente(Cliente cliente, Poliza poliza) {
-    	if(cliente.getPolizas() == null) {
-			cliente.setPolizas(new ArrayList<Poliza>());
-		}
     	actualizarCondicion(cliente); 
     	cliente.getPolizas().add(poliza);
     }
     
     public Cliente getCliente(Long numeroCliente) {
-    	Cliente cliente = DAOCliente.getDAO().getCliente(numeroCliente);
-		if(cliente.getPolizas() == null) {
-			cliente.setPolizas(new ArrayList<Poliza>());
-		}
-    	return cliente;
+    	return DAOCliente.getDAO().getCliente(numeroCliente);
     }
     
     public List<Poliza> getPoliza(Long numeroCliente) {

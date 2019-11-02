@@ -698,7 +698,6 @@ public class CU01View1 extends JPanel {
 	}
 	
 	public void addProvincia(Provincia provincia) {
-		//TODO problemas
 		seleccionProvincia.addItem(provincia);
 	}
 	

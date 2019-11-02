@@ -30,7 +30,9 @@ public class DAOParametrosVehiculo {
     
     public void cargarParametrosVehiculos() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/parametrosVehiculo.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		try {
+			session.beginTransaction();
 			Iterator<String> iteradorqueries = queries.iterator();
 			while(iteradorqueries.hasNext()){
 				session.createSQLQuery(iteradorqueries.next()).executeUpdate();
@@ -39,10 +41,13 @@ public class DAOParametrosVehiculo {
 			e.printStackTrace();
             session.getTransaction().rollback();	
 		}
+		session.close();
 	}
     
     public void addRiesgoModelo(RiesgoModelo r) {
-        try {
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		try {
+			session.beginTransaction();
             session.save(r);
             session.getTransaction().commit();
         }
@@ -50,6 +55,7 @@ public class DAOParametrosVehiculo {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
+		session.close();
     }
     
 	public List<Marca> getMarcas() {

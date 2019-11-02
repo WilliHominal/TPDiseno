@@ -167,7 +167,7 @@ public class CU01Controller2 {
 				descuentoSemestral = true;
 			}
 			
-			if (poliza.getCliente().getPolizas().size() > 1) {
+			if (poliza.getCliente().getPolizas().size() > 0) {
 				descuentoMasDeUnaUnidad = true;
 			}
 
@@ -221,12 +221,13 @@ public class CU01Controller2 {
 	
 	private class ListenerBtnGenerarPoliza implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if(JOptionPane.showConfirmDialog(ventana, "¿Desea generar la póliza?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)==0) {
-				gestorPoliza.altaPoliza(poliza);
-				//TODO cuando no se genere una poliza, no lanzar el joptionpane
-				JOptionPane.showConfirmDialog(ventana, "Póliza generada correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
-				controller1.volver();
-				view2.setVisible(false);				
+			int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea generar la póliza?", "Confirmación", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+			if(seleccion == 0) {
+				if(gestorPoliza.altaPoliza(poliza)) {
+					JOptionPane.showConfirmDialog(ventana, "Póliza generada correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+					controller1.volver();
+					view2.setVisible(false);
+				}
 			}
 		}
 	}

@@ -30,7 +30,9 @@ public class DAOTipoCobertura {
     
 	public void cargarTiposCoberturas() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/tiposCobertura.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		try {
+			session.beginTransaction();
 			Iterator<String> iteradorqueries = queries.iterator();
 			while(iteradorqueries.hasNext()){
 				session.createSQLQuery(iteradorqueries.next()).executeUpdate();
@@ -39,6 +41,7 @@ public class DAOTipoCobertura {
 			e.printStackTrace();
             session.getTransaction().rollback();	
 		}
+		session.close();
 	}
     
     public void addRiesgoCobertura(RiesgoTipoCobertura r) {

@@ -27,7 +27,9 @@ public class DAOParametrosPoliza {
     
 	public void cargarParametrosPoliza() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/parametrosPoliza.sql");
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		try {
+			session.beginTransaction();
 			Iterator<String> iteradorqueries = queries.iterator();
 			while(iteradorqueries.hasNext()){
 				session.createSQLQuery(iteradorqueries.next()).executeUpdate();
@@ -36,6 +38,7 @@ public class DAOParametrosPoliza {
 			e.printStackTrace();
             session.getTransaction().rollback();	
 		}
+		session.close();
 	}
 
 	public ParametrosPoliza getUltimoParametrosPoliza() {

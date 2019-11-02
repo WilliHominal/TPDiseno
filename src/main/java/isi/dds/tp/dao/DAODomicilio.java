@@ -31,8 +31,10 @@ public class DAODomicilio {
     }
     
     public void cargarUbicaciones() {
-		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/domicilio.sql");
+    	ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/domicilio.sql");
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
 		try {
+			session.beginTransaction();
 			Iterator<String> iteradorqueries = queries.iterator();
 			while(iteradorqueries.hasNext()){
 				session.createSQLQuery(iteradorqueries.next()).executeUpdate();
@@ -41,10 +43,13 @@ public class DAODomicilio {
 			e.printStackTrace();
             session.getTransaction().rollback();	
 		}
+		session.close();
     }
     
     public void addRiesgoCiudad(RiesgoCiudad r) {
-        try {
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		try {
+			session.beginTransaction();
             session.save(r);
             session.getTransaction().commit();
         }
@@ -52,6 +57,7 @@ public class DAODomicilio {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
+		session.close();
     }
 
 	public List<Pais> getPaises() {
