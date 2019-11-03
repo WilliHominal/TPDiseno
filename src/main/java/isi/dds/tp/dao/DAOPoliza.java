@@ -1,10 +1,14 @@
 package isi.dds.tp.dao;
 
+import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
+import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Cuota;
@@ -76,9 +80,7 @@ public class DAOPoliza {
         try {
             return (Long) session.createQuery("select count(*) from Poliza where motor='"+motor+"'").getSingleResult();
         }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }
+        catch (HibernateException e) { }
         return null;
     }
 	
@@ -86,9 +88,7 @@ public class DAOPoliza {
         try {
         	return (Long) session.createQuery("select count(*) from Poliza where chasis='"+chasis+"'").getSingleResult();
         }
-        catch (HibernateException e) {
-            //e.printStackTrace();
-        }
+        catch (HibernateException e) { }
         return null;
     }
 	
@@ -96,9 +96,7 @@ public class DAOPoliza {
         try {
         	return (Long) session.createQuery("select count(*) from Poliza where patente='"+patente+"'").getSingleResult();
         }
-        catch (HibernateException e) {
-           // e.printStackTrace();
-        }
+        catch (HibernateException e) { }
         return null;
     }
 
@@ -106,9 +104,7 @@ public class DAOPoliza {
         try {
             return session.createQuery("SELECT c FROM Cuota c WHERE numero_poliza="+numeroPoliza, Cuota.class).list();
         }
-        catch (HibernateException e) {
-            //e.printStackTrace();
-        }
+        catch (HibernateException e) { }
         return null;
     }
 
@@ -123,4 +119,16 @@ public class DAOPoliza {
     		session = null;
     	}
     }
+
+	public BigInteger getCantCuotasImpagas(Long numeroCliente) {
+        try {
+        	return (BigInteger) session.createSQLQuery("select count(c) from poliza p, cuota c"
+        			+ " where	p.numero_cliente="+numeroCliente 
+        			+	  " and p.numero_poliza=c.numero_poliza"
+        			+	  " and c.estado='"+EnumEstadoCuota.IMPAGO+"'"
+        			+	  " and c.ultimo_dia_pago<'"+LocalDate.now()+"';").getSingleResult();
+        }
+        catch (HibernateException e) { }
+        return null;
+	}
 }

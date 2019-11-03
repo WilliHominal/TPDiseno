@@ -1,5 +1,6 @@
 package isi.dds.tp.gestor;
 
+import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -185,7 +186,7 @@ public class GestorPoliza {
 			valorBonificacionPagoSemestral = GestorSistemaFinanciero.get().getTasaInteresAnual() / 2; //divide por 2 porque el interes es anual
 		}
 		
-		Float valorDescuento = valorDescuentoPorUnidadAdicional * poliza.getCliente().getPolizas().size() + valorBonificacionPagoSemestral;
+		Float valorDescuento = valorDescuentoPorUnidadAdicional * poliza.getCliente().getPolizas().size() * poliza.getSumaAsegurada() + valorBonificacionPagoSemestral;
 		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
 		poliza.setValorDescuento(valorDescuento);
 		return valorDescuento;
@@ -258,27 +259,28 @@ public class GestorPoliza {
 		return (valido1 && valido2);
 	}
 
-	public List<Cuota> getCuotas(Long numeroPoliza) {
-		return dao.getCuotas(numeroPoliza);
-    }
-	
-	public void removeHijo(Poliza poliza, int indexHijo){
-    	poliza.getHijosDeclarado().remove(indexHijo);
-	}
-
 	public Boolean vigenciaPolizas(Long numeroCliente) {
 		//TODO implementar - true si estas vigentes - false sino lo están
 		return true;
 	}
 	
 	public Boolean omisionPago(Long numeroCliente) {
-		// TODO implementar omisionPago
+		if(dao.getCantCuotasImpagas(numeroCliente).equals(BigInteger.ZERO)) {
+			return false;
+		}
 		return true;
 	}
-
 
 	public Boolean esModeloViejo(Poliza poliza) {
 		Integer anioActual = LocalDate.now().getYear();
 		return poliza.getAnioModelo().getAnio() <= (anioActual - 10); 
+	}
+	
+	public List<Cuota> getCuotas(Long numeroPoliza) {
+		return dao.getCuotas(numeroPoliza);
+    }
+	
+	public void removeHijo(Poliza poliza, int indexHijo){
+    	poliza.getHijosDeclarado().remove(indexHijo);
 	}
 }

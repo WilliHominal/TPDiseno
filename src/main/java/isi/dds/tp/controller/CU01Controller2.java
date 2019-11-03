@@ -173,8 +173,7 @@ public class CU01Controller2 {
 
 			Float premio = gestorPoliza.calcularPremio(poliza);
 			Float descuento = gestorPoliza.calcularDescuento(poliza, descuentoSemestral);
-			Float valorDescontado = premio * descuento;
-			Float montoTotal = premio - valorDescontado;
+			Float montoTotal = premio - descuento;
 			Float montoCuota = montoTotal / 6;			
 			
 			view2.setApellido(poliza.getCliente().getApellido());
@@ -194,7 +193,7 @@ public class CU01Controller2 {
 			
 			view2.setPremio(num.format(premio));
 			view2.setSumaAsegurada(num.format(poliza.getSumaAsegurada()));
-			view2.setDescuento(num.format(valorDescontado));
+			view2.setDescuento(num.format(descuento));
 			
 			
 			if(view2.eligioMensual()) {

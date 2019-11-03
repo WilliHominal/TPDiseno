@@ -23,17 +23,13 @@ public class GestorCliente {
         return instanciaGestor;
     }
     
-    public void actualizarCliente(Cliente cliente, Poliza poliza) {
-    	actualizarCondicion(cliente); 
-    	cliente.getPolizas().add(poliza);
-    }
-    
     public Cliente getCliente(Long numeroCliente) {
     	return DAOCliente.getDAO().getCliente(numeroCliente);
     }
     
-    public List<Poliza> getPoliza(Long numeroCliente) {
-    	return null;
+    public void actualizarCliente(Cliente cliente, Poliza poliza) {
+    	actualizarCondicion(cliente); 
+    	cliente.getPolizas().add(poliza);
     }
     
     public void actualizarCondicion(Cliente cliente) {
