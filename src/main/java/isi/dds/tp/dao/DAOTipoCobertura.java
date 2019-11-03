@@ -28,6 +28,13 @@ public class DAOTipoCobertura {
         return instanciaDAO;
     }
     
+    public static void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
+    
 	public void cargarTiposCoberturas() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/tiposCobertura.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -45,6 +52,7 @@ public class DAOTipoCobertura {
 	}
     
     public void addRiesgoCobertura(RiesgoTipoCobertura r) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
             session.save(r);
             session.getTransaction().commit();
@@ -53,6 +61,7 @@ public class DAOTipoCobertura {
             e.printStackTrace();
             session.getTransaction().rollback();
         }
+        session.close();
     }
     
 	public List<TipoCobertura> getTiposCobertura(){
@@ -84,11 +93,4 @@ public class DAOTipoCobertura {
         }	
     	return null;
 	}
-	
-    public void shutdown() {
-    	if(session != null) {
-    		session.close();
-    		session = null;
-    	}
-    }
 }

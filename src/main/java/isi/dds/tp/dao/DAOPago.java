@@ -20,7 +20,7 @@ public class DAOPago {
         return instanciaDAO;
     }
 
-    public void shutdown() {
+    public static void shutdown() {
     	if(session != null) {
     		session.close();
     		session = null;

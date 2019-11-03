@@ -30,6 +30,13 @@ public class DAODomicilio {
         return instanciaDAO;
     }
     
+    public static void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
+    
     public void cargarUbicaciones() {
     	ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/domicilio.sql");
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -99,11 +106,4 @@ public class DAODomicilio {
         }
     	return null;
     } 
-    
-    public void shutdown() {
-    	if(session != null) {
-    		session.close();
-    		session = null;
-    	}
-    }
 }

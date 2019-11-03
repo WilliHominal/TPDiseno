@@ -28,6 +28,13 @@ public class DAOParametrosVehiculo {
         return instanciaDAO;
     }
     
+    public static void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
+    
     public void cargarParametrosVehiculos() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/parametrosVehiculo.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -96,12 +103,5 @@ public class DAOParametrosVehiculo {
             e.printStackTrace();
         }
     	return null;
-    }
-    
-    public void shutdown() {
-    	if(session != null) {
-    		session.close();
-    		session = null;
-    	}
     }
 }

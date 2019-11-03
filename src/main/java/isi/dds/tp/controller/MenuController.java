@@ -34,14 +34,14 @@ public class MenuController {
 		tema.setTema(ventana, "MENÚ");
 		ventana.setContentPane(menuView1);
 		menuView1.addListenerBtn_AltaPoliza(new ListenerAltaPoliza());
-		//menu.addListenerBtn_ConsultarPoliza(new ListenerFuncionNoDisponible());
-		//menu.addListenerBtn_GenerarPropuesta(new ListenerFuncionNoDisponible());
-		//menu.addListenerBtn_RegistrarPagoPoliza(new ListenerFuncionNoDisponible());
+		//menuView1.addListenerBtn_ConsultarPoliza(new ListenerFuncionNoDisponible());
+		//menuView1.addListenerBtn_GenerarPropuesta(new ListenerFuncionNoDisponible());
+		//menuView1.addListenerBtn_RegistrarPagoPoliza(new ListenerFuncionNoDisponible());
 		menuView1.addListenerBtn_AltaCliente(new ListenerAltaCliente());
 		menuView1.addListenerBtn_ConsultarCliente(new ListenerConsultarCliente());
-		//menu.addListenerBtn_ActualizarFactores(new ListenerFuncionNoDisponible());
-		//menu.addListenerBtn_GenerarInforme(new ListenerFuncionNoDisponible());
-		//menu.addListenerBtn_GenerarListado(new ListenerFuncionNoDisponible());
+		menuView1.addListenerBtn_ActualizarFactores(new ListenerActaulizarFactores());
+		//menuView1.addListenerBtn_GenerarInforme(new ListenerFuncionNoDisponible());
+		//menuView1.addListenerBtn_GenerarListado(new ListenerFuncionNoDisponible());
 		menuView1.addListenerBtn_Salir(new ListenerSalir());
 	}
 	
@@ -112,6 +112,21 @@ public class MenuController {
 					menuView1.yaCargoBaseDatos();
 				}
 				new CU17Controller1(ventana);
+				ventana.revalidate();
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
+	class ListenerActaulizarFactores implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {			
+				if(menuView1.cargarBaseDatos()) {
+					HibernateUtil.recargarBaseDatos();
+					menuView1.yaCargoBaseDatos();
+				}
+				new CU08Controller(ventana);
 				ventana.revalidate();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);

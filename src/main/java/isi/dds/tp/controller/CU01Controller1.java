@@ -18,7 +18,6 @@ import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
 import isi.dds.tp.gestor.GestorTema;
-import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Cliente;
@@ -368,7 +367,6 @@ public class CU01Controller1 {
 		ventana.setContentPane(panelAnteriorAPoliza);
 		ventana.setTitle(tituloAnteriorAPoliza);
 		view1.setVisible(false);
-		HibernateUtil.cerrarSessionesUsadas();
 	}
 	
 	//-------- LISTENER

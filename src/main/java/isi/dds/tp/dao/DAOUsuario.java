@@ -21,6 +21,13 @@ public class DAOUsuario {
         }        
         return instanciaDAO;
     }
+    
+    public static void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
 
 	public void addUsuario(Usuario u) {
         try {
@@ -32,11 +39,4 @@ public class DAOUsuario {
             session.getTransaction().rollback();
         }
 	}
-	
-    public void shutdown() {
-    	if(session != null) {
-    		session.close();
-    		session = null;
-    	}
-    }
 }

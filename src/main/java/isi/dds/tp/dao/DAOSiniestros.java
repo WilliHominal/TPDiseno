@@ -27,6 +27,13 @@ public class DAOSiniestros {
         return instanciaDAO;
     }
     
+    public static void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
+    
 	public void cargarSiniestros() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/siniestros.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -51,12 +58,5 @@ public class DAOSiniestros {
             e.printStackTrace();
         }
         return null;
-    }
-    
-    public void shutdown() {
-    	if(session != null) {
-    		session.close();
-    		session = null;
-    	}
     }
 }

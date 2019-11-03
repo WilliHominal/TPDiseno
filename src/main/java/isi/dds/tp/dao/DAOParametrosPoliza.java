@@ -25,6 +25,13 @@ public class DAOParametrosPoliza {
         return instanciaDAO;
     }
     
+    public static void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
+    
 	public void cargarParametrosPoliza() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/parametrosPoliza.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -50,11 +57,4 @@ public class DAOParametrosPoliza {
         }
     	return null;
 	}
-	
-    public void shutdown() {
-    	if(session != null) {
-    		session.close();
-    		session = null;
-    	}
-    }
 }

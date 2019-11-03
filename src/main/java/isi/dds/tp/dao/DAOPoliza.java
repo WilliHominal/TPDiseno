@@ -32,6 +32,13 @@ public class DAOPoliza {
         return instanciaDAO;
     }
     
+    public static void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
+    
 	public void cargarPolizas() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/polizas.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -112,13 +119,6 @@ public class DAOPoliza {
 		// TODO implementar generateNumeroRelacionClientePoliza
 		return 0l;
 	}
-	
-    public void shutdown() {
-    	if(session != null) {
-    		session.close();
-    		session = null;
-    	}
-    }
 
 	public BigInteger getCantCuotasImpagas(Long numeroCliente) {
         try {

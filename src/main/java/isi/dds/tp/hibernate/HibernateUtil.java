@@ -72,16 +72,16 @@ public class HibernateUtil {
 	}
     
     public static void shutdown() {
-		DAOParametrosPoliza.getDAO().shutdown();
-		DAODomicilio.getDAO().shutdown();
-		DAOSiniestros.getDAO().shutdown();
-		DAOTipoCobertura.getDAO().shutdown();
-		DAOParametrosVehiculo.getDAO().shutdown();
-		DAOCliente.getDAO().shutdown();
-		DAOPoliza.getDAO().shutdown();
-		DAOPago.getDAO().shutdown();
-		DAOBitacora.getDAO().shutdown();
-		DAOUsuario.getDAO().shutdown();
+		DAOParametrosPoliza.shutdown();
+		DAODomicilio.shutdown();
+		DAOSiniestros.shutdown();
+		DAOTipoCobertura.shutdown();
+		DAOParametrosVehiculo.shutdown();
+		DAOCliente.shutdown();
+		DAOPoliza.shutdown();
+		DAOPago.shutdown();
+		DAOBitacora.shutdown();
+		DAOUsuario.shutdown();
     	
         if (registry != null && sessionFactory != null) {
         	sessionFactory.getCurrentSession().close();

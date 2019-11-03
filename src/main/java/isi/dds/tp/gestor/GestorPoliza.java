@@ -113,7 +113,10 @@ public class GestorPoliza {
 		
 		String kilometraje = poliza.getKmRealizadosPorAnio();
 		//el rango va de 0 - 29 - al guardarse como se guardo se tiene que hacer esto
-		Integer valorRangoKilometraje = Integer.parseInt( kilometraje.substring( 0, kilometraje.indexOf(" - ") ).replace(".", "") ) / 10000;
+		Integer valorRangoKilometraje = 31;
+		try {
+			valorRangoKilometraje = Integer.parseInt( kilometraje.substring( 0, kilometraje.indexOf(" - ") ).replace(".", "") ) / 10000;
+		}catch(StringIndexOutOfBoundsException ex){ }
 		
 		if(!poliza.getGuardaGarage()) {
 			ajusteGarage = param.getPorcentajeGuardaEnGarage();
@@ -186,7 +189,7 @@ public class GestorPoliza {
 			valorBonificacionPagoSemestral = GestorSistemaFinanciero.get().getTasaInteresAnual() / 2; //divide por 2 porque el interes es anual
 		}
 		
-		Float valorDescuento = valorDescuentoPorUnidadAdicional * poliza.getCliente().getPolizas().size() * poliza.getSumaAsegurada() + valorBonificacionPagoSemestral;
+		Float valorDescuento = (valorDescuentoPorUnidadAdicional * poliza.getCliente().getPolizas().size() + valorBonificacionPagoSemestral ) * poliza.getValorPremio() ;
 		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
 		poliza.setValorDescuento(valorDescuento);
 		return valorDescuento;

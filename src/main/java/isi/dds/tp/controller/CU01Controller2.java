@@ -20,6 +20,7 @@ import isi.dds.tp.enums.EnumFormaPago;
 import isi.dds.tp.enums.EnumTipoCobertura;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorTipoCobertura;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.TipoCobertura;
 import isi.dds.tp.view.CU01View2;
@@ -226,6 +227,7 @@ public class CU01Controller2 {
 					JOptionPane.showConfirmDialog(ventana, "Póliza generada correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
 					controller1.volver();
 					view2.setVisible(false);
+					HibernateUtil.cerrarSessionesUsadas();
 				}
 			}
 		}

@@ -26,6 +26,13 @@ public class DAOCliente {
         return instanciaDAO;
     }
     
+    public static void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
+    }
+    
 	public void cargarClientes() {
 		ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/clientes.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -61,11 +68,4 @@ public class DAOCliente {
         }
     	return null;
     } 
-	
-    public void shutdown() {
-    	if(session != null) {
-    		session.close();
-    		session = null;
-    	}
-    }
 }

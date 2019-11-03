@@ -63,7 +63,7 @@ public class MenuView1 extends JPanel {
 		tema.setTema(btnRegistrarPagoPoliza, false, new ImageIcon("src\\main\\resources\\icons\\icon_register.png"));
 		tema.setTema(btnDarAltaCliente, true, new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));
 		tema.setTema(btnConsultarCliente, true, new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));
-		tema.setTema(btnActualizarFactores, false, new ImageIcon("src\\main\\resources\\icons\\icon_update.png"));
+		tema.setTema(btnActualizarFactores, true, new ImageIcon("src\\main\\resources\\icons\\icon_update.png"));
 		tema.setTema(btnGenerarListado, false, new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
 		tema.setTema(btnGenerarInforme, false, new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
 		tema.setTema(btnSalir, true);
