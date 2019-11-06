@@ -39,11 +39,11 @@ public class CU01View2 extends JPanel  {
 					poliza.setCliente(GestorCliente.get().getCliente(5448044249l));
 					poliza.setMotor("2222222222222222");
 					poliza.setChasis("222222222");
-					poliza.setAnioModelo(GestorParametrosVehiculo.get().getAnioModelo(112));
+					poliza.setAnioModelo(GestorParametrosVehiculo.get().getAnioModelo(117)); //anio mayor a 10
+					//poliza.setAnioModelo(GestorParametrosVehiculo.get().getAnioModelo(118)); //anio menor a 10
 					poliza.setCiudad(GestorDomicilio.get().getCiudad(112));
 					poliza.setSumaAsegurada(332444f);
 
-					
 					JFrame frame = new JFrame();
 					new CU01Controller2(frame, poliza);
 					GestorTema.get().setTema(frame, "Dar de alta póliza: 22222222");
@@ -156,7 +156,7 @@ public class CU01View2 extends JPanel  {
 		constraints.insets.set(5, 5, 0, 60);
 		constraints.gridx = 2;
 		add(mensual, constraints);
-		constraints.anchor=GridBagConstraints.EAST;
+		constraints.insets.set(5, 90, 0, 5);
 		add(semestral, constraints);
 		
 		constraints.gridy = 2;

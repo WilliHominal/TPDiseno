@@ -109,9 +109,9 @@ public class CU08View extends JPanel{
 	private JLabel lvalorModificar15 = new JLabel(labelValorModificar);
 	
 	private JLabel ltituloCheck = new JLabel("Marcar");
-	//TODO cambiar nombres y agregar ubicacion y retornar true si estan seleccionados
+	//TODO CU08 cambiar nombres y agregar ubicacion y retornar true si estan seleccionados
 	
-	//TODO agregar radio button para marcar y desmarcar todos
+	//TODO CU08 agregar radio button para marcar y desmarcar todos
 	private JCheckBox checkCobertura = new JCheckBox();
 	private JCheckBox checkElegir2 = new JCheckBox();
 	private JCheckBox checkElegir3 = new JCheckBox();

@@ -29,7 +29,6 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.basic.BasicScrollBarUI;
 import javax.swing.table.JTableHeader;
-
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
@@ -59,7 +58,7 @@ public class GestorTema {
 	
     private GestorTema() {
     	ToolTipManager.sharedInstance().setInitialDelay(200);
-    	tema1();
+    	tema();
     }
 
     public static GestorTema get() {
@@ -69,7 +68,7 @@ public class GestorTema {
         return instanciaGestor;
     }
         
-    private void tema1() {
+    private void tema() {
     	COLOR_BOTON = new Color(179,149,62);
     	COLOR_BOTON_DESHABILITADO = new Color(102,83,26);
     	COLOR_FONDO_PANTALLA = new Color(139, 163, 255);
@@ -81,27 +80,12 @@ public class GestorTema {
     	COLOR_LETRA_DESHABILITADA =  COLOR_FONDO_TEXTO.darker();
     	COLOR_LETRA_BOTON_DESHABILITADA = Color.DARK_GRAY;
     }
-    
-    @SuppressWarnings("unused")
-	private void tema2() {
-    	COLOR_BOTON = new Color(52,179,176);
-    	COLOR_BOTON_DESHABILITADO = COLOR_BOTON.darker();
-    	COLOR_FONDO_PANTALLA = new Color(255,172,125);
-    	COLOR_FONDO_TEXTO = new Color(164,255,254);
-    	COLOR_FONDO_DESHABILITADO = new Color(179,109,70);
-    	COLOR_FONDO_ERRONEO = new Color(255,83,77);
-    	COLOR_LETRA = Color.BLACK;
-    	COLOR_LETRA_ERRONEA = COLOR_FONDO_ERRONEO.darker().darker();
-    	COLOR_LETRA_DESHABILITADA = COLOR_FONDO_TEXTO.darker();
-    	COLOR_LETRA_BOTON_DESHABILITADA = Color.DARK_GRAY;
-    }
 
     public void setTema(JPanel panel) {
     	panel.setFont(FUENTE_LETRA_NORMAL);
     	panel.setBackground(COLOR_FONDO_PANTALLA);
     	panel.setForeground(COLOR_LETRA);
     	panel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-    	//panel.setBorder(BorderFactory.createLineBorder(COLOR_BOTON_DESHABILITADO, 5));
     }
     
 	public void setTema(JFrame ventana, String titulo) {
@@ -181,7 +165,6 @@ public class GestorTema {
     }
     
     public void setTema(JTextField campo, Boolean habilitada) {
-    	//campo.setCaretColor(colorBoton);
     	if(habilitada) {
     		campo.setEnabled(habilitada);
         	campo.setFont(FUENTE_LETRA_NORMAL);

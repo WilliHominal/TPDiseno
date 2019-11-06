@@ -89,11 +89,17 @@ public class CU01Controller2 {
 			view2.inhabilitarSeleccion();
 		}
 		else {
-			ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) gestorTipoCobertura.getTiposCobertura();
-			Iterator<TipoCobertura> iteradorTipoCoberturas = tipoCoberturas.iterator();
-			view2.addTipoCobertura(new TipoCobertura("Seleccionar tipo cobertura"));
-			while(iteradorTipoCoberturas.hasNext()){
-				view2.addTipoCobertura(iteradorTipoCoberturas.next());
+			ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) gestorTipoCobertura.getTiposCobertura(poliza.getAnioModelo().getAnio());
+			if(tipoCoberturas.size() == 1) {
+				view2.addTipoCobertura(tipoCoberturas.get(0));
+				view2.inhabilitarSeleccion();
+			}
+			else {
+				Iterator<TipoCobertura> iteradorTipoCoberturas = tipoCoberturas.iterator();
+				view2.addTipoCobertura(new TipoCobertura("Seleccionar tipo cobertura"));
+				while(iteradorTipoCoberturas.hasNext()){
+					view2.addTipoCobertura(iteradorTipoCoberturas.next());
+				}	
 			}	
 		}
 	}
@@ -116,21 +122,8 @@ public class CU01Controller2 {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-
 		LocalDate fechaInicioVigenciaLocalDate = fechaInicioVigenciaDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		
-		int anioActual = LocalDate.now().getYear();
-		int mesActual = LocalDate.now().getMonthValue();
-		int diaActual = LocalDate.now().getDayOfMonth();
-		
-		int anioInicioVigencia = fechaInicioVigenciaLocalDate.getYear();
-		int mesInicioVigencia = fechaInicioVigenciaLocalDate.getMonthValue();
-		int diaInicioVigencia = fechaInicioVigenciaLocalDate.getDayOfMonth();
-		
-		if (!((anioActual == anioInicioVigencia && mesActual == mesInicioVigencia && diaActual < diaInicioVigencia)
-			|| (anioActual == anioInicioVigencia && mesActual == mesInicioVigencia-1 && diaActual > diaInicioVigencia)
-			|| (anioActual == anioInicioVigencia-1 && mesActual == 12 && mesInicioVigencia == 1 && diaActual >= diaInicioVigencia)
-			)){
+		if(gestorPoliza.vigenciaFechaInicioVigencia(fechaInicioVigenciaLocalDate)){
 			errorFechaVigencia = "La fecha de inicio de vigencia debe estar dentro del mes próximo respecto a la fecha actual.\n";
 			inicioVigenciaError = true;
 		}
@@ -172,8 +165,10 @@ public class CU01Controller2 {
 				descuentoMasDeUnaUnidad = true;
 			}
 
-			Float premio = gestorPoliza.calcularPremio(poliza);
-			Float descuento = gestorPoliza.calcularDescuento(poliza, descuentoSemestral);
+			gestorPoliza.calcularPremio(poliza, descuentoSemestral);
+			
+			Float premio = poliza.getValorPremio();
+			Float descuento = poliza.getValorDescuento();
 			Float montoTotal = premio - descuento;
 			Float montoCuota = montoTotal / 6;			
 			

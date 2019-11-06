@@ -1,5 +1,6 @@
 package isi.dds.tp.gestor;
 
+import java.time.LocalDate;
 import java.util.List;
 import isi.dds.tp.dao.DAOTipoCobertura;
 import isi.dds.tp.enums.EnumTipoCobertura;
@@ -27,8 +28,16 @@ public class GestorTipoCobertura {
 		return DAOTipoCobertura.getDAO().getTipoCobertura(tipo);
     }
     
-	public List<TipoCobertura> getTiposCobertura(){
-		return DAOTipoCobertura.getDAO().getTiposCobertura();
+	@SuppressWarnings("null")
+	public List<TipoCobertura> getTiposCobertura(Integer anioModelo){
+		List<TipoCobertura> lista = null;
+		if(anioModelo <= LocalDate.now().getYear() - 10) {
+			lista.add(getTipoCobertura(EnumTipoCobertura.RESPONSABILIDAD_CIVIL));
+		}
+		else {
+			lista = DAOTipoCobertura.getDAO().getTiposCobertura();
+		}
+		return lista;
     }
     
     public Float getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipo) {

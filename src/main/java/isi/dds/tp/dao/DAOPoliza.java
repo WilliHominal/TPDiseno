@@ -116,7 +116,8 @@ public class DAOPoliza {
     }
 
 	public Long generateNumeroRelacionClientePoliza() {
-		// TODO implementar generateNumeroRelacionClientePoliza
+		// TODO CU01 implementar generateNumeroRelacionClientePoliza
+		// para generar numeroPoliza
 		return 0l;
 	}
 

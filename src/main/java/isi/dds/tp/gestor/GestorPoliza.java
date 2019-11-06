@@ -5,11 +5,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-
 import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.enums.EnumFormaPago;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.ParametrosPoliza;
@@ -49,8 +49,14 @@ public class GestorPoliza {
     public Boolean altaPoliza(Poliza poliza) {
     	generarNumeroPoliza(poliza);
     	poliza.setEstado(EnumEstadoPoliza.GENERADA);
-    	GestorCliente.get().actualizarCliente(poliza.getCliente(), poliza);
-    	return dao.addPoliza(poliza);
+    	Boolean valido = dao.addPoliza(poliza);
+    	
+    	if(valido) {    		
+    		HibernateUtil.shutdown();
+    		GestorCliente.get().actualizarCliente(poliza.getCliente(), poliza);    		
+    	}
+    	
+    	return valido;    	
     }
     
     private void generarNumeroPoliza(Poliza poliza) {
@@ -104,7 +110,16 @@ public class GestorPoliza {
 		poliza.setFormaPago(formaPago);
 	}
 	
-	public Float calcularPrima(Poliza poliza) {
+	public void calcularPremio(Poliza poliza, Boolean semestral) {
+		Float prima = calcularPrima(poliza);
+		Float derechoEmision = poliza.getParametrosPoliza().getValorDerechoEmision();
+		Float premio = prima + derechoEmision;
+		poliza.setValorPrima(prima);
+		poliza.setValorPremio(premio);
+		calcularDescuento(poliza, semestral);
+	}
+	
+	private Float calcularPrima(Poliza poliza) {
 		ParametrosPoliza param = gestorParametrosPoliza.getUltimoParametrosPoliza();
 		Float riesgoModelo = gestorVehiculo.getUltimoRiesgoModelo(poliza.getAnioModelo().getModelo().getIdModelo());
 		Float riesgoCiudad  = gestorDomicilio.getUltimoRiesgoCiudad(poliza.getCiudad().getIdCiudad());
@@ -171,17 +186,8 @@ public class GestorPoliza {
 		poliza.setParametrosPoliza(param);
 		return prima;
 	}
-
-	public Float calcularPremio(Poliza poliza) {
-		Float prima = calcularPrima(poliza);
-		Float derechoEmision = poliza.getParametrosPoliza().getValorDerechoEmision();
-		Float premio = prima + derechoEmision;
-		poliza.setValorPrima(prima);
-		poliza.setValorPremio(premio);
-		return premio;
-	}
 	
-	public Float calcularDescuento(Poliza poliza, Boolean semestral) {
+	private void calcularDescuento(Poliza poliza, Boolean semestral) {
 		Float valorDescuentoPorUnidadAdicional = poliza.getParametrosPoliza().getDescuentoUnidadAdicional();
 		Float valorBonificacionPagoSemestral = 0f;
 
@@ -192,7 +198,6 @@ public class GestorPoliza {
 		Float valorDescuento = (valorDescuentoPorUnidadAdicional * poliza.getCliente().getPolizas().size() + valorBonificacionPagoSemestral ) * poliza.getValorPremio() ;
 		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
 		poliza.setValorDescuento(valorDescuento);
-		return valorDescuento;
 	}
 
 	public Boolean validarMotor(String textoMotor) {
@@ -261,9 +266,27 @@ public class GestorPoliza {
 		
 		return (valido1 && valido2);
 	}
+	
+	public Boolean vigenciaFechaInicioVigencia(LocalDate fechaInicioVigenciaLocalDate) {		
+		int anioActual = LocalDate.now().getYear();
+		int mesActual = LocalDate.now().getMonthValue();
+		int diaActual = LocalDate.now().getDayOfMonth();
+		
+		int anioInicioVigencia = fechaInicioVigenciaLocalDate.getYear();
+		int mesInicioVigencia = fechaInicioVigenciaLocalDate.getMonthValue();
+		int diaInicioVigencia = fechaInicioVigenciaLocalDate.getDayOfMonth();
+		
+		if (!((anioActual == anioInicioVigencia && mesActual == mesInicioVigencia && diaActual < diaInicioVigencia)
+			|| (anioActual == anioInicioVigencia && mesActual == mesInicioVigencia-1 && diaActual > diaInicioVigencia)
+			|| (anioActual == anioInicioVigencia-1 && mesActual == 12 && mesInicioVigencia == 1 && diaActual >= diaInicioVigencia)
+			)){
+			return true;
+		}
+		return false;		
+	}
 
 	public Boolean vigenciaPolizas(Long numeroCliente) {
-		//TODO implementar - true si estas vigentes - false sino lo están
+		//TODO CU01 implementar - true si estas vigentes - false sino lo están
 		return true;
 	}
 	

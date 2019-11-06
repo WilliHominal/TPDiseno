@@ -67,5 +67,19 @@ public class DAOCliente {
             e.printStackTrace();
         }
     	return null;
-    } 
+    }
+
+	public void updateCliente(Cliente cliente) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+        	session.beginTransaction();
+            session.update(cliente);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+        	e.printStackTrace();
+            session.getTransaction().rollback();	
+		}
+        session.close();
+	} 
 }

@@ -11,7 +11,7 @@ public class AppCU17BuscarCliente {
 				try {
 					JFrame frame = new JFrame();
 					new CU17Controller1(frame);
-					frame.setVisible(true);
+					frame.setVisible(true);					
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
