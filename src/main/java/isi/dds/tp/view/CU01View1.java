@@ -865,4 +865,19 @@ public class CU01View1 extends JPanel {
 	public Boolean habilitadaSeleccionAnioModelo() {
 		return seleccionAnio.isEnabled();
 	}
+	
+	
+	//para insertar en el caso de prueba
+	
+	public void setChasis(String cadena) {
+		campoChasis.setText(cadena);
+	}
+	
+	public void setMotor(String cadena) {
+		campoMotor.setText(cadena);
+	}
+	
+	public void setPatente(String cadena) {
+		campoPatente.setText(cadena);
+	}
 }

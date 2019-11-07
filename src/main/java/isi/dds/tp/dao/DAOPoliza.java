@@ -5,6 +5,9 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+
+import javax.persistence.NoResultException;
+
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
@@ -115,21 +118,38 @@ public class DAOPoliza {
         return null;
     }
 
-	public Long generateNumeroRelacionClientePoliza() {
-		// TODO CU01 implementar generateNumeroRelacionClientePoliza
-		// para generar numeroPoliza
-		return 0l;
+	public Integer getNumeroClientePoliza() {
+		BigInteger numeroSequence = null;
+		try {
+			numeroSequence = (BigInteger) session.createSQLQuery("select * from nextval('poliza_cliente_seq')").uniqueResult();
+		}catch (HibernateException e) { }
+		return numeroSequence.intValue();
 	}
 
-	public BigInteger getCantCuotasImpagas(Long numeroCliente) {
+	public Integer getCantCuotasImpagas(Long numeroCliente) {
         try {
-        	return (BigInteger) session.createSQLQuery("select count(c) from poliza p, cuota c"
+        	return ((BigInteger) session.createSQLQuery("select count(c) from poliza p, cuota c"
         			+ " where	p.numero_cliente="+numeroCliente 
         			+	  " and p.numero_poliza=c.numero_poliza"
         			+	  " and c.estado='"+EnumEstadoCuota.IMPAGO+"'"
-        			+	  " and c.ultimo_dia_pago<'"+LocalDate.now()+"';").getSingleResult();
+        			+	  " and c.ultimo_dia_pago<'"+LocalDate.now()+"';").getSingleResult()).intValue();
         }
         catch (HibernateException e) { }
         return null;
+	}
+
+	public Integer getCantidadPolizasVigente(Long numeroCliente) {
+		//ver si es null
+		BigInteger big = BigInteger.ZERO;
+        try {
+        	big = (BigInteger) session.createSQLQuery("select count(*)"
+        			+ " from Poliza p, Cliente c"
+        			+ " where p.estado='VIGENTE' and c.numero_cliente=p.numero_cliente and c.numero_cliente="+numeroCliente
+        			+ " group by c;").getSingleResult();
+        }
+        catch (NoResultException e) {
+        	big = BigInteger.ZERO;
+        }
+        return big.intValue();
 	}
 }

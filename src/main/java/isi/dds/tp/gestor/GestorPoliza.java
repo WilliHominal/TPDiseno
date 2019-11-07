@@ -1,15 +1,12 @@
 package isi.dds.tp.gestor;
 
-import java.math.BigInteger;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.enums.EnumFormaPago;
-import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.ParametrosPoliza;
@@ -22,7 +19,6 @@ import isi.dds.tp.modelo.Cuota;
 public class GestorPoliza {	
 	private static GestorPoliza instanciaGestor = null;
 	
-	private DAOPoliza dao = DAOPoliza.getDAO();
 	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
 	private GestorParametrosVehiculo gestorVehiculo = GestorParametrosVehiculo.get();
 	private GestorParametrosPoliza gestorParametrosPoliza  = GestorParametrosPoliza.get();
@@ -49,10 +45,9 @@ public class GestorPoliza {
     public Boolean altaPoliza(Poliza poliza) {
     	generarNumeroPoliza(poliza);
     	poliza.setEstado(EnumEstadoPoliza.GENERADA);
-    	Boolean valido = dao.addPoliza(poliza);
+    	Boolean valido = DAOPoliza.getDAO().addPoliza(poliza);
     	
     	if(valido) {    		
-    		HibernateUtil.shutdown();
     		GestorCliente.get().actualizarCliente(poliza.getCliente(), poliza);    		
     	}
     	
@@ -61,14 +56,14 @@ public class GestorPoliza {
     
     private void generarNumeroPoliza(Poliza poliza) {
     	String numeroSucursal = "3528";
-    	String numeroRelacionClientePoliza = dao.generateNumeroRelacionClientePoliza().toString();
+    	String cadenaRelacionClientePoliza = DAOPoliza.getDAO().getNumeroClientePoliza().toString();
     	String numeroRenovacionPoliza = "00";
-    	Long numeroPoliza = Long.parseLong(numeroSucursal + numeroRelacionClientePoliza + numeroRenovacionPoliza);
+    	try {
+    		cadenaRelacionClientePoliza = cadenaRelacionClientePoliza.substring(1, cadenaRelacionClientePoliza.length());
+		}catch(StringIndexOutOfBoundsException ex){ }
+      	
+    	Long numeroPoliza = Long.parseLong(numeroSucursal + cadenaRelacionClientePoliza + numeroRenovacionPoliza);
     	poliza.setNumeroPoliza(numeroPoliza);
-    	
-    	Random r = new Random();
-		Long randomNum = r.nextLong();	
-		poliza.setNumeroPoliza(randomNum);
 	}
 
 	public void addHijo(Poliza poliza, HijoDeclarado hijo){
@@ -201,21 +196,21 @@ public class GestorPoliza {
 	}
 
 	public Boolean validarMotor(String textoMotor) {
-		if(dao.getCantPolizaPorMotor(textoMotor)>0) {
+		if(DAOPoliza.getDAO().getCantPolizaPorMotor(textoMotor)>0) {
 			return true;
 		}
 		return false;
 	}
 	
 	public Boolean validarChasis(String textoChasis) {
-		if(dao.getCantPolizaPorChasis(textoChasis)>0) {
+		if(DAOPoliza.getDAO().getCantPolizaPorChasis(textoChasis)>0) {
 			return true;
 		}
 		return false;
 	}
 
 	public Boolean validarPatente(String textoPatente) {
-		if(dao.getCantPolizaPorPatente(textoPatente)>0) {
+		if(DAOPoliza.getDAO().getCantPolizaPorPatente(textoPatente)>0) {
 			return true;
 		}
 		return false;	
@@ -286,12 +281,15 @@ public class GestorPoliza {
 	}
 
 	public Boolean vigenciaPolizas(Long numeroCliente) {
-		//TODO CU01 implementar - true si estas vigentes - false sino lo están
+		if(DAOPoliza.getDAO().getCantidadPolizasVigente(numeroCliente) == 0) {
+			return false;
+		}
 		return true;
 	}
 	
 	public Boolean omisionPago(Long numeroCliente) {
-		if(dao.getCantCuotasImpagas(numeroCliente).equals(BigInteger.ZERO)) {
+		//TODO CU01 probar omision pago
+		if(DAOPoliza.getDAO().getCantCuotasImpagas(numeroCliente) == 0) {
 			return false;
 		}
 		return true;
@@ -303,7 +301,7 @@ public class GestorPoliza {
 	}
 	
 	public List<Cuota> getCuotas(Long numeroPoliza) {
-		return dao.getCuotas(numeroPoliza);
+		return DAOPoliza.getDAO().getCuotas(numeroPoliza);
     }
 	
 	public void removeHijo(Poliza poliza, int indexHijo){

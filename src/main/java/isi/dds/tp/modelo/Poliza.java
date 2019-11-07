@@ -69,13 +69,13 @@ public class Poliza {
 	@Enumerated(EnumType.STRING)
 	private EnumEstadoPoliza estado;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String motor;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String chasis;
 	
-	@Column(unique = true)
+	@Column
 	private String patente;
 	
 	@Column(nullable = false, name = "km_realizados_por_anio")

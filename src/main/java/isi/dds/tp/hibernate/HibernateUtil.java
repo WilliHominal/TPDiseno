@@ -26,8 +26,6 @@ public class HibernateUtil {
     private static SessionFactory sessionFactoryBis;
     
     private static SessionFactory getSessionFactoryCreate() {
-		Logger log = Logger.getLogger("org.hibernate");
-		log.setLevel(Level.OFF); 
         if (sessionFactoryBis == null) {
             try {
             	registryBis = new StandardServiceRegistryBuilder().configure("hibernateCreate.cfg.xml").build();
@@ -44,9 +42,6 @@ public class HibernateUtil {
     }
     
     public static SessionFactory getSessionFactoryValidate() {
-		//desactiva que se abra la consola cada vez que se inicia
-    	Logger log = Logger.getLogger("org.hibernate");
-		log.setLevel(Level.OFF); 
         if (sessionFactory == null) {
             try {
                 registry = new StandardServiceRegistryBuilder().configure("hibernateValidate.cfg.xml").build();
@@ -109,6 +104,18 @@ public class HibernateUtil {
 		DAOTipoCobertura.getDAO().cargarTiposCoberturas();
 		DAOParametrosVehiculo.getDAO().cargarParametrosVehiculos();
 		DAOCliente.getDAO().cargarClientes();
-		//DAOPoliza.getDAO().cargarPolizas();
+		DAOPoliza.getDAO().cargarPolizas();
 	}	
+	
+	/**
+	 * Desactiva que se muestre el log al iniciar Hibernate
+	 * @param apagamos: si es true apaga el log, sino lo deja encendido
+	 */
+	public static void apagarLog(Boolean apagamos) {
+	
+		if(apagamos) {
+	    	Logger log = Logger.getLogger("org.hibernate");
+			log.setLevel(Level.OFF); 
+		}
+	}
 }

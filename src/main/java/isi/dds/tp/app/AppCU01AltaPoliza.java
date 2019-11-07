@@ -21,7 +21,10 @@ public class AppCU01AltaPoliza {
 					    }
 					});
 					CU01Controller1 a = new CU01Controller1(frame);
-					a.obtenidoCliente(GestorCliente.get().getCliente(5458008595l));
+					a.obtenidoCliente(GestorCliente.get().getCliente(5400000000l));
+					a.getView().setPatente("AAA123");
+					a.getView().setMotor("AAA12345678901231");
+					a.getView().setChasis("A9012312");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();

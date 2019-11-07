@@ -89,7 +89,7 @@ public class CU01Controller2 {
 			view2.inhabilitarSeleccion();
 		}
 		else {
-			ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) gestorTipoCobertura.getTiposCobertura(poliza.getAnioModelo().getAnio());
+			ArrayList<TipoCobertura> tipoCoberturas = (ArrayList<TipoCobertura>) gestorTipoCobertura.getTiposCobertura();
 			if(tipoCoberturas.size() == 1) {
 				view2.addTipoCobertura(tipoCoberturas.get(0));
 				view2.inhabilitarSeleccion();
@@ -145,12 +145,8 @@ public class CU01Controller2 {
 			
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 			
-			Calendar fechaAnteriorAInicioVigencia = Calendar.getInstance();
-			fechaAnteriorAInicioVigencia.setTime(view2.getInicioVigencia());
-			fechaAnteriorAInicioVigencia.add(Calendar.DATE, -1);
-			
 			LocalDate inicioVigencia = view2.getInicioVigencia().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-						
+			
 			Boolean descuentoMasDeUnaUnidad = false, descuentoSemestral = false;	
 			
 			if(view2.eligioMensual()) {
@@ -196,7 +192,7 @@ public class CU01Controller2 {
 				view2.cargarTabla(6);
 				LocalDate fechaMensual = inicioVigencia.minusDays(1);
 				for (int contador=0; contador<6; contador++) {	
-					view2.cargarDatosTabla(dateFormat.format(Date.from(fechaMensual.minusDays(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())), contador, 0);
+					view2.cargarDatosTabla(dateFormat.format(Date.from(fechaMensual.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())), contador, 0);
 					view2.cargarDatosTabla("$ " + num.format(montoCuota), contador, 1);
 					gestorPoliza.addCuota(poliza, montoCuota, fechaMensual);
 					fechaMensual = fechaMensual.plusMonths(1);					
@@ -204,7 +200,7 @@ public class CU01Controller2 {
 			} else {
 				LocalDate fechaSemestral = inicioVigencia.minusDays(1);
 				view2.cargarTabla(1);
-				view2.cargarDatosTabla(dateFormat.format(Date.from(fechaSemestral.minusDays(1).atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())), 0, 0);
+				view2.cargarDatosTabla(dateFormat.format(Date.from(fechaSemestral.atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())), 0, 0);
 				view2.cargarDatosTabla("$ " + num.format(montoTotal), 0, 1);
 				gestorPoliza.addCuota(poliza, montoTotal, fechaSemestral);
 			}

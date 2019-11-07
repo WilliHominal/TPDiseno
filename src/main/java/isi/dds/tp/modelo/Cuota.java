@@ -32,7 +32,7 @@ public class Cuota{
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_cuota")
 	@SequenceGenerator(name="id_cuota", sequenceName = "id_cuota_seq", initialValue = 100, allocationSize = 1)
-	@Column(nullable = false)
+	@Column(nullable = false, name = "id_cuota")
 	private Integer idCuota;
 	
 	@Column(nullable = false)

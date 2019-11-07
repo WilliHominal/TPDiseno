@@ -4,9 +4,7 @@ public class GestorInformes {
 	
 	private static GestorInformes instanciaGestor = null;
 	 
-    private GestorInformes() {
-
-    }
+    private GestorInformes() { }
 
     public static GestorInformes get() {
         if (instanciaGestor == null){

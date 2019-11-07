@@ -187,7 +187,7 @@ public class CU01Controller1 {
 		String textoChasis = view1.getChasis();
 		String textoPatente = view1.getPatente();
 		String textoErrorPatente = "", textoErrorChasis = "", textoErrorMotor = "",  textoErrorMarca = "",  textoErrorKm = "";
-		
+
 		//los valores boolean son para luego la interfaz establezca los colores de los campos mal validados
 		Boolean errorEnMarca = false, errorEnMotor = false, errorEnChasis = false, errorEnPatente = false, errorEnKm = false;
 		
@@ -199,6 +199,7 @@ public class CU01Controller1 {
 			textoErrorMarca = errorNumero+") No se ha seleccionado un valor del campo marca.\n";
 			errorNumero++;
 		}
+		
 		
 		//---------- posible error en la introdución del número de motor
 		if(textoMotor.isEmpty()) {
@@ -342,7 +343,6 @@ public class CU01Controller1 {
 				break;
 			}	
 		}
-		
 		//---------- posible error en la no selección de un kilometraje
 		if (view1.getKmAnio().equals("Selecionar kilometraje")) {
 			errorEnKm = true;
@@ -422,10 +422,11 @@ public class CU01Controller1 {
 	
 	private class ListenerBtnConfirmarDatos implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {	
+			try {
 				if(!condicionesGenerarPoliza()) {
 					return;
 				}				
+				
 				int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				if(seleccion == 0) {
 					String patente = null;
@@ -574,5 +575,10 @@ public class CU01Controller1 {
 		} 
 		public void keyPressed(KeyEvent e) { }
 		public void keyReleased(KeyEvent e) { }
+	}
+
+	//para caso de prueba
+	public CU01View1 getView(){
+		return view1;
 	}
 }

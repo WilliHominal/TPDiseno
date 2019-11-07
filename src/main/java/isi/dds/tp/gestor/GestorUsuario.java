@@ -7,9 +7,7 @@ public class GestorUsuario {
 
 	private static GestorUsuario instanciaGestor = null;
 	 
-    private GestorUsuario() {
-
-    }
+    private GestorUsuario() { }
 
     public static GestorUsuario get() {
         if (instanciaGestor == null){
