@@ -93,4 +93,18 @@ public class DAOTipoCobertura {
         }	
     	return null;
 	}
+
+	public void updateTipoCobertura(TipoCobertura tipo) {
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+        	session.beginTransaction();
+            session.update(tipo);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+        	e.printStackTrace();
+            session.getTransaction().rollback();	
+		}
+        session.close();
+	}
 }

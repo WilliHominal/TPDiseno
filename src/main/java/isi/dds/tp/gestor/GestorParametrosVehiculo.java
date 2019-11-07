@@ -1,5 +1,6 @@
 package isi.dds.tp.gestor;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,8 +36,12 @@ public class GestorParametrosVehiculo {
     }
 	
     public Float getUltimoRiesgoModelo(Integer id_modelo) {
-    	return DAOParametrosVehiculo.getDAO().getUltimoRiesgoModelo(id_modelo).getValorPorcentual();
+    	return getUltimoRiesgoModeloAux(id_modelo).getValorPorcentual();
     }
+    
+	private RiesgoModelo getUltimoRiesgoModeloAux(Integer id_modelo) {
+		return DAOParametrosVehiculo.getDAO().getUltimoRiesgoModelo(id_modelo);
+	}
     
     public List<Modelo> sortModelos(Marca marca){
     	marca.getModelos().sort(Comparator.comparing(Modelo::getNombre));
@@ -59,4 +64,14 @@ public class GestorParametrosVehiculo {
 	    });
 	    return modelo.getAnios();
     }
+
+	public RiesgoModelo newRiesgoModelo(Integer id_modelo, Float riesgo) {
+		RiesgoModelo rviejo = getUltimoRiesgoModeloAux(id_modelo);
+		RiesgoModelo rnuevo = new RiesgoModelo();
+    	rviejo.setFechaFinVigencia(LocalDate.now());
+    	rnuevo.setFechaInicioVigencia(LocalDate.now());
+    	rnuevo.setValorPorcentual(riesgo);    
+    	return rnuevo;
+    	//TODO RiesgoModelo ver si se persisten los cambios
+	}
 }

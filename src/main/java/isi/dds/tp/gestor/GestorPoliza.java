@@ -146,11 +146,11 @@ public class GestorPoliza {
 		
 		switch(poliza.getNumerosSiniestrosUltimoAnios()) {
 			case NINGUNO:
-				ajusteSiniestros = param.getPorcentajeNingunSiniestros();
+				ajusteSiniestros = param.getPorcentajeNingunSiniestro();
 			break;
 			
 			case UNO:
-				ajusteSiniestros = param.getPorcentajeNingunSiniestros();
+				ajusteSiniestros = param.getPorcentajeNingunSiniestro();
 			break;
 				
 			case DOS:

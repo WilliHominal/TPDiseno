@@ -106,11 +106,11 @@ public class ParametrosPoliza {
 		return porcentajeAjusteKm;
 	}
 	
-	public Float getPorcentajeNingunSiniestros() {
+	public Float getPorcentajeNingunSiniestro() {
 		return porcentajeNingunSiniestro;
 	}
 	
-	public Float getPorcentajeUnSiniestros() {
+	public Float getPorcentajeUnSiniestro() {
 		return porcentajeUnSiniestros;
 	}
 	
@@ -174,7 +174,7 @@ public class ParametrosPoliza {
 		this.porcentajeNingunSiniestro = porcentajeNingunSiniestro;
 	}
 	
-	public void setPorcentajeUnSiniestros(Float porcentajeUnSiniestro) {
+	public void setPorcentajeUnSiniestro(Float porcentajeUnSiniestro) {
 		this.porcentajeUnSiniestros = porcentajeUnSiniestro;
 	}
 	

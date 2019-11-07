@@ -29,12 +29,13 @@ public class CU08View extends JPanel{
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					HibernateUtil.apagarLog(true);
 					JFrame frame = new JFrame();
 					frame.addWindowListener(new java.awt.event.WindowAdapter() {
 					    @Override
 					    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
 					    	frame.setVisible(false);
-							HibernateUtil.shutdown();
+							HibernateUtil.cerrarSessionesUsadas();
 							System.exit(0);
 					    }
 					});
@@ -854,6 +855,26 @@ public class CU08View extends JPanel{
 	public String getDescuentoUnidadAdicional() {
 		return campoDescuentoUnidadAdicional.getText();
 	}
+	
+	public TipoCobertura getItemTipoCobertura() {
+		return seleccionTipoCobertura.getItemAt(seleccionTipoCobertura.getSelectedIndex());
+	}
+	
+	public Marca getItemMarca() {
+		return seleccionMarca.getItemAt(seleccionMarca.getSelectedIndex());
+	}
+	
+	public Modelo getItemModelo() {
+		return seleccionModelo.getItemAt(seleccionModelo.getSelectedIndex());
+	}
+	
+	public Provincia getItemProvincia() {
+		return seleccionProvincia.getItemAt(seleccionProvincia.getSelectedIndex());
+	}
+	
+	public Ciudad getItemCiudad() {
+		return seleccionCiudad.getItemAt(seleccionCiudad.getSelectedIndex());
+	}
 
 	public void setTipoCoberturaActual(String tipoCoberturaActual) {
 		this.campoTipoCoberturaActual.setText(tipoCoberturaActual);
@@ -933,5 +954,87 @@ public class CU08View extends JPanel{
 
 	public void addCiudad(Ciudad ciudad) {
 		this.seleccionCiudad.addItem(ciudad);
+	}
+
+	public void habilitarSeleccionModelo(Boolean habilitado) {
+		seleccionModelo.setEnabled(habilitado);
+		if(!habilitado) {
+			seleccionModelo.removeAllItems();
+		}
+	}
+	
+	public void habilitarSeleccionCiudad(Boolean habilitado) {
+		seleccionCiudad.setEnabled(habilitado);
+		if(!habilitado) {
+			seleccionCiudad.removeAllItems();
+		}
+	}
+	
+	public Boolean estaHabilitadaSeleccionModelo() {
+		return seleccionModelo.isEnabled();
+	}
+	
+	public Boolean estaHabilitadaSeleccionCiudad() {
+		return seleccionCiudad.isEnabled();
+	}
+
+	public Boolean getCheckTipoCobertura() {
+		return checkTipoCobertura.isSelected();
+	}
+
+	public Boolean getCheckModelo() {
+		return checkModelo.isSelected();
+	}
+
+	public Boolean getCheckCiudad() {
+		return checkCiudad.isSelected();
+	}
+
+	public Boolean getCheckGuardaGarage() {
+		return checkGuardaGarage.isSelected();
+	}
+
+	public Boolean getCheckTieneAlarma() {
+		return checkTieneAlarma.isSelected();
+	}
+
+	public Boolean getCheckTieneRastreo() {
+		return checkTieneRastreo.isSelected();
+	}
+
+	public Boolean getCheckTieneTuercas() {
+		return checkTieneTuercas.isSelected();
+	}
+
+	public Boolean getCheckKm() {
+		return checkKm.isSelected();
+	}
+
+	public Boolean getCheckCeroSiniestros() {
+		return checkCeroSiniestros.isSelected();
+	}
+
+	public Boolean getCheckUnSiniestro() {
+		return checkUnSiniestro.isSelected();
+	}
+
+	public Boolean getCheckDosSiniestros() {
+		return checkDosSiniestros.isSelected();
+	}
+
+	public Boolean getCheckMuchosSiniestros() {
+		return checkMuchosSiniestros.isSelected();
+	}
+
+	public Boolean getCheckCantidadHijos() {
+		return checkCantidadHijos.isSelected();
+	}
+
+	public Boolean getCheckDerechoEmision() {
+		return checkDerechoEmision.isSelected();
+	}
+
+	public Boolean getCheckDescuentoUnidadAdicional() {
+		return checkDescuentoUnidadAdicional.isSelected();
 	}
 }

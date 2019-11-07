@@ -1,5 +1,6 @@
 package isi.dds.tp.gestor;
 
+import java.time.LocalDate;
 import java.util.List;
 import isi.dds.tp.dao.DAOTipoCobertura;
 import isi.dds.tp.enums.EnumTipoCobertura;
@@ -19,12 +20,26 @@ public class GestorTipoCobertura {
         return instanciaGestor;
     }
     
+    //TODO fijarse si quitar
     public void addRiesgoCobertura(RiesgoTipoCobertura r) {
     	DAOTipoCobertura.getDAO().addRiesgoCobertura(r);
     }
     
+    public RiesgoTipoCobertura newRiesgoCobertura(EnumTipoCobertura tipoCobertura, Float riesgo) {
+    	RiesgoTipoCobertura rviejo = getUltimoRiesgoTipoCoberturaAux(tipoCobertura);
+    	RiesgoTipoCobertura rnuevo = new RiesgoTipoCobertura();
+    	rviejo.setFechaFinVigencia(LocalDate.now());
+    	rnuevo.setFechaInicioVigencia(LocalDate.now());
+    	rnuevo.setValorPorcentual(riesgo);    
+    	return rnuevo;
+    }
+    
 	public TipoCobertura getTipoCobertura(EnumTipoCobertura tipo){
 		return DAOTipoCobertura.getDAO().getTipoCobertura(tipo);
+    }
+	
+	public void updateTipoCobertura(TipoCobertura tipo){
+		DAOTipoCobertura.getDAO().updateTipoCobertura(tipo);
     }
     
 	public List<TipoCobertura> getTiposCobertura(){
@@ -32,6 +47,10 @@ public class GestorTipoCobertura {
     }
     
     public Float getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipo) {
-    	return DAOTipoCobertura.getDAO().getUltimoRiesgoTipoCobertura(tipo).getValorPorcentual(); 
+    	return getUltimoRiesgoTipoCoberturaAux(tipo).getValorPorcentual(); 
+    }
+    
+    private RiesgoTipoCobertura getUltimoRiesgoTipoCoberturaAux(EnumTipoCobertura tipo) {
+    	return DAOTipoCobertura.getDAO().getUltimoRiesgoTipoCobertura(tipo); 
     }
 }

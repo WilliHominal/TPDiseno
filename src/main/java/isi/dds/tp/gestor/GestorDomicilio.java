@@ -1,5 +1,6 @@
 package isi.dds.tp.gestor;
 
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -35,8 +36,12 @@ public class GestorDomicilio {
     }
     
     public Float getUltimoRiesgoCiudad(Integer id_ciudad) {
-    	return DAODomicilio.getDAO().getUltimoRiesgoCiudad(id_ciudad).getValorPorcentual();
+    	return getUltimoRiesgoCiudadAux(id_ciudad).getValorPorcentual();
     }
+    
+	private RiesgoCiudad getUltimoRiesgoCiudadAux(Integer id_ciudad) {
+		return DAODomicilio.getDAO().getUltimoRiesgoCiudad(id_ciudad);
+	}
     
 	public Ciudad getCiudad(Integer id_ciudad) {
 		return DAODomicilio.getDAO().getCiudad(id_ciudad);
@@ -74,4 +79,15 @@ public class GestorDomicilio {
 	    });
 	    return provincia.getCiudades();
     }
+
+	public RiesgoCiudad newRiesgoCiudad(Integer id_ciudad, Float riesgo) {
+		RiesgoCiudad rviejo = getUltimoRiesgoCiudadAux(id_ciudad);
+		RiesgoCiudad rnuevo = new RiesgoCiudad();
+    	rviejo.setFechaFinVigencia(LocalDate.now());
+    	rnuevo.setFechaInicioVigencia(LocalDate.now());
+    	rnuevo.setValorPorcentual(riesgo);    
+    	return rnuevo;
+    	//TODO RiesgoCiudad ver si se persisten los cambios
+		
+	}
 }
