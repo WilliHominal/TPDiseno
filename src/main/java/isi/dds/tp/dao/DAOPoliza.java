@@ -12,6 +12,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
 import isi.dds.tp.enums.EnumEstadoCuota;
+import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Cuota;
@@ -139,7 +140,6 @@ public class DAOPoliza {
 	}
 
 	public Integer getCantidadPolizasVigente(Long numeroCliente) {
-		//ver si es null
 		BigInteger big = BigInteger.ZERO;
         try {
         	big = (BigInteger) session.createSQLQuery("select count(*)"
@@ -152,4 +152,15 @@ public class DAOPoliza {
         }
         return big.intValue();
 	}
+	
+	public List<Poliza> getPolizasActivas(Long numeroCliente) {
+        try {
+            return session.createQuery("SELECT p FROM Poliza p WHERE numero_cliente="+numeroCliente
+            		+" and estado='"+EnumEstadoPoliza.VIGENTE+"'", Poliza.class).list();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

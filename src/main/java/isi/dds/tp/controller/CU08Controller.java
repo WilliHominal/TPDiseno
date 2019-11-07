@@ -2,6 +2,8 @@ package isi.dds.tp.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -46,6 +48,27 @@ public class CU08Controller {
 		GestorTema.get().setTema(ventana, "ACTUALIZAR FACTORES");
 		view = new CU08View();
 		view.addListenerBtnCancelar(new ListenerBtnCancelar());
+		view.addListenerCampoTipoCobertura(new ListenerCampoNumerico());
+		view.addListenerCampoModelo(new ListenerCampoNumerico());
+		view.addListenerCampoCiudad(new ListenerCampoNumerico());
+		view.addListenerCampoGuardaGarage(new ListenerCampoNumerico());
+		view.addListenerCampoTieneAlarma(new ListenerCampoNumerico());
+		view.addListenerCampoTieneRastreo(new ListenerCampoNumerico());
+		view.addListenerCampoTieneTuercas(new ListenerCampoNumerico());
+		view.addListenerCampoKm(new ListenerCampoNumerico());
+		view.addListenerCampoCeroSiniestros(new ListenerCampoNumerico());
+		view.addListenerCampoUnSiniestro(new ListenerCampoNumerico());
+		view.addListenerCampoDosSiniestros(new ListenerCampoNumerico());
+		view.addListenerCampoMuchosSiniestros(new ListenerCampoNumerico());
+		view.addListenerCampoCantidadHijos(new ListenerCampoNumerico());
+		view.addListenerCampoDerechoEmision(new ListenerCampoNumerico());
+		view.addListenerCampoDescuentoUnidadAdicional(new ListenerCampoNumerico());
+		view.addListenerSeleccionMarca(null);
+		view.addListenerSeleccionModelo(null);
+		view.addListenerSeleccionProvincia(null);
+		view.addListenerSeleccionCiudad(null);
+		view.addListenerSeleccionTipoCobertura(null);
+		view.addListenerBtnActualizarFactores(null);
 		JScrollPane scroll = new JScrollPane(view);
 		scroll.getVerticalScrollBar().setUnitIncrement(10);
 		ventana.setContentPane(scroll);
@@ -60,10 +83,20 @@ public class CU08Controller {
 				ventana.setContentPane(panelAnteriorAPoliza);
 				ventana.setTitle(tituloAnteriorAPoliza);
 				view.setVisible(false);
-				//HibernateUtil.cerrarSessionesUsadas();
+				//HibernateUtil.shutdown();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
+	}
+	
+	private class ListenerCampoNumerico implements KeyListener {
+		public void keyTyped(KeyEvent e) {
+			char caracter = e.getKeyChar();
+			if(Character.isDigit(caracter) || caracter == '.' || caracter == ','){	}
+			else{	e.consume(); }
+		} 
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }		
 	}
 }

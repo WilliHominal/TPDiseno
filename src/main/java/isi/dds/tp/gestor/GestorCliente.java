@@ -2,8 +2,11 @@ package isi.dds.tp.gestor;
 
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.modelo.Poliza;
+
+import java.util.Iterator;
 import java.util.List;
 import isi.dds.tp.dao.DAOCliente;
+import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.EnumSiniestros;
 import isi.dds.tp.enums.EnumTipoDocumento;
@@ -37,7 +40,7 @@ public class GestorCliente {
     		else {
     			Boolean tieneSiniestros = !poliza.getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO);
     			Boolean cuotasImpagas = GestorPoliza.get().omisionPago(cliente.getNumeroCliente());
-    			Boolean esClienteActivo = clienteActivo();
+    			Boolean esClienteActivo = clienteActivo(cliente.getNumeroCliente());
     			if(tieneSiniestros || cuotasImpagas || !esClienteActivo) {
     				cliente.setCondicion(EnumCondicion.NORMAL);
     			}
@@ -50,9 +53,19 @@ public class GestorCliente {
     	DAOCliente.getDAO().updateCliente(cliente);
     }
 
-	public Boolean clienteActivo() {
-		// TODO CU01 - implementar
-		//si el cliente tiene la primer
+	public Boolean clienteActivo(Long numeroCliente) {
+		List<Poliza> listaPolizasActivas = DAOPoliza.getDAO().getPolizasActivas(numeroCliente);
+		String numeroRenovacion = "";
+		Iterator<Poliza> iteratorPolizas = listaPolizasActivas.iterator();
+		while(iteratorPolizas.hasNext()) {
+			Poliza poliza = iteratorPolizas.next();
+			numeroRenovacion = poliza.getNumeroPoliza().toString().substring(11, 13);
+			//TODO CU01 en todo caso preguntar
+			//si es mayor o igual a 4, significa que se estuve renovado una poliza por dos años
+			if(Integer.parseInt(numeroRenovacion)>=4) {
+				return true;
+			}
+		}
 		return false;
 	}
 

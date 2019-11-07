@@ -109,7 +109,7 @@ public class HibernateUtil {
 	
 	/**
 	 * Desactiva que se muestre el log al iniciar Hibernate
-	 * @param apagamos: si es true apaga el log, sino lo deja encendido
+	 * @param apagamos : si es true apaga el log, sino lo deja encendido
 	 */
 	public static void apagarLog(Boolean apagamos) {
 	

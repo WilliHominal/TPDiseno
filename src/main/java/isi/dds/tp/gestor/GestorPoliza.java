@@ -288,11 +288,10 @@ public class GestorPoliza {
 	}
 	
 	public Boolean omisionPago(Long numeroCliente) {
-		//TODO CU01 probar omision pago
-		if(DAOPoliza.getDAO().getCantCuotasImpagas(numeroCliente) == 0) {
-			return false;
+		if(DAOPoliza.getDAO().getCantCuotasImpagas(numeroCliente) > 0) {
+			return true;
 		}
-		return true;
+		return false;
 	}
 
 	public Boolean esModeloViejo(Poliza poliza) {

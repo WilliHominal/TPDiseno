@@ -6,7 +6,6 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyListener;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -109,24 +108,25 @@ public class CU08View extends JPanel{
 	private JLabel lvalorModificar15 = new JLabel(labelValorModificar);
 	
 	private JLabel ltituloCheck = new JLabel("Marcar");
-	//TODO CU08 cambiar nombres y agregar ubicacion y retornar true si estan seleccionados
 	
-	//TODO CU08 agregar radio button para marcar y desmarcar todos
-	private JCheckBox checkCobertura = new JCheckBox();
-	private JCheckBox checkElegir2 = new JCheckBox();
-	private JCheckBox checkElegir3 = new JCheckBox();
-	private JCheckBox checkElegir4 = new JCheckBox();
-	private JCheckBox checkElegir5 = new JCheckBox();
-	private JCheckBox checkElegir6 = new JCheckBox();
-	private JCheckBox checkElegir7 = new JCheckBox();
-	private JCheckBox checkElegir8 = new JCheckBox();
-	private JCheckBox checkElegir9 = new JCheckBox();
-	private JCheckBox checkElegir10 = new JCheckBox();
-	private JCheckBox checkElegir11 = new JCheckBox();
-	private JCheckBox checkElegir12 = new JCheckBox();
-	private JCheckBox checkElegir13 = new JCheckBox();
-	private JCheckBox checkElegir14 = new JCheckBox();
-	private JCheckBox checkElegir15 = new JCheckBox();
+	private JCheckBox checkTodos1 = new JCheckBox("Seleccionar todos");
+	private JCheckBox checkTodos2 = new JCheckBox("Seleccionar todos");
+	
+	private JCheckBox checkTipoCobertura = new JCheckBox();
+	private JCheckBox checkModelo = new JCheckBox();
+	private JCheckBox checkCiudad = new JCheckBox();
+	private JCheckBox checkGuardaGarage = new JCheckBox();
+	private JCheckBox checkTieneAlarma = new JCheckBox();
+	private JCheckBox checkTieneRastreo = new JCheckBox();
+	private JCheckBox checkTieneTuercas = new JCheckBox();
+	private JCheckBox checkKm = new JCheckBox();
+	private JCheckBox checkCeroSiniestros = new JCheckBox();
+	private JCheckBox checkUnSiniestro = new JCheckBox();
+	private JCheckBox checkDosSiniestros = new JCheckBox();
+	private JCheckBox checkMuchosSiniestros = new JCheckBox();
+	private JCheckBox checkCantidadHijos = new JCheckBox();
+	private JCheckBox checkDerechoEmision = new JCheckBox();
+	private JCheckBox checkDescuentoUnidadAdicional = new JCheckBox();
 	
 	private JTextField campoTipoCobertura = new JTextField(16);
 	private JTextField campoModelo = new JTextField(16);
@@ -174,6 +174,7 @@ public class CU08View extends JPanel{
 	public CU08View() {
 		ubicarComponentes();
 		inicializarTema();
+		addListenerCheckTodos();
 	}
 
 	private void inicializarTema() {
@@ -232,23 +233,28 @@ public class CU08View extends JPanel{
 		tema.setTema(lvalorModificar14);
 		tema.setTema(lvalorModificar15);
 		
+
+		tema.setTema(checkTodos1, "Marcar para seleccionar todos los valores a modificar, desmarcar para desmarcar todos");
+		tema.setTema(checkTodos2, "Marcar para seleccionar todos los valores a modificar, desmarcar para desmarcar todos");
+
+		
 		tema.setTema(ltituloCheck);
 		
-		tema.setTema(checkCobertura, "Marcar para modificar el valor porcentual del tipo de cobertura elegido.");
-		tema.setTema(checkElegir2, "");
-		tema.setTema(checkElegir3, "");
-		tema.setTema(checkElegir4, "");
-		tema.setTema(checkElegir5, "");
-		tema.setTema(checkElegir6, "");
-		tema.setTema(checkElegir7, "");
-		tema.setTema(checkElegir8, "");
-		tema.setTema(checkElegir9, "");
-		tema.setTema(checkElegir10, "");
-		tema.setTema(checkElegir11, "");
-		tema.setTema(checkElegir12, "");
-		tema.setTema(checkElegir13, "");
-		tema.setTema(checkElegir14, "");
-		tema.setTema(checkElegir15, "");
+		tema.setTema(checkTipoCobertura, "Marcar para modificar el valor porcentual del tipo de cobertura elegido.");
+		tema.setTema(checkModelo, "Marcar para modificar el valor porcentual del modelo elegido.");
+		tema.setTema(checkCiudad, "Marcar para modificar el valor porcentual de la ciudad elegida.");
+		tema.setTema(checkGuardaGarage, "Marcar para modificar el valor porcentual acerca de si el vehículo es guardado en un garage.");
+		tema.setTema(checkTieneAlarma, "Marcar para modificar el valor porcentual acerca de si el vehículo posee alarma.");
+		tema.setTema(checkTieneRastreo, "Marcar para modificar el valor porcentual acerca de si el vehículo posee rastreo vehicular.");
+		tema.setTema(checkTieneTuercas, "Marcar para modificar el valor porcentual acerca de si el vehículo tiene teurcas antirribo.");
+		tema.setTema(checkKm, "Marcar para modificar el valor porcentual de acuerdo al rango de kilometros recorridos por el vehículo.");
+		tema.setTema(checkCeroSiniestros, "Marcar para modificar el valor porcentual debido a que el titular de la póliza no posea siniestros en el último año.");
+		tema.setTema(checkUnSiniestro, "Marcar para modificar el valor porcentual debido a que el titular de la póliza posea un siniestro en el último año.");
+		tema.setTema(checkDosSiniestros, "Marcar para modificar el valor porcentual debido a que el titular de la póliza posea más de dos siniestros en el último año.");
+		tema.setTema(checkMuchosSiniestros, "Marcar para modificar el valor porcentual debido a que el titular de la póliza posea más de dos siniestros en el último año.");
+		tema.setTema(checkCantidadHijos, "Marcar para modificar el valor porcentual de recargo por cantidad de hijos declarados.");
+		tema.setTema(checkDerechoEmision, "Marcar para modificar el valor de costo de derecho de emisión.");
+		tema.setTema(checkDescuentoUnidadAdicional, "Marcar para modificar el valor porcentual de descueno por unidad adicional.");
 		
 		tema.setTema(campoTipoCobertura, true);
 		tema.setTema(campoModelo, true);
@@ -304,35 +310,133 @@ public class CU08View extends JPanel{
 		    Insets primerCampo = new Insets( 5, 115, 15,  5);
 		   Insets segundaLabel = new Insets( 5, 315, 15,  5);
 		   Insets segundoCampo = new Insets( 5, 390, 15,  5);
-		Insets tituloSeleccion = new Insets(20,  30, 10, 30);
-		      Insets seleccion = new Insets( 5,  30, 15,  5);
+		Insets tituloSeleccion = new Insets(20,  20, 10, 30);
+		      Insets seleccion = new Insets( 5,  20, 15,  5);
 		
-		constraints.gridy = 1;
+		constraints.anchor = GridBagConstraints.WEST;
+		
 		constraints.gridx = 0;
+		constraints.gridy = 1;
 		constraints.insets = check;
-		add(checkCobertura, constraints);
-		constraints.gridx = 1;
+		add(checkTipoCobertura, constraints);
+		constraints.gridy = 3;
+		constraints.insets = check;
+		add(checkModelo, constraints);
+		constraints.gridy = 5;
+		constraints.insets = check;
+		add(checkCiudad, constraints);
+		constraints.gridy = 7;
+		constraints.insets = check;
+		add(checkGuardaGarage, constraints);
+		constraints.gridy = 9;
+		constraints.insets = check;
+		add(checkTieneAlarma, constraints);
+		constraints.gridy = 11;
+		constraints.insets = check;
+		add(checkTieneRastreo, constraints);
+		constraints.gridy = 13;
+		constraints.insets = check;
+		add(checkTieneTuercas, constraints);
+		constraints.gridy = 15;
+		constraints.insets = check;
+		add(checkKm, constraints);
+		constraints.gridy = 17;
+		constraints.insets = check;
+		add(checkCeroSiniestros, constraints);
+		constraints.gridy = 19;
+		constraints.insets = check;
+		add(checkUnSiniestro, constraints);
+		constraints.gridy = 21;
+		constraints.insets = check;
+		add(checkDosSiniestros, constraints);
+		constraints.gridy = 23;
+		constraints.insets = check;
+		add(checkMuchosSiniestros, constraints);
+		constraints.gridy = 25;
+		constraints.insets = check;
+		add(checkCantidadHijos, constraints);
+		constraints.gridy = 27;
+		constraints.insets = check;
+		add(checkDerechoEmision, constraints);
+		constraints.gridy = 29;
+		constraints.insets = check;
+		add(checkDescuentoUnidadAdicional, constraints);
 		
-		      	  
-		constraints.gridx = 1;
-		constraints.gridy = 0;
+		//combobboxes
+		constraints.gridx = 5;
 		constraints.gridwidth = 1;
-		constraints.gridheight = 1;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(5, 5, 10, 30);
-		add(btnActualizarFactores1, constraints);
-		constraints.gridx = 2;
-		add(btnCancelar1, constraints);
+		constraints.gridy = 1;
+		constraints.insets = tituloSeleccion;
+		add(lcoberturas, constraints);
+		constraints.gridy = 2;
+		constraints.insets = seleccion;
+		add(seleccionTipoCobertura, constraints);
+
+		constraints.gridy = 3;
+		constraints.insets = tituloSeleccion;
+		add(lmarcas, constraints);
+		constraints.gridy = 4;
+		constraints.insets = seleccion;
+		add(seleccionMarca, constraints);
+		constraints.gridx = 6;
+		constraints.gridy = 3;
+		constraints.insets = tituloSeleccion;
+		add(lmodelos, constraints);
+		constraints.gridy = 4;
+		constraints.insets = seleccion;
+		add(seleccionModelo, constraints);		
 		
-		constraints.anchor = GridBagConstraints.WEST;
+		constraints.gridx = 5;
+		constraints.gridy = 5;
+		constraints.insets = tituloSeleccion;
+		add(lprovincias, constraints);
+		constraints.gridy = 6;
+		constraints.insets = seleccion;
+		add(seleccionProvincia, constraints);
+		constraints.gridx = 6;
+		constraints.gridy = 5;
+		constraints.insets = tituloSeleccion;
+		add(lciudades, constraints);
+		constraints.gridy = 6;
+		constraints.insets = seleccion;
+		add(seleccionCiudad, constraints);
+						
+		
+		//buttons
+		constraints.gridx = 0;
+		constraints.gridy = 0;
+		constraints.gridwidth = 2;
+		constraints.gridheight = 1;
+		constraints.insets.set(5, 5, 10, 5);
+		add(checkTodos1, constraints);
+		
 		constraints.gridwidth = 4;
 		constraints.gridx = 1;
+		constraints.insets.set(5, 240, 10, 0);
+		add(btnActualizarFactores1, constraints);
+		constraints.insets.set(5,  420, 10, 0);
+		add(btnCancelar1, constraints);
 		
+		constraints.gridx = 0;
+		constraints.gridy = 31;
+		constraints.gridwidth = 2;
+		constraints.gridheight = 1;
+		constraints.insets.set(15, 5, 10, 5);
+		add(checkTodos2, constraints);
+		
+		constraints.gridwidth = 4;
+		constraints.gridx = 1;
+		constraints.insets.set(15, 240, 10, 0);
+		add(btnActualizarFactores2, constraints);
+		constraints.insets.set(15,  420, 10, 0);
+		add(btnCancelar2, constraints);
+		
+			
 		//y = 1 - 2   valor actual = 1
 		constraints.gridy = 1;
 		constraints.gridx = 0;
 		constraints.insets = check;
-		//add(checkCobertura, constraints);
+		//add(checkTipoCobertura, constraints);
 		constraints.gridx = 1;
 		constraints.insets = titulo;
 		add(ltipoCobertura, constraints);
@@ -346,17 +450,6 @@ public class CU08View extends JPanel{
 		add(lvalorActual1, constraints);
 		constraints.insets = segundoCampo;
 		add(campoTipoCoberturaActual, constraints);
-		
-		constraints.gridx = 5;
-		constraints.gridwidth = 1;
-		constraints.gridy = 1;
-		constraints.insets = tituloSeleccion;
-		add(lcoberturas, constraints);
-		constraints.gridy = 2;
-		constraints.insets = seleccion;
-		add(seleccionTipoCobertura, constraints);
-		constraints.gridwidth = 4;
-		constraints.gridx = 1;
 		
 		//y = 3 - 4   valor actual = 2
 		constraints.gridy = 3;
@@ -373,24 +466,6 @@ public class CU08View extends JPanel{
 		constraints.insets = segundoCampo;
 		add(campoModeloActual, constraints);
 		
-		constraints.gridx = 5;
-		constraints.gridwidth = 1;
-		constraints.gridy = 3;
-		constraints.insets = tituloSeleccion;
-		add(lmarcas, constraints);
-		constraints.gridy = 4;
-		constraints.insets = seleccion;
-		add(seleccionMarca, constraints);
-		constraints.gridx = 6;
-		constraints.gridy = 3;
-		constraints.insets = tituloSeleccion;
-		add(lmodelos, constraints);
-		constraints.gridy = 4;
-		constraints.insets = seleccion;
-		add(seleccionModelo, constraints);
-		constraints.gridwidth = 4;
-		constraints.gridx = 1;
-		
 		//y = 5 - 6   valor actual = 3
 		constraints.gridy = 5;
 		constraints.insets = titulo;
@@ -405,26 +480,6 @@ public class CU08View extends JPanel{
 		add(lvalorActual3, constraints);
 		constraints.insets = segundoCampo;
 		add(campoCiudadActual, constraints);
-		
-		
-		constraints.gridx = 5;
-		constraints.gridwidth = 1;
-		constraints.gridy = 5;
-		constraints.insets = tituloSeleccion;
-		add(lprovincias, constraints);
-		constraints.gridy = 6;
-		constraints.insets = seleccion;
-		add(seleccionProvincia, constraints);
-		constraints.gridx = 6;
-		constraints.gridy = 5;
-		constraints.insets = tituloSeleccion;
-		add(lciudades, constraints);
-		constraints.gridy = 6;
-		constraints.insets = seleccion;
-		add(seleccionCiudad, constraints);
-		constraints.gridwidth = 4;
-		constraints.gridx = 1;
-		
 		
 		//y = 7 - 8   valor actual = 4
 		constraints.gridy = 7;
@@ -604,18 +659,7 @@ public class CU08View extends JPanel{
 		constraints.insets = segundaLabel;
 		add(lvalorActual15, constraints);
 		constraints.insets = segundoCampo;
-		add(campoDescuentoUnidadAdicionalActual, constraints);
-		
-		constraints.gridx = 1;
-		constraints.gridy = 31;
-		constraints.gridwidth = 1;
-		constraints.gridheight = 1;
-		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(30, 5, 10, 30);
-		add(btnActualizarFactores2, constraints);
-		constraints.gridx = 2;
-		add(btnCancelar2, constraints);
-		
+		add(campoDescuentoUnidadAdicionalActual, constraints);	
 	}
 	
 	public void addListenerCampoTipoCobertura(KeyListener listener){
@@ -706,6 +750,49 @@ public class CU08View extends JPanel{
 	public void addListenerBtnCancelar(ActionListener listener) {
 		btnCancelar1.addActionListener(listener);
 		btnCancelar2.addActionListener(listener);
+	}
+	
+	public void addListenerCheckTodos() {
+		checkTodos1.addActionListener(a -> {
+			Boolean selected = checkTodos1.isSelected();
+			checkTodos2.setSelected(selected);
+			checkTipoCobertura.setSelected(selected);
+			checkModelo.setSelected(selected);
+			checkCiudad.setSelected(selected);
+			checkGuardaGarage.setSelected(selected);
+			checkTieneAlarma.setSelected(selected);
+			checkTieneRastreo.setSelected(selected);
+			checkTieneTuercas.setSelected(selected);
+			checkKm.setSelected(selected);
+			checkCeroSiniestros.setSelected(selected);
+			checkUnSiniestro.setSelected(selected);
+			checkDosSiniestros.setSelected(selected);
+			checkMuchosSiniestros.setSelected(selected);
+			checkCantidadHijos.setSelected(selected);
+			checkDerechoEmision.setSelected(selected);
+			checkDescuentoUnidadAdicional.setSelected(selected);
+		});
+		
+		checkTodos2.addActionListener(a -> {
+			Boolean selected = checkTodos2.isSelected();
+			checkTodos1.setSelected(selected);
+			checkTipoCobertura.setSelected(selected);
+			checkModelo.setSelected(selected);
+			checkCiudad.setSelected(selected);
+			checkGuardaGarage.setSelected(selected);
+			checkTieneAlarma.setSelected(selected);
+			checkTieneRastreo.setSelected(selected);
+			checkTieneTuercas.setSelected(selected);
+			checkKm.setSelected(selected);
+			checkCeroSiniestros.setSelected(selected);
+			checkUnSiniestro.setSelected(selected);
+			checkDosSiniestros.setSelected(selected);
+			checkMuchosSiniestros.setSelected(selected);
+			checkCantidadHijos.setSelected(selected);
+			checkDerechoEmision.setSelected(selected);
+			checkDescuentoUnidadAdicional.setSelected(selected);
+		});
+		
 	}
 
 	public String getTipoCobertura() {
