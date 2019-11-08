@@ -23,7 +23,7 @@ import isi.dds.tp.enums.EnumSiniestros;
 @Entity
 @Table
 public class Poliza {
-	
+	//TODO cambiar
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "numero_cliente")
 	private Cliente cliente;
@@ -37,7 +37,7 @@ public class Poliza {
 	@JoinColumn(name = "numero_poliza")
 	@IndexColumn(name ="idx")
 	private List<Cuota> cuotas;
-    
+    //TODO modificar constraints
 	@JoinColumn(name = "tipo_cobertura")
     @OneToOne
 	private TipoCobertura tipoCobertura;
