@@ -28,7 +28,8 @@ public class GestorCliente {
     	return DAOCliente.getDAO().getCliente(numeroCliente);
     }
     
-    public void actualizarCliente(Cliente cliente, Poliza poliza) {    	
+    public void actualizarCliente(Cliente cliente, Poliza poliza) { 
+    	//TODO fijarse cuando actualizas a plata con mensual
     	if(cliente.getPolizas().size() <= 1) {
     		//la cantidad es uno, porque se actualiza al cliente luego de añadirle la póliza, con lo cuál ya tendría al menos una póliza
     		cliente.setCondicion(EnumCondicion.NORMAL);

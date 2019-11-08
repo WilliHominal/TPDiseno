@@ -154,18 +154,17 @@ public class CU01Controller2 {
 			}
 			else {
 				gestorPoliza.actualizarPoliza(poliza, view2.getTipoCobertura(), inicioVigencia, EnumFormaPago.SEMESTRAL );
-				descuentoSemestral = true;
 			}
 			
 			if (poliza.getCliente().getPolizas().size() > 0) {
 				descuentoMasDeUnaUnidad = true;
 			}
 
-			gestorPoliza.calcularPremio(poliza, descuentoSemestral);
+			gestorPoliza.calcularPremio(poliza, !view2.eligioMensual());
 			
 			Float premio = poliza.getValorPremio();
 			Float descuento = poliza.getValorDescuento();
-			Float montoTotal = premio - descuento;
+			Float montoTotal = premio - descuento; //TODO premio es monto total o asi esta bien?
 			Float montoCuota = montoTotal / 6;			
 			
 			view2.setApellido(poliza.getCliente().getApellido());

@@ -84,7 +84,7 @@ public class CU08Controller {
 		view.addListenerSeleccionProvincia(new ListenerSeleccionProvincia());
 		view.addListenerSeleccionCiudad(new ListenerSeleccionCiudad());
 		view.addListenerSeleccionTipoCobertura(new ListenerSeleccionTipoCobertura()); 
-		view.addListenerBtnActualizarFactores(new ListenerBtnActualizar());
+	//	view.addListenerBtnActualizarFactores(new ListenerBtnActualizar());
 		JScrollPane scroll = new JScrollPane(view);
 		scroll.getVerticalScrollBar().setUnitIncrement(10);
 		ventana.setContentPane(scroll);

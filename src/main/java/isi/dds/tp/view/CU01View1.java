@@ -424,7 +424,7 @@ public class CU01View1 extends JPanel {
 		tema.setTema(campoChasis, false);
 		campoChasis.setToolTipText("C9999999");
 		tema.setTema(campoPatente, false);
-		campoPatente.setToolTipText("LLL999 / LL9999LL");
+		campoPatente.setToolTipText("LLL999 / LL999LL");
 		tema.setTema(btnBuscarCliente, true);
 		tema.setTema(btnAltaCliente, true);
 		tema.setTema(btnAgregarHijo, false);

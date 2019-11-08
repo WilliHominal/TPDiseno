@@ -119,10 +119,6 @@ public class CU01Controller1 {
 		view1.setCalle(cliente.getCalle()) ;
 		view1.setNumeroCalle(cliente.getNumeroCalle().toString());
 		
-		String numeroSiniestros = gestorEnum.parseString(gestorSubsistemaSiniestros.getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()));
-		poliza = gestorPoliza.newPoliza(cliente, numeroSiniestros);
-		view1.setNumeroSiniestros(numeroSiniestros);
-
 		if(cliente.getPiso() == null) {
 			view1.setPiso("-");
 			view1.setDepartamento("-");
@@ -130,6 +126,12 @@ public class CU01Controller1 {
 			view1.setPiso(cliente.getPiso().toString());
 			view1.setDepartamento(cliente.getDepartamento());
 		}
+		
+		String numeroSiniestros = gestorEnum.parseString(gestorSubsistemaSiniestros.getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()));
+		view1.setNumeroSiniestros(numeroSiniestros);
+		
+		poliza = gestorPoliza.newPoliza(cliente, numeroSiniestros);
+		
 		
 		if(primerCliente) {
 			view1.componentesAlObtenerCliente();
@@ -146,7 +148,6 @@ public class CU01Controller1 {
 				view1.addMarca(marcasIterator.next());
 			}
 			
-			view1.setProvinciaInicio(cliente.getCiudad().getProvincia());
 			view1.habilitarSeleccionModelo(false);
 			view1.habilitarSeleccionAnioModelo(false);
 			
@@ -154,6 +155,7 @@ public class CU01Controller1 {
 			primerCliente = false;
 		}
 
+		view1.setProvinciaInicio(cliente.getCiudad().getProvincia());
 		
 		Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(cliente.getCiudad().getProvincia()).iterator();
 		view1.addCiudad(iteratorCiudad.next(), true);
