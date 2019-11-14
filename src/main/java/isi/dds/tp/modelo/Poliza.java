@@ -23,7 +23,6 @@ import isi.dds.tp.enums.EnumSiniestros;
 @Entity
 @Table
 public class Poliza {
-	//TODO cambiar
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "numero_cliente")
 	private Cliente cliente;

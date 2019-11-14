@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+
 import isi.dds.tp.enums.EnumTipoCobertura;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
@@ -74,7 +75,7 @@ public class DAOTipoCobertura {
     	return null;
 	}
     
-    public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(EnumTipoCobertura tipoCobertura) {
+    public RiesgoTipoCobertura getUltimoRiesgoTipoCobertura(String tipoCobertura) {
         try {
             return session.createNativeQuery("SELECT * FROM riesgo_tipo_cobertura where tipo_cobertura='"+tipoCobertura+"'  and fin_vigencia is NULL", RiesgoTipoCobertura.class).getSingleResult();
         }
@@ -86,6 +87,7 @@ public class DAOTipoCobertura {
 
 	public TipoCobertura getTipoCobertura(EnumTipoCobertura tipo) {
         try {
+        	//TODO ver
             return session.get(TipoCobertura.class, tipo);
         }
         catch (HibernateException e) {

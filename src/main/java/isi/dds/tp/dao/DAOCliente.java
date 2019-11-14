@@ -61,7 +61,7 @@ public class DAOCliente {
     
 	public List<Cliente> getClientes(String consulta) {
         try {
-            return session.createNativeQuery("SELECT * FROM cliente where (condicion='ACTIVO' or condicion='PLATA') "+consulta, Cliente.class).getResultList();
+            return session.createNativeQuery("SELECT * FROM cliente "+consulta, Cliente.class).getResultList();
         }
         catch (HibernateException e) {
             e.printStackTrace();

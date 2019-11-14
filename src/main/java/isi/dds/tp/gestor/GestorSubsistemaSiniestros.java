@@ -18,6 +18,6 @@ public class GestorSubsistemaSiniestros {
     }
 
 	public EnumSiniestros getSiniestroUltimosAnios(EnumTipoDocumento tipoDocumento, String documento, int anio) {
-		return DAOSiniestros.getDAO().getSiniestroUltimoAnio(tipoDocumento, documento, anio).getSiniestros();
+		return DAOSiniestros.getDAO().getSiniestroUltimoAnio(tipoDocumento.name(), documento, anio).getSiniestros();
 	}
 }

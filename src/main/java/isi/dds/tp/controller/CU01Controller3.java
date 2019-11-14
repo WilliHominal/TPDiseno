@@ -14,17 +14,14 @@ import javax.swing.JOptionPane;
 import javax.swing.WindowConstants;
 import isi.dds.tp.enums.EnumEstadoCivil;
 import isi.dds.tp.enums.EnumSexo;
-import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.view.CU01View3;
 
-public class CU01Controller3 {
-	
+public class CU01Controller3 {	
 	private CU01Controller1 controller1;
 	private CU01View3 view3;
 	
-	private GestorEnum gestorEnum = GestorEnum.get();
 	private GestorPoliza gestorPoliza = GestorPoliza.get();
 	
 	public CU01Controller3() {
@@ -34,10 +31,15 @@ public class CU01Controller3 {
 		view3.setLocationRelativeTo(null);
 		view3.setTitle("Dar de alta póliza: AGREGAR DATOS HIJOS");
 		view3.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
+		System.out.println("Linea 34 controller 3");
 		setFechaInicioDefault();
+		System.out.println("Linea 36 controller 3");
 		addSelecccionSexo();
+		System.out.println("Linea 38 controller 3");
 		addSeleccionEstadoCivil();
+		System.out.println("Linea 40 controller 3");
 		addListenerVentanaDeclararHijo();
+		System.out.println("Linea 42 controller 3");
 		view3.addListenerPane(new ListenerPanel());
 		view3.addListenerSeleccionSexo(new ListenerSeleccionSexo());
 		view3.addListenerBtnAgregarHijo(new ListenerBtnAgregarHijo());
@@ -74,7 +76,7 @@ public class CU01Controller3 {
 		view3.addSexo("Seleccionar");
 		EnumSexo[] sexos = EnumSexo.values();
 		for(int i=0; i<sexos.length; i++){
-			view3.addSexo(gestorEnum.parseString(sexos[i]));
+			view3.addSexo(sexos[i].toString());
 		}
 	}
 	
@@ -82,7 +84,7 @@ public class CU01Controller3 {
 		view3.addEstadoCivil("Seleccionar");
 		EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
 		for(int i=0; i<estadosCivil.length; i++){
-			view3.addEstadoCivil(gestorEnum.parseStringMasc(estadosCivil[i]));
+			view3.addEstadoCivil(estadosCivil[i].toString(EnumSexo.MASCULINO));
 		}
 	}
 	
@@ -113,22 +115,12 @@ public class CU01Controller3 {
 		public void actionPerformed(ActionEvent e) {
 			if(!view3.getSexo().equals("Seleccionar")) {
 				Integer index = view3.indexSeleccionEstadoCivil();
-				
-				if(gestorEnum.parseEnumSexo(view3.getSexo()).equals(EnumSexo.FEMENINO)) {
-					view3.addEstadoCivil("Seleccionar");
-					EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
-					for(int i=0; i<estadosCivil.length; i++){
-						view3.addEstadoCivil(gestorEnum.parseStringFem(estadosCivil[i]));
-					}
-				}
-				
-				if(gestorEnum.parseEnumSexo(view3.getSexo()).equals(EnumSexo.MASCULINO)) {
-					view3.addEstadoCivil("Seleccionar");
-					EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
-					for(int i=0; i<estadosCivil.length; i++){
-						view3.addEstadoCivil(gestorEnum.parseStringMasc(estadosCivil[i]));
-					}
-				}
+				view3.addEstadoCivil("Seleccionar");
+				EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
+				for(int i=0; i<estadosCivil.length; i++){
+					view3.addEstadoCivil(estadosCivil[i].toString(EnumSexo.getEnum(view3.getSexo())));
+				}	
+				//TODO probar
 				view3.setEstadoCivil(index);
 			}
 		}
@@ -152,7 +144,7 @@ public class CU01Controller3 {
 
 			LocalDate fechaNacLocalDate = fechaNacDate.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
-			if(!gestorPoliza.validadEdadHijo(fechaNacLocalDate)) {
+			if(!gestorPoliza.validarFechaNacimiento(fechaNacLocalDate)) {
 				fechaError = true;
 				fechaNac = "La fecha de nacimiento que se introdujo dicta una edad que no se encuentra en el rango adecuado (18 a 30 años).\n";
 			}
@@ -174,8 +166,8 @@ public class CU01Controller3 {
 			else{			
 				HijoDeclarado hijo = new HijoDeclarado();
 				hijo.setFechaNacimiento(fechaNacLocalDate);
-				hijo.setSexo(gestorEnum.parseEnumSexo(view3.getSexo()));
-				hijo.setEstadoCivil(gestorEnum.parseEnumEstadoCivil(view3.getEstadoCivil()));
+				hijo.setSexo(EnumSexo.getEnum(view3.getSexo()));
+				hijo.setEstadoCivil(EnumEstadoCivil.getEnum(view3.getEstadoCivil()));
 				controller1.agregarHijoTabla(hijo);
 				view3.setVisible(false);
 			}

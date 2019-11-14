@@ -177,7 +177,7 @@ public class CU17View1 extends JPanel {
 		campoNumeroCliente.addKeyListener(new KeyAdapter(){
 			public void keyTyped(KeyEvent e){
 				char caracter = e.getKeyChar();
-				if(Character.isDigit(caracter) && campoApellido.getText().length() < 8){
+				if(Character.isDigit(caracter) && campoNumeroCliente.getText().length() < 8){
 					
 				}
 				else{

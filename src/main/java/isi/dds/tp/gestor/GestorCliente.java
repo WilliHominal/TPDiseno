@@ -14,6 +14,8 @@ import isi.dds.tp.hibernate.HibernateUtil;
 
 public class GestorCliente {
 	private static GestorCliente instanciaGestor = null;
+	
+	private static GestorPoliza gestorPoliza = GestorPoliza.get();
 	 
     private GestorCliente() { }
 
@@ -30,17 +32,17 @@ public class GestorCliente {
     
     public void actualizarCliente(Cliente cliente, Poliza poliza) { 
     	//TODO fijarse cuando actualizas a plata con mensual
-    	if(cliente.getPolizas().size() <= 1) {
+    	if(gestorPoliza.getPolizas(cliente.getNumeroCliente()).size() <= 1) {
     		//la cantidad es uno, porque se actualiza al cliente luego de añadirle la póliza, con lo cuál ya tendría al menos una póliza
     		cliente.setCondicion(EnumCondicion.NORMAL);
     	}else {
-    		Boolean polizasVigentes = GestorPoliza.get().vigenciaPolizas(cliente.getNumeroCliente());
+    		Boolean polizasVigentes = gestorPoliza.vigenciaPolizas(cliente.getNumeroCliente());
     		if(!polizasVigentes) {
     			cliente.setCondicion(EnumCondicion.NORMAL);
     		}
     		else {
     			Boolean tieneSiniestros = !poliza.getNumerosSiniestrosUltimoAnios().equals(EnumSiniestros.NINGUNO);
-    			Boolean cuotasImpagas = GestorPoliza.get().omisionPago(cliente.getNumeroCliente());
+    			Boolean cuotasImpagas = gestorPoliza.omisionPago(cliente.getNumeroCliente());
     			Boolean esClienteActivo = clienteActivo(cliente.getNumeroCliente());
     			if(tieneSiniestros || cuotasImpagas || !esClienteActivo) {
     				cliente.setCondicion(EnumCondicion.NORMAL);
@@ -61,8 +63,7 @@ public class GestorCliente {
 		while(iteratorPolizas.hasNext()) {
 			Poliza poliza = iteratorPolizas.next();
 			numeroRenovacion = poliza.getNumeroPoliza().toString().substring(11, 13);
-			//TODO CU01 en todo caso preguntar
-			//si es mayor o igual a 4, significa que se estuve renovado una poliza por dos años
+			//TODO CU01 rehacer bien
 			if(Integer.parseInt(numeroRenovacion)>=4) {
 				return true;
 			}
@@ -71,25 +72,52 @@ public class GestorCliente {
 	}
 
 	public List<Cliente> buscarClientes(Long numeroCliente, String apellido, String nombre, EnumTipoDocumento tipoDocumento, String numeroDocumento) {
-    	String condicionesConsulta = "";
+		String condicionesConsulta = "";
+		Boolean primerConsulta = true;
     	if(numeroCliente != null) {
-    		condicionesConsulta += " and numero_cliente="+numeroCliente;
+    		condicionesConsulta += "where numero_cliente="+numeroCliente;
+    		primerConsulta = false;
     	}
     	
     	if(!apellido.isEmpty()) {
-    		condicionesConsulta += " and to_ascii(apellido, 'latin1') ilike  to_ascii('"+apellido+"%', 'latin1') ";
+    		if(primerConsulta) {
+    			primerConsulta = false;
+    			condicionesConsulta += " where ";
+      		}
+    		else {
+    			condicionesConsulta += " and ";
+    		}
+    		condicionesConsulta += " to_ascii(apellido, 'latin1') ilike  to_ascii('"+apellido+"%', 'latin1') ";
     	}
     	
     	if(!nombre.isEmpty()) {
-   			condicionesConsulta += " and to_ascii(nombre, 'LATIN1') ilike TO_ASCII('"+nombre+"%', 'latin1') ";
+    		if(primerConsulta) {
+    			primerConsulta = false;
+    			condicionesConsulta += " where ";
+      		}
+    		else {
+    			condicionesConsulta += " and ";
+    		}
+   			condicionesConsulta += " to_ascii(nombre, 'LATIN1') ilike TO_ASCII('"+nombre+"%', 'latin1') ";
     	}
     	
     	if(tipoDocumento != null) {
-    		condicionesConsulta += " and tipo_documento = '"+tipoDocumento+"' ";
+    		if(primerConsulta) {
+    			primerConsulta = false;
+    			condicionesConsulta += " where ";
+      		}
+    		else {
+    			condicionesConsulta += " and ";
+    		}
+    		condicionesConsulta += " tipo_documento = '"+tipoDocumento.name()+"' ";
     	}
     	
     	if(!numeroDocumento.isEmpty()) {
-    		condicionesConsulta += " and documento = '"+numeroDocumento+"' ";
+    		if(!primerConsulta) {
+    			condicionesConsulta += " and ";
+    			condicionesConsulta += " where ";
+    		}
+    		condicionesConsulta += " documento = '"+numeroDocumento+"' ";
     	}
     	condicionesConsulta += " order by numero_cliente asc";
     	return DAOCliente.getDAO().getClientes(condicionesConsulta);

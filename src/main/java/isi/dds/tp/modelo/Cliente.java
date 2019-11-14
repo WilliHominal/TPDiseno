@@ -1,16 +1,12 @@
 package isi.dds.tp.modelo;
 
 import java.time.LocalDate;
-import java.util.Set;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import isi.dds.tp.enums.EnumCondicion;
@@ -26,11 +22,6 @@ public class Cliente {
 	@JoinColumn(name="id_ciudad")
     @OneToOne
 	private Ciudad ciudad;
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="numero_cliente")
-	//@org.hibernate.annotations.IndexColumn(name = "idx")
-	private Set<Poliza> polizas;
 	
 	@Id
 	@Column(nullable = false, name = "numero_cliente")
@@ -100,9 +91,7 @@ public class Cliente {
 	public Ciudad getCiudad() {
 		return ciudad;
 	}
-	public Set<Poliza> getPolizas() {
-		return polizas;
-	}
+
 	public Long getNumeroCliente() {
 		return numeroCliente;
 	}
@@ -157,18 +146,19 @@ public class Cliente {
 	public String getProfesion() {
 		return profesion;
 	}
+	
 	public Integer getAnioRegistro() {
 		return anioRegistro;
 	}
+	
 	public void setCiudad(Ciudad ciudad) {
 		this.ciudad = ciudad;
 	}
-	public void setPolizas(Set<Poliza> polizas) {
-		this.polizas = polizas;
-	}
+
 	public void setNumeroCliente(Long numeroCliente) {
 		this.numeroCliente = numeroCliente;
 	}
+	
 	public void setCondicion(EnumCondicion condicion) {
 		this.condicion = condicion;
 	}

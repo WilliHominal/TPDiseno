@@ -2,10 +2,8 @@ package isi.dds.tp.dao;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import isi.dds.tp.enums.EnumTipoDocumento;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Siniestro;
@@ -50,7 +48,8 @@ public class DAOSiniestros {
 		session.close();
 	}
     
-    public Siniestro getSiniestroUltimoAnio(EnumTipoDocumento tipoDocumento, String documento, Integer anio) {
+    public Siniestro getSiniestroUltimoAnio(String tipoDocumento, String documento, Integer anio) {
+
         try {
             return session.createQuery("SELECT s FROM Siniestro s where tipo_documento='"+tipoDocumento+"' and documento='"+documento+"' and anio="+anio, Siniestro.class).getSingleResult();
         }

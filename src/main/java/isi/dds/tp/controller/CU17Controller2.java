@@ -5,8 +5,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import isi.dds.tp.enums.EnumSexo;
-import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.view.CU17View2;
@@ -22,7 +20,6 @@ public class CU17Controller2 {
 	private Cliente cliente;
 		
 	private GestorTema tema = GestorTema.get();
-	private GestorEnum gestorEnum = GestorEnum.get();
 
 	public CU17Controller2(JFrame ventana, Cliente cliente) {
 		this.cliente = cliente;
@@ -67,19 +64,15 @@ public class CU17Controller2 {
 		view2.setCorreoElectronico(cliente.getCorreoElectronico());
 		view2.setProfesion(cliente.getProfesion());
 		view2.setAnioRegistro(cliente.getAnioRegistro().toString());
-		view2.setTipoDocumento(gestorEnum.parseString(cliente.getTipoDocumento()));
-		view2.setSexo(gestorEnum.parseString(cliente.getSexo()));
+		view2.setTipoDocumento(cliente.getTipoDocumento().toString());
+		view2.setSexo(cliente.getSexo().toString());
 		view2.setFechaNacimiento(cliente.getFechaNacimiento().toString());
 		view2.setPais(cliente.getCiudad().getProvincia().getPais().getNombre());
 		view2.setProvincia(cliente.getCiudad().getProvincia().getNombre());
 		view2.setCiudad(cliente.getCiudad().getNombre());
-		view2.setCondicionIva(gestorEnum.parseString(cliente.getCondicionIva()));
-		if(cliente.getSexo().equals(EnumSexo.FEMENINO)) {
-			view2.setEstadoCivil(gestorEnum.parseStringFem(cliente.getEstadoCivil()));
-		}
-		else {
-			view2.setEstadoCivil(gestorEnum.parseStringMasc(cliente.getEstadoCivil()));
-		}
+		view2.setCondicionIva(cliente.getCondicionIva().toString());
+		view2.setEstadoCivil(cliente.getEstadoCivil().toString(cliente.getSexo()));
+
 	}
 
 	public void setCU17Controller1(CU17Controller1 controller1) {
@@ -90,6 +83,7 @@ public class CU17Controller2 {
 	private class ListenerElegirCliente implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {	
+				
 				controller1.obtenidoCliente(cliente);
 		    	view2.setVisible(false);
 			}catch(Exception ex) {

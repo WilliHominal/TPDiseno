@@ -13,7 +13,6 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import isi.dds.tp.gestor.GestorDomicilio;
-import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorSubsistemaSiniestros;
@@ -32,8 +31,7 @@ public class CU01Controller1 {
 	
 	private CU01Controller1 instancia;
 	private CU01View1 view1;
-	
-	private GestorEnum gestorEnum = GestorEnum.get();
+
 	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
 	private GestorParametrosVehiculo gestorVehiculo = GestorParametrosVehiculo.get();
 	private GestorPoliza gestorPoliza = GestorPoliza.get();
@@ -90,14 +88,10 @@ public class CU01Controller1 {
 				LocalDate date = poliza.getHijosDeclarado().get(fila).getFechaNacimiento();
 				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd LLLL yyyy");
 				String formattedString = date.format(formatter);
-				String sexo = GestorEnum.get().parseString(poliza.getHijosDeclarado().get(fila).getSexo());
+				String sexo = poliza.getHijosDeclarado().get(fila).getSexo().toString();
 				String estadoCivil = "";
-				if(sexo.equals("Femenino")) {
-					estadoCivil = gestorEnum.parseStringFem(poliza.getHijosDeclarado().get(fila).getEstadoCivil());
-				}
-				else {
-					estadoCivil = gestorEnum.parseStringMasc(poliza.getHijosDeclarado().get(fila).getEstadoCivil());
-				}
+				estadoCivil = poliza.getHijosDeclarado().get(fila).getEstadoCivil().toString(poliza.getHijosDeclarado().get(fila).getSexo());
+
 				view1.cargarHijosTabla(fila, formattedString, sexo, estadoCivil);
 			}
 		}
@@ -114,10 +108,11 @@ public class CU01Controller1 {
 		view1.setNumeroCliente(cliente.getNumeroCliente().toString());
 		view1.setApellido(cliente.getApellido());
 		view1.setNombre(cliente.getNombre());
-		view1.setTipoDocumento(gestorEnum.parseString(cliente.getTipoDocumento()));
+		view1.setTipoDocumento(cliente.getTipoDocumento().toString());
 		view1.setNumeroDocumento(cliente.getNumeroDocumento());
 		view1.setCalle(cliente.getCalle()) ;
 		view1.setNumeroCalle(cliente.getNumeroCalle().toString());
+		System.out.println("Linea 2");
 		
 		if(cliente.getPiso() == null) {
 			view1.setPiso("-");
@@ -127,11 +122,13 @@ public class CU01Controller1 {
 			view1.setDepartamento(cliente.getDepartamento());
 		}
 		
-		String numeroSiniestros = gestorEnum.parseString(gestorSubsistemaSiniestros.getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()));
+		System.out.println("Linea 3");
+		
+		String numeroSiniestros = gestorSubsistemaSiniestros.getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()).toString();
 		view1.setNumeroSiniestros(numeroSiniestros);
-		
+		System.out.println("Linea 4");
 		poliza = gestorPoliza.newPoliza(cliente, numeroSiniestros);
-		
+		System.out.println("Linea 5");
 		
 		if(primerCliente) {
 			view1.componentesAlObtenerCliente();
@@ -399,9 +396,12 @@ public class CU01Controller1 {
 	
 	private class ListenerBtnDeclararHijo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {				
+			try {		
+				System.out.println("Linea 400 controller 1");
 				view1.componentesAlDeclararHijos(false, 0);
+				System.out.println("Linea 402 controller 1");
 				new CU01Controller3().setCU01Controller1(instancia);
+				
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}

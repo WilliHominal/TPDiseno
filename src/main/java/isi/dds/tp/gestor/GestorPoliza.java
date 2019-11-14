@@ -7,6 +7,7 @@ import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.enums.EnumFormaPago;
+import isi.dds.tp.enums.EnumSiniestros;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.HijoDeclarado;
 import isi.dds.tp.modelo.ParametrosPoliza;
@@ -36,7 +37,7 @@ public class GestorPoliza {
     public Poliza newPoliza(Cliente cliente, String numeroSiniestros){
     	Poliza poliza = new Poliza();
     	poliza.setCliente(cliente);
-    	poliza.setNumerosSiniestrosUltimoAnios(GestorEnum.get().parseEnumSiniestros(numeroSiniestros));
+    	poliza.setNumerosSiniestrosUltimoAnios(EnumSiniestros.getEnum(numeroSiniestros));
     	poliza.setHijosDeclarado(new ArrayList<HijoDeclarado>());
     	poliza.setCuotas(new ArrayList<Cuota>());
     	return poliza;
@@ -190,7 +191,7 @@ public class GestorPoliza {
 			valorBonificacionPagoSemestral = GestorSistemaFinanciero.get().getTasaInteresAnual() / 2; //divide por 2 porque el interes es anual
 		}
 		
-		Float valorDescuento = (valorDescuentoPorUnidadAdicional * poliza.getCliente().getPolizas().size() + valorBonificacionPagoSemestral ) * poliza.getValorPremio() ;
+		Float valorDescuento = (valorDescuentoPorUnidadAdicional * getPolizas(poliza.getCliente().getNumeroCliente()).size() + valorBonificacionPagoSemestral ) * poliza.getValorPremio() ;
 		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
 		poliza.setValorDescuento(valorDescuento);
 	}
@@ -216,7 +217,7 @@ public class GestorPoliza {
 		return false;	
 	}
 
-	public Boolean validadEdadHijo(LocalDate fechaNacLocalDate) {
+	public Boolean validarFechaNacimiento(LocalDate fechaNacLocalDate) {
 		int anioHoy = LocalDate.now().getYear();
 		int diaDelAnioHoy = LocalDate.now().getDayOfYear();
 		int anioDeclarado = fechaNacLocalDate.getYear();
@@ -271,9 +272,10 @@ public class GestorPoliza {
 		int mesInicioVigencia = fechaInicioVigenciaLocalDate.getMonthValue();
 		int diaInicioVigencia = fechaInicioVigenciaLocalDate.getDayOfMonth();
 		
-		if (!((anioActual == anioInicioVigencia && mesActual == mesInicioVigencia && diaActual < diaInicioVigencia)
-			|| (anioActual == anioInicioVigencia && mesActual == mesInicioVigencia-1 && diaActual > diaInicioVigencia)
-			|| (anioActual == anioInicioVigencia-1 && mesActual == 12 && mesInicioVigencia == 1 && diaActual >= diaInicioVigencia)
+		if (!(
+				(anioActual == anioInicioVigencia && mesActual == mesInicioVigencia && diaActual < diaInicioVigencia)
+			||  (anioActual == anioInicioVigencia && mesActual == mesInicioVigencia-1 && diaActual > diaInicioVigencia-1)
+			||  (anioActual == anioInicioVigencia-1 && mesActual == 12 && mesInicioVigencia == 1 && diaActual >= diaInicioVigencia)
 			)){
 			return true;
 		}
@@ -301,6 +303,10 @@ public class GestorPoliza {
 	
 	public List<Cuota> getCuotas(Long numeroPoliza) {
 		return DAOPoliza.getDAO().getCuotas(numeroPoliza);
+    }
+	
+	public List<Poliza> getPolizas(Long numeroCliente) {
+		return DAOPoliza.getDAO().getPolizas(numeroCliente);
     }
 	
 	public void removeHijo(Poliza poliza, int indexHijo){

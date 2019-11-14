@@ -51,6 +51,6 @@ public class GestorTipoCobertura {
     }
     
     private RiesgoTipoCobertura getUltimoRiesgoTipoCoberturaAux(EnumTipoCobertura tipo) {
-    	return DAOTipoCobertura.getDAO().getUltimoRiesgoTipoCobertura(tipo); 
+    	return DAOTipoCobertura.getDAO().getUltimoRiesgoTipoCobertura(tipo.name()); 
     }
 }

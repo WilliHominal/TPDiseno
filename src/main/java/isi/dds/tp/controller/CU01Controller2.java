@@ -128,7 +128,7 @@ public class CU01Controller2 {
 			inicioVigenciaError = true;
 		}
 		
-		view2.componentesAlConfirmarDatos(tipoCoberturaError, inicioVigenciaError, poliza.getCliente().getPolizas().size());
+		view2.componentesAlConfirmarDatos(tipoCoberturaError, inicioVigenciaError, gestorPoliza.getPolizas(poliza.getCliente().getNumeroCliente()).size());
 		if(tipoCoberturaError || inicioVigenciaError) {
 			JOptionPane.showConfirmDialog(ventana, errorTipoCobertura + errorFechaVigencia , "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
 		}
@@ -156,7 +156,7 @@ public class CU01Controller2 {
 				gestorPoliza.actualizarPoliza(poliza, view2.getTipoCobertura(), inicioVigencia, EnumFormaPago.SEMESTRAL );
 			}
 			
-			if (poliza.getCliente().getPolizas().size() > 0) {
+			if (gestorPoliza.getPolizas(poliza.getCliente().getNumeroCliente()).size() > 0) {
 				descuentoMasDeUnaUnidad = true;
 			}
 

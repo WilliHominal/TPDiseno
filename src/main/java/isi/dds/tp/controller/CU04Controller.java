@@ -4,17 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import isi.dds.tp.enums.EnumCondicionIVA;
 import isi.dds.tp.enums.EnumEstadoCivil;
 import isi.dds.tp.enums.EnumSexo;
 import isi.dds.tp.enums.EnumTipoDocumento;
 import isi.dds.tp.gestor.GestorDomicilio;
-import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Pais;
@@ -22,9 +19,8 @@ import isi.dds.tp.modelo.Provincia;
 import isi.dds.tp.view.CU04View;
 
 public class CU04Controller {
-	private CU04View altaCliente;
+	private CU04View view;
 	
-	private GestorEnum gestorEnum = GestorEnum.get();
 	private GestorDomicilio gestorDomicilio = GestorDomicilio.get();
 	
 	private JFrame ventana;
@@ -44,10 +40,9 @@ public class CU04Controller {
 	}
 	
 	private void setDarAltaCliente() {
-		altaCliente = new CU04View();
+		view = new CU04View();
 		GestorTema.get().setTema(ventana, "Dar de alta cliente");
-		ventana.setContentPane(altaCliente);
-		
+		ventana.setContentPane(view);
 		addSeleccionTipoDocumento();
 		addSeleccionSexo();
 		addSeleccionPais();
@@ -55,28 +50,27 @@ public class CU04Controller {
 		addSeleccionCiudad();
 		addSeleccionCondicionIva();
 		addSeleccionEstadoCivil();
-		
-		altaCliente.addListenerBtnConfirmar(new ListenerConfirmar());
-		altaCliente.addListenerBtnCancelar(new ListenerCancelar());
-		altaCliente.addListenerSeleccionPais(new ListenerPais());
-		altaCliente.addListenerSeleccionProvincia(new ListenerProvincia());
-		altaCliente.addListenerSeleccionSexo(new ListenerSexo());
+		view.addListenerBtnConfirmar(new ListenerConfirmar());
+		view.addListenerBtnCancelar(new ListenerCancelar());
+		view.addListenerSeleccionPais(new ListenerPais());
+		view.addListenerSeleccionProvincia(new ListenerProvincia());
+		view.addListenerSeleccionSexo(new ListenerSexo());
 	}
 
 	//------ METODOS
 	private void addSeleccionTipoDocumento() {
-		altaCliente.addTipoDocumento("Seleccionar tipo doc.");
+		view.addTipoDocumento("Seleccionar tipo doc.");
 		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
 		for(int i=0; i<tipoDocumentos.length; i++){
-			altaCliente.addTipoDocumento(gestorEnum.parseString(tipoDocumentos[i]));
+			view.addTipoDocumento(tipoDocumentos[i].toString());
 		}
 	}
 	
 	private void addSeleccionSexo() {
-		altaCliente.addSexo("Seleccionar sexo");
+		view.addSexo("Seleccionar sexo");
 		EnumSexo[] sexos = EnumSexo.values();
 		for(int i=0; i<sexos.length; i++){
-			altaCliente.addSexo(gestorEnum.parseString(sexos[i]));
+			view.addSexo(sexos[i].toString());
 		}
 	}
 	
@@ -84,39 +78,40 @@ public class CU04Controller {
 		List<Pais> paises = gestorDomicilio.getPaises();
 		Iterator<Pais> iteradorPais = paises.iterator();
 		while(iteradorPais.hasNext()){
-			altaCliente.addPais(iteradorPais.next());
+			view.addPais(iteradorPais.next());
 		}
 	}
 	
 	private void addSeleccionProvincia() {
-		List<Provincia> provincias = altaCliente.getPais().getProvincias();
+		List<Provincia> provincias = view.getPais().getProvincias();
 		Iterator<Provincia> iteradorProvincias = provincias.iterator();
 		while(iteradorProvincias.hasNext()){
-			altaCliente.addProvincia(iteradorProvincias.next());
+			view.addProvincia(iteradorProvincias.next());
 		}
 	}
 	
 	private void addSeleccionCiudad() {
-		List<Ciudad> ciudades = gestorDomicilio.sortCiudades(altaCliente.getProvincia());
+		List<Ciudad> ciudades = gestorDomicilio.sortCiudades(view.getProvincia());
 		Iterator<Ciudad> iteradorCiudades = ciudades.iterator();
 		while(iteradorCiudades.hasNext()){
-			altaCliente.addCiudad(iteradorCiudades.next());
+			view.addCiudad(iteradorCiudades.next());
 		}
 	}
 	
 	private void addSeleccionCondicionIva() {
-		altaCliente.addCondicionIva("Seleccionar cond. de IVA");
+		view.addCondicionIva("Seleccionar cond. de IVA");
 		EnumCondicionIVA[] condicionesIva = EnumCondicionIVA.values();
 		for(int i=0; i<condicionesIva.length; i++){
-			altaCliente.addCondicionIva(gestorEnum.parseString(condicionesIva[i]));
+			view.addCondicionIva(condicionesIva[i].toString());
 		}
 	}
 	
 	private void addSeleccionEstadoCivil() {
-		altaCliente.addEstadoCivil("Seleccionar estado civil");
+		view.addEstadoCivil("Seleccionar estado civil");
 		EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
 		for(int i=0; i<estadosCivil.length; i++){
-			altaCliente.addEstadoCivil(gestorEnum.parseStringMasc(estadosCivil[i]));
+			view.addEstadoCivil(estadosCivil[i].toString());
+			System.out.println("linea 4");
 		}
 	}
 	
@@ -130,7 +125,7 @@ public class CU04Controller {
 	class ListenerCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {			
-				altaCliente.setVisible(false);
+				view.setVisible(false);
 				ventana.setContentPane(panelAnterior);	
 				ventana.setTitle(tituloAnterior);
 			}catch(Exception ex) {
@@ -141,57 +136,48 @@ public class CU04Controller {
 
 	class ListenerPais implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			altaCliente.habilitarProvincia(false);
-			Iterator<Provincia> iteratorProvincias = altaCliente.getPais().getProvincias().iterator();
+			view.habilitarProvincia(false);
+			Iterator<Provincia> iteratorProvincias = view.getPais().getProvincias().iterator();
 			while(iteratorProvincias.hasNext()){
-				altaCliente.addProvincia(iteratorProvincias.next());
+				view.addProvincia(iteratorProvincias.next());
 			}				
 			
-			altaCliente.habilitarCiudad(false);
+			view.habilitarCiudad(false);
 								
-			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(altaCliente.getProvincia()).iterator();
+			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(view.getProvincia()).iterator();
 			while(iteratorCiudad.hasNext()){
-				altaCliente.addCiudad(iteratorCiudad.next());
+				view.addCiudad(iteratorCiudad.next());
 			}
 			
-			altaCliente.habilitarProvincia(true);
-			altaCliente.habilitarCiudad(true);
+			view.habilitarProvincia(true);
+			view.habilitarCiudad(true);
 		}
 	}
 	
 	class ListenerProvincia implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			altaCliente.habilitarCiudad(false);
+			view.habilitarCiudad(false);
 								
-			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(altaCliente.getProvincia()).iterator();
+			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(view.getProvincia()).iterator();
 			while(iteratorCiudad.hasNext()){
-				altaCliente.addCiudad(iteratorCiudad.next());
+				view.addCiudad(iteratorCiudad.next());
 			}
 			
-			altaCliente.habilitarCiudad(true);
+			view.habilitarCiudad(true);
 		}
 	}
 	
 	class ListenerSexo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if(!altaCliente.getSexo().equals("Seleccionar sexo")) {
-				Integer index = altaCliente.indexSeleccionEstadoCivil();
-				if(gestorEnum.parseEnumSexo(altaCliente.getSexo()).equals(EnumSexo.FEMENINO)) {
-					altaCliente.addEstadoCivil("Seleccionar estado civil");
-					EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
-					for(int i=0; i<estadosCivil.length; i++){
-						altaCliente.addEstadoCivil(gestorEnum.parseStringFem(estadosCivil[i]));
-					}
-				}
+			if(!view.getSexo().equals("Seleccionar sexo")) {
+				Integer index = view.indexSeleccionEstadoCivil();
 				
-				if(gestorEnum.parseEnumSexo(altaCliente.getSexo()).equals(EnumSexo.MASCULINO)) {
-					altaCliente.addEstadoCivil("Seleccionar estado civil");
-					EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
-					for(int i=0; i<estadosCivil.length; i++){
-						altaCliente.addEstadoCivil(gestorEnum.parseStringMasc(estadosCivil[i]));
-					}
-				}
-				altaCliente.setEstadoCivil(index);
+				EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
+				for(int i=0; i<estadosCivil.length; i++){
+					view.addEstadoCivil(estadosCivil[i].toString(EnumSexo.getEnum(view.getSexo())));
+				}	
+								
+				view.setEstadoCivil(index);
 			}
 		}
 	}	

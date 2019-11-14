@@ -17,8 +17,6 @@ public class GestorUsuario {
     }
     
     public void addUsuario(Usuario u) {
-    	
     	DAOUsuario.getDAO().addUsuario(u);
-    	
     }
 }

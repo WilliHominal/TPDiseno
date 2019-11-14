@@ -13,7 +13,6 @@ import javax.swing.JPanel;
 import javax.swing.JTable;
 import isi.dds.tp.enums.EnumTipoDocumento;
 import isi.dds.tp.gestor.GestorCliente;
-import isi.dds.tp.gestor.GestorEnum;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.view.CU01View1;
@@ -30,7 +29,6 @@ public class CU17Controller1 {
 	private String tituloAnterior = "";
 		
 	private GestorTema tema = GestorTema.get();
-	private GestorEnum gestorEnum = GestorEnum.get();
 
 	private Boolean esAltaPoliza = false;
 	private Cliente clienteObtenido = null;
@@ -54,11 +52,10 @@ public class CU17Controller1 {
 	private void setView1() {
 		tema.setTema(ventana, "Buscar cliente");
 		this.view1 = new CU17View1();
-
 		view1.addItemTipoCobertura("Selecionar tipo doc.");
 		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
 		for(int i=0; i<tipoDocumentos.length; i++){
-			view1.addItemTipoCobertura(gestorEnum.parseString(tipoDocumentos[i]));
+			view1.addItemTipoCobertura(tipoDocumentos[i].toString());
 		}
 		
 		view1.addListenerBtnCancelar(new ListenerCancelar());
@@ -79,7 +76,7 @@ public class CU17Controller1 {
 				Cliente c = null;
 				for(int fila=0; fila<cantClientes; fila++) {
 					c = clientes.get(fila);
-					view1.setValoresTablaClientes(fila, c.getNumeroCliente(), c.getApellido(), c.getNombre(), gestorEnum.parseString(c.getTipoDocumento()), c.getNumeroDocumento());
+					view1.setValoresTablaClientes(fila, c.getNumeroCliente(), c.getApellido(), c.getNombre(), c.getTipoDocumento().toString(), c.getNumeroDocumento());
 				}
 			}
 			else {
@@ -94,6 +91,7 @@ public class CU17Controller1 {
 	}
 	
 	public void obtenidoCliente(Cliente cliente) {
+		System.out.println("Linea 1");
 		if(esAltaPoliza) {
 			altaPolizaController.obtenidoCliente(cliente);
 		}
@@ -113,24 +111,19 @@ public class CU17Controller1 {
 				Long numeroCliente = null;
 				String apellido = view1.getApellido();
 				String nombre = view1.getNombre();
-				EnumTipoDocumento tipoDocumento= null;
+				EnumTipoDocumento tipoDocumento =  EnumTipoDocumento.getEnum(view1.getTipoDocumento());
+				
 				String numeroDocumento = view1.getNumeroDocumento(); 	
 				
 				if(!(view1.getNumeroCliente().isEmpty())) {
 					numeroCliente = Long.parseLong(view1.getNumeroCliente());
-				}
-				
-				if(!view1.getTipoDocumento().equals("Selecionar tipo documento")) {
-					tipoDocumento = GestorEnum.get().parseEnumTipoDocumento(view1.getTipoDocumento());
-				}
+				}				
 				
 				clientes = GestorCliente.get().buscarClientes(numeroCliente, apellido, nombre, tipoDocumento, numeroDocumento);
-				
 				cargarTabla(clientes);
-
 					
 			}catch(Exception ex) {
-            	JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
+				 JOptionPane.showMessageDialog(null, "No se pudo obtener el cliente desde la base de datos",
                           "Error.", JOptionPane.ERROR_MESSAGE); 
 			}
 		}
