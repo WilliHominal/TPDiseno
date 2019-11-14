@@ -462,13 +462,13 @@ public class CU01Controller1 {
 	private class ListenerSeleccionProvincia implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			Provincia provincia = view1.getProvincia();
-			view1.habilitarSeleccionCiuad(false);
+			view1.habilitarSeleccionCiudad(false);
 			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(provincia).iterator();
 			view1.addCiudad(iteratorCiudad.next(), true);
 			while(iteratorCiudad.hasNext()){
 				view1.addCiudad(iteratorCiudad.next(), false);
 			}
-			view1.habilitarSeleccionCiuad(true);
+			view1.habilitarSeleccionCiudad(true);
 		}
 	}
 	

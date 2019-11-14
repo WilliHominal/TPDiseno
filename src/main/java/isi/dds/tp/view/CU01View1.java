@@ -836,7 +836,7 @@ public class CU01View1 extends JPanel {
 		return tablaHijos.getSelectedRow();
 	}
 
-	public void habilitarSeleccionCiuad(Boolean habilitar) {
+	public void habilitarSeleccionCiudad(Boolean habilitar) {
 		tema.setTema(seleccionCiudad, habilitar);
 		if(!habilitar) {
 			seleccionCiudad.removeAllItems();
