@@ -72,6 +72,6 @@ public class GestorParametrosVehiculo {
     	rnuevo.setFechaInicioVigencia(LocalDate.now());
     	rnuevo.setValorPorcentual(riesgo);    
     	return rnuevo;
-    	//TODO RiesgoModelo ver si se persisten los cambios
+    	//TODO CU08 RiesgoModelo ver si se persisten los cambios
 	}
 }

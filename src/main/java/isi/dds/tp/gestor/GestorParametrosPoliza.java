@@ -36,7 +36,7 @@ public class GestorParametrosPoliza {
 		pNuevos.setPorcentajeMayorADosSiniestros(pViejos.getPorcentajeMayorADosSiniestros());
 		pNuevos.setDescuentoUnidadAdicional(pViejos.getDescuentoUnidadAdicional());
 		pNuevos.setValorDerechoEmision(pViejos.getValorDerechoEmision());
-		//TODO ver si se persiste el ultimo o hay que hacer un update
+		//TODO CU08 ver si se persiste el ultimo o hay que hacer un update
 		pViejos.setFechaFinVigencia(LocalDate.now());
     }
 }

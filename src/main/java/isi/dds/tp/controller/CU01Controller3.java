@@ -120,7 +120,6 @@ public class CU01Controller3 {
 				for(int i=0; i<estadosCivil.length; i++){
 					view3.addEstadoCivil(estadosCivil[i].toString(EnumSexo.getEnum(view3.getSexo())));
 				}	
-				//TODO probar
 				view3.setEstadoCivil(index);
 			}
 		}

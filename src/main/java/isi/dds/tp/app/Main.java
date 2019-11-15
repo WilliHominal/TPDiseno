@@ -10,7 +10,7 @@ public class Main {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					HibernateUtil.apagarLog(false);
+					HibernateUtil.apagarLog(true);
 					new MenuController(new JFrame());
 				} catch (Exception e) {
 					e.printStackTrace();

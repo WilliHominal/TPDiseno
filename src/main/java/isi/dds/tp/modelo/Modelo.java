@@ -5,6 +5,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,7 @@ import org.hibernate.annotations.IndexColumn;
 public class Modelo {
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="id_marca")
+	@JoinColumn(name="id_marca", foreignKey=@ForeignKey(name = "fk_id_marca"))
 	private Marca marca;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -30,7 +31,7 @@ public class Modelo {
 	private List<AnioModelo> anios;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="id_modelo")
+	@JoinColumn(name="id_modelo", foreignKey=@ForeignKey(name = "fk_id_modelo"))
 	@IndexColumn(name="idx")
 	private List<RiesgoModelo> riesgos;
 	

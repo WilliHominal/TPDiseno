@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
@@ -20,7 +21,7 @@ import org.hibernate.annotations.IndexColumn;
 public class TipoCobertura {
 	
 	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="tipo_cobertura")
+	@JoinColumn(name="tipo_cobertura", foreignKey=@ForeignKey(name = "fk_tipo_cobertura"))
 	@IndexColumn(name="idx")
 	private List<RiesgoTipoCobertura> riesgo;
 	

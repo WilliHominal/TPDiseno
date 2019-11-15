@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 public class ParametrosPoliza {
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="codigo_bitacora")
+	@JoinColumn(name="codigo_bitacora", foreignKey=@ForeignKey(name = "fk_codigo_bitacora"))
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
 	@Id
