@@ -6,11 +6,13 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+
 import org.hibernate.annotations.IndexColumn;
 import isi.dds.tp.enums.EnumSiniestros;
 
@@ -19,20 +21,20 @@ import isi.dds.tp.enums.EnumSiniestros;
 @Table(name = "solicitud_poliza")
 public class SolicitudPoliza {
 	
-	@JoinColumn(name = "tipo_cobertura")
+	@JoinColumn(name = "tipo_cobertura", foreignKey=@ForeignKey(name = "fk_tipo_cobertura"))
     @OneToOne
     private TipoCobertura tipoCobertura;
 
-	@JoinColumn(name = "anio_modelo")
+	@JoinColumn(name = "anio_modelo", foreignKey=@ForeignKey(name = "fk_anio_modelo"))
     @OneToOne
 	private AnioModelo anioModelo;
 	
-	@JoinColumn
+	@JoinColumn(foreignKey=@ForeignKey(name = "fk_ciudad"))
     @OneToOne
 	private Ciudad ciudad;
 	
 	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(name="numero_solicitud")
+	@JoinColumn(name="numero_solicitud", foreignKey=@ForeignKey(name = "fk_numero_solicitud"))
 	@IndexColumn(name="idx")
 	private List<HijoDeclarado> hijosDeclarados;
 	

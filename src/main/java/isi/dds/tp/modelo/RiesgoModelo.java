@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -15,14 +16,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "riesgo_modelo")
 public class RiesgoModelo {
-	/*
-	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn (name = "id_modelo")
-	private Modelo modelo;*/
-	
-	//optional permita que la relacion pueda ser nual, que seria el caso cuando se crea por primera vez una ciudad
 	@ManyToOne (optional = true, fetch = FetchType.LAZY)
-	@JoinColumn (name = "codigo_bitacora")
+	@JoinColumn (name = "codigo_bitacora", foreignKey=@ForeignKey(name = "fk_codigo_bitacora"))
 	private BitacoraParametrosPoliza bitacoraParametros;
 	
 	@Id

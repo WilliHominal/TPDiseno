@@ -87,7 +87,7 @@ public class GestorDomicilio {
     	rnuevo.setFechaInicioVigencia(LocalDate.now());
     	rnuevo.setValorPorcentual(riesgo);    
     	return rnuevo;
-    	//TODO RiesgoCiudad ver si se persisten los cambios
+    	//TODO CU08 RiesgoCiudad ver si se persisten los cambios
 		
 	}
 }

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,11 +18,11 @@ import javax.persistence.Table;
 public class BitacoraSolicitudPoliza {
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_usuario")
+	@JoinColumn(name = "id_usuario", foreignKey=@ForeignKey(name = "fk_id_usuario"))
 	private Usuario usuario;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="numero_solicitud")
+	@JoinColumn(name="numero_solicitud", foreignKey=@ForeignKey(name = "fk_numero_solicitud"))
 	private SolicitudPoliza solicitudPoliza;
 	
 	@Id

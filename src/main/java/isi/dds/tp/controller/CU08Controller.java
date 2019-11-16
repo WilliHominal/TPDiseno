@@ -175,7 +175,7 @@ public class CU08Controller {
 				BitacoraParametrosPoliza bitacora = new BitacoraParametrosPoliza();
 				
 				
-				//TODO SI necesito persistir hacer lo de abajo en el gestor de bitacora
+				//TODO CU08 SI necesito persistir hacer lo de abajo en el gestor de bitacora
 				if(view.getCheckTipoCobertura()) {
 					impresionAviso += contador+") Valor de riesgo porcentual del tipo de cobertura.\n";
 					contador++;
@@ -183,7 +183,7 @@ public class CU08Controller {
 					RiesgoTipoCobertura r = gestorCobertura.newRiesgoCobertura(t.getTipoCobertura(), Float.parseFloat(view.getTipoCobertura()));
 					t.getRiesgo().add(r);
 					gestorBitacora.addRiesgoTipoCobertura(bitacora, r);
-					//TODO ver si update TipoCobertura
+					//TODO CU08 ver si update TipoCobertura
 				}
 				
 				if(view.getCheckModelo()) {
@@ -193,7 +193,7 @@ public class CU08Controller {
 					RiesgoModelo r = gestorVehiculo.newRiesgoModelo(m.getIdModelo(), Float.parseFloat(view.getModelo()));
 					m.getRiesgos().add(r);
 					gestorBitacora.addRiesgoModelo(bitacora, r);
-					//TODO ver si update modelo
+					//TODO CU08 ver si update modelo
 				}
 				
 				if(view.getCheckCiudad()) {
@@ -203,7 +203,7 @@ public class CU08Controller {
 					RiesgoCiudad r =  gestorDom.newRiesgoCiudad(c.getIdCiudad(), Float.parseFloat(view.getCiudad()));
 					c.getRiesgos().add(r);
 					gestorBitacora.addRiesgoCiudad(bitacora, r);
-					//TODO ver si update Ciudad
+					//TODO CU08 ver si update Ciudad
 				}
 				
 				if(view.getCheckGuardaGarage()) {
@@ -294,7 +294,7 @@ public class CU08Controller {
 				}
 				
 				//TODO CU08 persistir la bitacora y los parametros y los riesgos
-				//TODO update a las clases principales
+				//TODO CU08 update a las clases principales
 				
 				JOptionPane.showMessageDialog(ventana, impresionAviso, "Confirmación", JOptionPane.INFORMATION_MESSAGE);
 

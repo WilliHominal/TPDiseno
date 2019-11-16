@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -24,11 +25,11 @@ import isi.dds.tp.enums.EnumSiniestros;
 @Table
 public class Poliza {
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "numero_cliente")
+	@JoinColumn(name = "numero_cliente", foreignKey=@ForeignKey(name = "fk_numero_cliente"))
 	private Cliente cliente;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "numero_poliza")
+	@JoinColumn(name = "numero_poliza", foreignKey=@ForeignKey(name = "fk_numero_poliza"))
 	@IndexColumn(name = "idx")
 	private List<HijoDeclarado> hijosDeclarado;
 	
@@ -36,24 +37,24 @@ public class Poliza {
 	@JoinColumn(name = "numero_poliza")
 	@IndexColumn(name ="idx")
 	private List<Cuota> cuotas;
-    //TODO modificar constraints
-	@JoinColumn(name = "tipo_cobertura")
+
+	@JoinColumn(name = "tipo_cobertura", foreignKey=@ForeignKey(name = "fk_tipo_cobertura"))
     @OneToOne
 	private TipoCobertura tipoCobertura;
 
-	@JoinColumn(name = "anio_modelo")
+	@JoinColumn(name = "anio_modelo", foreignKey=@ForeignKey(name = "fk_anio_modelo"))
     @OneToOne
 	private AnioModelo anioModelo;
 	
-	@JoinColumn(name = "id_ciudad")
+	@JoinColumn(name = "id_ciudad", foreignKey=@ForeignKey(name = "fk_id_ciudad"))
     @OneToOne
 	private Ciudad ciudad;
 	
-	@JoinColumn(name = "parametros_poliza")
+	@JoinColumn(name = "parametros_poliza", foreignKey=@ForeignKey(name = "fk_parametros_poliza"))
     @OneToOne
 	private ParametrosPoliza parametrosPoliza;
     
-	@JoinColumn(name = "solicitud_poliza")
+	@JoinColumn(name = "solicitud_poliza", foreignKey=@ForeignKey(name = "fk_solicitud_poliza"))
     @OneToOne(cascade=CascadeType.ALL)
 	private SolicitudPoliza solicitudPoliza;
 	

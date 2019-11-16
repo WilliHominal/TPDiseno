@@ -31,7 +31,7 @@ public class GestorCliente {
     }
     
     public void actualizarCliente(Cliente cliente, Poliza poliza) { 
-    	//TODO fijarse cuando actualizas a plata con mensual
+    	//TODO CU01 fijarse cuando actualizas a plata con mensual
     	if(gestorPoliza.getPolizas(cliente.getNumeroCliente()).size() <= 1) {
     		//la cantidad es uno, porque se actualiza al cliente luego de añadirle la póliza, con lo cuál ya tendría al menos una póliza
     		cliente.setCondicion(EnumCondicion.NORMAL);

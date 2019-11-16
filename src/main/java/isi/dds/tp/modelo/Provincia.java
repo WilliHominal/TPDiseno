@@ -5,6 +5,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +22,7 @@ import org.hibernate.annotations.IndexColumn;
 public class Provincia {
 	
 	@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn(name="id_pais")
+	@JoinColumn(name="id_pais", foreignKey=@ForeignKey(name = "fk_id_pais"))
 	private Pais pais;
 	
 	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)

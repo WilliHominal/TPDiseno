@@ -5,10 +5,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import isi.dds.tp.enums.EnumCondicion;
 import isi.dds.tp.enums.EnumCondicionIVA;
 import isi.dds.tp.enums.EnumEstadoCivil;
@@ -16,10 +18,11 @@ import isi.dds.tp.enums.EnumSexo;
 import isi.dds.tp.enums.EnumTipoDocumento;
 
 @Entity
-@Table
+@Table(uniqueConstraints = {@UniqueConstraint(name = "uk_documento", columnNames= { "documento" } ),
+							@UniqueConstraint(name = "uk_cuil", columnNames= { "cuil" } ) })
 public class Cliente {
 	
-	@JoinColumn(name="id_ciudad")
+	@JoinColumn(name="id_ciudad", foreignKey=@ForeignKey(name = "fk_id_ciudad"))
     @OneToOne
 	private Ciudad ciudad;
 	
@@ -41,10 +44,10 @@ public class Cliente {
 	@Enumerated(EnumType.STRING)
 	private EnumTipoDocumento tipoDocumento;
 	
-	@Column(nullable = false, unique = true, name = "documento")
+	@Column(nullable = false, name = "documento")
 	private String numeroDocumento;
 	
-	@Column(nullable = false, unique = true, name = "cuil")
+	@Column(nullable = false, name = "cuil")
 	private Long numeroCuil;
 	
 	@Column(nullable = false)

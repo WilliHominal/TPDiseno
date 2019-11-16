@@ -5,6 +5,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,11 +22,11 @@ import org.hibernate.annotations.IndexColumn;
 public class Ciudad {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="id_provincia")
+	@JoinColumn(name="id_provincia", foreignKey=@ForeignKey(name = "fk_id_provincia"))
 	private Provincia provincia;
 
 	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name="id_ciudad")
+	@JoinColumn(name="id_ciudad", foreignKey=@ForeignKey(name = "fk_id_ciudad"))
 	@IndexColumn(name="idx")
 	private List<RiesgoCiudad> riesgos;
 	

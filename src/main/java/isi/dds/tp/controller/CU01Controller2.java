@@ -164,7 +164,7 @@ public class CU01Controller2 {
 			
 			Float premio = poliza.getValorPremio();
 			Float descuento = poliza.getValorDescuento();
-			Float montoTotal = premio - descuento; //TODO premio es monto total o asi esta bien?
+			Float montoTotal = premio - descuento;
 			Float montoCuota = montoTotal / 6;			
 			
 			view2.setApellido(poliza.getCliente().getApellido());

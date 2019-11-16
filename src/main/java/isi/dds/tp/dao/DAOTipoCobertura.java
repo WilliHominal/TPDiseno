@@ -87,7 +87,6 @@ public class DAOTipoCobertura {
 
 	public TipoCobertura getTipoCobertura(EnumTipoCobertura tipo) {
         try {
-        	//TODO ver
             return session.get(TipoCobertura.class, tipo);
         }
         catch (HibernateException e) {

@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
+import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -22,11 +23,11 @@ import javax.persistence.Table;
 public class Cuota{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "numero_poliza")
+	@JoinColumn(name = "numero_poliza", foreignKey=@ForeignKey(name = "fk_numero_poliza"))
 	private Poliza poliza;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="numero_recibo")
+	@JoinColumn(name="numero_recibo", foreignKey=@ForeignKey(name = "fk_numero_recibo"))
 	private Pago pago;
 	
 	@Id

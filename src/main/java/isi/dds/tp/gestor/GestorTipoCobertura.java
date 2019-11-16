@@ -20,7 +20,6 @@ public class GestorTipoCobertura {
         return instanciaGestor;
     }
     
-    //TODO fijarse si quitar
     public void addRiesgoCobertura(RiesgoTipoCobertura r) {
     	DAOTipoCobertura.getDAO().addRiesgoCobertura(r);
     }
