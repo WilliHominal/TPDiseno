@@ -21,6 +21,7 @@ import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.Provincia;
+import isi.dds.tp.view.CU01View1;
 import isi.dds.tp.view.CU12View1;
 
 @SuppressWarnings("unused")
@@ -190,16 +191,17 @@ public class CU12Controller1 {
 	
 	private class ListenerBtnConfirmarPago implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
+			String mensaje = "El monto a pagar es de $" + view1.getImportesParciales() + ", ¿Desea continuar con el pago?";
+			
 			try {
 				if(!condicionesGenerarPago()) {
 					return;
 				}				
 				
-				int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar el pago?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+				int seleccion = JOptionPane.showConfirmDialog(ventana, mensaje, "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				if(seleccion == 0) {
-					gestorPago.registrarPago(Long.parseLong(view1.getNumeroPoliza()), view1.cantidadCuotasSeleccionadas());
-					JOptionPane.showConfirmDialog(ventana, "PAGO REGISTRADO PASA A PANTALLA 2", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
-					//new CU12Controller2(ventana, poliza).setCU01Controller1(instancia);
+					view1.noValido(false, false);
+					new CU12Controller2(ventana).setCU12Controller1(instancia);
 				} else {
 					view1.noValido(false, false);
 				}
@@ -302,5 +304,9 @@ public class CU12Controller1 {
 				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual6()) ).toString());
 			}
 		}
+	}
+	
+	public CU12View1 getView(){
+		return view1;
 	}
 }
