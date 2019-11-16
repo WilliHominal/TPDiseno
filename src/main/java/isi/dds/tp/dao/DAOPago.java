@@ -1,13 +1,8 @@
 package isi.dds.tp.dao;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-
 import isi.dds.tp.hibernate.HibernateUtil;
-import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.Cuota;
 
 public class DAOPago {
@@ -61,7 +56,7 @@ public class DAOPago {
 		}
         session.close();
     }
-    
+    /*
     public void cargarCuotas() {
     	ArrayList<String> queries = SQLReader.getQueries("src/main/resources/database/cuotas.sql");
 		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
@@ -76,5 +71,5 @@ public class DAOPago {
             session.getTransaction().rollback();	
 		}
 		session.close();
-    }
+    }*/
 }

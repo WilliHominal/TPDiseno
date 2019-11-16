@@ -3,33 +3,25 @@ package isi.dds.tp.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.enums.EnumEstadoCuota;
-import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.enums.EnumPagoCuota;
 import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorTema;
-import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Cuota;
-import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Poliza;
-import isi.dds.tp.modelo.Provincia;
-import isi.dds.tp.view.CU01View1;
 import isi.dds.tp.view.CU12View1;
 
-@SuppressWarnings("unused")
 public class CU12Controller1 {
 
 	private CU12Controller1 instancia;
 	private CU12View1 view1;
 	
+	@SuppressWarnings("unused")
 	private GestorPago gestorPago = GestorPago.get();
 	
 	private JFrame ventana;
@@ -68,7 +60,7 @@ public class CU12Controller1 {
 	
 	public void obtenidaPoliza (Poliza poliza) {
 		List<Cuota> cuotas = new ArrayList<Cuota>(), cuotasImpagas = new ArrayList<Cuota>();
-		Float importeTotal = 0f, importeParcial = 0f;
+		Float importeTotal = 0f, importeParcial = 0f; //TODO para que está importe parcial
 		List<Float> montoActual = new ArrayList<Float>();
 		
 		view1.setNumeroCliente(poliza.getCliente().getNumeroCliente().toString());

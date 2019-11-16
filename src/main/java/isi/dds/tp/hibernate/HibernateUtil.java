@@ -105,7 +105,6 @@ public class HibernateUtil {
 		DAOParametrosVehiculo.getDAO().cargarParametrosVehiculos();
 		DAOCliente.getDAO().cargarClientes();
 		DAOPoliza.getDAO().cargarPolizas();
-		DAOPago.getDAO().cargarCuotas();
 	}	
 	
 	/**

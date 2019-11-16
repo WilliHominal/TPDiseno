@@ -69,9 +69,3 @@ INSERT INTO poliza
 		(select r.valor_porcentual from riesgo_modelo r, anio_modelo an where r.fin_vigencia is null and r.id_modelo=an.id_modelo and an.id = 132),
 		(select r.valor_porcentual from riesgo_tipo_cobertura r  where r.fin_vigencia is null and r.tipo_cobertura = 'TODO_RIESGO_CON_FRANQUICIA'),
 		(select r.valor_porcentual from riesgo_ciudad r  where r.fin_vigencia is null and r.id_ciudad = 1230),  132, 1230, 5400000004, 100, null, 'TODO_RIESGO_CON_FRANQUICIA');
-
-
-
-
-INSERT INTO cuota (id_cuota, estado, monto, ultimo_dia_pago, numero_poliza, idx) VALUES
-(NEXTVAL('id_cuota_seq'), 'IMPAGO', 23424, '2019-09-25', 3528000000401, 0);

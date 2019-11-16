@@ -7,14 +7,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-
 import isi.dds.tp.gestor.GestorTema;
-@SuppressWarnings("unused")
+
 public class CU12View2 extends JPanel{
 	private static final long serialVersionUID = 8114763541940589488L;
 	
