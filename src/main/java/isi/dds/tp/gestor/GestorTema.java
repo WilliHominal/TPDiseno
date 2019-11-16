@@ -55,6 +55,7 @@ public class GestorTema {
 	private static Font FUENTE_LETRA_NORMAL = new Font(Font.SANS_SERIF, Font.PLAIN, 12);
 	private static Font FUENTE_LETRA_CHICA = new Font(Font.SANS_SERIF, Font.PLAIN, 9);
 	private static Font FUENTE_LETRA_GRANDE = new Font(Font.SANS_SERIF, Font.PLAIN, 16);
+	private static Font FUENTE_NORMAL_NEGRITA = new Font(Font.SANS_SERIF, 1, 12);
 	
     private GestorTema() {
     	ToolTipManager.sharedInstance().setInitialDelay(200);
@@ -108,6 +109,16 @@ public class GestorTema {
     
     public void setTemaSubrayado(JLabel label) {
 		Font font = FUENTE_LETRA_NORMAL;
+		Map<TextAttribute, Object> titulo = new HashMap<>(font.getAttributes());
+		titulo.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
+		label.setFont(font.deriveFont(titulo));
+		label.setForeground(COLOR_LETRA);
+    }
+    
+    public void setTemaNegritaSubrayado (JLabel label) {
+    	label.setForeground(COLOR_LETRA);
+    	label.setFont(FUENTE_NORMAL_NEGRITA);
+    	Font font = FUENTE_NORMAL_NEGRITA;
 		Map<TextAttribute, Object> titulo = new HashMap<>(font.getAttributes());
 		titulo.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
 		label.setFont(font.deriveFont(titulo));
