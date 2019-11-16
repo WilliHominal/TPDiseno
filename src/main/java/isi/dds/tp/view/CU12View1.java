@@ -1,25 +1,15 @@
 package isi.dds.tp.view;
 
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-
-import com.toedter.calendar.JCalendar;
-import com.toedter.calendar.JDateChooser;
-
 import isi.dds.tp.gestor.GestorTema;
-@SuppressWarnings("unused")
+
 public class CU12View1 extends JPanel{
 	private static final long serialVersionUID = 4146373067631227216L;
 	
@@ -64,6 +54,8 @@ public class CU12View1 extends JPanel{
 	private JTextField campoCuotaActual6 = new JTextField(12);
 	private JTextField campoImportesParciales = new JTextField(12);
 	private JTextField campoImportesTotales = new JTextField(12);
+	private JTextField campoInicioVigencia = new JTextField(12);
+	private JTextField campoFinVigencia = new JTextField(12);
 	
 	private JButton btnConfirmarPago = new JButton("CONFIRMAR PAGOS");
 	private JButton btnCancelar = new JButton("CANCELAR");
@@ -75,9 +67,6 @@ public class CU12View1 extends JPanel{
 	private JCheckBox cbCuotaN4 = new JCheckBox("Número 4:");
 	private JCheckBox cbCuotaN5 = new JCheckBox("Número 5:");
 	private JCheckBox cbCuotaN6 = new JCheckBox("Número 6:");
-	
-	private JDateChooser dateInicioVigencia = new JDateChooser();
-	private JDateChooser dateFinVigencia = new JDateChooser();
 	
 	public CU12View1() {
 		inicializarComponentes();
@@ -107,8 +96,8 @@ public class CU12View1 extends JPanel{
 		campoCuotaActual6.setEnabled(false);
 		campoImportesParciales.setEnabled(false);
 		campoImportesTotales.setEnabled(false);
-		dateInicioVigencia.setEnabled(false);
-		dateFinVigencia.setEnabled(false);
+		campoInicioVigencia.setEnabled(false);
+		campoFinVigencia.setEnabled(false);
 		cbCuotaN1.setEnabled(false);
 		cbCuotaN2.setEnabled(false);
 		cbCuotaN3.setEnabled(false);
@@ -157,6 +146,8 @@ public class CU12View1 extends JPanel{
 		tema.setTema(campoCuotaActual6, false);
 		tema.setTema(campoImportesParciales, false);
 		tema.setTema(campoImportesTotales, false);
+		tema.setTema(campoInicioVigencia, false);
+		tema.setTema(campoFinVigencia, false);
 		tema.setTema(cbCuotaN1, null);
 		tema.setTema(cbCuotaN2, null);
 		tema.setTema(cbCuotaN3, null);
@@ -352,7 +343,7 @@ public class CU12View1 extends JPanel{
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(0, 0, 5, 150);
-		add(dateInicioVigencia, constraints);
+		add(campoInicioVigencia, constraints);
 		///////////////////////////////////////////////////FILA 9
 		constraints.gridy = 9;
 		constraints.gridx = 0;
@@ -363,7 +354,7 @@ public class CU12View1 extends JPanel{
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(0, 0, 4, 150);
-		add(dateFinVigencia, constraints);
+		add(campoFinVigencia, constraints);
 		
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
@@ -464,21 +455,11 @@ public class CU12View1 extends JPanel{
 	}
 	
 	public void setInicioVigencia(String fechaInicio) {
-		try {
-			Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(fechaInicio);
-			this.dateInicioVigencia.setDate(date2);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.campoInicioVigencia.setText(fechaInicio);
 	}
 	
 	public void setFinVigencia(String fechaFin) {
-		try {
-			Date date2 = new SimpleDateFormat("yyyy-MM-dd").parse(fechaFin);
-			this.dateFinVigencia.setDate(date2);
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		this.campoFinVigencia.setText(fechaFin);
 	}
 	
 	public void setMarca(String marca) {

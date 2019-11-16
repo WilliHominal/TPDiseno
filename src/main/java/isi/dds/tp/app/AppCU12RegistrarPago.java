@@ -1,11 +1,8 @@
 package isi.dds.tp.app;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-
 import isi.dds.tp.controller.CU12Controller1;
-import isi.dds.tp.controller.CU12Controller2;
 import isi.dds.tp.hibernate.HibernateUtil;
 
 public class AppCU12RegistrarPago {

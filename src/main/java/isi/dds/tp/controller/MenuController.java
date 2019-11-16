@@ -36,7 +36,7 @@ public class MenuController {
 		menuView1.addListenerBtn_AltaPoliza(new ListenerAltaPoliza());
 		//menuView1.addListenerBtn_ConsultarPoliza(new ListenerFuncionNoDisponible());
 		//menuView1.addListenerBtn_GenerarPropuesta(new ListenerFuncionNoDisponible());
-		//menuView1.addListenerBtn_RegistrarPagoPoliza(new ListenerFuncionNoDisponible());
+		menuView1.addListenerBtn_RegistrarPagoPoliza(new ListenerRealizarPagoPoliza());
 		menuView1.addListenerBtn_AltaCliente(new ListenerAltaCliente());
 		menuView1.addListenerBtn_ConsultarCliente(new ListenerConsultarCliente());
 		menuView1.addListenerBtn_ActualizarFactores(new ListenerActaulizarFactores());
@@ -88,6 +88,21 @@ public class MenuController {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "No se puede acceder a Dar de alta póliza.", JOptionPane.ERROR_MESSAGE);
 			}
 		}
+	}
+	
+	class ListenerRealizarPagoPoliza implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {			
+				if(menuView1.cargarBaseDatos()) {
+					HibernateUtil.recargarBaseDatos();
+					menuView1.yaCargoBaseDatos();
+				}
+				new CU12Controller1(ventana);
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "No se puede acceder a Realizar pago póliza.", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+		
 	}
 	
 	class ListenerAltaCliente implements ActionListener{

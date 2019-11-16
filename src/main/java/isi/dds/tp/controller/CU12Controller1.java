@@ -2,7 +2,10 @@ package isi.dds.tp.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -16,12 +19,13 @@ import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.view.CU12View1;
 
+@SuppressWarnings("unused")
 public class CU12Controller1 {
 
 	private CU12Controller1 instancia;
 	private CU12View1 view1;
 	
-	@SuppressWarnings("unused")
+	
 	private GestorPago gestorPago = GestorPago.get();
 	
 	private JFrame ventana;
@@ -70,10 +74,11 @@ public class CU12Controller1 {
 		view1.setMarca(poliza.getAnioModelo().getModelo().getMarca().getNombre());
 		view1.setModelo(poliza.getAnioModelo().getModelo().getNombre());
 		view1.setPatente(poliza.getPatente());
-		view1.setInicioVigencia(poliza.getInicioVigencia().toString());
-		view1.setFinVigencia(poliza.getFinVigencia().toString());
 		view1.habilitarSeleccionCuotas();
-		
+		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+		view1.setInicioVigencia(dateFormat.format(Date.from(poliza.getInicioVigencia().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
+		view1.setFinVigencia(dateFormat.format(Date.from(poliza.getFinVigencia().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
+
 		//cargo cuotas de la poliza
 		cuotas = DAOPoliza.getDAO().getCuotas(poliza.getNumeroPoliza());
 		//busco las impagas
@@ -134,7 +139,7 @@ public class CU12Controller1 {
 				/*CU18Controller a = new CU18Controller(ventana);	
 				//a.setPagoPolizaController(instancia); // ahi aplicar el obtenidaPoliza(con la poliza que se selecciona)
 				*/
-				obtenidaPoliza((DAOPoliza.getDAO().getPolizas(5400000004l).get(1)));
+				obtenidaPoliza((DAOPoliza.getDAO().getPolizas(5400000004l).get(1)));//quitar una vez implementado lo de arriba
 				ventana.revalidate();
 			}catch(Exception ex) {
             	JOptionPane.showMessageDialog(ventana, "No se pudo obtener la póliza desde la base de datos",
