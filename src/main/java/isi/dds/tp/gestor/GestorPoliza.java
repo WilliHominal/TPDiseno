@@ -308,4 +308,8 @@ public class GestorPoliza {
 	public void removeHijo(Poliza poliza, int indexHijo){
     	poliza.getHijosDeclarado().remove(indexHijo);
 	}
+	
+	public Poliza buscarPoliza(long numeroPoliza) {
+		return DAOPoliza.getDAO().getPoliza(numeroPoliza);
+	}
 }

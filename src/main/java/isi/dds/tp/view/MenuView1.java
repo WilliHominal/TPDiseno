@@ -58,7 +58,7 @@ public class MenuView1 extends JPanel {
 		tema.setTema(lgestionParametros);
 		tema.setTema(lreportes);
 		tema.setTema(btnDarAltaPoliza, true, new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));
-		tema.setTema(btnConsultarPoliza, false, new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));
+		tema.setTema(btnConsultarPoliza, true, new ImageIcon("src\\main\\resources\\icons\\icon_search.png"));
 		tema.setTema(btnGenerarPropuestas, false, new ImageIcon("src\\main\\resources\\icons\\icon_generate.png"));
 		tema.setTema(btnRegistrarPagoPoliza, true, new ImageIcon("src\\main\\resources\\icons\\icon_register.png"));
 		tema.setTema(btnDarAltaCliente, true, new ImageIcon("src\\main\\resources\\icons\\icon_add.png"));

@@ -151,4 +151,14 @@ public class DAOPoliza {
         }
         return null;
     }
+	
+    public Poliza getPoliza(Long numeroPoliza) {    	
+        try {
+            return session.get(Poliza.class, numeroPoliza);
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }	
+    	return null;
+    }
 }

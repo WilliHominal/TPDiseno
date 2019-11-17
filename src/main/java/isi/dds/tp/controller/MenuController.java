@@ -34,7 +34,7 @@ public class MenuController {
 		tema.setTema(ventana, "MENÚ");
 		ventana.setContentPane(menuView1);
 		menuView1.addListenerBtn_AltaPoliza(new ListenerAltaPoliza());
-		//menuView1.addListenerBtn_ConsultarPoliza(new ListenerFuncionNoDisponible());
+		menuView1.addListenerBtn_ConsultarPoliza(new ListenerConsultarPoliza());
 		//menuView1.addListenerBtn_GenerarPropuesta(new ListenerFuncionNoDisponible());
 		menuView1.addListenerBtn_RegistrarPagoPoliza(new ListenerRealizarPagoPoliza());
 		menuView1.addListenerBtn_AltaCliente(new ListenerAltaCliente());
@@ -70,6 +70,8 @@ public class MenuController {
 		});
 	}
 	
+	
+	
 	class ListenerFuncionNoDisponible implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			JOptionPane.showMessageDialog(ventana, "Función temporalmente no disponible.\n", "Aviso", JOptionPane.INFORMATION_MESSAGE);
@@ -89,6 +91,22 @@ public class MenuController {
 			}
 		}
 	}
+	
+	class ListenerConsultarPoliza implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {			
+				if(menuView1.cargarBaseDatos()) {
+					HibernateUtil.recargarBaseDatos();
+					menuView1.yaCargoBaseDatos();
+				}
+				new CU18Controller(ventana);
+				ventana.revalidate();
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			}
+		}
+	}
+	
 	
 	class ListenerRealizarPagoPoliza implements ActionListener{
 		public void actionPerformed(ActionEvent e) {

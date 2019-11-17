@@ -2,12 +2,14 @@ package isi.dds.tp.gestor;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import isi.dds.tp.dao.DAOPago;
 import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.Pago;
+import isi.dds.tp.modelo.Poliza;
 
 public class GestorPago {
 	
@@ -40,4 +42,39 @@ public class GestorPago {
 		pago.setCuotas(cuotasApagar);
 		return pago;
 	}
+	
+	/*
+	public Cuota ultimoPago(Poliza poliza) {
+    	
+    	List<Cuota> cuotas = new ArrayList<Cuota>();
+    	List<Cuota> cuotasPago = new ArrayList <Cuota>();
+    	cuotas = poliza.getCuotas();
+    	
+    	
+    	
+    	for (Cuota cuota : cuotas)
+			if (cuota.getEstado() == EnumEstadoCuota.PAGO)
+				cuotasPago.add(cuota);
+  	
+    //	int auxiliar=0;
+    	if(cuotasPago.size()>0) {
+    		Cuota ultimoPago = cuotasPago.get(0);
+    		String fecha= ultimoPago.getPago().getFechaPago().toString();
+	    	for(int i=1; i<cuotasPago.size(); i++) {
+	    		if(fecha.compareTo(cuotasPago.get(i).getPago().getFechaPago().toString()) < 0) {
+	    			fecha = cuotasPago.get(i).getPago().getFechaPago().toString();
+	    			ultimoPago = cuotasPago.get(i);
+	    	//		auxiliar = i;
+	    		}
+	    	}
+	    	return ultimoPago;
+    	}
+    	else
+    		return null; 
+    	
+	}
+*/
 }
+	
+
+	
