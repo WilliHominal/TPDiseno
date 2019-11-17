@@ -13,3 +13,4 @@ target/classes/database/RESPALDI/polizas _ original.sql
 target/classes/database/RESPALDI/parametrosPoliza.sql
 target/classes/database/RESPALDI/tiposCobertura.sql
 target/classes/pruebas/probarEnum.class
+desktop.ini

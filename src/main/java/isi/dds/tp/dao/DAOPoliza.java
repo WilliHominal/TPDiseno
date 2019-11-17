@@ -12,6 +12,7 @@ import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
+import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.Poliza;
 
 public class DAOPoliza {
@@ -73,6 +74,16 @@ public class DAOPoliza {
         return altaPoliza;
     }
 
+    public Poliza getPoliza(Long numeroPoliza) {    	
+        try {
+            return session.get(Poliza.class, numeroPoliza);
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }	
+    	return null;
+    }
+    
 	public List<Poliza> getPolizas(Long numeroCliente) {
         try {
             return session.createQuery("SELECT p FROM Poliza p WHERE numero_cliente="+numeroCliente, Poliza.class).list();
@@ -151,14 +162,16 @@ public class DAOPoliza {
         }
         return null;
     }
-	
-    public Poliza getPoliza(Long numeroPoliza) {    	
+
+	public void updateCuota(Cuota cuota) {
         try {
-            return session.get(Poliza.class, numeroPoliza);
+        	session.beginTransaction();
+            session.update(cuota);
+            session.getTransaction().commit();
         }
         catch (HibernateException e) {
-            e.printStackTrace();
-        }	
-    	return null;
-    }
+        	e.printStackTrace();
+            session.getTransaction().rollback();	
+		}
+	}
 }

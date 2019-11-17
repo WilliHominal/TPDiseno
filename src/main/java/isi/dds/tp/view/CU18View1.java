@@ -5,29 +5,16 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.MouseListener;
 import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import javax.swing.table.DefaultTableModel;
-
 import isi.dds.tp.gestor.GestorTema;
-import isi.dds.tp.modelo.Cliente;
-import isi.dds.tp.view.CU01View1;
 
-//
-@SuppressWarnings("unused")
 public class CU18View1  extends JPanel{
 	private static final long serialVersionUID = 267584656685000175L;
 
 	private GestorTema tema = GestorTema.get();
-	
-
 	
 	private JButton btnBuscar = new JButton("BUSCAR");
 	private JButton btnCancelar = new JButton("CANCELAR");
@@ -43,8 +30,6 @@ public class CU18View1  extends JPanel{
 	private JLabel lfechaPago = new JLabel("Fecha pago:");
 	private JLabel lmonto = new JLabel("Monto:");
 
-	
-		
 	private JTextField campoNumeroCliente = new JTextField(16);
 	private JTextField campoNumeroPoliza = new JTextField(16);
 	private JTextField campoNumeroPol = new JTextField(16);
@@ -54,7 +39,6 @@ public class CU18View1  extends JPanel{
 	private JTextField campoNombres = new JTextField(16);
 	private JTextField campofechaPago = new JTextField(10);
 	private JTextField campoMonto = new JTextField(15);
-	
 	
 	public CU18View1() {
 		inicializarComponentes();
@@ -86,12 +70,7 @@ public class CU18View1  extends JPanel{
 		tema.setTema(campoNombres, false);
 		tema.setTema(campofechaPago, false);
 		tema.setTema(campoMonto, false);
-	
 	}
-	
-	
-	
-	
 	
 	private void ubicarComponentes() {
 		setLayout (new GridBagLayout());
@@ -199,10 +178,6 @@ public class CU18View1  extends JPanel{
 		constraints.insets.set(30, 5, 5, 5);
 		add(btnAceptar, constraints);	
 	}
-	
-
-	
-	
 	
 	public void addListenerBtnBuscar(ActionListener listener) {
 		btnBuscar.addActionListener(listener);

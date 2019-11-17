@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
-import isi.dds.tp.modelo.Pago;
 import isi.dds.tp.view.CU12View2;
 
 public class CU12Controller2 {
@@ -18,14 +17,12 @@ public class CU12Controller2 {
 	private CU12Controller1 controller1;
 	
 	private GestorPago gestorPago = GestorPago.get();
-	private Pago pago;
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
 	private String tituloAnterior = "";
 	
-	public CU12Controller2(JFrame ventana, Pago pago) {
-		this.pago = pago;
+	public CU12Controller2(JFrame ventana) {
 		this.ventana = ventana;
 		this.tituloAnterior = ventana.getTitle();
 		try {
@@ -54,6 +51,7 @@ public class CU12Controller2 {
 	}
 	
 	private Float calcularVuelto(char caracter) {
+		//TODO CU12 creo que el vuelot no se calcula bien
 		Float montoAbonado = 0f, totalAPagar = 0f;
 		if (!view2.getMontoAbonado().isEmpty())
 			montoAbonado = Float.parseFloat(view2.getMontoAbonado())*10 + (float) Character.getNumericValue(caracter);
@@ -102,6 +100,7 @@ public class CU12Controller2 {
 		public void keyTyped(KeyEvent e) {
 			Character caracter = e.getKeyChar();
 			if(Character.isDigit(caracter) ||  caracter == '.' || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+				//TODO CU12 fijarse bien lo del boton borrar
 				if(caracter == '.' && view2.getMontoAbonado().contains(".")) {
 					e.consume();
 				}else {
@@ -141,11 +140,12 @@ public class CU12Controller2 {
 				
 				int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar el pago?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				if(seleccion == 0) {
-					gestorPago.registrarPago(pago, Float.parseFloat(controller1.getView().getImportesParciales()));
+					gestorPago.registrarPago(controller1.getCuotasApagar(), Float.parseFloat(controller1.getView().getImportesParciales()));
 					JOptionPane.showConfirmDialog(ventana, "Pago registrado correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
 					controller1.volver();
 					view2.setVisible(false);
 					HibernateUtil.cerrarSessionesUsadas();
+					
 				} else {
 					view2.noValido(false);
 				}

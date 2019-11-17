@@ -38,7 +38,7 @@ public class CU17Controller2 {
 		cargarClienteSeleccionado(cliente);
 		view2.addListenerBtn_Volver(new ListenerVolver());
 		view2.addListenerBtn_ElegirCliente(new ListenerElegirCliente());
-		tema.setTema(ventana, "BUSCAR CLIENTE: MOSTRAR CLIENTE SELECCIONADO");
+		tema.setTema(ventana, "Buscar cliente: MOSTRAR CLIENTE SELECCIONADO");
 		ventana.setContentPane(view2);
 		ventana.revalidate();
 	}

@@ -10,7 +10,6 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import isi.dds.tp.dao.DAOBitacora;
 import isi.dds.tp.dao.DAOCliente;
 import isi.dds.tp.dao.DAODomicilio;
-import isi.dds.tp.dao.DAOPago;
 import isi.dds.tp.dao.DAOParametrosPoliza;
 import isi.dds.tp.dao.DAOParametrosVehiculo;
 import isi.dds.tp.dao.DAOPoliza;
@@ -74,7 +73,6 @@ public class HibernateUtil {
 		DAOParametrosVehiculo.shutdown();
 		DAOCliente.shutdown();
 		DAOPoliza.shutdown();
-		DAOPago.shutdown();
 		DAOBitacora.shutdown();
 		DAOUsuario.shutdown();
     	

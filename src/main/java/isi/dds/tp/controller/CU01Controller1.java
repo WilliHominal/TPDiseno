@@ -112,7 +112,6 @@ public class CU01Controller1 {
 		view1.setNumeroDocumento(cliente.getNumeroDocumento());
 		view1.setCalle(cliente.getCalle()) ;
 		view1.setNumeroCalle(cliente.getNumeroCalle().toString());
-		System.out.println("Linea 2");
 		
 		if(cliente.getPiso() == null) {
 			view1.setPiso("-");
@@ -122,13 +121,11 @@ public class CU01Controller1 {
 			view1.setDepartamento(cliente.getDepartamento());
 		}
 		
-		System.out.println("Linea 3");
-		
+	
 		String numeroSiniestros = gestorSubsistemaSiniestros.getSiniestroUltimosAnios(cliente.getTipoDocumento(), cliente.getNumeroDocumento(), LocalDate.now().getYear()).toString();
 		view1.setNumeroSiniestros(numeroSiniestros);
-		System.out.println("Linea 4");
+
 		poliza = gestorPoliza.newPoliza(cliente, numeroSiniestros);
-		System.out.println("Linea 5");
 		
 		if(primerCliente) {
 			view1.componentesAlObtenerCliente();
@@ -368,6 +365,11 @@ public class CU01Controller1 {
 		view1.setVisible(false);
 	}
 	
+	//para caso de prueba
+	public CU01View1 getView(){
+		return view1;
+	}
+	
 	//-------- LISTENER
 	private class ListenerBtnBuscarCliente implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
@@ -567,10 +569,5 @@ public class CU01Controller1 {
 		} 
 		public void keyPressed(KeyEvent e) { }
 		public void keyReleased(KeyEvent e) { }
-	}
-
-	//para caso de prueba
-	public CU01View1 getView(){
-		return view1;
 	}
 }

@@ -1,37 +1,22 @@
 package isi.dds.tp.controller;
 
-import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
-import java.util.Objects;
-
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JTable;
-
-import isi.dds.tp.enums.EnumTipoDocumento;
-import isi.dds.tp.gestor.GestorPago;
-
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorTema;
-import isi.dds.tp.modelo.Cliente;
-import isi.dds.tp.modelo.Cuota;
-import isi.dds.tp.modelo.Pago;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.view.CU12View1;
 import isi.dds.tp.view.CU18View1;
 
-
-@SuppressWarnings("unused")
 public class CU18Controller {
-	
-	
+		
 	private CU18Controller instancia;
 	private CU18View1 view18;
-	private CU12Controller1 realizarPagoPolizaController = null;
+	private CU12Controller1 cu12Controller;
 	
 	private Boolean esRealizarPagoPoliza = false;
 	private JFrame ventana;
@@ -49,10 +34,8 @@ public class CU18Controller {
 			if(ventana.getContentPane() instanceof CU12View1) {
 				esRealizarPagoPoliza = true;
 			}
-			else {
-				panelAnterior = (JPanel) ventana.getContentPane();
-				tituloAnterior = ventana.getTitle();
-			}
+			panelAnterior = (JPanel) ventana.getContentPane();
+			tituloAnterior = ventana.getTitle();
 		}catch(Exception ex) {
 			panelAnterior = null;
 		}
@@ -60,13 +43,96 @@ public class CU18Controller {
 	}
 
 	private void setView12() {
-		tema.setTema(ventana, "Buscar poliza");
-		this.view18= new CU18View1();
-
-		view18.addListenerBtnCancelar(new ListenerCancelar());
+		tema.setTema(ventana, "Buscar póliza");
+		view18= new CU18View1();
+		view18.addListenerBtnCancelar(new ListenerBtnCancelar());
 		view18.addListenerBtnBuscar(new ListenerBuscar());
-		tema.setTema(ventana, "BUSCAR POLIZA");
+		view18.addListenerBtnAceptar(new ListenerBtnAceptar());
 		ventana.setContentPane(view18);
+	}
+
+	public void obtenidaPoliza(Poliza poliza) {
+		if(esRealizarPagoPoliza) {
+			cu12Controller.obtenidaPoliza(poliza);
+		}
+		try {
+			ventana.setContentPane(panelAnterior);
+			ventana.setTitle(tituloAnterior);
+			view18.setVisible(false);
+		}catch(Exception ex) {
+		    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+		}
+	}
+	
+	private void cargarPolizaSeleccionado(Poliza poliza) {
+		view18.componentesAlObtenerPoliza();
+		view18.setNumeroCliente(poliza.getCliente().getNumeroCliente().toString());
+		view18.setNumeroPoliza(poliza.getNumeroPoliza().toString());
+		view18.setApellido(poliza.getCliente().getApellido());
+		view18.setNombre(poliza.getCliente().getNombre());
+		view18.setTipoDocumento(poliza.getCliente().getTipoDocumento().toString());
+		view18.setNumeroDocumento(poliza.getCliente().getNumeroDocumento());
+		/*
+		if(GestorPago.get().ultimoPago(poliza) != null) {
+			view18.setfechaPago(GestorPago.get().ultimoPago(poliza).getPago().getFechaPago().toString());
+			view18.setMonto(GestorPago.get().ultimoPago(poliza).getPago().getImporte().toString());
+		}
+		else {
+			view18.setfechaPago("-");
+			view18.setMonto("-");
+		}
+		*/
+	}
+
+	private  Boolean condicionesBuscarPoliza() {
+		String textoPoliza = view18.getNumeroPoliza();
+	
+		String textoError = "";
+	
+		//los valores boolean son para luego la interfaz establezca los colores de los campos mal validados
+		Boolean error = false;
+		
+		Integer errorNumero = 1;
+		
+		//---------- posible error en la introdución del número del número de poliza
+		if(textoPoliza.isEmpty() ) {
+			error = true;
+			textoError = errorNumero+") No se ha introducido un número de póliza\n";
+			errorNumero++;
+		}
+		else {
+			if(textoPoliza.length() != 13) {
+				error = true;
+				textoError = errorNumero+") La definición de un número de póliza debe ser de longitud 13.\n";
+				errorNumero++;
+			}
+			/*
+			else if(textoPoliza.length() == 13) {
+				long numero;
+				numero = Long.parseLong(view18.getNumeroPoliza());
+				if( Objects.equals(null,GestorPoliza.get().buscarPoliza(numero)){
+					textoError = errorNumero+") El numero de póliza no existe.\n";
+				}
+			}
+			*/
+		}
+		if(error) {
+			view18.noValido(error);
+			JOptionPane.showConfirmDialog(ventana, textoError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
+			return false;
+		}
+		return true;
+	}
+	
+	public void volver() {
+		ventana.setContentPane(panelAnterior);
+		ventana.setTitle(tituloAnterior);
+		view18.setVisible(false);
+	}
+	
+	//para caso de prueba
+	public CU18View1 getView(){
+		return view18;
 	}
 
 	//---------- LISTENERS USADOS
@@ -92,12 +158,11 @@ public class CU18Controller {
 		}
 	}
 	
-	private class ListenerCancelar implements ActionListener{
+	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
-				ventana.setContentPane(panelAnterior);	
-				ventana.setTitle(tituloAnterior);
-				view18.setVisible(false);
+				volver();
+				HibernateUtil.cerrarSessionesUsadas();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -106,94 +171,18 @@ public class CU18Controller {
 
 	private class ListenerBtnAceptar implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
-		try {
-			int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
-			if(seleccion == 0) {
-				instancia.obtenidaPoliza(polizaObtenida);
-			}				
-		}catch(Exception ex) {
-		    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-}
-	public void obtenidaPoliza(Poliza poliza) {
-		System.out.println("Linea 1");
-		if(esRealizarPagoPoliza) {
-			realizarPagoPolizaController.obtenidaPoliza(poliza);
-		}
-		try {
-			ventana.setContentPane(panelAnterior);
-			ventana.setTitle(tituloAnterior);
-			view18.setVisible(false);
-		}catch(Exception ex) {
-		    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
-		}
-	}
-	
-	private void cargarPolizaSeleccionado(Poliza poliza) {
-	view18.componentesAlObtenerPoliza();
-	view18.setNumeroCliente(poliza.getCliente().getNumeroCliente().toString());
-	view18.setNumeroPoliza(poliza.getNumeroPoliza().toString());
-	view18.setApellido(poliza.getCliente().getApellido());
-	view18.setNombre(poliza.getCliente().getNombre());
-	view18.setTipoDocumento(poliza.getCliente().getTipoDocumento().toString());
-	view18.setNumeroDocumento(poliza.getCliente().getNumeroDocumento());
-	/*
-	if(GestorPago.get().ultimoPago(poliza) != null) {
-		view18.setfechaPago(GestorPago.get().ultimoPago(poliza).getPago().getFechaPago().toString());
-		view18.setMonto(GestorPago.get().ultimoPago(poliza).getPago().getImporte().toString());
-	}
-	else {
-		view18.setfechaPago("-");
-		view18.setMonto("-");
-	}
-	*/
-}
-
-	private  Boolean condicionesBuscarPoliza() {
-	String textoPoliza = view18.getNumeroPoliza();
-
-	String textoError = "";
-
-	//los valores boolean son para luego la interfaz establezca los colores de los campos mal validados
-	Boolean error = false;
-	
-	Integer errorNumero = 1;
-	
-	//---------- posible error en la introdución del número del número de poliza
-	if(textoPoliza.isEmpty() ) {
-		error = true;
-		textoError = errorNumero+") No se ha introducido un número de póliza\n";
-		errorNumero++;
-	}
-	else {
-		if(textoPoliza.length() != 13) {
-			error = true;
-			textoError = errorNumero+") La definición de un número de póliza debe ser de longitud 13.\n";
-			errorNumero++;
-		}
-		/*
-		else if(textoPoliza.length() == 13) {
-			long numero;
-			numero = Long.parseLong(view18.getNumeroPoliza());
-			if( Objects.equals(null,GestorPoliza.get().buscarPoliza(numero)){
-				textoError = errorNumero+") El numero de póliza no existe.\n";
+			try {
+				int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar los datos?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+				if(seleccion == 0) {
+					instancia.obtenidaPoliza(polizaObtenida);
+				}				
+			}catch(Exception ex) {
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-		*/
 	}
-	if(error) {
-		view18.noValido(error);
-		JOptionPane.showConfirmDialog(ventana, textoError, "Error", JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE);
-		return false;
-	}
-	return true;
-	}
-	
 
-	
-	//para caso de prueba
-	public CU18View1 getView(){
-	return view18;
-}
+	public void setPagoPolizaController(CU12Controller1 cu12Controller) {
+		this.cu12Controller = cu12Controller;
+	}
 }

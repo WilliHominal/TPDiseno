@@ -10,13 +10,10 @@ import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.enums.EnumEstadoCuota;
-import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Cuota;
-import isi.dds.tp.modelo.Pago;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.view.CU12View1;
 
@@ -186,17 +183,19 @@ public class CU12Controller1 {
 		return view1;
 	}
 	
+	public List<Cuota> getCuotasApagar() {
+		return cuotasApagar;
+	}
+	
 	private class ListenerBtnBuscarPoliza implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
-				//TODO MODIFICAR CON CU18
-				//CU18Controller a = new CU18Controller(ventana);	
-				//a.setPagoPolizaController(instancia); // ahi aplicar el obtenidaPoliza(con la poliza que se selecciona)
-				
-				
+				new CU18Controller(ventana).setPagoPolizaController(instancia);
+				// ahi aplicar el obtenidaPoliza(con la poliza que se selecciona)
+		
 				// el cliente 5400000004 tiene la poliza-> 3528000000401 con cuotas impagas, pero tiene las primeras pagas
 				// el cliente 5400000003 tiene la poliza 3528000000300 con todas las cuotas impagas
-				//obtenidaPoliza((DAOPoliza.getDAO().getPolizas(5400000003l).get(0)));//quitar una vez implementado lo de arriba
+			//	obtenidaPoliza((DAOPoliza.getDAO().getPolizas(5400000003l).get(0)));//quitar una vez implementado lo de arriba
 				ventana.revalidate();
 			}catch(Exception ex) {
 				ex.printStackTrace();
@@ -217,8 +216,8 @@ public class CU12Controller1 {
 				int seleccion = JOptionPane.showConfirmDialog(ventana, mensaje, "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				view1.noValido(false, false);
 				if(seleccion == 0) {
-					Pago pago = GestorPago.get().realizarPago(cuotasApagar);
-					new CU12Controller2(ventana, pago).setCU12Controller1(instancia);
+
+					new CU12Controller2(ventana).setCU12Controller1(instancia);
 				}
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -229,7 +228,6 @@ public class CU12Controller1 {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				volver();
-				view1.setVisible(false);
 				HibernateUtil.cerrarSessionesUsadas();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
@@ -255,6 +253,7 @@ public class CU12Controller1 {
 	private class ListenerSeleccionCuota2 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (view1.getEstadoCheckBoxCuota(2)) {
+				//TODO CU12 para todos los listener de los check, agregar la cuota que se debería seleccionar, ya que como está hecho arriba no elige la correcta y cuando ya pagaste alguna cuota no te deja volver a pagar
 				cuotasApagar.add(cuotas.get(1));
 				if (!view1.getEstadoCheckBoxCuota(1) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(6)) {
 					view1.setImportesParciales(view1.getCuotaActual2());

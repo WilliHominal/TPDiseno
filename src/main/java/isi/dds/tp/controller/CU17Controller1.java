@@ -22,7 +22,7 @@ public class CU17Controller1 {
 	private CU17Controller1 instancia;
 	private CU17View1 view1;
 	
-	private CU01Controller1 altaPolizaController = null;
+	private CU01Controller1 cu01Controller1 = null;
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
@@ -56,12 +56,10 @@ public class CU17Controller1 {
 		EnumTipoDocumento[] tipoDocumentos = EnumTipoDocumento.values();
 		for(int i=0; i<tipoDocumentos.length; i++){
 			view1.addItemTipoCobertura(tipoDocumentos[i].toString());
-		}
-		
+		}		
 		view1.addListenerBtnCancelar(new ListenerCancelar());
 		view1.addListenerBtnBuscar(new ListenerBuscar());
 		view1.addListenerTablaClientes(new ListenerTablaClientes());
-		tema.setTema(ventana, "BUSCAR CLIENTE");
 		ventana.setContentPane(view1);
 	}
 	
@@ -87,13 +85,12 @@ public class CU17Controller1 {
 	}
 
 	public void setAltaPolizaController(CU01Controller1 altaPolizaController) {
-		this.altaPolizaController = altaPolizaController;
+		this.cu01Controller1 = altaPolizaController;
 	}
 	
 	public void obtenidoCliente(Cliente cliente) {
-		System.out.println("Linea 1");
 		if(esAltaPoliza) {
-			altaPolizaController.obtenidoCliente(cliente);
+			cu01Controller1.obtenidoCliente(cliente);
 		}
 		try {
 			ventana.setContentPane(panelAnterior);
