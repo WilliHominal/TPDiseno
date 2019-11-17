@@ -5,17 +5,13 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import javax.persistence.NoResultException;
-
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-
 import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
-import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.Poliza;
 
 public class DAOPoliza {
@@ -106,14 +102,6 @@ public class DAOPoliza {
 	public Long getCantPolizaPorPatente(String patente) {
         try {
         	return (Long) session.createQuery("select count(*) from Poliza where patente='"+patente+"'").getSingleResult();
-        }
-        catch (HibernateException e) { }
-        return null;
-    }
-
-	public List<Cuota> getCuotas(Long numeroPoliza) {
-        try {
-            return session.createQuery("SELECT c FROM Cuota c WHERE numero_poliza="+numeroPoliza, Cuota.class).list();
         }
         catch (HibernateException e) { }
         return null;

@@ -12,25 +12,23 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.enums.EnumEstadoCuota;
-import isi.dds.tp.enums.EnumPagoCuota;
-import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorTema;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.view.CU12View1;
 
-@SuppressWarnings("unused")
 public class CU12Controller1 {
 
 	private CU12Controller1 instancia;
 	private CU12View1 view1;
 	
-	
-	private GestorPago gestorPago = GestorPago.get();
-	
 	private JFrame ventana;
 	private JPanel panelAnterior;
 	private String tituloAnterior = "";
+	
+	private List<Cuota> cuotasApagar = new ArrayList<Cuota>();
+	private List<Cuota> cuotas = new ArrayList<Cuota>();
 	
 	public CU12Controller1(JFrame ventana) {
 		instancia = this;
@@ -63,10 +61,11 @@ public class CU12Controller1 {
 	}
 	
 	public void obtenidaPoliza (Poliza poliza) {
-		List<Cuota> cuotas = new ArrayList<Cuota>(), cuotasImpagas = new ArrayList<Cuota>();
-		Float importeTotal = 0f, importeParcial = 0f; //TODO para que está importe parcial
+		//TODO CU12 solo deben aparecer las cuotas a pagar el resto (setvisible false) y ademas el label de esas cuotas debe coincidir con la cuota que se está pagando
+		//(si se pago ya la cuota uno, deben aparecer las cuotas 2,3,4,5,6 y sus label deben decir que son esas cuotas)
+		List<Cuota> cuotasImpagas = new ArrayList<Cuota>();
+		Float importeTotal = 0f;
 		List<Float> montoActual = new ArrayList<Float>();
-		
 		view1.setNumeroCliente(poliza.getCliente().getNumeroCliente().toString());
 		view1.setApellido(poliza.getCliente().getApellido());
 		view1.setNombre(poliza.getCliente().getNombre());
@@ -74,32 +73,38 @@ public class CU12Controller1 {
 		view1.setMarca(poliza.getAnioModelo().getModelo().getMarca().getNombre());
 		view1.setModelo(poliza.getAnioModelo().getModelo().getNombre());
 		view1.setPatente(poliza.getPatente());
+		
 		view1.habilitarSeleccionCuotas();
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
 		view1.setInicioVigencia(dateFormat.format(Date.from(poliza.getInicioVigencia().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
 		view1.setFinVigencia(dateFormat.format(Date.from(poliza.getFinVigencia().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
-
-		//cargo cuotas de la poliza
-		cuotas = DAOPoliza.getDAO().getCuotas(poliza.getNumeroPoliza());
-		//busco las impagas
-		for (Cuota cuota : cuotas)
-			if (cuota.getEstado() == EnumEstadoCuota.IMPAGO)
-				cuotasImpagas.add(cuota);
 		
+		//cargo cuotas de la poliza
+		cuotas = poliza.getCuotas(); //DAOPoliza.getDAO().getCuotas(poliza.getNumeroPoliza()); //no hace falta consultar al DAO
+
+		//busco las impagas
+		for (Cuota cuota : cuotas) {
+			if (cuota.getEstado().equals(EnumEstadoCuota.IMPAGO)) 
+				cuotasImpagas.add(cuota);
+		}
 		//seteo monto cuotas impagas
+		//TODO CU12 está mal esto, EnumPagoCuota es para cuando se paga una cuota, es decir, si se paga una cuota recién se le setea ese estado. No se bien si calcular
+		//monto total es de todas las cuotas que no pago, o las que quiere pagar.
+		//TODO CU12 implementar logica en gestor poliza diria, que calcule los valores atrasados y los bonificados y setearlos en cuota (junto con estadopagocuota, bonificacion etc) y despues setearlos en la view
+		
 		for (Cuota cuota : cuotasImpagas) {
-			if (cuota.getEstadoPagoCuota() == EnumPagoCuota.EN_TERMINO) {
+			montoActual.add(cuota.getMonto());
+			/*if (cuota.getEstadoPagoCuota().equals(EnumPagoCuota.EN_TERMINO)) {
 				montoActual.add(cuota.getMonto());
 			} else {
-				if (cuota.getEstadoPagoCuota() == EnumPagoCuota.EN_MORA) {
+				if (cuota.getEstadoPagoCuota().equals(EnumPagoCuota.EN_MORA)) {
 					montoActual.add(cuota.getMonto() + 1234);
 				} else {
-					if (cuota.getEstadoPagoCuota() == EnumPagoCuota.ADELANTADA) {
+					if (cuota.getEstadoPagoCuota().equals(EnumPagoCuota.ADELANTADA)) {
 						montoActual.add(cuota.getMonto() - 1234);
-					}
+					/
 				}
-			}
-			
+			}*/
 		}
 		
 		if (cuotasImpagas.size() != 0) {
@@ -130,22 +135,6 @@ public class CU12Controller1 {
 		view1.setImportesTotales(importeTotal.toString());
 		
 		view1.habilitarBotonConfirmarPago();
-	}
-	
-	private class ListenerBtnBuscarPoliza implements ActionListener{
-		public void actionPerformed(ActionEvent e) {
-			try {
-				//TODO MODIFICAR CON CU18
-				/*CU18Controller a = new CU18Controller(ventana);	
-				//a.setPagoPolizaController(instancia); // ahi aplicar el obtenidaPoliza(con la poliza que se selecciona)
-				*/
-				obtenidaPoliza((DAOPoliza.getDAO().getPolizas(5400000004l).get(1)));//quitar una vez implementado lo de arriba
-				ventana.revalidate();
-			}catch(Exception ex) {
-            	JOptionPane.showMessageDialog(ventana, "No se pudo obtener la póliza desde la base de datos",
-                          "Error.", JOptionPane.ERROR_MESSAGE);       	
-			}
-		}
 	}
 	
 	private Boolean condicionesGenerarPago() {
@@ -186,6 +175,39 @@ public class CU12Controller1 {
 		return true;
 	}
 	
+	public void volver() {
+		ventana.setContentPane(panelAnterior);
+		ventana.setTitle(tituloAnterior);
+		view1.setVisible(false);
+	}
+	
+	public CU12View1 getView(){
+		return view1;
+	}
+	
+	public List<Cuota> getCuotasApagar(){
+		return cuotasApagar;
+	}
+	
+	private class ListenerBtnBuscarPoliza implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			try {
+				//TODO MODIFICAR CON CU18
+				/*CU18Controller a = new CU18Controller(ventana);	
+				//a.setPagoPolizaController(instancia); // ahi aplicar el obtenidaPoliza(con la poliza que se selecciona)
+				*/
+				
+				// el cliente 5400000004 tiene la poliza-> 3528000000401 con cuotas impagas, pero tiene las primeras pagas
+				// el cliente 5400000003 tiene la poliza 3528000000300 con todas las cuotas impagas
+				obtenidaPoliza((DAOPoliza.getDAO().getPolizas(5400000003l).get(0)));//quitar una vez implementado lo de arriba
+				ventana.revalidate();
+			}catch(Exception ex) {
+				ex.printStackTrace();
+            	JOptionPane.showMessageDialog(ventana, "No se pudo obtener la póliza desde la base de datos",
+                          "Error.", JOptionPane.ERROR_MESSAGE);       	
+			}
+		}
+	}
 	private class ListenerBtnConfirmarPago implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			String mensaje = "El monto a pagar es de $" + view1.getImportesParciales() + ", ¿Desea continuar con el pago?";
@@ -196,28 +218,21 @@ public class CU12Controller1 {
 				}				
 				
 				int seleccion = JOptionPane.showConfirmDialog(ventana, mensaje, "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+				view1.noValido(false, false);
 				if(seleccion == 0) {
-					view1.noValido(false, false);
 					new CU12Controller2(ventana).setCU12Controller1(instancia);
-				} else {
-					view1.noValido(false, false);
 				}
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-	}
-	
-	public void volver() {
-		ventana.setContentPane(panelAnterior);
-		ventana.setTitle(tituloAnterior);
-		view1.setVisible(false);
-	}
-	
+	}	
 	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {			
+			try {
 				volver();
+				view1.setVisible(false);
+				HibernateUtil.cerrarSessionesUsadas();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -227,12 +242,14 @@ public class CU12Controller1 {
 	private class ListenerSeleccionCuota1 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (view1.getEstadoCheckBoxCuota(1)) {
+				cuotasApagar.add(cuotas.get(0));
 				if (!view1.getEstadoCheckBoxCuota(2) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(6)) {
 					view1.setImportesParciales(view1.getCuotaActual1());
 				} else {
 					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual1()) ).toString());
 				}
 			} else {
+				cuotasApagar.remove(cuotas.get(0));
 				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual1()) ).toString());
 			}
 		}
@@ -240,12 +257,14 @@ public class CU12Controller1 {
 	private class ListenerSeleccionCuota2 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (view1.getEstadoCheckBoxCuota(2)) {
+				cuotasApagar.add(cuotas.get(1));
 				if (!view1.getEstadoCheckBoxCuota(1) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(6)) {
 					view1.setImportesParciales(view1.getCuotaActual2());
 				} else {
 					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual2()) ).toString());
 				}
 			} else {
+				cuotasApagar.remove(cuotas.get(1));
 				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual2()) ).toString());
 			}
 		}
@@ -253,12 +272,14 @@ public class CU12Controller1 {
 	private class ListenerSeleccionCuota3 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (view1.getEstadoCheckBoxCuota(3)) {
+				cuotasApagar.add(cuotas.get(2));
 				if (!view1.getEstadoCheckBoxCuota(2) && !view1.getEstadoCheckBoxCuota(1) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(6)) {
 					view1.setImportesParciales(view1.getCuotaActual3());
 				} else {
 					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual3()) ).toString());
 				}
 			} else {
+				cuotasApagar.remove(cuotas.get(2));
 				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual3()) ).toString());
 			}
 		}
@@ -266,12 +287,14 @@ public class CU12Controller1 {
 	private class ListenerSeleccionCuota4 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (view1.getEstadoCheckBoxCuota(4)) {
+				cuotasApagar.add(cuotas.get(3));
 				if (!view1.getEstadoCheckBoxCuota(2) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(1) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(6)) {
 					view1.setImportesParciales(view1.getCuotaActual4());
 				} else {
 					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual4()) ).toString());
 				}
 			} else {
+				cuotasApagar.remove(cuotas.get(3));
 				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual4()) ).toString());
 			}
 		}
@@ -279,12 +302,14 @@ public class CU12Controller1 {
 	private class ListenerSeleccionCuota5 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (view1.getEstadoCheckBoxCuota(5)) {
+				cuotasApagar.add(cuotas.get(4));
 				if (!view1.getEstadoCheckBoxCuota(2) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(1) && !view1.getEstadoCheckBoxCuota(6)) {
 					view1.setImportesParciales(view1.getCuotaActual5());
 				} else {
 					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual5()) ).toString());
 				}
 			} else {
+				cuotasApagar.remove(cuotas.get(4));
 				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual5()) ).toString());
 			}
 		}
@@ -292,18 +317,17 @@ public class CU12Controller1 {
 	private class ListenerSeleccionCuota6 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (view1.getEstadoCheckBoxCuota(6)) {
+				cuotasApagar.add(cuotas.get(5));
 				if (!view1.getEstadoCheckBoxCuota(2) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(1)) {
 					view1.setImportesParciales(view1.getCuotaActual6());
 				} else {
 					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual6()) ).toString());
 				}
 			} else {
+				cuotasApagar.remove(cuotas.get(5));
 				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual6()) ).toString());
 			}
 		}
 	}
 	
-	public CU12View1 getView(){
-		return view1;
-	}
 }

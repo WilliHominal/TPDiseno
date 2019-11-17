@@ -1,7 +1,7 @@
 package isi.dds.tp.modelo;
 
 import java.time.LocalDate;
-import java.time.OffsetDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -39,12 +39,11 @@ public class Pago {
 	private LocalDate fechaPago;
 	
 	@Column(nullable = false)
-	private OffsetDateTime hora;
+	private LocalTime hora;
 	
-	@Column(nullable = false)
+	//TODO pago cambiar
 	private Float premio; 
 	
-	@Column(nullable = false)
 	private String operador;
 	
 	public Pago() { }
@@ -65,7 +64,7 @@ public class Pago {
 		return fechaPago;
 	}
 	
-	public OffsetDateTime getHora() {
+	public LocalTime getHora() {
 		return hora;
 	}
 	
@@ -93,7 +92,7 @@ public class Pago {
 		this.fechaPago = fechaPago;
 	}
 	
-	public void setHora(OffsetDateTime hora) {
+	public void setHora(LocalTime hora) {
 		this.hora = hora;
 	}
 	

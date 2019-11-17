@@ -301,10 +301,6 @@ public class GestorPoliza {
 		return poliza.getAnioModelo().getAnio() <= (anioActual - 10); 
 	}
 	
-	public List<Cuota> getCuotas(Long numeroPoliza) {
-		return DAOPoliza.getDAO().getCuotas(numeroPoliza);
-    }
-	
 	public List<Poliza> getPolizas(Long numeroCliente) {
 		return DAOPoliza.getDAO().getPolizas(numeroCliente);
     }

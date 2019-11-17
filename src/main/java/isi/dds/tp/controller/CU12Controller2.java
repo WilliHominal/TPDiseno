@@ -9,11 +9,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorTema;
+import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.view.CU12View2;
 
-@SuppressWarnings("unused")
 public class CU12Controller2 {
-	private CU12Controller2 instancia;
 	private CU12View2 view2;
 	private CU12Controller1 controller1;
 	
@@ -24,7 +23,6 @@ public class CU12Controller2 {
 	private String tituloAnterior = "";
 	
 	public CU12Controller2(JFrame ventana) {
-		instancia = this;
 		this.ventana = ventana;
 		this.tituloAnterior = ventana.getTitle();
 		try {
@@ -72,32 +70,6 @@ public class CU12Controller2 {
 		return montoAbonado-totalAPagar;
 	}
 	
-	private class ListenerCampoMontoAbonado implements KeyListener{
-		@Override
-		public void keyPressed(KeyEvent e) {
-			if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-				if (view2.getMontoAbonado().length() == 1)
-					view2.setVuelto( ((Float)( - Float.parseFloat(controller1.getView().getImportesParciales()) )).toString() );
-				else
-					view2.setVuelto(calcularVuelto().toString());
-			} else {
-				char caracter = e.getKeyChar();
-				if( Character.isDigit(caracter) ){
-					e.setKeyChar(caracter);
-					view2.setVuelto(calcularVuelto(caracter).toString());
-				}
-				else{
-					e.consume();
-				}
-			}
-		}
-		@Override
-		public void keyTyped(KeyEvent arg0) {}
-		@Override
-		public void keyReleased(KeyEvent e) {} 
-	}
-	
-	
 	private Boolean condicionesGenerarPago() {
 		Boolean errorMonto = false;
 		String textoErrorMonto = "";
@@ -116,7 +88,40 @@ public class CU12Controller2 {
 		}
 		return true;
 	}
+
+	public void volver() {
+		ventana.setContentPane(panelAnterior);
+		ventana.setTitle(tituloAnterior);
+		view2.setVisible(false);
+	}
 	
+	private class ListenerCampoMontoAbonado implements KeyListener{
+		public void keyTyped(KeyEvent e) {
+			Character caracter = e.getKeyChar();
+			if(Character.isDigit(caracter) ||  caracter == '.' || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+				if(caracter == '.' && view2.getMontoAbonado().contains(".")) {
+					e.consume();
+				}else {
+					if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+						if (view2.getMontoAbonado().length() == 1)
+							view2.setVuelto( ((Float)( - Float.parseFloat(controller1.getView().getImportesParciales()) )).toString() );
+						else
+							view2.setVuelto(calcularVuelto().toString());
+					}
+					else {
+						e.setKeyChar(caracter);
+						view2.setVuelto(calcularVuelto(caracter).toString());
+					}	
+				}			
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) {}
+		public void keyReleased(KeyEvent e) {} 
+	}	
+
 	private class ListenerBtnCambiarMonto implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			ventana.setContentPane(panelAnterior);
@@ -124,7 +129,6 @@ public class CU12Controller2 {
 			view2.setVisible(false);
 		}
 	}
-	
 	private class ListenerBtnCompletarPago implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
@@ -134,23 +138,20 @@ public class CU12Controller2 {
 				
 				int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar el pago?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				if(seleccion == 0) {
-					gestorPago.registrarPago(Long.parseLong(controller1.getView().getNumeroPoliza()), controller1.getView().cantidadCuotasSeleccionadas());
+					gestorPago.registrarPago(controller1.getCuotasApagar(), Float.parseFloat(controller1.getView().getImportesParciales()));
 					JOptionPane.showConfirmDialog(ventana, "Pago registrado correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
+					controller1.volver();
+					view2.setVisible(false);
+					HibernateUtil.cerrarSessionesUsadas();
 				} else {
 					view2.noValido(false);
 				}
 			}catch(Exception ex) {
+				//TODO CU12 poner bien el mensaje y hacer que si no se introduce algun monto no esté habilitado el boton pagar 
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
-	
-	public void volver() {
-		ventana.setContentPane(panelAnterior);
-		ventana.setTitle(tituloAnterior);
-		view2.setVisible(false);
-	}
-	
 	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {			
@@ -160,6 +161,4 @@ public class CU12Controller2 {
 			}
 		}
 	}
-	
-	
 }

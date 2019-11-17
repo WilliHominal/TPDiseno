@@ -160,6 +160,7 @@ public class CU12View1 extends JPanel{
 	}
 	
 	private void ubicarComponentes() {
+		//TODO CU12 espaciar mas verticalmente
 		setLayout (new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		
@@ -638,21 +639,40 @@ public class CU12View1 extends JPanel{
 	}
 	
 	public void addListenerSeleccionCuota1(ActionListener listener) {
+		cbCuotaN1.addActionListener (a -> {
+			noValido(false, false);
+		});	
 		cbCuotaN1.addActionListener (listener);		
 	}
 	public void addListenerSeleccionCuota2(ActionListener listener) {
+		cbCuotaN2.addActionListener (a -> {
+			noValido(false, false);
+		});	
 		cbCuotaN2.addActionListener (listener);		
 	}
 	public void addListenerSeleccionCuota3(ActionListener listener) {
+		cbCuotaN3.addActionListener (a -> {
+			noValido(false, false);
+		});	
 		cbCuotaN3.addActionListener (listener);		
 	}
 	public void addListenerSeleccionCuota4(ActionListener listener) {
+		cbCuotaN4.addActionListener (a -> {
+			noValido(false, false);
+		});	
 		cbCuotaN4.addActionListener (listener);		
 	}
 	public void addListenerSeleccionCuota5(ActionListener listener) {
-		cbCuotaN5.addActionListener (listener);		
+		cbCuotaN5.addActionListener (a -> {
+			noValido(false, false);
+		});	
+		cbCuotaN5.addActionListener(listener);		
 	}
 	public void addListenerSeleccionCuota6(ActionListener listener) {
+		cbCuotaN6.addActionListener (a -> {
+			noValido(false, false);
+			//TODO CU12 fijarse si cambiar el color a todos o solo al check que fue seleccionado
+		});	
 		cbCuotaN6.addActionListener (listener);		
 	}
 

@@ -85,7 +85,7 @@ INSERT INTO cuota (id_cuota, bonificacion_pago_adelantado, estado, estado_pago_c
 (NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 66000, 0, '2019-01-15', null, 3528000000200, 0),
 (NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2019-07-15', null, 3528000000201, 0),
 
-(NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2019-12-11', null, 3528000000300, 1),
+(NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2019-12-11', null, 3528000000300, 0),
 (NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2020-01-11', null, 3528000000300, 1),
 (NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2020-02-11', null, 3528000000300, 2),
 (NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2020-03-11', null, 3528000000300, 3),
@@ -93,7 +93,7 @@ INSERT INTO cuota (id_cuota, bonificacion_pago_adelantado, estado, estado_pago_c
 (NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2020-05-11', null, 3528000000300, 5),
 
 (NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 66000, 0, '2019-03-25', null, 3528000000400, 0),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	null, 19333.33, 0, '2019-09-25', null, 3528000000401, 1),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	null, 19333.33, 0, '2019-09-25', null, 3528000000401, 0),
 (NEXTVAL('id_cuota_seq'), 0, 'PAGO',	null, 19333.33, 0, '2019-10-25', null, 3528000000401, 1),
 (NEXTVAL('id_cuota_seq'), 0, 'PAGO',	null, 19333.33, 0, '2019-11-25', null, 3528000000401, 2),
 (NEXTVAL('id_cuota_seq'), 0, 'PAGO',	null, 19333.33, 0, '2019-12-25', null, 3528000000401, 3),

@@ -381,7 +381,6 @@ public class CU01Controller1 {
 			}
 		}
 	}
-
 	private class ListenerBtnAltaCliente implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {				
@@ -393,7 +392,6 @@ public class CU01Controller1 {
 			}
 		}
 	}
-	
 	private class ListenerBtnDeclararHijo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {		
@@ -407,7 +405,6 @@ public class CU01Controller1 {
 			}
 		}
 	}
-	
 	private class ListenerBtnQuitarHijo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {			
@@ -421,7 +418,6 @@ public class CU01Controller1 {
 			}
 		}
 	}
-	
 	private class ListenerBtnConfirmarDatos implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
@@ -448,7 +444,6 @@ public class CU01Controller1 {
 			}
 		}
 	}
-	
 	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {			
@@ -471,7 +466,6 @@ public class CU01Controller1 {
 			view1.habilitarSeleccionCiudad(true);
 		}
 	}
-	
 	private class ListenerSeleccionMarca implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			Marca marca = view1.getMarca();
@@ -492,8 +486,7 @@ public class CU01Controller1 {
 				view1.setSumaAsegurada(num.format(view1.getAnioModelo().getSumaAsegurada()));
 			}
 		}
-	}
-	
+	}	
 	private class ListenerSeleccionModelo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(view1.habilitadaSeleccionModelo()) {
@@ -510,7 +503,6 @@ public class CU01Controller1 {
 			}
 		}
 	}
-	
 	private class ListenerSeleccionAnioModelo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if(view1.habilitadaSeleccionAnioModelo()) {
@@ -540,7 +532,6 @@ public class CU01Controller1 {
 		public void keyPressed(KeyEvent e) { }
 		public void keyReleased(KeyEvent e) { }
 	}
-	
 	private class ListenerCampoChasis implements KeyListener{
 		public void keyTyped(KeyEvent e) {
 			char caracter = e.getKeyChar();
@@ -558,8 +549,7 @@ public class CU01Controller1 {
 		} 
 		public void keyPressed(KeyEvent e) { }
 		public void keyReleased(KeyEvent e) { }
-	}
-	
+	}	
 	private class ListenerCampoPatente implements KeyListener{
 		public void keyTyped(KeyEvent e) {
 			char caracter = e.getKeyChar();
