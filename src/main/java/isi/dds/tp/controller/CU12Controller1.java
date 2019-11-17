@@ -190,9 +190,9 @@ public class CU12Controller1 {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				//TODO MODIFICAR CON CU18
-				CU18Controller a = new CU18Controller(ventana);	
+				//CU18Controller a = new CU18Controller(ventana);	
 				//a.setPagoPolizaController(instancia); // ahi aplicar el obtenidaPoliza(con la poliza que se selecciona)
-				*/
+				
 				
 				// el cliente 5400000004 tiene la poliza-> 3528000000401 con cuotas impagas, pero tiene las primeras pagas
 				// el cliente 5400000003 tiene la poliza 3528000000300 con todas las cuotas impagas
