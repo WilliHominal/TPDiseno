@@ -10,6 +10,7 @@ import javax.swing.JPanel;
 import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
+import isi.dds.tp.modelo.Pago;
 import isi.dds.tp.view.CU12View2;
 
 public class CU12Controller2 {
@@ -17,12 +18,14 @@ public class CU12Controller2 {
 	private CU12Controller1 controller1;
 	
 	private GestorPago gestorPago = GestorPago.get();
+	private Pago pago;
 	
 	private JFrame ventana;
 	private JPanel panelAnterior;
 	private String tituloAnterior = "";
 	
-	public CU12Controller2(JFrame ventana) {
+	public CU12Controller2(JFrame ventana, Pago pago) {
+		this.pago = pago;
 		this.ventana = ventana;
 		this.tituloAnterior = ventana.getTitle();
 		try {
@@ -138,7 +141,7 @@ public class CU12Controller2 {
 				
 				int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar el pago?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				if(seleccion == 0) {
-					gestorPago.registrarPago(controller1.getCuotasApagar(), Float.parseFloat(controller1.getView().getImportesParciales()));
+					gestorPago.registrarPago(pago, Float.parseFloat(controller1.getView().getImportesParciales()));
 					JOptionPane.showConfirmDialog(ventana, "Pago registrado correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
 					controller1.volver();
 					view2.setVisible(false);

@@ -12,9 +12,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.enums.EnumEstadoCuota;
+import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Cuota;
+import isi.dds.tp.modelo.Pago;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.view.CU12View1;
 
@@ -88,10 +90,9 @@ public class CU12Controller1 {
 				cuotasImpagas.add(cuota);
 		}
 		//seteo monto cuotas impagas
-		//TODO CU12 está mal esto, EnumPagoCuota es para cuando se paga una cuota, es decir, si se paga una cuota recién se le setea ese estado. No se bien si calcular
-		//monto total es de todas las cuotas que no pago, o las que quiere pagar.
-		//TODO CU12 implementar logica en gestor poliza diria, que calcule los valores atrasados y los bonificados y setearlos en cuota (junto con estadopagocuota, bonificacion etc) y despues setearlos en la view
+		//TODO CU12 está mal esto, EnumPagoCuota es para cuando se paga una cuota, es decir, si se paga una cuota recién se le setea ese estado. Esto se hace cuando validas
 		
+		//TODO CU12 No se bien si calcular monto total es de todas las cuotas que no pago, o las que quiere pagar, consultar al profe.
 		for (Cuota cuota : cuotasImpagas) {
 			montoActual.add(cuota.getMonto());
 			/*if (cuota.getEstadoPagoCuota().equals(EnumPagoCuota.EN_TERMINO)) {
@@ -185,10 +186,6 @@ public class CU12Controller1 {
 		return view1;
 	}
 	
-	public List<Cuota> getCuotasApagar(){
-		return cuotasApagar;
-	}
-	
 	private class ListenerBtnBuscarPoliza implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
@@ -220,7 +217,8 @@ public class CU12Controller1 {
 				int seleccion = JOptionPane.showConfirmDialog(ventana, mensaje, "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				view1.noValido(false, false);
 				if(seleccion == 0) {
-					new CU12Controller2(ventana).setCU12Controller1(instancia);
+					Pago pago = GestorPago.get().realizarPago(cuotasApagar);
+					new CU12Controller2(ventana, pago).setCU12Controller1(instancia);
 				}
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
