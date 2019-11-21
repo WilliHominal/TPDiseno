@@ -165,7 +165,6 @@ public class DAOPoliza {
 
 	public void updateCuota(Cuota cuota) {
         try {
-        	session.beginTransaction();
             session.update(cuota);
             session.getTransaction().commit();
         }

@@ -2,7 +2,7 @@ package isi.dds.tp.gestor;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
-
+import isi.dds.tp.dao.DAOBitacora;
 import isi.dds.tp.modelo.BitacoraParametrosPoliza;
 import isi.dds.tp.modelo.ParametrosPoliza;
 import isi.dds.tp.modelo.RiesgoCiudad;
@@ -53,7 +53,13 @@ public class GestorBitacora {
     }
     
     public void addParametrosPoliza(BitacoraParametrosPoliza bitacora, ParametrosPoliza p) {
+    	GestorParametrosPoliza.get().updateUltimoParametrosPoliza();	
     	bitacora.setParametrosPoliza(p);
     	p.setBitacoraParametros(bitacora);
+    	GestorParametrosPoliza.get().addParametrosPoliza(p);
     }
+
+	public void registrarCambiosEnParametros(BitacoraParametrosPoliza bitacora) {	
+		DAOBitacora.getDAO().addBitacora(bitacora);
+	}
 }

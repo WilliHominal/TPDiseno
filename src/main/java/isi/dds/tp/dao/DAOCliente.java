@@ -61,18 +61,16 @@ public class DAOCliente {
     
 	public List<Cliente> getClientes(String consulta) {
         try {
-            return session.createNativeQuery("SELECT * FROM cliente "+consulta, Cliente.class).getResultList();
+        	return session.createNativeQuery("SELECT * FROM cliente "+consulta, Cliente.class).getResultList();
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
-    	return null;
+        return null;
     }
 
 	public void updateCliente(Cliente cliente) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
-        	session.beginTransaction();
             session.update(cliente);
             session.getTransaction().commit();
         }

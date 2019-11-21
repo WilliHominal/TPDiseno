@@ -36,7 +36,20 @@ public class GestorParametrosPoliza {
 		pNuevos.setPorcentajeMayorADosSiniestros(pViejos.getPorcentajeMayorADosSiniestros());
 		pNuevos.setDescuentoUnidadAdicional(pViejos.getDescuentoUnidadAdicional());
 		pNuevos.setValorDerechoEmision(pViejos.getValorDerechoEmision());
-		//TODO CU08 ver si se persiste el ultimo o hay que hacer un update
-		pViejos.setFechaFinVigencia(LocalDate.now());
+		pNuevos.setFechaInicioVigencia(LocalDate.now());
     }
+
+	public void updateUltimoParametrosPoliza() {
+		ParametrosPoliza pViejos = getUltimoParametrosPoliza(); 
+		pViejos.setFechaFinVigencia(LocalDate.now());
+		DAOParametrosPoliza.getDAO().updateParametrosPoliza(pViejos);
+	}
+
+	public void updateParametrosPoliza(ParametrosPoliza p) {
+		DAOParametrosPoliza.getDAO().updateParametrosPoliza(p);
+	}
+
+	public void addParametrosPoliza(ParametrosPoliza p) {
+		DAOParametrosPoliza.getDAO().addParametrosPoliza(p);
+	}
 }

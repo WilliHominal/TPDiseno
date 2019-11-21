@@ -14,12 +14,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 @Entity
 @Table(name = "riesgo_tipo_cobertura")
-public class RiesgoTipoCobertura {
-	
-	/*@ManyToOne (fetch = FetchType.LAZY)
-	@JoinColumn (name = "tipo_cobertura", foreignKey=@ForeignKey(name = "fk_tipo_cobertura"))
-	private TipoCobertura tipoCobertura;*/
-	
+public class RiesgoTipoCobertura {	
 	//optional permita que la relacion pueda ser nual, que seria el caso cuando se crea por primera vez una ciudad
 	@ManyToOne (optional = true, fetch = FetchType.LAZY)
 	@JoinColumn (name = "codigo_bitacora", foreignKey=@ForeignKey(name = "fk_codigo_bitacora"))

@@ -1,6 +1,8 @@
 package isi.dds.tp.modelo;
 
 import java.time.LocalDate;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,7 +19,7 @@ import javax.persistence.Table;
 @Table(name = "parametros_poliza")
 public class ParametrosPoliza {
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="codigo_bitacora", foreignKey=@ForeignKey(name = "fk_codigo_bitacora"))
 	private BitacoraParametrosPoliza bitacoraParametros;
 	

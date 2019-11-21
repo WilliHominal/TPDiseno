@@ -637,6 +637,11 @@ public class CU01View1 extends JPanel {
 			public void keyTyped(KeyEvent e){
 				tema.setTema(campoMotor, true);
 			}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+					tema.setTema(campoMotor, true);
+				}
+			}
 		}); 
 		campoMotor.addKeyListener(listener); 
 	}
@@ -645,6 +650,11 @@ public class CU01View1 extends JPanel {
 	    campoChasis.addKeyListener(new KeyAdapter(){ 
 	    	public void keyTyped(KeyEvent e){
 				tema.setTema(campoChasis, true);
+			}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+					tema.setTema(campoChasis, true);
+				}
 			}
 	    });
 	    campoChasis.addKeyListener(listener);
@@ -656,6 +666,11 @@ public class CU01View1 extends JPanel {
 	    	public void keyTyped(KeyEvent e){
 				tema.setTema(campoPatente, true);
 	    	}
+			public void keyPressed(KeyEvent e) {
+				if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+					tema.setTema(campoPatente, true);
+				}
+			}
 	    }); 
 	    campoPatente.addKeyListener(listener);
 	}

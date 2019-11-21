@@ -17,11 +17,11 @@ import isi.dds.tp.enums.EnumEstadoCivil;
 import isi.dds.tp.enums.EnumSexo;
 import isi.dds.tp.enums.EnumTipoDocumento;
 
+
 @Entity
 @Table(uniqueConstraints = {@UniqueConstraint(name = "uk_documento", columnNames= { "documento" } ),
 							@UniqueConstraint(name = "uk_cuil", columnNames= { "cuil" } ) })
 public class Cliente {
-	
 	@JoinColumn(name="id_ciudad", foreignKey=@ForeignKey(name = "fk_id_ciudad"))
     @OneToOne
 	private Ciudad ciudad;

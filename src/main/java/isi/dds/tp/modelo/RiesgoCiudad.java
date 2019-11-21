@@ -22,7 +22,7 @@ public class RiesgoCiudad {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_riesgo_ciudad")
-	@SequenceGenerator(name="id_riesgo_ciudad", sequenceName = "id_riesgo_ciudad_seq", initialValue = 100, allocationSize = 1)
+	@SequenceGenerator(name="id_riesgo_ciudad", sequenceName = "id_riesgo_ciudad_seq", initialValue = 21700, allocationSize = 1)
 	@Column(nullable = false)
 	private Integer id;
 	

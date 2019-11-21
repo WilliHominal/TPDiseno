@@ -20,16 +20,16 @@ public class GestorTipoCobertura {
         return instanciaGestor;
     }
     
-    public void addRiesgoCobertura(RiesgoTipoCobertura r) {
-    	DAOTipoCobertura.getDAO().addRiesgoCobertura(r);
-    }
-    
-    public RiesgoTipoCobertura newRiesgoCobertura(EnumTipoCobertura tipoCobertura, Float riesgo) {
-    	RiesgoTipoCobertura rviejo = getUltimoRiesgoTipoCoberturaAux(tipoCobertura);
-    	RiesgoTipoCobertura rnuevo = new RiesgoTipoCobertura();
+    public RiesgoTipoCobertura newRiesgoCobertura(EnumTipoCobertura enumTipoCobertura, Float riesgo) {
+    	TipoCobertura tipoCobertura = getTipoCobertura(enumTipoCobertura);
+    	RiesgoTipoCobertura rviejo = getUltimoRiesgoTipoCoberturaAux(tipoCobertura.getTipoCobertura());
     	rviejo.setFechaFinVigencia(LocalDate.now());
+    	
+    	RiesgoTipoCobertura rnuevo = new RiesgoTipoCobertura();
     	rnuevo.setFechaInicioVigencia(LocalDate.now());
-    	rnuevo.setValorPorcentual(riesgo);    
+    	rnuevo.setValorPorcentual(riesgo);  
+    	tipoCobertura.getRiesgo().add(rnuevo); 
+    	DAOTipoCobertura.getDAO().updateTipoCobertura(tipoCobertura);
     	return rnuevo;
     }
     

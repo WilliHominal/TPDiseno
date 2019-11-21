@@ -66,6 +66,7 @@ public class HibernateUtil {
 	}
     
     public static void shutdown() {
+   
 		DAOParametrosPoliza.shutdown();
 		DAODomicilio.shutdown();
 		DAOSiniestros.shutdown();
@@ -94,6 +95,8 @@ public class HibernateUtil {
     }
 	
 	public static void recargarBaseDatos() {
+		//TODO hay un forma de cargar los datos mediante el uso de xml 
+		//https://thoughts-on-java.org/hibernate-best-practices/
 		shutdown();
 		getSessionFactoryCreate();	
 		DAOParametrosPoliza.getDAO().cargarParametrosPoliza();

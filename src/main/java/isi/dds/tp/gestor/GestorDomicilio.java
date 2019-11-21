@@ -80,14 +80,16 @@ public class GestorDomicilio {
 	    return provincia.getCiudades();
     }
 
-	public RiesgoCiudad newRiesgoCiudad(Integer id_ciudad, Float riesgo) {
-		RiesgoCiudad rviejo = getUltimoRiesgoCiudadAux(id_ciudad);
-		RiesgoCiudad rnuevo = new RiesgoCiudad();
+	public RiesgoCiudad newRiesgoCiudad(Integer idCiudad, Float riesgo) {
+		Ciudad ciudad = DAODomicilio.getDAO().getCiudad(idCiudad);
+		RiesgoCiudad rviejo = getUltimoRiesgoCiudadAux(ciudad.getIdCiudad());
     	rviejo.setFechaFinVigencia(LocalDate.now());
+    	
+		RiesgoCiudad rnuevo = new RiesgoCiudad();
     	rnuevo.setFechaInicioVigencia(LocalDate.now());
     	rnuevo.setValorPorcentual(riesgo);    
-    	return rnuevo;
-    	//TODO CU08 RiesgoCiudad ver si se persisten los cambios
-		
+    	ciudad.getRiesgos().add(rnuevo);
+    	DAODomicilio.getDAO().updateCiudad(ciudad);;
+    	return rnuevo;		
 	}
 }

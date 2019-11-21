@@ -52,19 +52,6 @@ public class DAOTipoCobertura {
 		session.close();
 	}
     
-    public void addRiesgoCobertura(RiesgoTipoCobertura r) {
-    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-        try {
-            session.save(r);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-        session.close();
-    }
-    
 	public List<TipoCobertura> getTiposCobertura(){
         try {
             return session.createQuery("SELECT t FROM TipoCobertura t order by nombre", TipoCobertura.class).list();
@@ -72,6 +59,16 @@ public class DAOTipoCobertura {
         catch (HibernateException e) {
             e.printStackTrace();
         }
+    	return null;
+	}
+	
+	public TipoCobertura getTipoCobertura(EnumTipoCobertura tipo) {
+        try {
+            return session.get(TipoCobertura.class, tipo);
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }	
     	return null;
 	}
     
@@ -85,20 +82,8 @@ public class DAOTipoCobertura {
     	return null;
     }
 
-	public TipoCobertura getTipoCobertura(EnumTipoCobertura tipo) {
-        try {
-            return session.get(TipoCobertura.class, tipo);
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-        }	
-    	return null;
-	}
-
 	public void updateTipoCobertura(TipoCobertura tipo) {
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
-        	session.beginTransaction();
             session.update(tipo);
             session.getTransaction().commit();
         }
@@ -106,6 +91,5 @@ public class DAOTipoCobertura {
         	e.printStackTrace();
             session.getTransaction().rollback();	
 		}
-        session.close();
 	}
 }

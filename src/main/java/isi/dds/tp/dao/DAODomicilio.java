@@ -105,5 +105,17 @@ public class DAODomicilio {
         	e.printStackTrace();
         }
     	return null;
-    } 
+    }
+    
+	public void updateCiudad(Ciudad c) {
+        try {
+            session.update(c);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+        	e.printStackTrace();
+            session.getTransaction().rollback();	
+		}
+	}   
+    
 }
