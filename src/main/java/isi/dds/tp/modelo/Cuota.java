@@ -20,7 +20,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table
-public class Cuota{
+public class Cuota {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "numero_poliza", foreignKey=@ForeignKey(name = "fk_numero_poliza"))

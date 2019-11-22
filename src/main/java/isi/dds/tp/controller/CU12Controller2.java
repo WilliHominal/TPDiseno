@@ -4,9 +4,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
@@ -50,23 +52,67 @@ public class CU12Controller2 {
 		this.controller1 = controller1;
 	}
 	
+	private int parteDecimal (String numero) {
+		if (numero.substring(numero.length()-1).equals("."))
+			return 0;
+		else {
+			String[] parteDecimal = numero.split("\\.");
+			return Integer.valueOf(parteDecimal[1]);
+		}
+	}
+	
+	private int parteEntera (String numero) {
+		String[] parteEntera = numero.split("\\.");
+		return Integer.valueOf(parteEntera[0]);
+	}
+	
 	private Float calcularVuelto(char caracter) {
-		//TODO CU12 creo que el vuelot no se calcula bien
+		//TODO CU12 creo que el vuelto no se calcula bien -- listo?
 		Float montoAbonado = 0f, totalAPagar = 0f;
+		String monto = "";
+		Integer parteEntera, parteDecimal;
+		
 		if (!view2.getMontoAbonado().isEmpty())
-			montoAbonado = Float.parseFloat(view2.getMontoAbonado())*10 + (float) Character.getNumericValue(caracter);
+			monto = view2.getMontoAbonado();
 		else
 			montoAbonado = (float) Character.getNumericValue(caracter);
+		
+		if (monto.contains(".")) {
+			parteEntera = parteEntera(monto);
+			parteDecimal = parteDecimal(monto);
+			parteDecimal = parteDecimal * 10 + (int) Character.getNumericValue(caracter);
+			monto = Integer.toString(parteEntera) + "." + Integer.toString(parteDecimal);
+			montoAbonado = Float.parseFloat(monto);
+		} else if (!monto.isEmpty()){ 
+			montoAbonado = Float.parseFloat(monto)*10 + (float) Character.getNumericValue(caracter);
+		}
+		System.out.println(monto);
+		
 		totalAPagar = Float.parseFloat(controller1.getView().getImportesParciales());
+		
 		return montoAbonado-totalAPagar;
 	}
 	
 	private Float calcularVuelto() {
 		Float montoAbonado = 0f, totalAPagar = 0f;
+		String monto = "";
+		Integer parteEntera, parteDecimal;
+		
 		if (!view2.getMontoAbonado().isEmpty())
-			montoAbonado = (Float.parseFloat(view2.getMontoAbonado())/10f);
+			monto = view2.getMontoAbonado();
 		else
 			montoAbonado = 0f;
+		
+		if (monto.contains(".")) {
+			parteEntera = parteEntera(monto);
+			parteDecimal = parteDecimal(monto);
+			parteDecimal = parteDecimal / 10;
+			monto = Integer.toString(parteEntera) + "." + Integer.toString(parteDecimal);
+			montoAbonado = Float.parseFloat(monto);
+		} else if (!monto.isEmpty()) {
+			montoAbonado = (Float.parseFloat(view2.getMontoAbonado())/10f);
+		}
+		
 		totalAPagar = Float.parseFloat(controller1.getView().getImportesParciales());
 		return montoAbonado-totalAPagar;
 	}
@@ -96,31 +142,40 @@ public class CU12Controller2 {
 		view2.setVisible(false);
 	}
 	
+	private Boolean teclaValida(KeyEvent e) {
+		if (Character.isDigit(e.getKeyChar()) || e.getKeyChar() == '.' || e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
+			return true;
+		return false;
+	}
+	
 	private class ListenerCampoMontoAbonado implements KeyListener{
 		public void keyTyped(KeyEvent e) {
-			Character caracter = e.getKeyChar();
-			if(Character.isDigit(caracter) ||  caracter == '.' || e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
-				//TODO CU12 fijarse bien lo del boton borrar
-				if(caracter == '.' && view2.getMontoAbonado().contains(".")) {
-					e.consume();
-				}else {
-					if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
-						if (view2.getMontoAbonado().length() == 1)
-							view2.setVuelto( ((Float)( - Float.parseFloat(controller1.getView().getImportesParciales()) )).toString() );
-						else
-							view2.setVuelto(calcularVuelto().toString());
+			if (!(teclaValida(e)))
+				e.consume();
+		}
+		public void keyPressed(KeyEvent e) {
+			if (teclaValida(e)) {
+				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
+					if (view2.getMontoAbonado().length() == 1) {
+						view2.habilitarBotonPago(false);
+						view2.setVuelto( ((Float)( - Float.parseFloat(controller1.getView().getImportesParciales()) )).toString() );
+					} else {
+						view2.setVuelto(calcularVuelto().toString());
 					}
-					else {
+				} else {
+					char caracter = e.getKeyChar();
+					if( Character.isDigit(caracter) ){
+						if (!view2.pagoHabilitado())
+							view2.habilitarBotonPago(true);
 						e.setKeyChar(caracter);
 						view2.setVuelto(calcularVuelto(caracter).toString());
-					}	
-				}			
-			}
-			else{
-				e.consume();
+					}
+					else{
+						e.consume();
+					}
+				}
 			}
 		}
-		public void keyPressed(KeyEvent e) {}
 		public void keyReleased(KeyEvent e) {} 
 	}	
 
@@ -145,13 +200,12 @@ public class CU12Controller2 {
 					controller1.volver();
 					view2.setVisible(false);
 					HibernateUtil.cerrarSessionesUsadas();
-					
 				} else {
 					view2.noValido(false);
 				}
 			}catch(Exception ex) {
-				//TODO CU12 poner bien el mensaje y hacer que si no se introduce algun monto no esté habilitado el boton pagar 
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+				//TODO CU12 poner bien el mensaje y hacer que si no se introduce algun monto no esté habilitado el boton pagar -- listo
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR: El pago no se ha podido realizar.", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}

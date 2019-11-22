@@ -39,6 +39,7 @@ public class CU12View2 extends JPanel{
 		btnCompletarPago.setPreferredSize(new Dimension(180,25));
 		btnCambiarMonto.setPreferredSize(new Dimension(180,25));
 		btnCancelar.setPreferredSize(new Dimension(180,25));
+		btnCompletarPago.setEnabled(false);
 	}
 	
 	private void ubicarComponentes() {
@@ -139,6 +140,18 @@ public class CU12View2 extends JPanel{
 			tema.erroneo(campoMontoAbonado);
 		else
 			tema.setTema(campoMontoAbonado, true);
+	}
+
+	public void setMontoAbonado(String montoAbonado) {
+		this.campoMontoAbonado.setText(montoAbonado);
+	}
+
+	public void habilitarBotonPago(boolean b) {
+		this.btnCompletarPago.setEnabled(b);
+	}
+
+	public boolean pagoHabilitado() {
+		return this.btnCompletarPago.isEnabled();
 	}
 	
 }

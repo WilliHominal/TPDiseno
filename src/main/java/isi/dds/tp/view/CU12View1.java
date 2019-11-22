@@ -3,11 +3,13 @@ package isi.dds.tp.view;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionListener;
+
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+
 import isi.dds.tp.gestor.GestorTema;
 
 public class CU12View1 extends JPanel{
@@ -160,7 +162,7 @@ public class CU12View1 extends JPanel{
 	}
 	
 	private void ubicarComponentes() {
-		//TODO CU12 espaciar mas verticalmente
+		//TODO CU12 espaciar mas verticalmente -- listo
 		setLayout (new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		
@@ -170,260 +172,260 @@ public class CU12View1 extends JPanel{
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(5, 25, 35, 20);
+		constraints.insets.set(15, 25, 25, 20);
 		add(btnBuscarPoliza, constraints);
 		///////////////////////////////////////////////////FILA 1
 		constraints.gridy = 1;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(5, 0, 5, 20);
+		constraints.insets.set(5, 0, 13, 20);
 		add(lTitularSeguro, constraints);
 		
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(5, 0, 5, 20);
+		constraints.insets.set(5, 0, 13, 20);
 		add(lCuotasPendientes, constraints);
 		
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(5, 10, 5, 20);
+		constraints.insets.set(5, 10, 13, 20);
 		add(lValorOriginal, constraints);
 		
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(5, 10, 5, 25);
+		constraints.insets.set(5, 10, 13, 25);
 		add(lValorActual, constraints);
 		///////////////////////////////////////////////////FILA 2
 		constraints.gridy = 2;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 0, 20);
+		constraints.insets.set(0, 25, 8, 20);
 		add(lNumeroCliente, constraints);
 		
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 0, 0, 150);
+		constraints.insets.set(0, 0, 8, 150);
 		add(campoNumeroCliente, constraints);
 		
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 0, 0, 20);
+		constraints.insets.set(0, 0, 8, 20);
 		add(cbCuotaN1, constraints);
 		
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 20);
+		constraints.insets.set(0, 10, 8, 20);
 		add(campoCuotaOriginal1, constraints);
 		
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 25);
+		constraints.insets.set(0, 10, 8, 25);
 		add(campoCuotaActual1, constraints);
 		///////////////////////////////////////////////////FILA 3
 		constraints.gridy = 3;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 0, 20);
+		constraints.insets.set(0, 25, 8, 20);
 		add(lApellido, constraints);
 		
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 0, 0, 150);
+		constraints.insets.set(0, 0, 8, 150);
 		add(campoApellido, constraints);
 		
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 0, 0, 20);
+		constraints.insets.set(0, 0, 8, 20);
 		add(cbCuotaN2, constraints);
 		
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 20);
+		constraints.insets.set(0, 10, 8, 20);
 		add(campoCuotaOriginal2, constraints);
 		
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 25);
+		constraints.insets.set(0, 10, 8, 25);
 		add(campoCuotaActual2, constraints);
 		///////////////////////////////////////////////////FILA 4
 		constraints.gridy = 4;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 0, 20);
+		constraints.insets.set(0, 25, 8, 20);
 		add(lNombres, constraints);
 		
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 0, 0, 150);
+		constraints.insets.set(0, 0, 8, 150);
 		add(campoNombres, constraints);
 		
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 0, 0, 20);
+		constraints.insets.set(0, 0, 8, 20);
 		add(cbCuotaN3, constraints);
 		
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 20);
+		constraints.insets.set(0, 10, 8, 20);
 		add(campoCuotaOriginal3, constraints);
 		
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 25);
+		constraints.insets.set(0, 10, 8, 25);
 		add(campoCuotaActual3, constraints);
 		///////////////////////////////////////////////////FILA 5
 		constraints.gridy = 5;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 0, 20);
+		constraints.insets.set(0, 25, 8, 20);
 		add(lNumeroPoliza, constraints);
 		
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 0, 0, 150);
+		constraints.insets.set(0, 0, 8, 150);
 		add(campoNumeroPoliza, constraints);
 		
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 0, 0, 20);
+		constraints.insets.set(0, 0, 8, 20);
 		add(cbCuotaN4, constraints);
 		
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 20);
+		constraints.insets.set(0, 10, 8, 20);
 		add(campoCuotaOriginal4, constraints);
 		
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 25);
+		constraints.insets.set(0, 10, 8, 25);
 		add(campoCuotaActual4, constraints);
 		///////////////////////////////////////////////////FILA 6
 		constraints.gridy = 6;
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 0, 0, 20);
+		constraints.insets.set(0, 0, 8, 20);
 		add(cbCuotaN5, constraints);
 		
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 20);
+		constraints.insets.set(0, 10, 8, 20);
 		add(campoCuotaOriginal5, constraints);
 		
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 25);
+		constraints.insets.set(0, 10, 8, 25);
 		add(campoCuotaActual5, constraints);
 		///////////////////////////////////////////////////FILA 7
 		constraints.gridy = 7;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 0, 20);
+		constraints.insets.set(0, 25, 8, 20);
 		add(lVigencia, constraints);
 		
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 0, 0, 20);
+		constraints.insets.set(0, 0, 8, 20);
 		add(cbCuotaN6, constraints);
 		
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 20);
+		constraints.insets.set(0, 10, 8, 20);
 		add(campoCuotaOriginal6, constraints);
 		
 		constraints.gridx = 4;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 25);
+		constraints.insets.set(0, 10, 8, 25);
 		add(campoCuotaActual6, constraints);
 		///////////////////////////////////////////////////FILA 8
 		constraints.gridy = 8;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 5, 20);
+		constraints.insets.set(0, 25, 13, 20);
 		add(lInicioVigencia, constraints);
 		
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 0, 5, 150);
+		constraints.insets.set(0, 0, 13, 150);
 		add(campoInicioVigencia, constraints);
 		///////////////////////////////////////////////////FILA 9
 		constraints.gridy = 9;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 4, 20);
+		constraints.insets.set(0, 25, 12, 20);
 		add(lFinVigencia, constraints);
 		
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 0, 4, 150);
+		constraints.insets.set(0, 0, 12, 150);
 		add(campoFinVigencia, constraints);
 		
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 0, 4, 20);
+		constraints.insets.set(0, 0, 12, 20);
 		add(lImportesParciales, constraints);
 		
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 4, 20);
+		constraints.insets.set(0, 10, 12, 20);
 		add(campoImportesParciales, constraints);
 		///////////////////////////////////////////////////FILA 10
 		constraints.gridy = 10;
 		constraints.gridx = 2;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 0, 0, 20);
+		constraints.insets.set(0, 0, 8, 20);
 		add(lImportesTotales, constraints);
 		
 		constraints.gridx = 3;
 		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(0, 10, 0, 20);
+		constraints.insets.set(0, 10, 8, 20);
 		add(campoImportesTotales, constraints);
 		///////////////////////////////////////////////////FILA 11
 		constraints.gridy = 11;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 0, 20);
+		constraints.insets.set(0, 25, 8, 20);
 		add(lDatosVehiculo, constraints);
 		///////////////////////////////////////////////////FILA 12
 		constraints.gridy = 12;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 4, 20);
+		constraints.insets.set(0, 25, 12, 20);
 		add(lMarca, constraints);
 		
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 0, 4, 150);
+		constraints.insets.set(0, 0, 12, 150);
 		add(campoMarca, constraints);
 		///////////////////////////////////////////////////FILA 13
 		constraints.gridy = 13;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 3, 20);
+		constraints.insets.set(0, 25, 11, 20);
 		add(lModelo, constraints);
 		
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 0, 3, 150);
+		constraints.insets.set(0, 0, 11, 150);
 		add(campoModelo, constraints);
 		///////////////////////////////////////////////////FILA 14
 		constraints.gridy = 14;
 		constraints.gridx = 0;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(0, 25, 100, 20);
+		constraints.insets.set(0, 25, 30, 20);
 		add(lPatente, constraints);
 		
 		constraints.gridx = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(0, 0, 100, 150);
+		constraints.insets.set(0, 0, 30, 150);
 		add(campoPatente, constraints);
 		///////////////////////////////////////////////////FILA 15
 		constraints.gridy = 15;
 		constraints.gridx = 0;
 		constraints.gridwidth = 10;
-		constraints.insets.set(0, 655, 0, 5);
+		constraints.insets.set(0, 655, 15, 5);
 		add(btnConfirmarPago, constraints);
 		
-		constraints.insets.set(0, 830, 0, 5);
+		constraints.insets.set(0, 830, 15, 5);
 		add(btnCancelar, constraints);
 	}
 	
@@ -475,42 +477,26 @@ public class CU12View1 extends JPanel{
 		this.campoPatente.setText(patente);
 	}
 	
-	public void setCuotaOriginal1(String cuotaOriginal) {
-		this.campoCuotaOriginal1.setText(cuotaOriginal);
-	}
-	public void setCuotaOriginal2(String cuotaOriginal) {
-		this.campoCuotaOriginal2.setText(cuotaOriginal);
-	}
-	public void setCuotaOriginal3(String cuotaOriginal) {
-		this.campoCuotaOriginal3.setText(cuotaOriginal);
-	}
-	public void setCuotaOriginal4(String cuotaOriginal) {
-		this.campoCuotaOriginal4.setText(cuotaOriginal);
-	}
-	public void setCuotaOriginal5(String cuotaOriginal) {
-		this.campoCuotaOriginal5.setText(cuotaOriginal);
-	}
-	public void setCuotaOriginal6(String cuotaOriginal) {
-		this.campoCuotaOriginal6.setText(cuotaOriginal);
+	public void setCuotaOriginal(int i, String cuotaOriginal) {
+		switch (i) {
+			case 0: this.campoCuotaOriginal1.setText(cuotaOriginal);break;
+			case 1: this.campoCuotaOriginal2.setText(cuotaOriginal);break;
+			case 2: this.campoCuotaOriginal3.setText(cuotaOriginal);break;
+			case 3: this.campoCuotaOriginal4.setText(cuotaOriginal);break;
+			case 4: this.campoCuotaOriginal5.setText(cuotaOriginal);break;
+			case 5: this.campoCuotaOriginal6.setText(cuotaOriginal);break;
+		}
 	}
 	
-	public void setCuotaActual1(String cuotaActual) {
-		this.campoCuotaActual1.setText(cuotaActual);
-	}
-	public void setCuotaActual2(String cuotaActual) {
-		this.campoCuotaActual2.setText(cuotaActual);
-	}
-	public void setCuotaActual3(String cuotaActual) {
-		this.campoCuotaActual3.setText(cuotaActual);
-	}
-	public void setCuotaActual4(String cuotaActual) {
-		this.campoCuotaActual4.setText(cuotaActual);
-	}
-	public void setCuotaActual5(String cuotaActual) {
-		this.campoCuotaActual5.setText(cuotaActual);
-	}
-	public void setCuotaActual6(String cuotaActual) {
-		this.campoCuotaActual6.setText(cuotaActual);
+	public void setCuotaActual(int i, String cuotaActual) {
+		switch (i) {
+			case 0: this.campoCuotaActual1.setText(cuotaActual);break;
+			case 1: this.campoCuotaActual2.setText(cuotaActual);break;
+			case 2: this.campoCuotaActual3.setText(cuotaActual);break;
+			case 3: this.campoCuotaActual4.setText(cuotaActual);break;
+			case 4: this.campoCuotaActual5.setText(cuotaActual);break;
+			case 5: this.campoCuotaActual6.setText(cuotaActual);break;
+		}
 	}
 	
 	public void setImportesParciales(String importesParciales) {
@@ -537,6 +523,85 @@ public class CU12View1 extends JPanel{
 	}
 	public void deshabilitarCuota6 () {
 		this.cbCuotaN6.setEnabled(false);
+	}
+	
+	public void ubicarUnaCuota() {
+		cbCuotaN1.setText("Número 6:");
+		cuotaVisible(0, true);
+		
+		for (int i=1; i<6; i++)
+			cuotaVisible(i,false);
+	}
+	
+	public void ubicarDosCuotas() {
+		cbCuotaN1.setText("Número 5:");
+		cbCuotaN2.setText("Número 6:");
+		for (int i=0; i<2; i++)
+			cuotaVisible(i, true);
+		
+		for (int i=2; i<6; i++)
+			cuotaVisible(i,false);
+	}
+	public void ubicarTresCuotas() {
+		cbCuotaN1.setText("Número 4:");
+		cbCuotaN2.setText("Número 5:");
+		cbCuotaN3.setText("Número 6:");
+		for (int i=0; i<3; i++)
+			cuotaVisible(i, true);
+		
+		for (int i=3; i<6; i++)
+			cuotaVisible(i,false);
+	}
+	public void ubicarCuatroCuotas() {
+		cbCuotaN1.setText("Número 3:");
+		cbCuotaN2.setText("Número 4:");
+		cbCuotaN3.setText("Número 5:");
+		cbCuotaN4.setText("Número 6:");
+		for (int i=0; i<4; i++)
+			cuotaVisible(i, true);
+		
+		for (int i=4; i<6; i++)
+			cuotaVisible(i,false);
+	}
+	public void ubicarCincoCuotas() {
+		cbCuotaN1.setText("Número 2:");
+		cbCuotaN2.setText("Número 3:");
+		cbCuotaN3.setText("Número 4:");
+		cbCuotaN4.setText("Número 5:");
+		cbCuotaN5.setText("Número 6:");
+		for (int i=0; i<5; i++)
+			cuotaVisible(i, true);
+		
+		for (int i=5; i<6; i++)
+			cuotaVisible(i,false);
+	}
+	public void ubicarSeisCuotas() {
+		cbCuotaN1.setText("Número 1:");
+		cbCuotaN2.setText("Número 2:");
+		cbCuotaN3.setText("Número 3:");
+		cbCuotaN4.setText("Número 4:");
+		cbCuotaN5.setText("Número 5:");
+		cbCuotaN6.setText("Número 6:");
+		for (int i=0; i<6; i++)
+			cuotaVisible(i, true);
+	}
+	
+	public Integer cantidadCuotasDisponibles() {
+		if (cbCuotaN6.isEnabled()) {
+			return 6;
+		} else if (cbCuotaN5.isEnabled()) {
+			return 5;
+		} else if (cbCuotaN4.isEnabled()) {
+			return 4;
+		} else if (cbCuotaN3.isEnabled()) {
+			return 3;
+		} else if (cbCuotaN2.isEnabled()) {
+			return 2;
+		} else if (cbCuotaN1.isEnabled()) {
+			return 1;
+		} else {
+			return 0;
+		}
 	}
 
 	public void habilitarBotonConfirmarPago() {
@@ -638,6 +703,17 @@ public class CU12View1 extends JPanel{
 		this.cbCuotaN6.setEnabled(true);
 	}
 	
+	public void cuotaVisible (int cuota, boolean visibilidad) {
+		switch (cuota) {
+		case 0: this.cbCuotaN1.setVisible(visibilidad); campoCuotaActual1.setVisible(visibilidad); campoCuotaOriginal1.setVisible(visibilidad); break;
+		case 1: this.cbCuotaN2.setVisible(visibilidad); campoCuotaActual2.setVisible(visibilidad); campoCuotaOriginal2.setVisible(visibilidad); break;
+		case 2: this.cbCuotaN3.setVisible(visibilidad); campoCuotaActual3.setVisible(visibilidad); campoCuotaOriginal3.setVisible(visibilidad); break;
+		case 3: this.cbCuotaN4.setVisible(visibilidad); campoCuotaActual4.setVisible(visibilidad); campoCuotaOriginal4.setVisible(visibilidad); break;
+		case 4: this.cbCuotaN5.setVisible(visibilidad); campoCuotaActual5.setVisible(visibilidad); campoCuotaOriginal5.setVisible(visibilidad); break;
+		case 5: this.cbCuotaN6.setVisible(visibilidad); campoCuotaActual6.setVisible(visibilidad); campoCuotaOriginal6.setVisible(visibilidad); break;
+		}
+	}
+	
 	public void addListenerSeleccionCuota1(ActionListener listener) {
 		cbCuotaN1.addActionListener (a -> {
 			noValido(false, false);
@@ -671,29 +747,23 @@ public class CU12View1 extends JPanel{
 	public void addListenerSeleccionCuota6(ActionListener listener) {
 		cbCuotaN6.addActionListener (a -> {
 			noValido(false, false);
-			//TODO CU12 fijarse si cambiar el color a todos o solo al check que fue seleccionado
+			//TODO CU12 fijarse si cambiar el color a todos o solo al check que fue seleccionado--creo que asi queda mas claro
 		});	
 		cbCuotaN6.addActionListener (listener);		
 	}
 
-	public String getCuotaActual1() {
-		return this.campoCuotaActual1.getText();
+	public String getCuotaActual(int i) {
+		switch (i) {
+			case 0:return this.campoCuotaActual1.getText();
+			case 1:return this.campoCuotaActual2.getText();
+			case 2:return this.campoCuotaActual3.getText();
+			case 3:return this.campoCuotaActual4.getText();
+			case 4:return this.campoCuotaActual5.getText();
+			case 5:return this.campoCuotaActual6.getText();
+		}
+		return null;
 	}
-	public String getCuotaActual2() {
-		return this.campoCuotaActual2.getText();
-	}
-	public String getCuotaActual3() {
-		return this.campoCuotaActual3.getText();
-	}
-	public String getCuotaActual4() {
-		return this.campoCuotaActual4.getText();
-	}
-	public String getCuotaActual5() {
-		return this.campoCuotaActual5.getText();
-	}
-	public String getCuotaActual6() {
-		return this.campoCuotaActual6.getText();
-	}
+	
 	public String getImportesParciales() {
 		return this.campoImportesParciales.getText();
 	}

@@ -3,14 +3,18 @@ package isi.dds.tp.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
 import isi.dds.tp.enums.EnumEstadoCuota;
+import isi.dds.tp.enums.EnumFormaPago;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Cuota;
@@ -62,77 +66,98 @@ public class CU12Controller1 {
 	public void obtenidaPoliza (Poliza poliza) {
 		//TODO CU12 solo deben aparecer las cuotas a pagar el resto (setvisible false) y ademas el label de esas cuotas debe coincidir con la cuota que se está pagando
 		//(si se pago ya la cuota uno, deben aparecer las cuotas 2,3,4,5,6 y sus label deben decir que son esas cuotas)
-		List<Cuota> cuotasImpagas = new ArrayList<Cuota>();
 		Float importeTotal = 0f;
-		List<Float> montoActual = new ArrayList<Float>();
-		view1.setNumeroCliente(poliza.getCliente().getNumeroCliente().toString());
-		view1.setApellido(poliza.getCliente().getApellido());
-		view1.setNombre(poliza.getCliente().getNombre());
-		view1.setNumeroPoliza(poliza.getNumeroPoliza().toString());
-		view1.setMarca(poliza.getAnioModelo().getModelo().getMarca().getNombre());
-		view1.setModelo(poliza.getAnioModelo().getModelo().getNombre());
-		view1.setPatente(poliza.getPatente());
-		
-		view1.habilitarSeleccionCuotas();
-		SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
-		view1.setInicioVigencia(dateFormat.format(Date.from(poliza.getInicioVigencia().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
-		view1.setFinVigencia(dateFormat.format(Date.from(poliza.getFinVigencia().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
+		LocalDate fechaActual = LocalDate.now();
+		List<Integer> cuotasImpagas = new ArrayList<Integer>();
 		
 		//cargo cuotas de la poliza
-		cuotas = poliza.getCuotas(); //DAOPoliza.getDAO().getCuotas(poliza.getNumeroPoliza()); //no hace falta consultar al DAO
+		cuotas = poliza.getCuotas();
+		cuotas.sort((Cuota c1, Cuota c2) -> c1.getUltimoDiaPago().compareTo(c2.getUltimoDiaPago()));
 
-		//busco las impagas
-		for (Cuota cuota : cuotas) {
-			if (cuota.getEstado().equals(EnumEstadoCuota.IMPAGO)) 
-				cuotasImpagas.add(cuota);
-		}
-		//seteo monto cuotas impagas
-		//TODO CU12 está mal esto, EnumPagoCuota es para cuando se paga una cuota, es decir, si se paga una cuota recién se le setea ese estado. Esto se hace cuando validas
-		
-		//TODO CU12 No se bien si calcular monto total es de todas las cuotas que no pago, o las que quiere pagar, consultar al profe.
-		for (Cuota cuota : cuotasImpagas) {
-			montoActual.add(cuota.getMonto());
-			/*if (cuota.getEstadoPagoCuota().equals(EnumPagoCuota.EN_TERMINO)) {
-				montoActual.add(cuota.getMonto());
-			} else {
-				if (cuota.getEstadoPagoCuota().equals(EnumPagoCuota.EN_MORA)) {
-					montoActual.add(cuota.getMonto() + 1234);
-				} else {
-					if (cuota.getEstadoPagoCuota().equals(EnumPagoCuota.ADELANTADA)) {
-						montoActual.add(cuota.getMonto() - 1234);
-					/
-				}
-			}*/
-		}
-		
-		if (cuotasImpagas.size() != 0) {
-			for (int i=0; i < cuotasImpagas.size(); i++) {
-				switch (i) {
-				case 0: view1.setCuotaOriginal1(cuotasImpagas.get(i).getMonto().toString()); view1.setCuotaActual1(montoActual.get(i).toString()); break;
-				case 1: view1.setCuotaOriginal2(cuotasImpagas.get(i).getMonto().toString()); view1.setCuotaActual2(montoActual.get(i).toString()); break;
-				case 2: view1.setCuotaOriginal3(cuotasImpagas.get(i).getMonto().toString()); view1.setCuotaActual3(montoActual.get(i).toString()); break;
-				case 3: view1.setCuotaOriginal4(cuotasImpagas.get(i).getMonto().toString()); view1.setCuotaActual4(montoActual.get(i).toString()); break;
-				case 4: view1.setCuotaOriginal5(cuotasImpagas.get(i).getMonto().toString()); view1.setCuotaActual5(montoActual.get(i).toString()); break;
-				case 5: view1.setCuotaOriginal6(cuotasImpagas.get(i).getMonto().toString()); view1.setCuotaActual6(montoActual.get(i).toString()); break;
-				}
+		if (poliza.getFormaPago() == EnumFormaPago.MENSUAL) {
+			for (int i=0; i<6; i++) {
+				if (cuotas.get(i).getEstado().equals(EnumEstadoCuota.IMPAGO))
+					cuotasImpagas.add(i);
+			}
+		} else {
+			for (int i=0; i<1; i++) {
+				if (cuotas.get(i).getEstado().equals(EnumEstadoCuota.IMPAGO))
+					cuotasImpagas.add(i);
 			}
 		}
 		
-		switch (cuotasImpagas.size()) {
-		case 0: view1.deshabilitarCuota1();
-		case 1: view1.deshabilitarCuota2();
-		case 2: view1.deshabilitarCuota3();
-		case 3: view1.deshabilitarCuota4();
-		case 4: view1.deshabilitarCuota5();
-		case 5: view1.deshabilitarCuota6();break;
+		if (cuotasImpagas.size() != 0) {
+			view1.setNumeroCliente(poliza.getCliente().getNumeroCliente().toString());
+			view1.setApellido(poliza.getCliente().getApellido());
+			view1.setNombre(poliza.getCliente().getNombre());
+			view1.setNumeroPoliza(poliza.getNumeroPoliza().toString());
+			view1.setMarca(poliza.getAnioModelo().getModelo().getMarca().getNombre());
+			view1.setModelo(poliza.getAnioModelo().getModelo().getNombre());
+			view1.setPatente(poliza.getPatente());
+			
+			view1.habilitarSeleccionCuotas();
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+			view1.setInicioVigencia(dateFormat.format(Date.from(poliza.getInicioVigencia().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
+			view1.setFinVigencia(dateFormat.format(Date.from(poliza.getFinVigencia().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant())));
+			
+			
+			
+			
+			
+			if (poliza.getFormaPago() == EnumFormaPago.MENSUAL) {
+				int contadorAux = 0;
+				for (int i=0; i<6; i++) {
+					if (cuotas.get(i).getEstado().equals(EnumEstadoCuota.IMPAGO)) {
+						view1.setCuotaOriginal(contadorAux, cuotas.get(i).getMonto().toString());
+						
+						if (fechaActual.isBefore(cuotas.get(i).getUltimoDiaPago())) {
+							view1.setCuotaActual(contadorAux, ((Float)(cuotas.get(i).getMonto()-1234)).toString());
+							importeTotal += cuotas.get(i).getMonto() - 1234;
+						} else if (fechaActual.isAfter(cuotas.get(i).getUltimoDiaPago())) {
+							view1.setCuotaActual(contadorAux, ((Float)(cuotas.get(i).getMonto()+1234)).toString());
+							importeTotal += cuotas.get(i).getMonto() + 1234;
+						} else {
+							view1.setCuotaActual(contadorAux, cuotas.get(i).getMonto().toString());
+							importeTotal += cuotas.get(i).getMonto();
+						}
+						
+						contadorAux++;
+					}
+				}
+			} else {
+				if (cuotas.get(0).getEstado().equals(EnumEstadoCuota.IMPAGO)) {
+					view1.setCuotaOriginal(0, cuotas.get(0).getMonto().toString());
+					if (fechaActual.isBefore(cuotas.get(0).getUltimoDiaPago())) {
+						view1.setCuotaActual(0, ((Float)(cuotas.get(0).getMonto()-1234)).toString());
+						importeTotal += cuotas.get(0).getMonto() - 1234;
+					} else if (fechaActual.isAfter(cuotas.get(0).getUltimoDiaPago())) {
+						view1.setCuotaActual(0, ((Float)(cuotas.get(0).getMonto()+1234)).toString());
+						importeTotal += cuotas.get(0).getMonto() + 1234;
+					} else {
+						view1.setCuotaActual(0, cuotas.get(0).getMonto().toString());
+						importeTotal += cuotas.get(0).getMonto();
+					}
+				}
+			}
+			
+			
+			
+			ordenarCuotas(cuotasImpagas);
+			System.out.println(cuotasImpagas);
+			
+			//seteo monto cuotas impagas
+			//TODO CU12 está mal esto, EnumPagoCuota es para cuando se paga una cuota, es decir, si se paga una cuota recién se le setea ese estado. Esto se hace cuando validas--listo?
+			
+			//TODO CU12 No se bien si calcular monto total es de todas las cuotas que no pago, o las que quiere pagar, consultar al profe.
+			view1.setImportesTotales(importeTotal.toString());
+			
+			view1.habilitarBotonConfirmarPago();
+			
+		} else {
+			JOptionPane.showMessageDialog(ventana, "La póliza ya está pagada", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 		
-		for (Float monto : montoActual) {
-			importeTotal += monto;
-		}
-		view1.setImportesTotales(importeTotal.toString());
 		
-		view1.habilitarBotonConfirmarPago();
 	}
 	
 	private Boolean condicionesGenerarPago() {
@@ -187,6 +212,27 @@ public class CU12Controller1 {
 		return cuotasApagar;
 	}
 	
+	private Float calcularImporteParcial() {
+		Float resultado = 0f;
+		for (int i=0; i<cuotasApagar.size(); i++) {
+			resultado += Float.parseFloat(view1.getCuotaActual(i));
+		}
+		
+		return resultado;
+	}
+	
+	private void ordenarCuotas(List<Integer> numeroCuotas) {
+
+		switch(numeroCuotas.size()) {
+		case 1: view1.ubicarUnaCuota(); break;
+		case 2: view1.ubicarDosCuotas(); break;
+		case 3: view1.ubicarTresCuotas(); break;
+		case 4: view1.ubicarCuatroCuotas(); break;
+		case 5: view1.ubicarCincoCuotas(); break;
+		case 6: view1.ubicarSeisCuotas(); break;
+		}
+	}
+	
 	private class ListenerBtnBuscarPoliza implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
@@ -238,92 +284,71 @@ public class CU12Controller1 {
 	private class ListenerSeleccionCuota1 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (view1.getEstadoCheckBoxCuota(1)) {
-				cuotasApagar.add(cuotas.get(0));
-				if (!view1.getEstadoCheckBoxCuota(2) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(6)) {
-					view1.setImportesParciales(view1.getCuotaActual1());
-				} else {
-					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual1()) ).toString());
+				switch(view1.cantidadCuotasDisponibles()) {
+				case 6: cuotasApagar.add(cuotas.get(0)); break;
+				case 5: cuotasApagar.add(cuotas.get(1)); break;
+				case 4: cuotasApagar.add(cuotas.get(2)); break;
+				case 3: cuotasApagar.add(cuotas.get(3)); break;
+				case 2: cuotasApagar.add(cuotas.get(4)); break;
+				case 1: cuotasApagar.add(cuotas.get(5)); break;
 				}
 			} else {
-				cuotasApagar.remove(cuotas.get(0));
-				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual1()) ).toString());
+				switch(view1.cantidadCuotasDisponibles()) {
+				case 6: cuotasApagar.remove(cuotas.get(0)); break;
+				case 5: cuotasApagar.remove(cuotas.get(1)); break;
+				case 4: cuotasApagar.remove(cuotas.get(2)); break;
+				case 3: cuotasApagar.remove(cuotas.get(3)); break;
+				case 2: cuotasApagar.remove(cuotas.get(4)); break;
+				case 1: cuotasApagar.remove(cuotas.get(5)); break;
+				}
 			}
+			view1.setImportesParciales(calcularImporteParcial().toString());
 		}
 	}
 	private class ListenerSeleccionCuota2 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if (view1.getEstadoCheckBoxCuota(2)) {
-				//TODO CU12 para todos los listener de los check, agregar la cuota que se debería seleccionar, ya que como está hecho arriba no elige la correcta y cuando ya pagaste alguna cuota no te deja volver a pagar
+			//TODO CU12 para todos los listener de los check, agregar la cuota que se debería seleccionar, ya que como está hecho arriba no elige la correcta y cuando ya pagaste alguna cuota no te deja volver a pagar
+			if (view1.getEstadoCheckBoxCuota(2))
 				cuotasApagar.add(cuotas.get(1));
-				if (!view1.getEstadoCheckBoxCuota(1) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(6)) {
-					view1.setImportesParciales(view1.getCuotaActual2());
-				} else {
-					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual2()) ).toString());
-				}
-			} else {
+			else
 				cuotasApagar.remove(cuotas.get(1));
-				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual2()) ).toString());
-			}
+			view1.setImportesParciales(calcularImporteParcial().toString());
 		}
 	}
 	private class ListenerSeleccionCuota3 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if (view1.getEstadoCheckBoxCuota(3)) {
+			if (view1.getEstadoCheckBoxCuota(3))
 				cuotasApagar.add(cuotas.get(2));
-				if (!view1.getEstadoCheckBoxCuota(2) && !view1.getEstadoCheckBoxCuota(1) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(6)) {
-					view1.setImportesParciales(view1.getCuotaActual3());
-				} else {
-					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual3()) ).toString());
-				}
-			} else {
+			else
 				cuotasApagar.remove(cuotas.get(2));
-				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual3()) ).toString());
-			}
+			view1.setImportesParciales(calcularImporteParcial().toString());
 		}
 	}
 	private class ListenerSeleccionCuota4 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if (view1.getEstadoCheckBoxCuota(4)) {
+			if (view1.getEstadoCheckBoxCuota(4))
 				cuotasApagar.add(cuotas.get(3));
-				if (!view1.getEstadoCheckBoxCuota(2) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(1) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(6)) {
-					view1.setImportesParciales(view1.getCuotaActual4());
-				} else {
-					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual4()) ).toString());
-				}
-			} else {
+			else
 				cuotasApagar.remove(cuotas.get(3));
-				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual4()) ).toString());
-			}
+			view1.setImportesParciales(calcularImporteParcial().toString());
 		}
 	}
 	private class ListenerSeleccionCuota5 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if (view1.getEstadoCheckBoxCuota(5)) {
+			if (view1.getEstadoCheckBoxCuota(5))
 				cuotasApagar.add(cuotas.get(4));
-				if (!view1.getEstadoCheckBoxCuota(2) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(1) && !view1.getEstadoCheckBoxCuota(6)) {
-					view1.setImportesParciales(view1.getCuotaActual5());
-				} else {
-					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual5()) ).toString());
-				}
-			} else {
+			else
 				cuotasApagar.remove(cuotas.get(4));
-				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual5()) ).toString());
-			}
+			view1.setImportesParciales(calcularImporteParcial().toString());
 		}
 	}
 	private class ListenerSeleccionCuota6 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			if (view1.getEstadoCheckBoxCuota(6)) {
+			if (view1.getEstadoCheckBoxCuota(6))
 				cuotasApagar.add(cuotas.get(5));
-				if (!view1.getEstadoCheckBoxCuota(2) && !view1.getEstadoCheckBoxCuota(3) && !view1.getEstadoCheckBoxCuota(4) && !view1.getEstadoCheckBoxCuota(5) && !view1.getEstadoCheckBoxCuota(1)) {
-					view1.setImportesParciales(view1.getCuotaActual6());
-				} else {
-					view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) + Float.parseFloat(view1.getCuotaActual6()) ).toString());
-				}
-			} else {
+			else
 				cuotasApagar.remove(cuotas.get(5));
-				view1.setImportesParciales(Float.valueOf( Float.parseFloat(view1.getImportesParciales()) - Float.parseFloat(view1.getCuotaActual6()) ).toString());
-			}
+			view1.setImportesParciales(calcularImporteParcial().toString());
 		}
 	}
 	
