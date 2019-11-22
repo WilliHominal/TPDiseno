@@ -59,7 +59,7 @@ public class CU01View1 extends JPanel {
 	private JLabel lrastreo = new JLabel("¿Posee dispositivo de rastreo vehicular?");
 	private JLabel ltuercas = new JLabel("¿Posee tuercas antirrobo?");
 	private JLabel lcantidadHijos = new JLabel("Cantidad de hijos entre 18 y 30 a\u00f1os:");
-	private JLabel ldatosObligatorios = new JLabel("(*) datos obligatios)");
+	private JLabel ldatosObligatorios = new JLabel("(*) datos obligatorios)");
 		
 	private JTextField campoNumeroCliente = new JTextField(10);
 	private JTextField campoTipoDocumento = new JTextField(16);

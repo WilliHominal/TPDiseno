@@ -40,7 +40,7 @@ public class CU04View extends JPanel{
 	private JLabel lestadoCivil = new JLabel("Estado civil*:");
 	private JLabel lprofesion = new JLabel("Profesión*:");
 	private JLabel lanioRegistro = new JLabel("Año registro*:");
-	private JLabel ldatosObligatorios = new JLabel("Datos obligatios (*)");
+	private JLabel ldatosObligatorios = new JLabel("Datos obligatorios (*)");
 		
 	private JTextField campoNumeroCliente = new JTextField(16);
 	private JTextField campoApellido = new JTextField(16);

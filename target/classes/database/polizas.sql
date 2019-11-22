@@ -67,6 +67,22 @@ INSERT INTO poliza
 (3528000000401, '38912384', 'VIGENTE',     '2019-09-25', '2019-09-26', '2020-03-25', 'MENSUAL',   false, '60.000 - 69.999',   'ASGFGF12A38912384', 'NINGUNO', 'AC8722AC', 777777, true,  false, false, 0.65, 0, 116000, 115000,
 		(select r.valor_porcentual from riesgo_modelo r, anio_modelo an where r.fin_vigencia is null and r.id_modelo=an.id_modelo and an.id = 132),
 		(select r.valor_porcentual from riesgo_tipo_cobertura r  where r.fin_vigencia is null and r.tipo_cobertura = 'TODO_RIESGO_CON_FRANQUICIA'),
+		(select r.valor_porcentual from riesgo_ciudad r  where r.fin_vigencia is null and r.id_ciudad = 1230),  132, 1230, 5400000004, 100, null, 'TODO_RIESGO_CON_FRANQUICIA'),
+(3528000001401, '38912100', 'NO_VIGENTE',     '2018-10-24', '2018-10-25', '2019-04-24', 'MENSUAL',   false, '60.000 - 69.999',   'ASGFGF12A38912100', 'NINGUNO', 'AC1111AC', 777777, true,  false, false, 0.65, 0, 116000, 115000,
+		(select r.valor_porcentual from riesgo_modelo r, anio_modelo an where r.fin_vigencia is null and r.id_modelo=an.id_modelo and an.id = 132),
+		(select r.valor_porcentual from riesgo_tipo_cobertura r  where r.fin_vigencia is null and r.tipo_cobertura = 'TODO_RIESGO_CON_FRANQUICIA'),
+		(select r.valor_porcentual from riesgo_ciudad r  where r.fin_vigencia is null and r.id_ciudad = 1230),  132, 1230, 5400000004, 100, null, 'TODO_RIESGO_CON_FRANQUICIA'),
+(3528000002401, '38912200', 'NO_VIGENTE',     '2018-05-11', '2018-05-12', '2018-11-11', 'MENSUAL',   false, '60.000 - 69.999',   'ASGFGF12A38912200', 'NINGUNO', 'AC2222AC', 777777, true,  false, false, 0.65, 0, 116000, 115000,
+		(select r.valor_porcentual from riesgo_modelo r, anio_modelo an where r.fin_vigencia is null and r.id_modelo=an.id_modelo and an.id = 132),
+		(select r.valor_porcentual from riesgo_tipo_cobertura r  where r.fin_vigencia is null and r.tipo_cobertura = 'TODO_RIESGO_CON_FRANQUICIA'),
+		(select r.valor_porcentual from riesgo_ciudad r  where r.fin_vigencia is null and r.id_ciudad = 1230),  132, 1230, 5400000004, 100, null, 'TODO_RIESGO_CON_FRANQUICIA'),
+(3528000003401, '38912300', 'NO_VIGENTE',     '2017-11-25', '2017-11-26', '2018-05-25', 'MENSUAL',   false, '60.000 - 69.999',   'ASGFGF12A38912300', 'NINGUNO', 'AC3333AC', 777777, true,  false, false, 0.65, 0, 116000, 115000,
+		(select r.valor_porcentual from riesgo_modelo r, anio_modelo an where r.fin_vigencia is null and r.id_modelo=an.id_modelo and an.id = 132),
+		(select r.valor_porcentual from riesgo_tipo_cobertura r  where r.fin_vigencia is null and r.tipo_cobertura = 'TODO_RIESGO_CON_FRANQUICIA'),
+		(select r.valor_porcentual from riesgo_ciudad r  where r.fin_vigencia is null and r.id_ciudad = 1230),  132, 1230, 5400000004, 100, null, 'TODO_RIESGO_CON_FRANQUICIA'),
+(3528000004401, '38912400', 'NO_VIGENTE',     '2017-05-28', '2017-05-29', '2017-11-28', 'MENSUAL',   false, '60.000 - 69.999',   'ASGFGF12A38912400', 'NINGUNO', 'AC4444AC', 777777, true,  false, false, 0.65, 0, 116000, 115000,
+		(select r.valor_porcentual from riesgo_modelo r, anio_modelo an where r.fin_vigencia is null and r.id_modelo=an.id_modelo and an.id = 132),
+		(select r.valor_porcentual from riesgo_tipo_cobertura r  where r.fin_vigencia is null and r.tipo_cobertura = 'TODO_RIESGO_CON_FRANQUICIA'),
 		(select r.valor_porcentual from riesgo_ciudad r  where r.fin_vigencia is null and r.id_ciudad = 1230),  132, 1230, 5400000004, 100, null, 'TODO_RIESGO_CON_FRANQUICIA');
 		
 INSERT INTO cuota (id_cuota, bonificacion_pago_adelantado, estado, estado_pago_cuota, monto, recargo_por_mora, ultimo_dia_pago, numero_recibo, numero_poliza, idx) VALUES

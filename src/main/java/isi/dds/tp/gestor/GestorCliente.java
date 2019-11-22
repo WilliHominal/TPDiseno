@@ -3,6 +3,8 @@ package isi.dds.tp.gestor;
 import isi.dds.tp.modelo.Cliente;
 import isi.dds.tp.modelo.Poliza;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import isi.dds.tp.dao.DAOCliente;
@@ -51,6 +53,7 @@ public class GestorCliente {
     			}
     		}
     	}
+    	
     	HibernateUtil.shutdown();
     	DAOCliente.getDAO().updateCliente(cliente);
     }
@@ -58,16 +61,98 @@ public class GestorCliente {
 	public Boolean clienteActivo(Long numeroCliente) {
 		List<Poliza> listaPolizasActivas = DAOPoliza.getDAO().getPolizasActivas(numeroCliente);
 		String numeroRenovacion = "";
+		listaPolizasActivas.sort((Poliza p1, Poliza p2) -> p1.getInicioVigencia().compareTo(p2.getInicioVigencia()));
 		Iterator<Poliza> iteratorPolizas = listaPolizasActivas.iterator();
+		//TODO CU01 creo que ahi estaria esto
+		
+		//si tiene una poliza con 4 renovaciones
 		while(iteratorPolizas.hasNext()) {
 			Poliza poliza = iteratorPolizas.next();
 			numeroRenovacion = poliza.getNumeroPoliza().toString().substring(11, 13);
-			//TODO CU01 rehacer bien
 			if(Integer.parseInt(numeroRenovacion)>=4) {
+				System.out.println("POLIZA CON 4 RENOVACIONES");
 				return true;
 			}
 		}
-		return false;
+		
+		//si pasan 2 años sin interrupciones
+		LocalDate fechaActual = LocalDate.now();
+		LocalDate fechaHaceDosAnios = fechaActual.minusYears(2);
+		List<Poliza> polizasVigentesHaceDosAnios = new ArrayList<Poliza>();
+		Poliza ultimaPolizaVigenteHaceDosAnios;
+		List<Poliza> listaPolizasAuxiliar = DAOPoliza.getDAO().getPolizas(numeroCliente);
+		listaPolizasAuxiliar.sort((Poliza p1, Poliza p2) -> p1.getInicioVigencia().compareTo(p2.getInicioVigencia()));
+		Boolean activoDosAnios = false;
+		
+		//cargo la ultima poliza que estaba hace 2 años
+		for (Poliza poliza : listaPolizasAuxiliar) {
+			if ((poliza.getInicioVigencia().isBefore(fechaHaceDosAnios) || poliza.getInicioVigencia().equals(fechaHaceDosAnios)) && poliza.getFinVigencia().isAfter(fechaHaceDosAnios)) {
+				polizasVigentesHaceDosAnios.add(poliza);
+			}
+		}
+		System.out.println("LISTA POLIZAS DEL CLIENTE:");
+		for (Poliza pol:listaPolizasAuxiliar)
+			 System.out.println(pol.getNumeroPoliza());
+		
+		System.out.println("LISTAPOLIZAS VIGHACE2AÑOS: ");
+		for (Poliza pol:polizasVigentesHaceDosAnios)
+		System.out.println(pol.getNumeroPoliza());
+		
+		//si no habia polizas vigentes hace 2 años
+		if (polizasVigentesHaceDosAnios.isEmpty()) {
+			return false;
+		} else {
+			//cargo la ultima vigente de hace dos anios
+			ultimaPolizaVigenteHaceDosAnios = polizasVigentesHaceDosAnios.get(polizasVigentesHaceDosAnios.size()-1);
+			
+			System.out.println("POLIZA SELECCIONADA: " + ultimaPolizaVigenteHaceDosAnios.getNumeroPoliza());
+			
+			//borro las anteriores en la lista auxiliar
+			int contador = 0;
+			while (!listaPolizasAuxiliar.get(contador).equals(ultimaPolizaVigenteHaceDosAnios))
+				listaPolizasAuxiliar.remove(contador);
+			
+			System.out.println("LISTA POLIZAS RESTANTES: ");
+			for (Poliza pol : listaPolizasAuxiliar)
+			System.out.println(pol.getNumeroPoliza());
+			
+			//veo si tiene minimo 3 polizas mas (para que llegue con el minimo a los 2 años)
+			if (listaPolizasAuxiliar.isEmpty() || listaPolizasAuxiliar.size() < 4)
+				return false;
+			
+			//mientras que el contador no llegue a la anteultima poliza cargada en la lista auxiliar y no hayan pasado los dos años
+			contador = 1; //empiezo de 1 porque la 0 es la ultimapolizavigentehacedosanios
+			LocalDate ultimaFechaVigente = ultimaPolizaVigenteHaceDosAnios.getFinVigencia();
+			while (contador < listaPolizasAuxiliar.size() && activoDosAnios == false) {
+				ultimaFechaVigente = ultimaFechaVigente.plusDays(1);
+				//si no es continua retorno falso
+				if (!( (listaPolizasAuxiliar.get(contador).getInicioVigencia().isBefore(ultimaFechaVigente) || listaPolizasAuxiliar.get(contador).getInicioVigencia().equals(ultimaFechaVigente))
+						&& (listaPolizasAuxiliar.get(contador).getFinVigencia().isAfter(ultimaFechaVigente) || listaPolizasAuxiliar.get(contador).getInicioVigencia().equals(ultimaFechaVigente)) )) {
+					System.out.println("NOPE");
+					return false;
+				} else {
+					ultimaFechaVigente = listaPolizasAuxiliar.get(contador).getFinVigencia();
+					System.out.println("ULTIMA FECHA VIGENTE: "+ultimaFechaVigente.toString());
+				}
+				
+				//si la poliza abarca la fecha actual, se hace verdadero activoDosAnios
+				if ((listaPolizasAuxiliar.get(contador).getInicioVigencia().isBefore(fechaActual) || listaPolizasAuxiliar.get(contador).getInicioVigencia().equals(fechaActual)) &&
+					(listaPolizasAuxiliar.get(contador).getFinVigencia().isAfter(fechaActual) || listaPolizasAuxiliar.get(contador).getFinVigencia().equals(fechaActual))	) {
+					activoDosAnios = true;
+					System.out.println("ACTIVOHACEDOSAÑOS");
+				}
+				
+				contador++;
+				
+				System.out.println("CONTADOR "+ contador + " - TAMLISTAPOLIZAUX: "+ (listaPolizasAuxiliar.size()));
+			}
+			
+			if (activoDosAnios == true) {
+				System.out.println("ACTIVOHACEDOSAÑOS");
+				return true;
+			} else
+				return false;
+		}
 	}
 
 	public List<Cliente> buscarClientes(Long numeroCliente, String apellido, String nombre, EnumTipoDocumento tipoDocumento, String numeroDocumento) {
