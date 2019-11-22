@@ -10,6 +10,7 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import isi.dds.tp.dao.DAOBitacora;
 import isi.dds.tp.dao.DAOCliente;
 import isi.dds.tp.dao.DAODomicilio;
+import isi.dds.tp.dao.DAOPago;
 import isi.dds.tp.dao.DAOParametrosPoliza;
 import isi.dds.tp.dao.DAOParametrosVehiculo;
 import isi.dds.tp.dao.DAOPoliza;
@@ -75,6 +76,7 @@ public class HibernateUtil {
 		DAOCliente.shutdown();
 		DAOPoliza.shutdown();
 		DAOBitacora.shutdown();
+		DAOPago.shutdown();
 		DAOUsuario.shutdown();
     	
         if (registry != null && sessionFactory != null) {
@@ -95,8 +97,6 @@ public class HibernateUtil {
     }
 	
 	public static void recargarBaseDatos() {
-		//TODO hay un forma de cargar los datos mediante el uso de xml 
-		//https://thoughts-on-java.org/hibernate-best-practices/
 		shutdown();
 		getSessionFactoryCreate();	
 		DAOParametrosPoliza.getDAO().cargarParametrosPoliza();

@@ -201,7 +201,6 @@ public class CU18View1  extends JPanel{
 				}
 				else{
 					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
 				}
 			}
 		}); 

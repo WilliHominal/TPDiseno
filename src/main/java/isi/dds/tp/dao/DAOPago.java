@@ -7,6 +7,7 @@ import isi.dds.tp.modelo.Pago;
 
 public class DAOPago {
 	private static DAOPago instanciaDAO = null;
+	private static Session session = null;
 	 
     private DAOPago() { }
 
@@ -14,14 +15,22 @@ public class DAOPago {
     	 if (instanciaDAO == null){
          	instanciaDAO = new DAOPago();
          }
+         if(session == null) {
+     		session = HibernateUtil.getSessionFactoryValidate().openSession();
+         	session.beginTransaction();
+         }
          return instanciaDAO;
+    }
+    
+    public static void shutdown() {
+    	if(session != null) {
+    		session.close();
+    		session = null;
+    	}
     }
 
 	public void addPago(Pago pago) {
-		//TODO mirar porque no deja agregar mas de un pago a una poliza
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
-        	session.beginTransaction();
             session.save(pago);
             session.getTransaction().commit();
         }

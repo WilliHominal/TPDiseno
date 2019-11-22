@@ -12,7 +12,6 @@ import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
-import isi.dds.tp.modelo.Cuota;
 import isi.dds.tp.modelo.Poliza;
 
 public class DAOPoliza {
@@ -162,15 +161,4 @@ public class DAOPoliza {
         }
         return null;
     }
-
-	public void updateCuota(Cuota cuota) {
-        try {
-            session.update(cuota);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-        	e.printStackTrace();
-            session.getTransaction().rollback();	
-		}
-	}
 }

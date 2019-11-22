@@ -67,7 +67,6 @@ public class CU12Controller2 {
 	}
 	
 	private Float calcularVuelto(char caracter) {
-		//TODO CU12 creo que el vuelto no se calcula bien -- listo?
 		Float montoAbonado = 0f, totalAPagar = 0f;
 		String monto = "";
 		Integer parteEntera, parteDecimal;
@@ -86,7 +85,6 @@ public class CU12Controller2 {
 		} else if (!monto.isEmpty()){ 
 			montoAbonado = Float.parseFloat(monto)*10 + (float) Character.getNumericValue(caracter);
 		}
-		System.out.println(monto);
 		
 		totalAPagar = Float.parseFloat(controller1.getView().getImportesParciales());
 		
@@ -195,6 +193,8 @@ public class CU12Controller2 {
 				
 				int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar el pago?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				if(seleccion == 0) {
+					System.out.println(controller1.getCuotasApagar().size());
+					System.out.println(controller1.getCuotasApagar().get(0).getIdCuota());
 					gestorPago.registrarPago(controller1.getCuotasApagar(), Float.parseFloat(controller1.getView().getImportesParciales()));
 					JOptionPane.showConfirmDialog(ventana, "Pago registrado correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
 					controller1.volver();
@@ -204,7 +204,7 @@ public class CU12Controller2 {
 					view2.noValido(false);
 				}
 			}catch(Exception ex) {
-				//TODO CU12 poner bien el mensaje y hacer que si no se introduce algun monto no esté habilitado el boton pagar -- listo
+				ex.printStackTrace();
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR: El pago no se ha podido realizar.", JOptionPane.ERROR_MESSAGE);
 			}
 		}

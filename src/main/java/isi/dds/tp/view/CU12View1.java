@@ -162,7 +162,6 @@ public class CU12View1 extends JPanel{
 	}
 	
 	private void ubicarComponentes() {
-		//TODO CU12 espaciar mas verticalmente -- listo
 		setLayout (new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		
@@ -172,7 +171,7 @@ public class CU12View1 extends JPanel{
 		constraints.gridwidth = 1;
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(15, 25, 25, 20);
+		constraints.insets.set(0, 25, 25, 20);
 		add(btnBuscarPoliza, constraints);
 		///////////////////////////////////////////////////FILA 1
 		constraints.gridy = 1;
@@ -422,10 +421,10 @@ public class CU12View1 extends JPanel{
 		constraints.gridy = 15;
 		constraints.gridx = 0;
 		constraints.gridwidth = 10;
-		constraints.insets.set(0, 655, 15, 5);
+		constraints.insets.set(0, 655, 0, 5);
 		add(btnConfirmarPago, constraints);
 		
-		constraints.insets.set(0, 830, 15, 5);
+		constraints.insets.set(0, 830, 0, 5);
 		add(btnCancelar, constraints);
 	}
 	
@@ -521,7 +520,7 @@ public class CU12View1 extends JPanel{
 	public void deshabilitarCuota5 () {
 		this.cbCuotaN5.setEnabled(false);
 	}
-	public void deshabilitarCuota6 () {
+	public void deshabilitarsCuota6 () {
 		this.cbCuotaN6.setEnabled(false);
 	}
 	
@@ -573,7 +572,7 @@ public class CU12View1 extends JPanel{
 			cuotaVisible(i, true);
 		
 		for (int i=5; i<6; i++)
-			cuotaVisible(i,false);
+			cuotaVisible(i, false);
 	}
 	public void ubicarSeisCuotas() {
 		cbCuotaN1.setText("Número 1:");
@@ -587,17 +586,17 @@ public class CU12View1 extends JPanel{
 	}
 	
 	public Integer cantidadCuotasDisponibles() {
-		if (cbCuotaN6.isEnabled()) {
+		if (cbCuotaN6.isVisible()) {
 			return 6;
-		} else if (cbCuotaN5.isEnabled()) {
+		} else if (cbCuotaN5.isVisible()) {
 			return 5;
-		} else if (cbCuotaN4.isEnabled()) {
+		} else if (cbCuotaN4.isVisible()) {
 			return 4;
-		} else if (cbCuotaN3.isEnabled()) {
+		} else if (cbCuotaN3.isVisible()) {
 			return 3;
-		} else if (cbCuotaN2.isEnabled()) {
+		} else if (cbCuotaN2.isVisible()) {
 			return 2;
-		} else if (cbCuotaN1.isEnabled()) {
+		} else if (cbCuotaN1.isVisible()) {
 			return 1;
 		} else {
 			return 0;
@@ -747,7 +746,6 @@ public class CU12View1 extends JPanel{
 	public void addListenerSeleccionCuota6(ActionListener listener) {
 		cbCuotaN6.addActionListener (a -> {
 			noValido(false, false);
-			//TODO CU12 fijarse si cambiar el color a todos o solo al check que fue seleccionado--creo que asi queda mas claro
 		});	
 		cbCuotaN6.addActionListener (listener);		
 	}

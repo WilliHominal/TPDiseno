@@ -1,15 +1,18 @@
 package isi.dds.tp.gestor;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 import isi.dds.tp.dao.DAOPoliza;
 import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumEstadoPoliza;
 import isi.dds.tp.enums.EnumFormaPago;
+import isi.dds.tp.enums.EnumPagoCuota;
 import isi.dds.tp.enums.EnumSiniestros;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.HijoDeclarado;
+import isi.dds.tp.modelo.Pago;
 import isi.dds.tp.modelo.ParametrosPoliza;
 import isi.dds.tp.modelo.TipoCobertura;
 import isi.dds.tp.modelo.AnioModelo;
@@ -311,5 +314,29 @@ public class GestorPoliza {
 	
 	public Poliza buscarPoliza(Long numeroPoliza) {
 		return DAOPoliza.getDAO().getPoliza(numeroPoliza);
+	}
+
+	public void pagarCuota(Cuota cuota, Pago pago) {
+		cuota.setPago(pago);
+		cuota.setEstado(EnumEstadoCuota.PAGO);
+		
+		LocalDate fechaActual = LocalDate.now();
+		LocalDate fechaPago = cuota.getUltimoDiaPago();
+		
+		if (fechaActual.isBefore(fechaPago)) {
+			Long cantMeses = ChronoUnit.MONTHS.between(fechaActual.withDayOfMonth(1), fechaPago.withDayOfMonth(1));
+			cuota.setEstadoPagoCuota(EnumPagoCuota.ADELANTADA);
+			cuota.setBonificacionPagoAdelantado(cuota.getMonto() * (GestorSistemaFinanciero.get().getTasaInteresAnual() * cantMeses) / 12);
+		}
+		else {
+			if (fechaActual.isAfter(fechaPago)) {
+				Long cantMeses = ChronoUnit.MONTHS.between(fechaPago.withDayOfMonth(1), fechaActual.withDayOfMonth(1));
+				cuota.setEstadoPagoCuota(EnumPagoCuota.EN_MORA);
+				cuota.setBonificacionPagoAdelantado(cuota.getMonto() * (GestorSistemaFinanciero.get().getTasaInteresAnual() * cantMeses) / 12);
+			} 
+			else {
+				cuota.setEstadoPagoCuota(EnumPagoCuota.EN_TERMINO);
+			}
+		}
 	}
 }
