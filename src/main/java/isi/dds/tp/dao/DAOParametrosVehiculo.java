@@ -10,6 +10,7 @@ import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.hibernate.SQLReader;
 import isi.dds.tp.modelo.AnioModelo;
 import isi.dds.tp.modelo.Marca;
+import isi.dds.tp.modelo.Modelo;
 
 public class DAOParametrosVehiculo {
 	private static DAOParametrosVehiculo instanciaDAO = null;
@@ -51,23 +52,19 @@ public class DAOParametrosVehiculo {
 		session.close();
 	}
     
-    public void addRiesgoModelo(RiesgoModelo r) {
-		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
-		try {
-			session.beginTransaction();
-            session.save(r);
-            session.getTransaction().commit();
-        }
-        catch (HibernateException e) {
-            e.printStackTrace();
-            session.getTransaction().rollback();
-        }
-		session.close();
-    }
-    
 	public List<Marca> getMarcas() {
         try {
             return session.createQuery("SELECT m FROM Marca m order by nombre", Marca.class).list();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+	
+    public Modelo getModelo(Integer id_modelo) {
+        try {
+            return session.get(Modelo.class, id_modelo);
         }
         catch (HibernateException e) {
             e.printStackTrace();
@@ -104,4 +101,15 @@ public class DAOParametrosVehiculo {
         }
     	return null;
     }
+    
+	public void updateModelo(Modelo m) {
+        try {
+            session.update(m);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+        	e.printStackTrace();
+            session.getTransaction().rollback();	
+		}
+	}
 }

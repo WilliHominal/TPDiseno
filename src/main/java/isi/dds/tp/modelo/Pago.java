@@ -41,7 +41,7 @@ public class Pago {
 	@Column(nullable = false)
 	private LocalTime hora;
 	
-	//TODO pago cambiar
+	//TODO CU12 (milton) pago cambiar
 	private Float premio; 
 	
 	private String operador;

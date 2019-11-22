@@ -4,13 +4,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTextField;
 
 import isi.dds.tp.gestor.GestorBitacora;
 import isi.dds.tp.gestor.GestorDomicilio;
@@ -31,7 +35,6 @@ import isi.dds.tp.modelo.RiesgoTipoCobertura;
 import isi.dds.tp.modelo.TipoCobertura;
 import isi.dds.tp.view.CU08View;
 
-@SuppressWarnings("unused")
 public class CU08Controller {
 	private CU08View view;
 	
@@ -42,11 +45,17 @@ public class CU08Controller {
 	private GestorBitacora gestorBitacora = GestorBitacora.get();
 	
 	private ParametrosPoliza paramPNueva = new ParametrosPoliza();
-	private BitacoraParametrosPoliza bitacora = gestorBitacora.newBitacoraParametros();
 	
 	private JFrame ventana;
 	private JPanel panelAnteriorAPoliza;
 	private String tituloAnteriorAPoliza = "";
+	
+	private HashMap<String, Campo> mapCampos = new HashMap<String, Campo>();
+	
+	private DecimalFormat num;
+	private String  keyTipoCobertura = "tipo_cobertura", keyModelo = "modelo", keyCiudad = "ciudad", keyGuardaGarage = "guarda_garage", keyTieneAlarma = "tiene_alarma",
+			keyTieneRastreo = "tiene_rastreo", keyTieneTuercas = "tiene_tuercas", keyKm = "km", keyCero = "cero_siniestros", keyUno = "un_siniestro", keyDos = "dos_siniestros",
+			keyMuchos = "mas_de_dos_siniestros", keyHijos = "cantidad_hijos", keyDerechoEmision = "derecho_emision", keyUnidadAdicional = "unidad_adicional";
 	
 	public CU08Controller(JFrame ventana) {
 		this.ventana = ventana;
@@ -60,53 +69,55 @@ public class CU08Controller {
 	}
 	
 	private void setView() {
-		GestorTema.get().setTema(ventana, "ACTUALIZAR FACTORES");
+		Locale.setDefault(Locale.US);
+		num = new DecimalFormat("0.00000000");
+		GestorTema.get().setTema(ventana, "Actualizar factores");
 		view = new CU08View();
 		cargarElementos();
 		view.addListenerBtnCancelar(new ListenerBtnCancelar());
-		view.addListenerCampoTipoCobertura(new ListenerCampoNumerico());
-		view.addListenerCampoModelo(new ListenerCampoNumerico());
-		view.addListenerCampoCiudad(new ListenerCampoNumerico());
-		view.addListenerCampoGuardaGarage(new ListenerCampoNumerico());
-		view.addListenerCampoTieneAlarma(new ListenerCampoNumerico());
-		view.addListenerCampoTieneRastreo(new ListenerCampoNumerico());
-		view.addListenerCampoTieneTuercas(new ListenerCampoNumerico());
-		view.addListenerCampoKm(new ListenerCampoNumerico());
-		view.addListenerCampoCeroSiniestros(new ListenerCampoNumerico());
-		view.addListenerCampoUnSiniestro(new ListenerCampoNumerico());
-		view.addListenerCampoDosSiniestros(new ListenerCampoNumerico());
-		view.addListenerCampoMuchosSiniestros(new ListenerCampoNumerico());
-		view.addListenerCampoCantidadHijos(new ListenerCampoNumerico());
-		view.addListenerCampoDerechoEmision(new ListenerCampoNumerico());
-		view.addListenerCampoDescuentoUnidadAdicional(new ListenerCampoNumerico());
 		view.addListenerSeleccionMarca(new ListenerSeleccionMarca());
 		view.addListenerSeleccionModelo(new ListenerSeleccionModelo());
 		view.addListenerSeleccionProvincia(new ListenerSeleccionProvincia());
 		view.addListenerSeleccionCiudad(new ListenerSeleccionCiudad());
 		view.addListenerSeleccionTipoCobertura(new ListenerSeleccionTipoCobertura()); 
-	//	view.addListenerBtnActualizarFactores(new ListenerBtnActualizar());
+		view.addListenerBtnActualizarFactores(new ListenerBtnActualizar());
+		
+		view.addListenerCampoTipoCobertura(new ListenerCampo());
+		view.addListenerCampoModelo(new ListenerCampo());
+		view.addListenerCampoCiudad(new ListenerCampo());
+		view.addListenerCampoGuardaGarage(new ListenerCampo());
+		view.addListenerCampoTieneAlarma(new ListenerCampo());
+		view.addListenerCampoTieneRastreo(new ListenerCampo());
+		view.addListenerCampoTieneTuercas(new ListenerCampo());
+		view.addListenerCampoKm(new ListenerCampo());
+		view.addListenerCampoCeroSiniestros(new ListenerCampo());
+		view.addListenerCampoUnSiniestro(new ListenerCampo());
+		view.addListenerCampoDosSiniestros(new ListenerCampo());
+		view.addListenerCampoMuchosSiniestros(new ListenerCampo());
+		view.addListenerCampoCantidadHijos(new ListenerCampo());
+		view.addListenerCampoDerechoEmision(new ListenerCampo());
+		view.addListenerCampoDescuentoUnidadAdicional(new ListenerCampo());
+		
 		JScrollPane scroll = new JScrollPane(view);
 		scroll.getVerticalScrollBar().setUnitIncrement(10);
 		ventana.setContentPane(scroll);
 		ventana.revalidate();		
 	}
 	
-	public void cargarElementos() {
-
-		gestorParametros.nuevosParametros(paramPNueva);
-		
-		view.setGuardaGarageActual(paramPNueva.getPorcentajeGuardaEnGarage().toString());
-		view.setTieneAlarmaActual(paramPNueva.getPorcentajeAlarma().toString());
-		view.setTieneRastreoActual(paramPNueva.getPorcentajeRastreoVehicular().toString());
-		view.setTieneTuercasActual(paramPNueva.getPorcentajeTuercasAntirobo().toString());
-		view.setKmActual(paramPNueva.getPorcentajeAjusteKm().toString());
-		view.setCeroSiniestrosActual(paramPNueva.getPorcentajeNingunSiniestro().toString());
-		view.setUnSiniestroActual(paramPNueva.getPorcentajeUnSiniestro().toString());
-		view.setDosSiniestrosActual(paramPNueva.getPorcentajeDosSiniestros().toString());
-		view.setMuchosSiniestrosActual(paramPNueva.getPorcentajeMayorADosSiniestros().toString());
-		view.setCantidadHijosActual(paramPNueva.getPorcentajePorHijoRegistrado().toString());
-		view.setDerechoEmisionActual(paramPNueva.getValorDerechoEmision().toString());
-		view.setDescuentoUnidadAdicionalActual(paramPNueva.getDescuentoUnidadAdicional().toString());
+	public void cargarElementos() {		
+		gestorParametros.nuevosParametros(paramPNueva);		
+		view.setGuardaGarageActual(num.format(paramPNueva.getPorcentajeGuardaEnGarage()));
+		view.setTieneAlarmaActual(num.format(paramPNueva.getPorcentajeAlarma()));
+		view.setTieneRastreoActual(num.format(paramPNueva.getPorcentajeRastreoVehicular()));
+		view.setTieneTuercasActual(num.format(paramPNueva.getPorcentajeTuercasAntirobo()));
+		view.setKmActual(num.format(paramPNueva.getPorcentajeAjusteKm()));
+		view.setCeroSiniestrosActual(num.format(paramPNueva.getPorcentajeNingunSiniestro()));
+		view.setUnSiniestroActual(num.format(paramPNueva.getPorcentajeUnSiniestro()));
+		view.setDosSiniestrosActual(num.format(paramPNueva.getPorcentajeDosSiniestros()));
+		view.setMuchosSiniestrosActual(num.format(paramPNueva.getPorcentajeMayorADosSiniestros()));
+		view.setCantidadHijosActual(num.format(paramPNueva.getPorcentajePorHijoRegistrado()));
+		view.setDerechoEmisionActual(num.format(paramPNueva.getValorDerechoEmision()));
+		view.setDescuentoUnidadAdicionalActual(num.format(paramPNueva.getDescuentoUnidadAdicional()));
 		
 
 		List<Provincia> provincias = gestorDom.getProvincias(1);
@@ -128,7 +139,7 @@ public class CU08Controller {
 		while(iteratorTiposCobertura.hasNext()) {
 			view.addTipoCobertura(iteratorTiposCobertura.next());
 		}	
-		view.setTipoCoberturaActual(gestorCobertura.getUltimoRiesgoTipoCobertura(view.getItemTipoCobertura().getTipoCobertura()).toString());				
+		view.setTipoCoberturaActual(num.format(gestorCobertura.getUltimoRiesgoTipoCobertura(view.getItemTipoCobertura().getTipoCobertura())));				
 	}
 	
 	private void cargarCiudades() {
@@ -138,7 +149,7 @@ public class CU08Controller {
 			view.addCiudad(iteratorCiudades.next());
 		}
 		
-		view.setCiudadActual(gestorDom.getUltimoRiesgoCiudad(view.getItemCiudad().getIdCiudad()).toString());
+		view.setCiudadActual(num.format(gestorDom.getUltimoRiesgoCiudad(view.getItemCiudad().getIdCiudad())));
 	}
 	
 	private void cargarModelos() {
@@ -148,17 +159,387 @@ public class CU08Controller {
 			view.addModelo(iteratorModelos.next());
 		}
 		
-		view.setModeloActual(gestorVehiculo.getUltimoRiesgoModelo(view.getItemModelo().getIdModelo()).toString());
+		view.setModeloActual(num.format(gestorVehiculo.getUltimoRiesgoModelo(view.getItemModelo().getIdModelo())));
+	}
+	
+	private boolean validarCampos() {		
+		mapCampos.put(keyTipoCobertura, new Campo(") Valor de riesgo porcentual del tipo de cobertura: "));
+		mapCampos.put(keyModelo, new Campo(") Valor de riesgo porcentual de modelo: "));
+		mapCampos.put(keyCiudad, new Campo(") Valor de riesgo porcentual de ciudad: "));
+		mapCampos.put(keyGuardaGarage, new Campo(") Valor porcentual acerca de sí el vehículo es guardado en un garage: "));
+		mapCampos.put(keyTieneAlarma, new Campo(") Valor porcentual acerca de sí el vehículo tiene alarma: "));
+		mapCampos.put(keyTieneRastreo, new Campo(") Valor porcentual acerca de sí el vehículo tiene rastreo vehicular: "));
+		mapCampos.put(keyTieneTuercas, new Campo(") Valor porcentual acerca de sí el vehículo tiene tuercas antirrobo: "));
+		mapCampos.put(keyKm, new Campo(") Valor porcentual por cada 10.00 km que el vehículo posee: "));
+		mapCampos.put(keyCero, new Campo(") Valor porcentual que corresponde a si el titular del vehículo no posee siniestros en el último año: "));
+		mapCampos.put(keyUno, new Campo(") Valor porcentual que corresponde a si el titular del vehículo posee un siniestro en el último año: "));
+		mapCampos.put(keyDos, new Campo(") Valor porcentual que corresponde a si el titular del vehículo posee dos siniestros en el último año: "));
+		mapCampos.put(keyMuchos, new Campo(") Valor porcentual que corresponde a si el titular del vehículo posee más de dos siniestros en el último año: "));
+		mapCampos.put(keyHijos, new Campo(") Valor porcentual que corresponde a la recargar hecha por la cantidad de hijos registrados en la póliza: "));
+		mapCampos.put(keyDerechoEmision, new Campo(") Valor que indica el costo de emitir la póliza: "));
+		mapCampos.put(keyUnidadAdicional, new Campo(") Valor indicativo del descuento por poseer más de una póliza registrada: "));
+		
+		String avisoError = "Los siguientes campos poseen valores no válidos:\n", errorCampoNulo = " valor nulo.\n", errorCampoMayorUno = " valor porcentual mayor/igual a 1.\n";
+		Integer contadorErrores = 1;	
+		Boolean error = false;
+
+		
+		if(view.getCheckTipoCobertura()) {
+			Campo c = mapCampos.get(keyTipoCobertura);	
+			try {
+				c.valor = Float.parseFloat(view.getTipoCobertura());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorTipoCobertura();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyTipoCobertura, c);	
+			}
+		}
+		
+		
+		if(view.getCheckModelo()) {
+			Campo c = mapCampos.get(keyModelo);	
+			try {
+				c.valor = Float.parseFloat(view.getModelo());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorModelo();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyModelo, c);	
+			}
+		}
+		
+		if(view.getCheckCiudad()) {
+			Campo c = mapCampos.get(keyCiudad);	
+			try {
+				c.valor = Float.parseFloat(view.getCiudad());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorCiudad();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyCiudad, c);	
+			}		
+		}
+		
+		
+		if(view.getCheckGuardaGarage()) {
+			Campo c = mapCampos.get(keyGuardaGarage);	
+			try {
+				c.valor = Float.parseFloat(view.getGuardaGarage());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorGuardaGarage();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyGuardaGarage, c);	
+			}	
+		}
+		
+		if(view.getCheckTieneAlarma()) {
+			Campo c = mapCampos.get(keyTieneAlarma);	
+			try {
+				c.valor = Float.parseFloat(view.getTieneAlarma());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorTieneAlarma();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyTieneAlarma, c);	
+			}	
+		}
+		
+		if(view.getCheckTieneRastreo()) {
+			Campo c = mapCampos.get(keyTieneRastreo);	
+			try {
+				c.valor = Float.parseFloat(view.getTieneRastreo());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorTieneRastreo();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyTieneRastreo, c);	
+			}	
+		}
+		
+		if(view.getCheckTieneTuercas()) {
+			Campo c = mapCampos.get(keyTieneTuercas);	
+			try {
+				c.valor = Float.parseFloat(view.getTieneTuercas());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorTieneTuercas();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyTieneTuercas, c);	
+			}	
+		}
+		
+		if(view.getCheckKm()) {
+			Campo c = mapCampos.get(keyKm);	
+			try {
+				c.valor = Float.parseFloat(view.getKm());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorKm();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyKm, c);	
+			}	
+		}
+		
+		if(view.getCheckCeroSiniestros()) {
+			Campo c = mapCampos.get(keyCero);	
+			try {
+				c.valor = Float.parseFloat(view.getCeroSiniestros());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorCeroSiniestros();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyCero, c);	
+			}	
+		}				
+		
+		if(view.getCheckUnSiniestro()) {
+			Campo c = mapCampos.get(keyUno);	
+			try {
+				c.valor = Float.parseFloat(view.getUnSiniestro());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorUnSiniestro();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyUno, c);	
+			}	
+		}
+		
+		if(view.getCheckDosSiniestros()) {
+			Campo c = mapCampos.get(keyDos);	
+			try {
+				c.valor = Float.parseFloat(view.getDosSiniestros());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorDosSiniestros();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyDos, c);	
+			}	
+		}
+		
+		if(view.getCheckMuchosSiniestros()) {
+			Campo c = mapCampos.get(keyMuchos);	
+			try {
+				c.valor = Float.parseFloat(view.getMuchosSiniestros());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorMuchosSiniestros();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyMuchos, c);	
+			}	
+		}
+		
+		if(view.getCheckCantidadHijos()) {
+			Campo c = mapCampos.get(keyHijos);	
+			try {
+				c.valor = Float.parseFloat(view.getCantidadHijos());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				contadorErrores++;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorCantidadHijos();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyHijos, c);	
+			}	
+		}
+		
+		if(view.getCheckDerechoEmision()) {
+			Campo c = mapCampos.get(keyDerechoEmision);	
+			try {
+				c.valor = Float.parseFloat(view.getDerechoEmision());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) ) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo+errorCampoNulo;
+				contadorErrores++;
+				view.setErrorDerechoEmision();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyDerechoEmision, c);	
+			}	
+		}
+		
+		if(view.getCheckDescuentoUnidadAdicional()) {
+			Campo c = mapCampos.get(keyUnidadAdicional);	
+			try {
+				c.valor = Float.parseFloat(view.getDescuentoUnidadAdicional());
+			}catch(java.lang.NumberFormatException ex) {}
+			
+			if( !(c.valor > 0) || c.valor >= 1) {
+				error = true;
+				avisoError += contadorErrores+c.nombrarCampo;
+				if(!(c.valor > 0))
+					avisoError = avisoError+errorCampoNulo;
+				else
+					avisoError = avisoError+errorCampoMayorUno;
+				view.setErrorDescuentoUnidadAdicional();
+			}
+			else {
+				c.elegido = true;
+				mapCampos.put(keyUnidadAdicional, c);	
+			}	
+		}
+		
+		if(error) {
+			JOptionPane.showMessageDialog(ventana, avisoError, "Error", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		return !error;
+	}
+	
+	public void volver() {
+		ventana.setContentPane(panelAnteriorAPoliza);
+		ventana.setTitle(tituloAnteriorAPoliza);
+		view.setVisible(false);
+	}
+	
+	private class Campo{
+		public Boolean elegido = false;
+		public Float valor = 0f;
+		public String nombrarCampo = ""; 
+		
+		public Campo(String n) {
+			nombrarCampo = n;
+		}
 	}
 	
 	//------------- LISTENERS
 	
 	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {			
-				ventana.setContentPane(panelAnteriorAPoliza);
-				ventana.setTitle(tituloAnteriorAPoliza);
-				view.setVisible(false);
+			try {		
+				volver();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
@@ -167,152 +548,149 @@ public class CU08Controller {
 
 	private class ListenerBtnActualizar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {	
-				//TODO CU08 Validar campos 
-				String impresionAviso = "Se modificarán los siguientes parámetros: \n";
-				Integer contador = 1;	
+			try {								
+				String impresionAviso = "Se han modificado los siguientes parámetros:\n", stringFinal = ".\n"; 
+				Integer contador = 1;
 				Boolean modificoParam = false;
-				BitacoraParametrosPoliza bitacora = new BitacoraParametrosPoliza();
+				BitacoraParametrosPoliza bitacora = gestorBitacora.newBitacoraParametros();
 				
+				if(!validarCampos()) {
+					return;
+				}	
 				
-				//TODO CU08 SI necesito persistir hacer lo de abajo en el gestor de bitacora
-				if(view.getCheckTipoCobertura()) {
-					impresionAviso += contador+") Valor de riesgo porcentual del tipo de cobertura.\n";
+				Campo campo = null;	
+				
+				campo = mapCampos.get(keyTipoCobertura);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
 					contador++;
-					TipoCobertura t = view.getItemTipoCobertura();
-					RiesgoTipoCobertura r = gestorCobertura.newRiesgoCobertura(t.getTipoCobertura(), Float.parseFloat(view.getTipoCobertura()));
-					t.getRiesgo().add(r);
-					gestorBitacora.addRiesgoTipoCobertura(bitacora, r);
-					//TODO CU08 ver si update TipoCobertura
+					RiesgoTipoCobertura r = gestorCobertura.newRiesgoCobertura(view.getItemTipoCobertura().getTipoCobertura(), campo.valor);
+					gestorBitacora.addRiesgoTipoCobertura(bitacora, r);		
 				}
 				
-				if(view.getCheckModelo()) {
-					impresionAviso += contador+") Valor de riesgo porcentual de modelo.\n";
+				campo = mapCampos.get(keyModelo);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
 					contador++;
-					Modelo m = view.getItemModelo();
-					RiesgoModelo r = gestorVehiculo.newRiesgoModelo(m.getIdModelo(), Float.parseFloat(view.getModelo()));
-					m.getRiesgos().add(r);
-					gestorBitacora.addRiesgoModelo(bitacora, r);
-					//TODO CU08 ver si update modelo
+					RiesgoModelo r = gestorVehiculo.newRiesgoModelo(view.getItemModelo().getIdModelo(), campo.valor);
+					gestorBitacora.addRiesgoModelo(bitacora, r);	
 				}
 				
-				if(view.getCheckCiudad()) {
-					impresionAviso += contador+") Valor de riesgo porcentual de ciudad.\n";
-					contador++;
-					Ciudad c = view.getItemCiudad();
-					RiesgoCiudad r =  gestorDom.newRiesgoCiudad(c.getIdCiudad(), Float.parseFloat(view.getCiudad()));
-					c.getRiesgos().add(r);
-					gestorBitacora.addRiesgoCiudad(bitacora, r);
-					//TODO CU08 ver si update Ciudad
+				campo = mapCampos.get(keyCiudad);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
+					contador++;						
+					RiesgoCiudad r =  gestorDom.newRiesgoCiudad(view.getItemCiudad().getIdCiudad(), campo.valor);
+					gestorBitacora.addRiesgoCiudad(bitacora, r);					
 				}
 				
-				if(view.getCheckGuardaGarage()) {
-					impresionAviso += contador+") Valor porcentual acerca de sí el vehículo es guardado en un garage.\n";
+				campo = mapCampos.get(keyGuardaGarage);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
 					contador++;
-					paramPNueva.setPorcentajeGuardaEnGarage(Float.parseFloat(view.getGuardaGarage()));
+					paramPNueva.setPorcentajeGuardaEnGarage(campo.valor);
+					modificoParam = true;	
+				}
+				
+				campo = mapCampos.get(keyTieneAlarma);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
+					contador++;
+					paramPNueva.setPorcentajeAlarma(campo.valor);
+					modificoParam = true;	
+				}
+				
+				campo = mapCampos.get(keyTieneRastreo);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
+					contador++;
+					paramPNueva.setPorcentajeRastreoVehicular(campo.valor);
+					modificoParam = true;	
+				}
+				
+				campo = mapCampos.get(keyTieneTuercas);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
+					contador++;
+					paramPNueva.setPorcentajeTuercasAntirobo(campo.valor);
+					modificoParam = true;	
+				}
+				
+				campo = mapCampos.get(keyKm);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
+					contador++;
+					paramPNueva.setPorcentajeAjusteKm(campo.valor);
 					modificoParam = true;
 				}
 				
-				if(view.getCheckTieneAlarma()) {
-					impresionAviso += contador+") Valor porcentual acerca de sí el vehículo tiene alarma.\n";
+				campo = mapCampos.get(keyCero);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
 					contador++;
-					paramPNueva.setPorcentajeAlarma(Float.parseFloat(view.getTieneAlarma()));
+					paramPNueva.setPorcentajeNingunSiniestro(campo.valor);
 					modificoParam = true;
 				}
 				
-				if(view.getCheckTieneRastreo()) {
-					impresionAviso += contador+") Valor porcentual acerca de sí el vehículo tiene rastreo vehicular.\n";
+				campo = mapCampos.get(keyUno);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
 					contador++;
-					paramPNueva.setPorcentajeRastreoVehicular(Float.parseFloat(view.getTieneRastreo()));
+					paramPNueva.setPorcentajeUnSiniestro(campo.valor);
 					modificoParam = true;
 				}
 				
-				if(view.getCheckTieneTuercas()) {
-					impresionAviso += contador+") Valor porcentual acerca de sí el vehículo tiene tuercas antirrobo.\n";
+				campo = mapCampos.get(keyDos);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+(campo.valor).toString()+stringFinal;
 					contador++;
-					paramPNueva.setPorcentajeTuercasAntirobo(Float.parseFloat(view.getTieneTuercas()));
+					paramPNueva.setPorcentajeDosSiniestros(campo.valor);
 					modificoParam = true;
 				}
 				
-				if(view.getCheckKm()) {
-					impresionAviso += contador+") Valor porcentual por cada 10.00 km que el vehículo posee.\n";
-					contador++;
-					paramPNueva.setPorcentajeAjusteKm(Float.parseFloat(view.getKm()));
-					modificoParam = true;
+				campo = mapCampos.get(keyMuchos);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
+					paramPNueva.setPorcentajeMayorADosSiniestros(campo.valor);
+					modificoParam = true;	
 				}
 				
-				if(view.getCheckCeroSiniestros()) {
-					impresionAviso += contador+") Valor porcentual que corresponde a si el titular del vehículo no posee siniestros en el último año.\n";
-					contador++;
-					paramPNueva.setPorcentajeNingunSiniestro(Float.parseFloat(view.getCeroSiniestros()));
-					modificoParam = true;
-				}				
-				
-				if(view.getCheckUnSiniestro()) {
-					impresionAviso += contador+") Valor porcentual que corresponde a si el titular del vehículo posee un siniestro en el último año.\n";
-					contador++;
-					paramPNueva.setPorcentajeUnSiniestro(Float.parseFloat(view.getUnSiniestro()));
-					modificoParam = true;
+				campo = mapCampos.get(keyHijos);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
+					paramPNueva.setPorcentajePorHijoRegistrado(campo.valor);
+					modificoParam = true;	
 				}
 				
-				if(view.getCheckDosSiniestros()) {
-					impresionAviso += contador+") Valor porcentual que corresponde a si el titular del vehículo posee dos siniestros en el último año.\n";
-					contador++;
-					paramPNueva.setPorcentajeDosSiniestros(Float.parseFloat(view.getDosSiniestros()));
-					modificoParam = true;
+				campo = mapCampos.get(keyDerechoEmision);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
+					paramPNueva.setValorDerechoEmision(campo.valor);
+					modificoParam = true;	
 				}
 				
-				if(view.getCheckMuchosSiniestros()) {
-					impresionAviso += contador+") Valor porcentual que corresponde a si el titular del vehículo posee más de dos siniestros en el último año.\n";
-					contador++;
-					paramPNueva.setPorcentajeMayorADosSiniestros(Float.parseFloat(view.getMuchosSiniestros()));
-					modificoParam = true;
-				}
-				
-				if(view.getCheckCantidadHijos()) {
-					impresionAviso += contador+") Valor porcentual que corresponde a la recargar hecha por la cantidad de hijos registrados en la póliza.\n";
-					contador++;
-					paramPNueva.setPorcentajePorHijoRegistrado(Float.parseFloat(view.getCantidadHijos()));
-					modificoParam = true;
-				}
-				
-				if(view.getCheckDerechoEmision()) {
-					impresionAviso += contador+") Valor que indica el costo de emitir la póliza.\n";
-					contador++;
-					paramPNueva.setValorDerechoEmision(Float.parseFloat(view.getDerechoEmision()));
-					modificoParam = true;
-				}
-				
-				if(view.getCheckDescuentoUnidadAdicional()) {
-					impresionAviso += contador+") Valor indicativo del descuento por poseer más de una póliza registrada.\n";
-					paramPNueva.setDescuentoUnidadAdicional(Float.parseFloat(view.getDescuentoUnidadAdicional()));
-					modificoParam = true;
+				campo = mapCampos.get(keyUnidadAdicional);
+				if(campo.elegido) {
+					impresionAviso += contador+campo.nombrarCampo+num.format(campo.valor)+stringFinal;
+					paramPNueva.setDescuentoUnidadAdicional(campo.valor);
+					modificoParam = true;	
 				}
 
 				if(modificoParam) {
 					gestorBitacora.addParametrosPoliza(bitacora, paramPNueva);
-				}
+				}					
 				
-				//TODO CU08 persistir la bitacora y los parametros y los riesgos
-				//TODO CU08 update a las clases principales
 				
-				JOptionPane.showMessageDialog(ventana, impresionAviso, "Confirmación", JOptionPane.INFORMATION_MESSAGE);
-
-				//HibernateUtil.cerrarSessionesUsadas();
+				gestorBitacora.registrarCambiosEnParametros(bitacora);
+			
+				JOptionPane.showMessageDialog(ventana, impresionAviso, "Aviso", JOptionPane.INFORMATION_MESSAGE);
+				HibernateUtil.cerrarSessionesUsadas();
+				volver();				
 			}catch(Exception ex) {
+				ex.printStackTrace();
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
-		}
-	}
-	
-	private class ListenerCampoNumerico implements KeyListener {
-		public void keyTyped(KeyEvent e) {
-			char caracter = e.getKeyChar();
-			if(Character.isDigit(caracter) || caracter == '.' || caracter == ','){	}
-			else{	e.consume(); }
-		} 
-		public void keyPressed(KeyEvent e) { }
-		public void keyReleased(KeyEvent e) { }		
+		}		
 	}
 	
 	private class ListenerSeleccionTipoCobertura implements ActionListener {
@@ -351,5 +729,31 @@ public class CU08Controller {
 				view.setCiudadActual(gestorDom.getUltimoRiesgoCiudad(view.getItemCiudad().getIdCiudad()).toString());	
 			}			
 		}
+	}
+	
+	public class ListenerCampo implements KeyListener{
+		public JTextField campoTemporal;
+		private String temporal = "";
+		public void keyTyped(KeyEvent e) {
+			Character caracter = e.getKeyChar();
+			if(Character.isDigit(caracter) ||  caracter == '.'){
+				temporal = campoTemporal.getText();
+				if(caracter == '.' && temporal.contains(".")) {
+					e.consume();
+				}else {
+					GestorTema.get().setTema(campoTemporal, true);
+				}				
+			}
+			else{
+				e.consume();
+			}
+		}
+		
+		public void keyPressed(KeyEvent e) {
+			if(e.getKeyCode() == KeyEvent.VK_BACK_SPACE){
+				GestorTema.get().setTema(campoTemporal, true);
+			}
+		}
+		public void keyReleased(KeyEvent e) {  }		
 	}
 }

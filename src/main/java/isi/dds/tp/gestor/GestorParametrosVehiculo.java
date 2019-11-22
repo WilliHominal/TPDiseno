@@ -23,10 +23,6 @@ public class GestorParametrosVehiculo {
         return instanciaGestor;
     }
     
-    public void addRiesgoModelo(RiesgoModelo r) {
-    	DAOParametrosVehiculo.getDAO().addRiesgoModelo(r);
-    }
-    
 	public List<Marca> getMarcas() {
 		return DAOParametrosVehiculo.getDAO().getMarcas();
     }
@@ -65,13 +61,16 @@ public class GestorParametrosVehiculo {
 	    return modelo.getAnios();
     }
 
-	public RiesgoModelo newRiesgoModelo(Integer id_modelo, Float riesgo) {
-		RiesgoModelo rviejo = getUltimoRiesgoModeloAux(id_modelo);
-		RiesgoModelo rnuevo = new RiesgoModelo();
+	public RiesgoModelo newRiesgoModelo(Integer idModelo, Float riesgo) {
+		Modelo modelo = DAOParametrosVehiculo.getDAO().getModelo(idModelo);
+		RiesgoModelo rviejo = getUltimoRiesgoModeloAux(modelo.getIdModelo());
     	rviejo.setFechaFinVigencia(LocalDate.now());
+		
+		RiesgoModelo rnuevo = new RiesgoModelo();
     	rnuevo.setFechaInicioVigencia(LocalDate.now());
-    	rnuevo.setValorPorcentual(riesgo);    
+    	rnuevo.setValorPorcentual(riesgo);
+    	modelo.getRiesgos().add(rnuevo);
+    	DAOParametrosVehiculo.getDAO().updateModelo(modelo);
     	return rnuevo;
-    	//TODO CU08 RiesgoModelo ver si se persisten los cambios
 	}
 }

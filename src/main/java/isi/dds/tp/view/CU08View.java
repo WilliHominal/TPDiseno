@@ -5,7 +5,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -663,63 +662,78 @@ public class CU08View extends JPanel{
 		add(campoDescuentoUnidadAdicionalActual, constraints);	
 	}
 	
-	public void addListenerCampoTipoCobertura(KeyListener listener){
+	public void addListenerCampoTipoCobertura(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoTipoCobertura;
 		campoTipoCobertura.addKeyListener(listener);
 	}
 
-	public void addListenerCampoModelo(KeyListener listener){
+	public void addListenerCampoModelo(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoModelo;
 		campoModelo.addKeyListener(listener);
 	}
 
-	public void addListenerCampoCiudad(KeyListener listener){
+	public void addListenerCampoCiudad(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoCiudad;
 		campoCiudad.addKeyListener(listener);
 	}
 
-	public void addListenerCampoGuardaGarage(KeyListener listener){
+	public void addListenerCampoGuardaGarage(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoGuardaGarage;
 		campoGuardaGarage.addKeyListener(listener);
 	}
 
-	public void addListenerCampoTieneAlarma(KeyListener listener){
+	public void addListenerCampoTieneAlarma(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoTieneAlarma;
 		campoTieneAlarma.addKeyListener(listener);
 	}
 
-	public void addListenerCampoTieneRastreo(KeyListener listener){
+	public void addListenerCampoTieneRastreo(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoTieneRastreo;
 		campoTieneRastreo.addKeyListener(listener);
 	}
 
-	public void addListenerCampoTieneTuercas(KeyListener listener){
+	public void addListenerCampoTieneTuercas(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoTieneTuercas;
 		campoTieneTuercas.addKeyListener(listener);
 	}
 
-	public void addListenerCampoKm(KeyListener listener){
+	public void addListenerCampoKm(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoKm;
 		campoKm.addKeyListener(listener);
 	}
 
-	public void addListenerCampoCeroSiniestros(KeyListener listener){
+	public void addListenerCampoCeroSiniestros(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoCeroSiniestros;
 		campoCeroSiniestros.addKeyListener(listener);
 	}
 
-	public void addListenerCampoUnSiniestro(KeyListener listener){
+	public void addListenerCampoUnSiniestro(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoTipoCobertura;
 		campoUnSiniestro.addKeyListener(listener);
 	}
 
-	public void addListenerCampoDosSiniestros(KeyListener listener){
+	public void addListenerCampoDosSiniestros(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoDosSiniestros;
 		campoDosSiniestros.addKeyListener(listener);
 	}
 
-	public void addListenerCampoMuchosSiniestros(KeyListener listener){
+	public void addListenerCampoMuchosSiniestros(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoMuchosSiniestros;
 		campoMuchosSiniestros.addKeyListener(listener);
 	}
 	
-	public void addListenerCampoCantidadHijos(KeyListener listener){
+	public void addListenerCampoCantidadHijos(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoCantidadHijos;
 		campoCantidadHijos.addKeyListener(listener);
 	}
 	
-	public void addListenerCampoDerechoEmision(KeyListener listener){
+	public void addListenerCampoDerechoEmision(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoDerechoEmision;
 		campoDerechoEmision.addKeyListener(listener);
 	}
 	
-	public void addListenerCampoDescuentoUnidadAdicional(KeyListener listener){
+	public void addListenerCampoDescuentoUnidadAdicional(CU08Controller.ListenerCampo listener){
+		listener.campoTemporal  = campoDescuentoUnidadAdicional;
 		campoDescuentoUnidadAdicional.addKeyListener(listener);
 	}
 	
@@ -877,62 +891,77 @@ public class CU08View extends JPanel{
 	}
 
 	public void setTipoCoberturaActual(String tipoCoberturaActual) {
+		this.campoTipoCobertura.setText(tipoCoberturaActual);
 		this.campoTipoCoberturaActual.setText(tipoCoberturaActual);
 	}
 
 	public void setModeloActual(String modeloActual) {
+		this.campoModelo.setText(modeloActual);
 		this.campoModeloActual.setText(modeloActual);
 	}
 
 	public void setCiudadActual(String ciudadActual) {
+		this.campoCiudad.setText(ciudadActual);
 		this.campoCiudadActual.setText(ciudadActual);
 	}
 
 	public void setGuardaGarageActual(String guardaGarageActual) {
+		this.campoGuardaGarage.setText(guardaGarageActual);
 		this.campoGuardaGarageActual.setText(guardaGarageActual);
 	}
 
 	public void setTieneAlarmaActual(String tieneAlarmaActual) {
+		this.campoTieneAlarma.setText(tieneAlarmaActual);
 		this.campoTieneAlarmaActual.setText(tieneAlarmaActual);
 	}
 
 	public void setTieneRastreoActual(String tieneRastreoActual) {
+		this.campoTieneRastreo.setText(tieneRastreoActual);
 		this.campoTieneRastreoActual.setText(tieneRastreoActual);
 	}
 
 	public void setTieneTuercasActual(String tieneTuercasActual) {
+		this.campoTieneTuercas.setText(tieneTuercasActual);
 		this.campoTieneTuercasActual.setText(tieneTuercasActual);
 	}
 
 	public void setKmActual(String kmActual) {
+		this.campoKm.setText(kmActual);
 		this.campoKmActual.setText(kmActual);
 	}
 
 	public void setCeroSiniestrosActual(String ceroSiniestrosActual) {
+		this.campoCeroSiniestros.setText(ceroSiniestrosActual);
 		this.campoCeroSiniestrosActual.setText(ceroSiniestrosActual);
 	}
 
 	public void setUnSiniestroActual(String unSiniestroActual) {
+		this.campoUnSiniestro.setText(unSiniestroActual);
 		this.campoUnSiniestroActual.setText(unSiniestroActual);
 	}
 
 	public void setDosSiniestrosActual(String dosSiniestrosActual) {
+		this.campoDosSiniestros.setText(dosSiniestrosActual);
 		this.campoDosSiniestrosActual.setText(dosSiniestrosActual);
 	}
 
 	public void setMuchosSiniestrosActual(String muchosSiniestrosActual) {
+		this.campoMuchosSiniestros.setText(muchosSiniestrosActual);
 		this.campoMuchosSiniestrosActual.setText(muchosSiniestrosActual);
 	}
 
 	public void setCantidadHijosActual(String cantidadHijosActual) {
+		this.campoCantidadHijos.setText(cantidadHijosActual);
 		this.campoCantidadHijosActual.setText(cantidadHijosActual);
 	}
 
 	public void setDerechoEmisionActual(String derechoEmisionActual) {
+		this.campoDerechoEmision.setText(derechoEmisionActual);
 		this.campoDerechoEmisionActual.setText(derechoEmisionActual);
 	}
 
 	public void setDescuentoUnidadAdicionalActual(String descuentoUnidadAdicionalActual) {
+		this.campoDescuentoUnidadAdicional.setText(descuentoUnidadAdicionalActual);
 		this.campoDescuentoUnidadAdicionalActual.setText(descuentoUnidadAdicionalActual);
 	}
 	
@@ -1037,4 +1066,64 @@ public class CU08View extends JPanel{
 	public Boolean getCheckDescuentoUnidadAdicional() {
 		return checkDescuentoUnidadAdicional.isSelected();
 	}
+	
+	public void setErrorTipoCobertura() {
+		tema.erroneo(campoTipoCobertura);
+	}
+
+	public void setErrorModelo() {
+		tema.erroneo(campoModelo);
+	}
+
+	public void setErrorCiudad() {
+		tema.erroneo(campoCiudad);
+	}
+
+	public void setErrorGuardaGarage() {
+		tema.erroneo(campoGuardaGarage);
+	}
+
+	public void setErrorTieneAlarma() {
+		tema.erroneo(campoTieneAlarma);
+	}
+
+	public void setErrorTieneRastreo() {
+		tema.erroneo(campoTieneRastreo);
+	}
+
+	public void setErrorTieneTuercas() {
+		tema.erroneo(campoTieneTuercas);
+	}
+
+	public void setErrorKm() {
+		tema.erroneo(campoKm);
+	}
+
+	public void setErrorCeroSiniestros() {
+		tema.erroneo(campoCeroSiniestros);
+	}
+
+	public void setErrorUnSiniestro() {
+		tema.erroneo(campoUnSiniestro);
+	}
+
+	public void setErrorDosSiniestros() {
+		tema.erroneo(campoDosSiniestros);
+	}
+
+	public void setErrorMuchosSiniestros() {
+		tema.erroneo(campoMuchosSiniestros);
+	}
+
+	public void setErrorCantidadHijos() {
+		tema.erroneo(campoCantidadHijos);
+	}
+
+	public void setErrorDerechoEmision() {
+		tema.erroneo(campoDerechoEmision);
+	}
+
+	public void setErrorDescuentoUnidadAdicional() {
+		tema.erroneo(campoDescuentoUnidadAdicional);
+	}	
 }

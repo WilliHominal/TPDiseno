@@ -57,4 +57,29 @@ public class DAOParametrosPoliza {
         }
     	return null;
 	}
+
+	public void updateParametrosPoliza(ParametrosPoliza p) {
+		try {
+            session.update(p);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+        	e.printStackTrace();
+            session.getTransaction().rollback();	
+		}
+	}
+
+	public void addParametrosPoliza(ParametrosPoliza p) {
+		Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+		try {
+			session.beginTransaction();
+            session.save(p);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+        	e.printStackTrace();
+            session.getTransaction().rollback();	
+		}
+		session.close();
+	}
 }

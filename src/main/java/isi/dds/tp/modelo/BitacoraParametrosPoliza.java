@@ -42,7 +42,7 @@ public class BitacoraParametrosPoliza {
 	@IndexColumn(name ="idx")
 	private List<RiesgoCiudad> riesgosCiudad;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne(cascade= CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name="codigo_bitacora")
 	private ParametrosPoliza parametrosPoliza;
 	

@@ -1,7 +1,9 @@
 package isi.dds.tp.dao;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import isi.dds.tp.hibernate.HibernateUtil;
+import isi.dds.tp.modelo.BitacoraParametrosPoliza;
 
 public class DAOBitacora {
 	
@@ -27,4 +29,26 @@ public class DAOBitacora {
     		session = null;
     	}
     }
+    
+    public void addBitacora(BitacoraParametrosPoliza bitacora) {
+        try {
+            session.save(bitacora);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+        	e.printStackTrace();
+            session.getTransaction().rollback();	
+		}
+    }
+
+	public void update(BitacoraParametrosPoliza bitacora) {
+        try {
+            session.update(bitacora);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+        	e.printStackTrace();
+            session.getTransaction().rollback();	
+		}
+	}
 }
