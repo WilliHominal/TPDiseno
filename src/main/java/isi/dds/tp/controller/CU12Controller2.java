@@ -193,8 +193,6 @@ public class CU12Controller2 {
 				
 				int seleccion = JOptionPane.showConfirmDialog(ventana, "¿Desea confirmar el pago?", "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				if(seleccion == 0) {
-					System.out.println(controller1.getCuotasApagar().size());
-					System.out.println(controller1.getCuotasApagar().get(0).getIdCuota());
 					gestorPago.registrarPago(controller1.getCuotasApagar(), Float.parseFloat(controller1.getView().getImportesParciales()));
 					JOptionPane.showConfirmDialog(ventana, "Pago registrado correctamente.", "Información", JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE);
 					controller1.volver();
@@ -204,7 +202,6 @@ public class CU12Controller2 {
 					view2.noValido(false);
 				}
 			}catch(Exception ex) {
-				ex.printStackTrace();
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR: El pago no se ha podido realizar.", JOptionPane.ERROR_MESSAGE);
 			}
 		}

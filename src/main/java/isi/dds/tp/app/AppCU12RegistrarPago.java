@@ -14,7 +14,7 @@ public class AppCU12RegistrarPago {
 			public void run() {
 				HibernateUtil.apagarLog(true);
 				JFrame frame = new JFrame();
-				new CU12Controller1(frame);//.obtenidaPoliza(GestorPoliza.get().buscarPoliza(3528000000003l));;
+				new CU12Controller1(frame).obtenidaPoliza(GestorPoliza.get().buscarPoliza(3528000002100l));;
 				frame.setVisible(true);					
 			}
 		});
