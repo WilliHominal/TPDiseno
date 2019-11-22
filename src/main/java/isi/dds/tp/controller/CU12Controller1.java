@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumFormaPago;
+import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorSistemaFinanciero;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
@@ -265,22 +266,30 @@ public class CU12Controller1 {
 	private class ListenerSeleccionCuota1 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (view1.getEstadoCheckBoxCuota(1)) {
-				switch(view1.cantidadCuotasDisponibles()) {
-				case 6: cuotasApagar.add(cuotas.get(0)); break;
-				case 5: cuotasApagar.add(cuotas.get(1)); break;
-				case 4: cuotasApagar.add(cuotas.get(2)); break;
-				case 3: cuotasApagar.add(cuotas.get(3)); break;
-				case 2: cuotasApagar.add(cuotas.get(4)); break;
-				case 1: cuotasApagar.add(cuotas.get(5)); break;
+				if ((GestorPoliza.get().buscarPoliza(Long.parseLong(view1.getNumeroPoliza()))).getFormaPago().equals(EnumFormaPago.MENSUAL)) {
+					switch(view1.cantidadCuotasDisponibles()) {
+					case 6: cuotasApagar.add(cuotas.get(0)); break;
+					case 5: cuotasApagar.add(cuotas.get(1)); break;
+					case 4: cuotasApagar.add(cuotas.get(2)); break;
+					case 3: cuotasApagar.add(cuotas.get(3)); break;
+					case 2: cuotasApagar.add(cuotas.get(4)); break;
+					case 1: cuotasApagar.add(cuotas.get(5)); break;
+					}
+				} else {
+					cuotasApagar.add(cuotas.get(0));
 				}
 			} else {
-				switch(view1.cantidadCuotasDisponibles()) {
-				case 6: cuotasApagar.remove(cuotas.get(0)); break;
-				case 5: cuotasApagar.remove(cuotas.get(1)); break;
-				case 4: cuotasApagar.remove(cuotas.get(2)); break;
-				case 3: cuotasApagar.remove(cuotas.get(3)); break;
-				case 2: cuotasApagar.remove(cuotas.get(4)); break;
-				case 1: cuotasApagar.remove(cuotas.get(5)); break;
+				if ((GestorPoliza.get().buscarPoliza(Long.parseLong(view1.getNumeroPoliza()))).getFormaPago().equals(EnumFormaPago.MENSUAL)) {
+					switch(view1.cantidadCuotasDisponibles()) {
+					case 6: cuotasApagar.remove(cuotas.get(0)); break;
+					case 5: cuotasApagar.remove(cuotas.get(1)); break;
+					case 4: cuotasApagar.remove(cuotas.get(2)); break;
+					case 3: cuotasApagar.remove(cuotas.get(3)); break;
+					case 2: cuotasApagar.remove(cuotas.get(4)); break;
+					case 1: cuotasApagar.remove(cuotas.get(5)); break;
+					}
+				} else {
+					cuotasApagar.remove(cuotas.get(0));
 				}
 			}
 			view1.setImportesParciales(calcularImporteParcial().toString());
