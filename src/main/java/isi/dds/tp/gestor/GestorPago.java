@@ -27,8 +27,7 @@ public class GestorPago {
     	pago.setHora(LocalTime.now());
     	pago.setOperador("Operador n");
     	pago.setImporte(monto);
-    	//TODO CU12 setear bien el premio 
-    	pago.setPremio(0f);
+    	pago.setPremio(cuotasApagar.get(0).getPoliza().getValorPremio());
     	pago.setCuotas(new ArrayList<Cuota>());
 		for(Cuota cuota:cuotasApagar) {
 			GestorPoliza.get().pagarCuota(cuota, pago);

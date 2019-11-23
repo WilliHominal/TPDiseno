@@ -55,7 +55,7 @@ INSERT INTO poliza
 		(select r.valor_porcentual from riesgo_tipo_cobertura r  where r.fin_vigencia is null and r.tipo_cobertura = 'TERCEROS_COMPLETOS'),
 		(select r.valor_porcentual from riesgo_ciudad r  where r.fin_vigencia is null and r.id_ciudad = 5314),  120, 5314, 5400000002, 100, null, 'TERCEROS_COMPLETOS'),
 		
-(3528000000300, '93842993', 'NO_VIGENTE',  '2019-11-11', '2019-12-12', '2020-06-11', 'MENSUAL',   false, '60.000 - 69.999',   'F8CV1204593842993', 'UNO', 'MAA872', 555555, true,  false, false, 0.65, 0, 116000, 115000,
+(3528000000300, '93842993', 'GENERADA',  '2019-11-11', '2019-12-12', '2020-06-11', 'MENSUAL',   false, '60.000 - 69.999',   'F8CV1204593842993', 'UNO', 'MAA872', 555555, true,  false, false, 0.65, 0, 116000, 115000,
 		(select r.valor_porcentual from riesgo_modelo r, anio_modelo an where r.fin_vigencia is null and r.id_modelo=an.id_modelo and an.id = 120),
 		(select r.valor_porcentual from riesgo_tipo_cobertura r  where r.fin_vigencia is null and r.tipo_cobertura = 'TODO_TOTAL'),
 		(select r.valor_porcentual from riesgo_ciudad r  where r.fin_vigencia is null and r.id_ciudad = 5314),  120, 5314, 5400000003, 100, null, 'TODO_TOTAL'),
@@ -85,21 +85,39 @@ INSERT INTO poliza
 		(select r.valor_porcentual from riesgo_tipo_cobertura r  where r.fin_vigencia is null and r.tipo_cobertura = 'TODO_RIESGO_CON_FRANQUICIA'),
 		(select r.valor_porcentual from riesgo_ciudad r  where r.fin_vigencia is null and r.id_ciudad = 1230),  132, 1230, 5400000004, 100, null, 'TODO_RIESGO_CON_FRANQUICIA');
 		
+INSERT INTO pago (numero_recibo, fecha_pago, hora, importe_parcial, operador, premio) VALUES
+(100, '2018-02-10', '10:10:10',  28000, 'Operador n', 58000),
+(101, '2018-08-10', '16:30:25',  29500, 'Operador n', 59500),
+(102, '2019-02-10', '17:15:11',  31000, 'Operador n', 61000),
+(103, '2019-08-10', '11:22:40',  33000, 'Operador n', 63000),
+(104, '2017-05-05', '18:52:45',  66000, 'Operador n', 116000),
+(105, '2017-11-05', '17:45:01',  66000, 'Operador n', 116000),
+(106, '2018-05-05', '13:33:31',  66000, 'Operador n', 116000),
+(107, '2018-11-05', '11:11:11',  66000, 'Operador n', 116000),
+(108, '2019-05-05', '07:42:48',  66000, 'Operador n', 116000),
+(109, '2019-11-05', '18:19:07',  66000, 'Operador n', 116000),
+(110, '2019-01-15', '10:24:35',  66000, 'Operador n', 116000),
+(111, '2019-07-15', '15:07:19',  66000, 'Operador n', 116000),
+(112, '2019-03-25', '09:21:03',  66000, 'Operador n', 116000),
+(113, '2019-09-25', '12:30:35',  19333.3, 'Operador n', 116000),
+(114, '2019-10-25', '16:15:14',  19333.3, 'Operador n', 116000),
+(115, '2019-11-25', '19:11:25',  19333.3, 'Operador n', 116000);
+
 INSERT INTO cuota (id_cuota, bonificacion_pago_adelantado, estado, estado_pago_cuota, monto, recargo_por_mora, ultimo_dia_pago, numero_recibo, numero_poliza, idx) VALUES
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 28000, 0, '2018-02-10', null, 3528000000000, 0),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 29500, 0, '2018-08-10', null, 3528000000001, 0), 
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 31000, 0, '2019-02-10', null, 3528000000002, 0),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 33000, 0, '2019-08-10', null, 3528000000003, 0),	
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 28000, 0, '2018-02-10', 100, 3528000000000, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 29500, 0, '2018-08-10', 101, 3528000000001, 0), 
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 31000, 0, '2019-02-10', 102, 3528000000002, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 33000, 0, '2019-08-10', 103, 3528000000003, 0),	
 
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2017-05-05', null, 3528000000100, 0),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2017-11-05', null, 3528000000101, 0), 
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 66000, 0, '2018-05-05', null, 3528000000102, 0),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2018-11-05', null, 3528000000103, 0),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 66000, 0, '2019-05-05', null, 3528000000104, 0),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2019-11-05', null, 3528000000105, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2017-05-05', 104, 3528000000100, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2017-11-05', 105, 3528000000101, 0), 
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 66000, 0, '2018-05-05', 106, 3528000000102, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2018-11-05', 107, 3528000000103, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 66000, 0, '2019-05-05', 108, 3528000000104, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2019-11-05', 109, 3528000000105, 0),
 
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 66000, 0, '2019-01-15', null, 3528000000200, 0),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2019-07-15', null, 3528000000201, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 66000, 0, '2019-01-15', 110, 3528000000200, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 66000, 0, '2019-07-15', 111, 3528000000201, 0),
 
 (NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2019-12-11', null, 3528000000300, 0),
 (NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2020-01-11', null, 3528000000300, 1),
@@ -108,10 +126,10 @@ INSERT INTO cuota (id_cuota, bonificacion_pago_adelantado, estado, estado_pago_c
 (NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2020-04-11', null, 3528000000300, 4),
 (NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2020-05-11', null, 3528000000300, 5),
 
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 66000, 0, '2019-03-25', null, 3528000000400, 0),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	null, 19333.33, 0, '2019-09-25', null, 3528000000401, 0),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	null, 19333.33, 0, '2019-10-25', null, 3528000000401, 1),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	null, 19333.33, 0, '2019-11-25', null, 3528000000401, 2),
-(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	null, 19333.33, 0, '2019-12-25', null, 3528000000401, 3),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 66000, 0, '2019-03-25', 112, 3528000000400, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 19333.33, 0, '2019-09-25', 113, 3528000000401, 0),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 19333.33, 0, '2019-10-25', 114, 3528000000401, 1),
+(NEXTVAL('id_cuota_seq'), 0, 'PAGO',	'EN_TERMINO', 19333.33, 0, '2019-11-25', 115, 3528000000401, 2),
+(NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2019-12-25', null, 3528000000401, 3),
 (NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2020-01-25', null, 3528000000401, 4),
 (NEXTVAL('id_cuota_seq'), 0, 'IMPAGO',	null, 19333.33, 0, '2020-02-25', null, 3528000000401, 5);
