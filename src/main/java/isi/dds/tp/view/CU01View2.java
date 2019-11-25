@@ -1,7 +1,6 @@
 package isi.dds.tp.view;
 
 import java.awt.Dimension;
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -10,7 +9,6 @@ import java.util.Date;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
@@ -21,40 +19,10 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
-import isi.dds.tp.controller.CU01Controller2;
-import isi.dds.tp.gestor.GestorCliente;
-import isi.dds.tp.gestor.GestorDomicilio;
-import isi.dds.tp.gestor.GestorParametrosVehiculo;
 import isi.dds.tp.gestor.GestorTema;
-import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.modelo.TipoCobertura;
 
-public class CU01View2 extends JPanel  {
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Poliza poliza = new Poliza();
-					poliza.setCliente(GestorCliente.get().getCliente(5448044249l));
-					poliza.setMotor("2222222222222222");
-					poliza.setChasis("222222222");
-					poliza.setAnioModelo(GestorParametrosVehiculo.get().getAnioModelo(117)); //anio mayor a 10
-					//poliza.setAnioModelo(GestorParametrosVehiculo.get().getAnioModelo(118)); //anio menor a 10
-					poliza.setCiudad(GestorDomicilio.get().getCiudad(112));
-					poliza.setSumaAsegurada(332444f);
-
-					JFrame frame = new JFrame();
-					new CU01Controller2(frame, poliza);
-					GestorTema.get().setTema(frame, "Dar de alta póliza: 22222222");
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-		
+public class CU01View2 extends JPanel  {		
 	private static final long serialVersionUID = -7012157343373007588L;
 	
 	private GestorTema tema = GestorTema.get();

@@ -49,10 +49,10 @@ public class CU01View1 extends JPanel {
 	private JLabel lanio = new JLabel("Año modelo*:");
 	private JLabel lmotor = new JLabel("Motor*:");
 	private JLabel lchasis = new JLabel("Chasis*:");
-	private JLabel lpatente = new JLabel("Patente*:");
+	private JLabel lpatente = new JLabel("Patente:");
 	private JLabel lsumaAseg = new JLabel("Suma asegurada:");
 	private JLabel lmoneda = new JLabel("$");
-	private JLabel lkm = new JLabel("Km realizados por año:");
+	private JLabel lkm = new JLabel("Km realizados por año*:");
 	private JLabel lsiniestros = new JLabel("Número de siniestros en el último año*:");
 	private JLabel lgarage = new JLabel("¿Se guarda en garage?");
 	private JLabel lalarma = new JLabel("¿Tiene alarma?");

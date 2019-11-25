@@ -15,7 +15,6 @@ import javax.swing.JTextArea;
 import isi.dds.tp.gestor.GestorTema;
 
 public class MenuView2 extends JPanel{
-
 	private static final long serialVersionUID = -8973156545928701791L;
 	
 	private GestorTema tema = GestorTema.get();

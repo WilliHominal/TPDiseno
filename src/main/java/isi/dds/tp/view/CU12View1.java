@@ -524,12 +524,21 @@ public class CU12View1 extends JPanel{
 		this.cbCuotaN6.setEnabled(false);
 	}
 	
-	public void ubicarUnaCuota() {
-		cbCuotaN1.setText("Número 6:");
-		cuotaVisible(0, true);
-		
-		for (int i=1; i<6; i++)
-			cuotaVisible(i,false);
+	public void ubicarUnaCuota(Boolean semestral) {
+		if(semestral) {
+			cbCuotaN1.setText("Número 1:");
+			cuotaVisible(0, true);
+			
+			for (int i=1; i<6; i++)
+				cuotaVisible(i,false);
+		}
+		else {
+			cbCuotaN1.setText("Número 6:");
+			cuotaVisible(0, true);
+			
+			for (int i=1; i<6; i++)
+				cuotaVisible(i,false);
+		}		
 	}
 	
 	public void ubicarDosCuotas() {

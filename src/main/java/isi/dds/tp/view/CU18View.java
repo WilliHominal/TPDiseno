@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import isi.dds.tp.gestor.GestorTema;
 
-public class CU18View1  extends JPanel{
+public class CU18View  extends JPanel{
 	private static final long serialVersionUID = 267584656685000175L;
 
 	private GestorTema tema = GestorTema.get();
@@ -27,6 +27,7 @@ public class CU18View1  extends JPanel{
 	private JLabel lnombres = new JLabel("Nombres:");
 	private JLabel ltipoDocumento = new JLabel("Tipo documento:");
 	private JLabel lnumeroDocumento = new JLabel("Documento:");
+	private JLabel lultimoPago  = new JLabel("Último pago");
 	private JLabel lfechaPago = new JLabel("Fecha pago:");
 	private JLabel lmonto = new JLabel("Monto:");
 
@@ -37,10 +38,10 @@ public class CU18View1  extends JPanel{
 	private JTextField campoNumeroDocumento = new JTextField(16);
 	private JTextField campoApellido = new JTextField(16);
 	private JTextField campoNombres = new JTextField(16);
-	private JTextField campofechaPago = new JTextField(10);
-	private JTextField campoMonto = new JTextField(15);
+	private JTextField campofechaPago = new JTextField(8);
+	private JTextField campoMonto = new JTextField(10);
 	
-	public CU18View1() {
+	public CU18View() {
 		inicializarComponentes();
 		ubicarComponentes();	
 		addListenerCampoNumeroPoliza();
@@ -61,6 +62,7 @@ public class CU18View1  extends JPanel{
 		tema.setTema(lapellido);
 		tema.setTema(lnombres);
 		tema.setTema(lfechaPago);
+		tema.setTemaSubrayado(lultimoPago);
 		tema.setTema(lmonto);
 		tema.setTema(campoNumeroCliente, false);
 		tema.setTema(campoNumeroPol, false);
@@ -76,45 +78,32 @@ public class CU18View1  extends JPanel{
 		setLayout (new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		
-		constraints.gridx = 4;
+		constraints.gridx = 0;
 		constraints.gridy = 0;
-		constraints.gridwidth = 2;
+		constraints.gridwidth = 5;
 		constraints.gridheight = 1;
 		constraints.anchor = GridBagConstraints.WEST;
-		constraints.insets.set(10, 21, 13, 5);
+		constraints.insets.set(10, 21, 10, 10);
 		add(lnumeroPoliza, constraints);
 		
-		//constraints.gridx = 9;
-		//constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(5, 120, 5, 15);
+		constraints.insets.set(10, 120, 10, 10);
 		add(campoNumeroPoliza, constraints);	
 		
-		
-		constraints.gridx = 8;
-		constraints.gridy = 0;
-		constraints.gridwidth = 2;
-		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(5, 5, 40, 5);
+		constraints.insets.set(10, 330, 10, 10);
 		add(btnBuscar, constraints);
 		
 		constraints.gridy = 1;
-		constraints.gridwidth = 2;
-		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(10, 5, 5, 5);
+		constraints.insets.set(10, 330, 20, 10);
 		add(btnCancelar, constraints);	
 		
-		constraints.gridy = 5;
+		constraints.gridy = 4;
 		constraints.gridx = 0;
-		constraints.gridwidth = 15;
-		constraints.gridheight = 1;
-		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(5, 0, 5, 0);
-		add(new JLabel("____________________________________________________________________________________________________________________________________________"), constraints);
+		constraints.gridwidth = 9;
+		constraints.insets.set(0, 0, 20, 0);
+		add(new JLabel("______________________________________________________________________________"), constraints);
 		
-		constraints.gridx = 4;
-		constraints.gridy = 8;
-		constraints.gridwidth = 2;
-		constraints.gridheight = 1;
+
+		constraints.gridy = 5;
 		constraints.anchor = GridBagConstraints.WEST;
 		constraints.insets.set(10, 21, 13, 5);
 		add(lnumeroCliente, constraints);
@@ -122,60 +111,62 @@ public class CU18View1  extends JPanel{
 		constraints.insets.set(5, 120, 5, 5);
 		add(campoNumeroCliente, constraints);
 		
-		constraints.gridy = 9;
+		constraints.gridy = 6;
 		constraints.insets.set(10, 25, 13, 5);
 		add(lnumeroPol, constraints);
 		
 		constraints.insets.set(5, 120, 5, 5);
 		add(campoNumeroPol, constraints);
 		
-		constraints.gridy = 10;
+		constraints.gridy = 7;
 		constraints.insets.set(10, 60, 13, 5);
 		add(lapellido, constraints);
 		
 		constraints.insets.set(5, 120, 5, 5);
 		add(campoApellido, constraints);
 		
-		constraints.gridy = 11;
+		constraints.gridy = 8;
 		constraints.insets.set(10, 53, 13, 5);
 		add(lnombres, constraints);
 		
 		constraints.insets.set(5, 120, 5, 5);
 		add(campoNombres, constraints); 
 		
-		constraints.gridy = 12;
+		constraints.gridy = 9;
 		constraints.insets.set(10, 17, 13, 5);
 		add(ltipoDocumento, constraints);
 		
 		constraints.insets.set(5, 120, 5, 5);
 		add(campoTipoDocumento, constraints);
 		
-		constraints.gridy = 13;
+		constraints.gridy = 10;
 		constraints.insets.set(10, 42, 13, 5);
 		add(lnumeroDocumento, constraints);
 		
 		constraints.insets.set(5, 120, 5, 5);
 		add(campoNumeroDocumento, constraints);
 		
-		constraints.gridy = 14;
+				
+		constraints.gridy = 11;
+		constraints.insets.set(10, 40, 5, 5);
+		add(lultimoPago, constraints);
+		
+		
+		constraints.gridy = 12;
 		constraints.insets.set(10, 41, 13, 5);
 		add(lfechaPago, constraints);
 		
 		constraints.insets.set(5, 120, 5, 5);
-		add(campofechaPago, constraints);
+		add(campofechaPago, constraints);		
 		
-		
-		constraints.insets.set(10, 380, 13, 5);
+		constraints.insets.set(10, 235, 13, 5);
 		add(lmonto, constraints);
 		
-		constraints.insets.set(5, 433, 5, 5);
+		constraints.insets.set(5, 280, 5, 5);
 		add(campoMonto, constraints);
 		
-		constraints.gridx = 8;
-		constraints.gridy = 16;
-		constraints.gridwidth = 2;
-		constraints.anchor = GridBagConstraints.EAST;
-		constraints.insets.set(30, 5, 5, 5);
+		constraints.gridy = 13;
+		constraints.insets.set(40, 120, 5, 5);
 		add(btnAceptar, constraints);	
 	}
 	

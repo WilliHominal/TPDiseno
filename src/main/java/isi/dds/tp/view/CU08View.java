@@ -1,6 +1,5 @@
 package isi.dds.tp.view;
 
-import java.awt.EventQueue;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -8,13 +7,11 @@ import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import isi.dds.tp.controller.CU08Controller;
 import isi.dds.tp.gestor.GestorTema;
-import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Ciudad;
 import isi.dds.tp.modelo.Marca;
 import isi.dds.tp.modelo.Modelo;
@@ -23,30 +20,7 @@ import isi.dds.tp.modelo.TipoCobertura;
 
 public class CU08View extends JPanel{
 	private static final long serialVersionUID = -5523172427711498930L;
-	
-	 public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					HibernateUtil.apagarLog(true);
-					JFrame frame = new JFrame();
-					frame.addWindowListener(new java.awt.event.WindowAdapter() {
-					    @Override
-					    public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-					    	frame.setVisible(false);
-							HibernateUtil.cerrarSessionesUsadas();
-							System.exit(0);
-					    }
-					});
-					new CU08Controller(frame);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
-	
+
 	private GestorTema tema = GestorTema.get();
 	
 	private JLabel ltipoCobertura = new JLabel("Valor porcentual tipo cobertura:");

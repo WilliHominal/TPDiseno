@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-
 import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorTema;
@@ -13,12 +12,11 @@ import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Pago;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.view.CU12View1;
-import isi.dds.tp.view.CU18View1;
+import isi.dds.tp.view.CU18View;
 
 public class CU18Controller {
-		
 	private CU18Controller instancia;
-	private CU18View1 view18;
+	private CU18View view18;
 	private CU12Controller1 cu12Controller;
 	
 	private Boolean esRealizarPagoPoliza = false;
@@ -47,7 +45,7 @@ public class CU18Controller {
 
 	private void setView12() {
 		tema.setTema(ventana, "Buscar póliza");
-		view18= new CU18View1();
+		view18= new CU18View();
 		view18.addListenerBtnCancelar(new ListenerBtnCancelar());
 		view18.addListenerBtnBuscar(new ListenerBuscar());
 		view18.addListenerBtnAceptar(new ListenerBtnAceptar());
@@ -98,29 +96,16 @@ public class CU18Controller {
 		//los valores boolean son para luego la interfaz establezca los colores de los campos mal validados
 		Boolean error = false;
 		
-		Integer errorNumero = 1;
-		
 		//---------- posible error en la introdución del número del número de poliza
 		if(textoPoliza.isEmpty() ) {
 			error = true;
-			textoError = errorNumero+") No se ha introducido un número de póliza\n";
-			errorNumero++;
+			textoError = "No se ha introducido un número de póliza\n";
 		}
 		else {
 			if(textoPoliza.length() != 13) {
 				error = true;
-				textoError = errorNumero+") La definición de un número de póliza debe ser de longitud 13.\n";
-				errorNumero++;
+				textoError = "La definición de un número de póliza debe ser de longitud 13.\n";
 			}
-			/*
-			else if(textoPoliza.length() == 13) {
-				long numero;
-				numero = Long.parseLong(view18.getNumeroPoliza());
-				if( Objects.equals(null,GestorPoliza.get().buscarPoliza(numero)){
-					textoError = errorNumero+") El numero de póliza no existe.\n";
-				}
-			}
-			*/
 		}
 		if(error) {
 			view18.noValido(error);
@@ -137,7 +122,7 @@ public class CU18Controller {
 	}
 	
 	//para caso de prueba
-	public CU18View1 getView(){
+	public CU18View getView(){
 		return view18;
 	}
 

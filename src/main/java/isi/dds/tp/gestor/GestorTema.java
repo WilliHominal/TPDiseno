@@ -33,7 +33,6 @@ import com.toedter.calendar.JDateChooser;
 import com.toedter.calendar.JTextFieldDateEditor;
 
 public class GestorTema {
-	
 	private static GestorTema instanciaGestor = null;
 	
 	private static Dimension DIMENSION_VENTANA = new Dimension(1064,600);
@@ -126,10 +125,6 @@ public class GestorTema {
     }
     
 	public void setTemaTitulo(JLabel label) {
-		//Font font = FUENTE_LETRA_GRANDE;
-		//Map<TextAttribute, Object> titulo = new HashMap<>(font.getAttributes());
-		//titulo.put(TextAttribute.UNDERLINE, TextAttribute.UNDERLINE_LOW_ONE_PIXEL);
-		//label.setFont(font.deriveFont(titulo));
 		label.setFont(FUENTE_LETRA_GRANDE);
 		label.setForeground(COLOR_LETRA);
 	}

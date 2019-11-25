@@ -14,7 +14,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import isi.dds.tp.enums.EnumEstadoCuota;
 import isi.dds.tp.enums.EnumFormaPago;
-import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorSistemaFinanciero;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
@@ -31,8 +30,9 @@ public class CU12Controller1 {
 	private JPanel panelAnterior;
 	private String tituloAnterior = "";
 	
+	private Poliza poliza;
 	private List<Cuota> cuotasApagar = new ArrayList<Cuota>();
-	private List<Cuota> cuotas = new ArrayList<Cuota>();
+	List<Cuota> cuotas = new ArrayList<Cuota>();
 	
 	public CU12Controller1(JFrame ventana) {
 		instancia = this;
@@ -65,12 +65,13 @@ public class CU12Controller1 {
 	}
 	
 	public void obtenidaPoliza (Poliza poliza) {
+		this.poliza = poliza;
+		cuotas = poliza.getCuotas();
+		
 		Float importeTotal = 0f;
 		LocalDate fechaActual = LocalDate.now();
 		List<Integer> cuotasImpagas = new ArrayList<Integer>();
 		
-		//cargo cuotas de la poliza
-		cuotas = poliza.getCuotas();
 		cuotas.sort((Cuota c1, Cuota c2) -> c1.getUltimoDiaPago().compareTo(c2.getUltimoDiaPago()));
 
 		if (poliza.getFormaPago() == EnumFormaPago.MENSUAL) {
@@ -143,6 +144,7 @@ public class CU12Controller1 {
 			}
 			
 			ordenarCuotas(cuotasImpagas);
+			view1.setImportesParciales("0.0");
 			view1.setImportesTotales(importeTotal.toString());
 			view1.habilitarBotonConfirmarPago();			
 		} else {
@@ -212,7 +214,7 @@ public class CU12Controller1 {
 	
 	private void ordenarCuotas(List<Integer> numeroCuotas) {
 		switch(numeroCuotas.size()) {
-		case 1: view1.ubicarUnaCuota(); break;
+		case 1: view1.ubicarUnaCuota(poliza.getFormaPago().equals(EnumFormaPago.SEMESTRAL)); break;
 		case 2: view1.ubicarDosCuotas(); break;
 		case 3: view1.ubicarTresCuotas(); break;
 		case 4: view1.ubicarCuatroCuotas(); break;
@@ -266,7 +268,7 @@ public class CU12Controller1 {
 	private class ListenerSeleccionCuota1 implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			if (view1.getEstadoCheckBoxCuota(1)) {
-				if ((GestorPoliza.get().buscarPoliza(Long.parseLong(view1.getNumeroPoliza()))).getFormaPago().equals(EnumFormaPago.MENSUAL)) {
+				if (poliza.getFormaPago().equals(EnumFormaPago.MENSUAL)) {
 					switch(view1.cantidadCuotasDisponibles()) {
 					case 6: cuotasApagar.add(cuotas.get(0)); break;
 					case 5: cuotasApagar.add(cuotas.get(1)); break;
@@ -279,7 +281,7 @@ public class CU12Controller1 {
 					cuotasApagar.add(cuotas.get(0));
 				}
 			} else {
-				if ((GestorPoliza.get().buscarPoliza(Long.parseLong(view1.getNumeroPoliza()))).getFormaPago().equals(EnumFormaPago.MENSUAL)) {
+				if (poliza.getFormaPago().equals(EnumFormaPago.MENSUAL)) {
 					switch(view1.cantidadCuotasDisponibles()) {
 					case 6: cuotasApagar.remove(cuotas.get(0)); break;
 					case 5: cuotasApagar.remove(cuotas.get(1)); break;

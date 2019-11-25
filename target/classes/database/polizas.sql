@@ -86,22 +86,22 @@ INSERT INTO poliza
 		(select r.valor_porcentual from riesgo_ciudad r  where r.fin_vigencia is null and r.id_ciudad = 1230),  132, 1230, 5400000004, 100, null, 'TODO_RIESGO_CON_FRANQUICIA');
 		
 INSERT INTO pago (numero_recibo, fecha_pago, hora, importe_parcial, operador, premio) VALUES
-(100, '2018-02-10', '10:10:10',  28000, 'Operador n', 58000),
-(101, '2018-08-10', '16:30:25',  29500, 'Operador n', 59500),
-(102, '2019-02-10', '17:15:11',  31000, 'Operador n', 61000),
-(103, '2019-08-10', '11:22:40',  33000, 'Operador n', 63000),
-(104, '2017-05-05', '18:52:45',  66000, 'Operador n', 116000),
-(105, '2017-11-05', '17:45:01',  66000, 'Operador n', 116000),
-(106, '2018-05-05', '13:33:31',  66000, 'Operador n', 116000),
-(107, '2018-11-05', '11:11:11',  66000, 'Operador n', 116000),
-(108, '2019-05-05', '07:42:48',  66000, 'Operador n', 116000),
-(109, '2019-11-05', '18:19:07',  66000, 'Operador n', 116000),
-(110, '2019-01-15', '10:24:35',  66000, 'Operador n', 116000),
-(111, '2019-07-15', '15:07:19',  66000, 'Operador n', 116000),
-(112, '2019-03-25', '09:21:03',  66000, 'Operador n', 116000),
-(113, '2019-09-25', '12:30:35',  19333.3, 'Operador n', 116000),
-(114, '2019-10-25', '16:15:14',  19333.3, 'Operador n', 116000),
-(115, '2019-11-25', '19:11:25',  19333.3, 'Operador n', 116000);
+(NEXTVAL('numero_recibo_seq'), '2018-02-10', '10:10:10',  28000, 'Operador n', 58000),
+(NEXTVAL('numero_recibo_seq'), '2018-08-10', '16:30:25',  29500, 'Operador n', 59500),
+(NEXTVAL('numero_recibo_seq'), '2019-02-10', '17:15:11',  31000, 'Operador n', 61000),
+(NEXTVAL('numero_recibo_seq'), '2019-08-10', '11:22:40',  33000, 'Operador n', 63000),
+(NEXTVAL('numero_recibo_seq'), '2017-05-05', '18:52:45',  66000, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2017-11-05', '17:45:01',  66000, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2018-05-05', '13:33:31',  66000, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2018-11-05', '11:11:11',  66000, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2019-05-05', '07:42:48',  66000, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2019-11-05', '18:19:07',  66000, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2019-01-15', '10:24:35',  66000, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2019-07-15', '15:07:19',  66000, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2019-03-25', '09:21:03',  66000, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2019-09-25', '12:30:35',  19333.3, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2019-10-25', '16:15:14',  19333.3, 'Operador n', 116000),
+(NEXTVAL('numero_recibo_seq'), '2019-11-25', '19:11:25',  19333.3, 'Operador n', 116000);
 
 INSERT INTO cuota (id_cuota, bonificacion_pago_adelantado, estado, estado_pago_cuota, monto, recargo_por_mora, ultimo_dia_pago, numero_recibo, numero_poliza, idx) VALUES
 (NEXTVAL('id_cuota_seq'), 0, 'PAGO',  	'EN_TERMINO', 28000, 0, '2018-02-10', 100, 3528000000000, 0),

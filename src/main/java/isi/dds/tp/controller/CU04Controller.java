@@ -111,7 +111,6 @@ public class CU04Controller {
 		EnumEstadoCivil[] estadosCivil = EnumEstadoCivil.values();
 		for(int i=0; i<estadosCivil.length; i++){
 			view.addEstadoCivil(estadosCivil[i].toString());
-			System.out.println("linea 4");
 		}
 	}
 	

@@ -158,7 +158,8 @@ public class GestorCliente {
 	public List<Cliente> buscarClientes(Long numeroCliente, String apellido, String nombre, EnumTipoDocumento tipoDocumento, String numeroDocumento) {
 		String condicionesConsulta = "";
 		Boolean primerConsulta = true;
-    	if(numeroCliente != null) {
+    
+		if(numeroCliente != null) {
     		condicionesConsulta += "where numero_cliente="+numeroCliente;
     		primerConsulta = false;
     	}
@@ -197,9 +198,11 @@ public class GestorCliente {
     	}
     	
     	if(!numeroDocumento.isEmpty()) {
-    		if(!primerConsulta) {
-    			condicionesConsulta += " and ";
+    		if(primerConsulta) {
     			condicionesConsulta += " where ";
+    		}
+    		else {
+    			condicionesConsulta += " and ";
     		}
     		condicionesConsulta += " documento = '"+numeroDocumento+"' ";
     	}
