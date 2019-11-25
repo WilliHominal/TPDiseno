@@ -66,7 +66,7 @@ public class CU17Controller2 {
 		view2.setAnioRegistro(cliente.getAnioRegistro().toString());
 		view2.setTipoDocumento(cliente.getTipoDocumento().toString());
 		view2.setSexo(cliente.getSexo().toString());
-		view2.setFechaNacimiento(cliente.getFechaNacimiento().toString());
+		view2.setFechaNacimiento(cliente.getFechaNacimiento().toString().substring(0,2) + "/" +cliente.getFechaNacimiento().getMonthValue() + "/" +cliente.getFechaNacimiento().getYear());
 		view2.setPais(cliente.getCiudad().getProvincia().getPais().getNombre());
 		view2.setProvincia(cliente.getCiudad().getProvincia().getNombre());
 		view2.setCiudad(cliente.getCiudad().getNombre());

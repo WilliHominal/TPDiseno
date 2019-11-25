@@ -76,30 +76,30 @@ public class CU18View1  extends JPanel{
 		setLayout (new GridBagLayout());
 		GridBagConstraints constraints = new GridBagConstraints();
 		
-		constraints.gridx = 1;
+		constraints.gridx = 4;
 		constraints.gridy = 0;
 		constraints.gridwidth = 2;
 		constraints.gridheight = 1;
-		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(10, 5, 13, 15);
+		constraints.anchor = GridBagConstraints.WEST;
+		constraints.insets.set(10, 21, 13, 5);
 		add(lnumeroPoliza, constraints);
 		
-		constraints.gridx = 9;
-		constraints.anchor = GridBagConstraints.CENTER;
-		constraints.insets.set(5, 5, 5, 15);
+		//constraints.gridx = 9;
+		//constraints.anchor = GridBagConstraints.CENTER;
+		constraints.insets.set(5, 120, 5, 15);
 		add(campoNumeroPoliza, constraints);	
 		
 		
-		constraints.gridx = 11;
+		constraints.gridx = 8;
 		constraints.gridy = 0;
 		constraints.gridwidth = 2;
-		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets.set(5, 5, 40, 5);
 		add(btnBuscar, constraints);
 		
 		constraints.gridy = 1;
 		constraints.gridwidth = 2;
-		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets.set(10, 5, 5, 5);
 		add(btnCancelar, constraints);	
 		
@@ -111,7 +111,7 @@ public class CU18View1  extends JPanel{
 		constraints.insets.set(5, 0, 5, 0);
 		add(new JLabel("____________________________________________________________________________________________________________________________________________"), constraints);
 		
-		constraints.gridx = 10;
+		constraints.gridx = 4;
 		constraints.gridy = 8;
 		constraints.gridwidth = 2;
 		constraints.gridheight = 1;
@@ -171,10 +171,10 @@ public class CU18View1  extends JPanel{
 		constraints.insets.set(5, 433, 5, 5);
 		add(campoMonto, constraints);
 		
-		constraints.gridx = 10;
+		constraints.gridx = 8;
 		constraints.gridy = 16;
 		constraints.gridwidth = 2;
-		constraints.anchor = GridBagConstraints.CENTER;
+		constraints.anchor = GridBagConstraints.EAST;
 		constraints.insets.set(30, 5, 5, 5);
 		add(btnAceptar, constraints);	
 	}

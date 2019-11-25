@@ -79,7 +79,7 @@ public class CU18Controller {
 		Pago ppago = GestorPago.get().ultimoPago(poliza);
 		
 		if(GestorPago.get().ultimoPago(poliza) != null) {
-			view18.setfechaPago(ppago.getFechaPago().toString());
+			view18.setfechaPago(ppago.getFechaPago().toString().substring(0,2) + "/" +ppago.getFechaPago().getMonthValue() + "/"+(ppago.getFechaPago().getYear()) );
 			view18.setMonto(ppago.getImporte().toString());
 		}
 		
