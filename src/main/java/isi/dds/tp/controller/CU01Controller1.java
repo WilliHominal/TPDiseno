@@ -545,8 +545,7 @@ public class CU01Controller1 {
 				e.setKeyChar(caracter);
 			}
 			else{
-				e.consume();  // ignorar el evento de teclado
-				//getToolkit().beep();
+				e.consume(); 
 			}
 		} 
 		public void keyPressed(KeyEvent e) { }
@@ -563,8 +562,7 @@ public class CU01Controller1 {
 				e.setKeyChar(caracter);
 			}
 			else{
-				e.consume();  // ignorar el evento de teclado
-			//	getToolkit().beep();
+				e.consume();
 			}
 		} 
 		public void keyPressed(KeyEvent e) { }

@@ -3,6 +3,8 @@ package isi.dds.tp.controller;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -57,9 +59,13 @@ public class CU17Controller1 {
 		for(int i=0; i<tipoDocumentos.length; i++){
 			view1.addItemTipoCobertura(tipoDocumentos[i].toString());
 		}		
-		view1.addListenerBtnCancelar(new ListenerCancelar());
-		view1.addListenerBtnBuscar(new ListenerBuscar());
+		view1.addListenerBtnCancelar(new ListenerBtnCancelar());
+		view1.addListenerBtnBuscar(new ListenerBtnBuscar());
 		view1.addListenerTablaClientes(new ListenerTablaClientes());
+		view1.addListenerCampoNumeroCliente(new ListenerCampoNumeroCliente());
+		view1.addListenerCampoApellido(new ListenerCampoApellido());
+		view1.addListenerCampoNombre(new ListenerCampoNombre());
+		view1.addListenerCampoNumeroDocumento(new ListenerCampoNumeroDocumento());
 		ventana.setContentPane(view1);
 	}
 	
@@ -102,7 +108,7 @@ public class CU17Controller1 {
 	}
 	
 	//---------- LISTENERS USADOS
-	private class ListenerBuscar implements ActionListener{
+	private class ListenerBtnBuscar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				Long numeroCliente = null;
@@ -124,9 +130,8 @@ public class CU17Controller1 {
                           "Error.", JOptionPane.ERROR_MESSAGE); 
 			}
 		}
-	}
-	
-	private class ListenerCancelar implements ActionListener{
+	}	
+	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {
 				ventana.setContentPane(panelAnterior);	
@@ -153,5 +158,61 @@ public class CU17Controller1 {
 		@Override public void mouseReleased(MouseEvent e) {}
 		@Override public void mouseEntered(MouseEvent e) {}
 		@Override public void mouseExited(MouseEvent e) {}
+	}
+	
+	private class ListenerCampoNumeroCliente implements KeyListener{
+		public void keyTyped(KeyEvent e){
+			char caracter = e.getKeyChar();
+			if(Character.isDigit(caracter) && view1.getNumeroCliente().length() < 10){
+				
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+	}	
+	private class ListenerCampoApellido implements KeyListener{
+		public void keyTyped(KeyEvent e){
+			char caracter = e.getKeyChar();
+			if(Character.isLetter(caracter) && view1.getApellido().length() < 30){
+				
+			}
+			else{
+				e.consume();
+			}
+		}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+	}	
+	private class ListenerCampoNombre implements KeyListener{
+		public void keyTyped(KeyEvent e){
+			char caracter = e.getKeyChar();
+			if(Character.isLetter(caracter) && view1.getNombre().length() < 30){
+				
+			}
+			else{
+				e.consume();
+			}
+    	}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
+	}	
+	private class ListenerCampoNumeroDocumento implements KeyListener{
+		public void keyTyped(KeyEvent e){
+			char caracter = e.getKeyChar();
+			if((Character.isDigit(caracter) || Character.isLetter(caracter)) && view1.getNumeroDocumento().length() < 9){
+				if(Character.isLowerCase(caracter)){
+			    	 caracter = Character.toUpperCase(caracter);
+				}
+				e.setKeyChar(caracter);
+			}
+			else{
+				e.consume();
+			}
+    	}
+		public void keyPressed(KeyEvent e) { }
+		public void keyReleased(KeyEvent e) { }
 	}
 }

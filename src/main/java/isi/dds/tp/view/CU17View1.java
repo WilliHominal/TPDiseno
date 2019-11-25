@@ -5,8 +5,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Point;
 import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseListener;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -50,9 +49,6 @@ public class CU17View1 extends JPanel {
 		inicializarComponentes();
 		ubicarComponentes();
 		addTablaClientes(0);	
-		addListenerCampoNumeroCliente();
-		addListenerCampoApellido();
-		addListenerCampoNombre();
 	}
 
 	private void inicializarComponentes() {			
@@ -173,49 +169,20 @@ public class CU17View1 extends JPanel {
 		tablaClientes.addMouseListener(listener);
 	}
 	
-	public void addListenerCampoNumeroCliente() {
-		campoNumeroCliente.addKeyListener(new KeyAdapter(){
-			public void keyTyped(KeyEvent e){
-				char caracter = e.getKeyChar();
-				if(Character.isDigit(caracter) && campoNumeroCliente.getText().length() < 8){
-					
-				}
-				else{
-					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
-				}
-			}
-		}); 
+	public void addListenerCampoNumeroCliente(KeyListener listener) {
+		campoNumeroCliente.addKeyListener(listener); 
 	}
 	
-	public void addListenerCampoApellido() {
-		campoApellido.addKeyListener(new KeyAdapter(){
-			public void keyTyped(KeyEvent e){
-				char caracter = e.getKeyChar();
-				if(Character.isLetter(caracter) && campoApellido.getText().length() < 30){
-					
-				}
-				else{
-					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
-				}
-			}
-		}); 
+	public void addListenerCampoApellido(KeyListener listener) {
+		campoApellido.addKeyListener(listener); 
 	}
 	
-	public void addListenerCampoNombre() {
-	    campoNombre.addKeyListener(new KeyAdapter(){ 
-	    	public void keyTyped(KeyEvent e){
-				char caracter = e.getKeyChar();
-				if(Character.isLetter(caracter) && campoNombre.getText().length() < 30){
-					
-				}
-				else{
-					e.consume();  // ignorar el evento de teclado
-					getToolkit().beep();
-				}
-	    	}
-	    });
+	public void addListenerCampoNombre(KeyListener listener) {
+	    campoNombre.addKeyListener(listener);
+	}
+	
+	public void addListenerCampoNumeroDocumento(KeyListener listener) {
+	    campoNumeroDocumento.addKeyListener(listener);
 	}
 	
 	public void addItemTipoCobertura(String item) {
