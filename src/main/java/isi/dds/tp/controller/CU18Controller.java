@@ -5,9 +5,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+
+import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
+import isi.dds.tp.modelo.Pago;
 import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.view.CU12View1;
 import isi.dds.tp.view.CU18View1;
@@ -72,16 +75,19 @@ public class CU18Controller {
 		view18.setNombre(poliza.getCliente().getNombre());
 		view18.setTipoDocumento(poliza.getCliente().getTipoDocumento().toString());
 		view18.setNumeroDocumento(poliza.getCliente().getNumeroDocumento());
-		/*
+		
+		Pago ppago = GestorPago.get().ultimoPago(poliza);
+		
 		if(GestorPago.get().ultimoPago(poliza) != null) {
-			view18.setfechaPago(GestorPago.get().ultimoPago(poliza).getPago().getFechaPago().toString());
-			view18.setMonto(GestorPago.get().ultimoPago(poliza).getPago().getImporte().toString());
+			view18.setfechaPago(ppago.getFechaPago().toString());
+			view18.setMonto(ppago.getImporte().toString());
 		}
+		
 		else {
 			view18.setfechaPago("-");
 			view18.setMonto("-");
 		}
-		*/
+		
 	}
 
 	private  Boolean condicionesBuscarPoliza() {
@@ -149,11 +155,16 @@ public class CU18Controller {
 				}				
 				
 				polizaObtenida = GestorPoliza.get().buscarPoliza(numeroPoliza);
-				cargarPolizaSeleccionado(polizaObtenida);
-					
+				if (polizaObtenida != null) {
+					cargarPolizaSeleccionado(polizaObtenida);
+				}
+				else {
+					JOptionPane.showMessageDialog(null, "No existe póliza con ese número.\n",
+				                          "Error.", JOptionPane.ERROR_MESSAGE); 
+					}
 			}catch(Exception ex) {
-				 JOptionPane.showMessageDialog(null, "No existe póliza con ese número.\n",
-                          "Error.", JOptionPane.ERROR_MESSAGE); 
+				JOptionPane.showMessageDialog(ventana, "No se pudo obtener la póliza desde la base de datos",
+                        "Error.", JOptionPane.ERROR_MESSAGE);  
 			}
 		}
 	}
