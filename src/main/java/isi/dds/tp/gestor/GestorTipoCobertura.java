@@ -32,15 +32,15 @@ public class GestorTipoCobertura {
     	DAOTipoCobertura.getDAO().updateTipoCobertura(tipoCobertura);
     	return rnuevo;
     }
-    
-	public TipoCobertura getTipoCobertura(EnumTipoCobertura tipo){
-		return DAOTipoCobertura.getDAO().getTipoCobertura(tipo);
-    }
 	
 	public void updateTipoCobertura(TipoCobertura tipo){
 		DAOTipoCobertura.getDAO().updateTipoCobertura(tipo);
     }
-    
+
+	public TipoCobertura getTipoCobertura(EnumTipoCobertura tipo){
+		return DAOTipoCobertura.getDAO().getTipoCobertura(tipo);
+    }
+	
 	public List<TipoCobertura> getTiposCobertura(){
 		return DAOTipoCobertura.getDAO().getTiposCobertura();
     }

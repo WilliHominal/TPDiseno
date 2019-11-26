@@ -70,20 +70,6 @@ public class GestorPoliza {
     	poliza.setNumeroPoliza(numeroPoliza);
 	}
 
-	public void addHijo(Poliza poliza, HijoDeclarado hijo){
-		hijo.setPoliza(poliza);
-		poliza.getHijosDeclarado().add(hijo);
-    }
-    
-    public void addCuota(Poliza poliza, Float monto, LocalDate ultimoDiaPago) {
-    	Cuota cuota = new Cuota();
-    	cuota.setPoliza(poliza);
-    	poliza.getCuotas().add(cuota);
-    	cuota.setMonto(monto);
-    	cuota.setEstado(EnumEstadoCuota.IMPAGO);
-    	cuota.setUltimoDiaPago(ultimoDiaPago);
-    }
-    
 	public void actualizarPoliza(Poliza poliza, Ciudad ciudad, AnioModelo anioModelo, String motor, String chasis, 
 			String patente, Float sumaAsegurada, String kmRealizadosPorAnio, Boolean guardaGarage, Boolean tieneAlarma,
 			Boolean tieneRastreoVehicular, Boolean tieneTuercasAntirobo) {
@@ -108,7 +94,34 @@ public class GestorPoliza {
 		poliza.setFinVigencia(finVigencia);
 		poliza.setFormaPago(formaPago);
 	}
+
+	public void addHijo(Poliza poliza, HijoDeclarado hijo){
+		hijo.setPoliza(poliza);
+		poliza.getHijosDeclarado().add(hijo);
+    }
+    
+    public void addCuota(Poliza poliza, Float monto, LocalDate ultimoDiaPago) {
+    	Cuota cuota = new Cuota();
+    	cuota.setPoliza(poliza);
+    	poliza.getCuotas().add(cuota);
+    	cuota.setMonto(monto);
+    	cuota.setEstado(EnumEstadoCuota.IMPAGO);
+    	cuota.setUltimoDiaPago(ultimoDiaPago);
+    }
 	
+	private void calcularDescuento(Poliza poliza, Boolean semestral) {
+		Float valorDescuentoPorUnidadAdicional = poliza.getParametrosPoliza().getDescuentoUnidadAdicional();
+		Float valorBonificacionPagoSemestral = 0f;
+
+		if(semestral) {
+			valorBonificacionPagoSemestral = GestorSistemaFinanciero.get().getTasaInteresAnual() / 2; //divide por 2 porque el interes es anual
+		}
+		
+		Float valorDescuento = (valorDescuentoPorUnidadAdicional * getPolizas(poliza.getCliente().getNumeroCliente()).size() + valorBonificacionPagoSemestral ) * poliza.getValorPremio() ;
+		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
+		poliza.setValorDescuento(valorDescuento);
+	}
+    
 	public void calcularPremio(Poliza poliza, Boolean semestral) {
 		Float prima = calcularPrima(poliza);
 		Float derechoEmision = poliza.getParametrosPoliza().getValorDerechoEmision();
@@ -184,19 +197,6 @@ public class GestorPoliza {
 		poliza.setValorRiesgoTipoCobertura(riesgoTipoCobertura);
 		poliza.setParametrosPoliza(param);
 		return prima;
-	}
-	
-	private void calcularDescuento(Poliza poliza, Boolean semestral) {
-		Float valorDescuentoPorUnidadAdicional = poliza.getParametrosPoliza().getDescuentoUnidadAdicional();
-		Float valorBonificacionPagoSemestral = 0f;
-
-		if(semestral) {
-			valorBonificacionPagoSemestral = GestorSistemaFinanciero.get().getTasaInteresAnual() / 2; //divide por 2 porque el interes es anual
-		}
-		
-		Float valorDescuento = (valorDescuentoPorUnidadAdicional * getPolizas(poliza.getCliente().getNumeroCliente()).size() + valorBonificacionPagoSemestral ) * poliza.getValorPremio() ;
-		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
-		poliza.setValorDescuento(valorDescuento);
 	}
 
 	public Boolean validarMotor(String textoMotor) {
@@ -338,5 +338,29 @@ public class GestorPoliza {
 				cuota.setEstadoPagoCuota(EnumPagoCuota.EN_TERMINO);
 			}
 		}
+	}
+	
+	public Pago ultimoPago(Poliza poliza) {
+		Pago pCuota=null;
+    	List<Cuota> cuotas = new ArrayList<Cuota>();
+    	cuotas = poliza.getCuotas();
+    	LocalDate fecha = LocalDate.parse("1800-01-01");
+    	int i = 0;
+    	while (i < cuotas.size()) {
+    		if (cuotas.get(i).getEstado() == EnumEstadoCuota.PAGO) {
+    			if (i == 0) {
+    				pCuota = cuotas.get(i).getPago();
+    				fecha =	cuotas.get(i).getPago().getFechaPago();
+    			}    			
+    			else {
+    				if (LocalDate.parse(fecha.toString()).isBefore(LocalDate.parse(cuotas.get(i).getPago().getFechaPago().toString()))){
+	    					fecha =	cuotas.get(i).getPago().getFechaPago();
+	    					pCuota = cuotas.get(i).getPago();
+	    			}
+    			}
+    		}
+    		i++;
+    	}
+    	return pCuota;
 	}
 }

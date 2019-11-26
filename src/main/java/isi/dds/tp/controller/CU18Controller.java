@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import isi.dds.tp.gestor.GestorPago;
 import isi.dds.tp.gestor.GestorPoliza;
 import isi.dds.tp.gestor.GestorTema;
 import isi.dds.tp.hibernate.HibernateUtil;
@@ -74,21 +73,19 @@ public class CU18Controller {
 		view18.setTipoDocumento(poliza.getCliente().getTipoDocumento().toString());
 		view18.setNumeroDocumento(poliza.getCliente().getNumeroDocumento());
 		
-		Pago ppago = GestorPago.get().ultimoPago(poliza);
+		Pago ppago = GestorPoliza.get().ultimoPago(poliza);
 		
-		if(GestorPago.get().ultimoPago(poliza) != null) {
+		if(ppago != null) {
 			view18.setfechaPago(ppago.getFechaPago().toString().substring(0,2) + "/" +ppago.getFechaPago().getMonthValue() + "/"+(ppago.getFechaPago().getYear()) );
 			view18.setMonto(ppago.getImporte().toString());
-		}
-		
+		}		
 		else {
 			view18.setfechaPago("-");
 			view18.setMonto("-");
-		}
-		
+		}		
 	}
 
-	private  Boolean condicionesBuscarPoliza() {
+	private Boolean condicionesBuscarPoliza() {
 		String textoPoliza = view18.getNumeroPoliza();
 	
 		String textoError = "";
@@ -121,11 +118,15 @@ public class CU18Controller {
 		view18.setVisible(false);
 	}
 	
+	public void setPagoPolizaController(CU12Controller1 cu12Controller) {
+		this.cu12Controller = cu12Controller;
+	}
+	
 	//para caso de prueba
 	public CU18View getView(){
 		return view18;
 	}
-
+	
 	//---------- LISTENERS USADOS
 	private class ListenerBuscar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
@@ -164,7 +165,6 @@ public class CU18Controller {
 			}
 		}
 	}
-
 	private class ListenerBtnAceptar implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
 			try {
@@ -176,9 +176,5 @@ public class CU18Controller {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}
 		}
-	}
-
-	public void setPagoPolizaController(CU12Controller1 cu12Controller) {
-		this.cu12Controller = cu12Controller;
 	}
 }
