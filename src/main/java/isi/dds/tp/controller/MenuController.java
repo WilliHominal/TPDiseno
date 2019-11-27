@@ -102,7 +102,7 @@ public class MenuController {
 				new CU18Controller(ventana);
 				ventana.revalidate();
 			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "No se puede acceder a Consultar póliza.", JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
