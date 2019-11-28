@@ -99,6 +99,10 @@ public class GestorPoliza {
 		hijo.setPoliza(poliza);
 		poliza.getHijosDeclarado().add(hijo);
     }
+	
+	public void removeHijo(Poliza poliza, int indexHijo){
+    	poliza.getHijosDeclarado().remove(indexHijo);
+	}
     
     public void addCuota(Poliza poliza, Float monto, LocalDate ultimoDiaPago) {
     	Cuota cuota = new Cuota();
@@ -109,19 +113,6 @@ public class GestorPoliza {
     	cuota.setUltimoDiaPago(ultimoDiaPago);
     }
 	
-	private void calcularDescuento(Poliza poliza, Boolean semestral) {
-		Float valorDescuentoPorUnidadAdicional = poliza.getParametrosPoliza().getDescuentoUnidadAdicional();
-		Float valorBonificacionPagoSemestral = 0f;
-
-		if(semestral) {
-			valorBonificacionPagoSemestral = GestorSistemaFinanciero.get().getTasaInteresAnual() / 2; //divide por 2 porque el interes es anual
-		}
-		
-		Float valorDescuento = (valorDescuentoPorUnidadAdicional * getPolizas(poliza.getCliente().getNumeroCliente()).size() + valorBonificacionPagoSemestral ) * poliza.getValorPremio() ;
-		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
-		poliza.setValorDescuento(valorDescuento);
-	}
-    
 	public void calcularPremio(Poliza poliza, Boolean semestral) {
 		Float prima = calcularPrima(poliza);
 		Float derechoEmision = poliza.getParametrosPoliza().getValorDerechoEmision();
@@ -198,6 +189,19 @@ public class GestorPoliza {
 		poliza.setParametrosPoliza(param);
 		return prima;
 	}
+	
+	private void calcularDescuento(Poliza poliza, Boolean semestral) {
+		Float valorDescuentoPorUnidadAdicional = poliza.getParametrosPoliza().getDescuentoUnidadAdicional();
+		Float valorBonificacionPagoSemestral = 0f;
+
+		if(semestral) {
+			valorBonificacionPagoSemestral = GestorSistemaFinanciero.get().getTasaInteresAnual() / 2; //divide por 2 porque el interes es anual
+		}
+		Integer cantPolizasVigentes = DAOPoliza.getDAO().getPolizasActivas(poliza.getCliente().getNumeroCliente()).size();
+		Float valorDescuento = (valorDescuentoPorUnidadAdicional * cantPolizasVigentes + valorBonificacionPagoSemestral ) * poliza.getValorPremio() ;
+		poliza.setValorBonificacionPagoSemestral(valorBonificacionPagoSemestral);
+		poliza.setValorDescuento(valorDescuento);
+	}
 
 	public Boolean validarMotor(String textoMotor) {
 		if(DAOPoliza.getDAO().getCantPolizaPorMotor(textoMotor)>0) {
@@ -266,14 +270,14 @@ public class GestorPoliza {
 		return (valido1 && valido2);
 	}
 	
-	public Boolean vigenciaFechaInicioVigencia(LocalDate fechaInicioVigenciaLocalDate) {		
+	public Boolean vigenciaFechaInicioVigencia(LocalDate fechaInicioVigencia) {		
 		int anioActual = LocalDate.now().getYear();
 		int mesActual = LocalDate.now().getMonthValue();
 		int diaActual = LocalDate.now().getDayOfMonth();
 		
-		int anioInicioVigencia = fechaInicioVigenciaLocalDate.getYear();
-		int mesInicioVigencia = fechaInicioVigenciaLocalDate.getMonthValue();
-		int diaInicioVigencia = fechaInicioVigenciaLocalDate.getDayOfMonth();
+		int anioInicioVigencia = fechaInicioVigencia.getYear();
+		int mesInicioVigencia = fechaInicioVigencia.getMonthValue();
+		int diaInicioVigencia = fechaInicioVigencia.getDayOfMonth();
 		
 		if (!(
 				(anioActual == anioInicioVigencia && mesActual == mesInicioVigencia && diaActual < diaInicioVigencia)
@@ -307,10 +311,6 @@ public class GestorPoliza {
 	public List<Poliza> getPolizas(Long numeroCliente) {
 		return DAOPoliza.getDAO().getPolizas(numeroCliente);
     }
-	
-	public void removeHijo(Poliza poliza, int indexHijo){
-    	poliza.getHijosDeclarado().remove(indexHijo);
-	}
 	
 	public Poliza buscarPoliza(Long numeroPoliza) {
 		return DAOPoliza.getDAO().getPoliza(numeroPoliza);
@@ -362,5 +362,9 @@ public class GestorPoliza {
     		i++;
     	}
     	return pCuota;
+	}
+
+	public int getPolizasActivas(Long numeroCliente) {
+		return DAOPoliza.getDAO().getPolizasActivas(numeroCliente).size();
 	}
 }

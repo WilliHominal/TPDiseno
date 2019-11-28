@@ -96,7 +96,7 @@ public class CU12View2 extends JPanel{
 		tema.setTema(lVuelto);
 		tema.setTema(campoMontoAbonado, true);
 		tema.setTema(campoVuelto, false);
-		tema.setTema(btnCompletarPago, true);
+		tema.setTema(btnCompletarPago, false);
 		tema.setTema(btnCancelar, true);
 		tema.setTema(btnCambiarMonto, true);
 	}
@@ -147,6 +147,7 @@ public class CU12View2 extends JPanel{
 	}
 
 	public void habilitarBotonPago(boolean b) {
+		tema.setTema(btnCompletarPago, b);
 		this.btnCompletarPago.setEnabled(b);
 	}
 

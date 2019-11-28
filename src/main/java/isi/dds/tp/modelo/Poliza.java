@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import org.hibernate.annotations.IndexColumn;
 import isi.dds.tp.enums.EnumEstadoPoliza;
@@ -38,24 +37,24 @@ public class Poliza {
 	@IndexColumn(name ="idx")
 	private List<Cuota> cuotas;
 
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tipo_cobertura", foreignKey=@ForeignKey(name = "fk_tipo_cobertura"))
-    @OneToOne
 	private TipoCobertura tipoCobertura;
 
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "anio_modelo", foreignKey=@ForeignKey(name = "fk_anio_modelo"))
-    @OneToOne
 	private AnioModelo anioModelo;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_ciudad", foreignKey=@ForeignKey(name = "fk_id_ciudad"))
-    @OneToOne
 	private Ciudad ciudad;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "parametros_poliza", foreignKey=@ForeignKey(name = "fk_parametros_poliza"))
-    @OneToOne
 	private ParametrosPoliza parametrosPoliza;
     
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "solicitud_poliza", foreignKey=@ForeignKey(name = "fk_solicitud_poliza"))
-    @OneToOne(cascade=CascadeType.ALL)
 	private SolicitudPoliza solicitudPoliza;
 	
 	@Id

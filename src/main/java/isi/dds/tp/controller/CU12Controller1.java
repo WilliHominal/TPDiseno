@@ -2,6 +2,7 @@ package isi.dds.tp.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -9,6 +10,8 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -22,7 +25,7 @@ import isi.dds.tp.modelo.Poliza;
 import isi.dds.tp.view.CU12View1;
 
 public class CU12Controller1 {
-
+	
 	private CU12Controller1 instancia;
 	private CU12View1 view1;
 	
@@ -33,6 +36,8 @@ public class CU12Controller1 {
 	private Poliza poliza;
 	private List<Cuota> cuotasApagar = new ArrayList<Cuota>();
 	List<Cuota> cuotas = new ArrayList<Cuota>();
+	
+	private DecimalFormat num;
 	
 	public CU12Controller1(JFrame ventana) {
 		instancia = this;
@@ -49,6 +54,9 @@ public class CU12Controller1 {
 	private void setView() {
 		GestorTema.get().setTema(ventana, "Realizar pago de póliza: SELECCIÓN DE MONTO A PAGAR");
 		view1 = new CU12View1();
+		
+		Locale.setDefault(Locale.US);
+		num = new DecimalFormat("0.00");
 		
 		view1.addListenerBtn_BuscarPoliza(new ListenerBtnBuscarPoliza());;
 		view1.addListenerBtn_Cancelar(new ListenerBtnCancelar());
@@ -104,23 +112,24 @@ public class CU12Controller1 {
 				int contadorAux = 0;
 				for (int i=0; i<6; i++) {
 					if (cuotas.get(i).getEstado().equals(EnumEstadoCuota.IMPAGO)) {
-						view1.setCuotaOriginal(contadorAux, cuotas.get(i).getMonto().toString());
+						view1.setCuotaOriginal(contadorAux, num.format(cuotas.get(i).getMonto()));
 						LocalDate fechaPago = cuotas.get(i).getUltimoDiaPago();
 						if (fechaActual.isBefore(fechaPago)) {
 							Long cantMeses = ChronoUnit.MONTHS.between(fechaActual.withDayOfMonth(1), fechaPago.withDayOfMonth(1));
 							
 							Float monto = (Float) (cuotas.get(i).getMonto() * (1 - 
 									(GestorSistemaFinanciero.get().getTasaInteresAnual() * cantMeses) / 12));
-							view1.setCuotaActual(contadorAux, (monto).toString());
+							view1.setCuotaActual(contadorAux, num.format(monto));
 							importeTotal += monto;
-						} else if (fechaActual.isAfter(fechaPago)) {
-							Long cantMeses = ChronoUnit.MONTHS.between(fechaPago.withDayOfMonth(1), fechaActual.withDayOfMonth(1));
-							Float monto = (Float) (cuotas.get(i).getMonto() * (1 + 
-									(GestorSistemaFinanciero.get().getTasaInteresAnual() * cantMeses) / 12));
-							view1.setCuotaActual(contadorAux, (monto).toString());
-							importeTotal += monto;
+						} else 
+							if (fechaActual.isAfter(fechaPago)) {
+								Long cantMeses = ChronoUnit.MONTHS.between(fechaPago.withDayOfMonth(1), fechaActual.withDayOfMonth(1));
+								Float monto = (Float) (cuotas.get(i).getMonto() * (1 + 
+										(GestorSistemaFinanciero.get().getTasaInteresAnual() * cantMeses) / 12));
+								view1.setCuotaActual(contadorAux, num.format(monto));
+								importeTotal += monto;
 						} else {
-							view1.setCuotaActual(contadorAux, cuotas.get(i).getMonto().toString());
+							view1.setCuotaActual(contadorAux, num.format(cuotas.get(i).getMonto()));
 							importeTotal += cuotas.get(i).getMonto();
 						}
 						
@@ -129,23 +138,32 @@ public class CU12Controller1 {
 				}
 			} else {
 				if (cuotas.get(0).getEstado().equals(EnumEstadoCuota.IMPAGO)) {
-					view1.setCuotaOriginal(0, cuotas.get(0).getMonto().toString());
-					if (fechaActual.isBefore(cuotas.get(0).getUltimoDiaPago())) {
-						view1.setCuotaActual(0, ((Float)(cuotas.get(0).getMonto()-1234)).toString());
-						importeTotal += cuotas.get(0).getMonto() - 1234;
-					} else if (fechaActual.isAfter(cuotas.get(0).getUltimoDiaPago())) {
-						view1.setCuotaActual(0, ((Float)(cuotas.get(0).getMonto()+1234)).toString());
-						importeTotal += cuotas.get(0).getMonto() + 1234;
+					view1.setCuotaOriginal(0, num.format(cuotas.get(0).getMonto()));
+					LocalDate fechaPago = cuotas.get(0).getUltimoDiaPago();
+					if (fechaActual.isBefore(fechaPago)) {
+						Long cantMeses = ChronoUnit.MONTHS.between(fechaActual.withDayOfMonth(1), fechaPago.withDayOfMonth(1));
+						
+						Float monto = (Float) (cuotas.get(0).getMonto() * (1 - 
+								(GestorSistemaFinanciero.get().getTasaInteresAnual() * cantMeses) / 12));
+						view1.setCuotaActual(0, num.format(monto));
+						importeTotal += monto;
+					} else 
+						if (fechaActual.isAfter(fechaPago)) {
+							Long cantMeses = ChronoUnit.MONTHS.between(fechaPago.withDayOfMonth(1), fechaActual.withDayOfMonth(1));
+							Float monto = (Float) (cuotas.get(0).getMonto() * (1 + 
+									(GestorSistemaFinanciero.get().getTasaInteresAnual() * cantMeses) / 12));
+							view1.setCuotaActual(0, num.format(monto));
+							importeTotal += monto;
 					} else {
-						view1.setCuotaActual(0, cuotas.get(0).getMonto().toString());
+						view1.setCuotaActual(0, num.format(cuotas.get(0).getMonto()));
 						importeTotal += cuotas.get(0).getMonto();
 					}
 				}
 			}
 			
 			ordenarCuotas(cuotasImpagas);
-			view1.setImportesParciales("0.0");
-			view1.setImportesTotales(importeTotal.toString());
+			view1.setImportesParciales("0.00");
+			view1.setImportesTotales(num.format(importeTotal));
 			view1.habilitarBotonConfirmarPago();			
 		} else {
 			JOptionPane.showMessageDialog(ventana, "La póliza ya está pagada", "Error", JOptionPane.ERROR_MESSAGE);
@@ -194,6 +212,7 @@ public class CU12Controller1 {
 		ventana.setContentPane(panelAnterior);
 		ventana.setTitle(tituloAnterior);
 		view1.setVisible(false);
+		HibernateUtil.cerrarSessionesUsadas();
 	}
 	
 	public CU12View1 getView(){
@@ -246,7 +265,6 @@ public class CU12Controller1 {
 				int seleccion = JOptionPane.showConfirmDialog(ventana, mensaje, "Confirmación", JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
 				view1.noValido(false, false);
 				if(seleccion == 0) {
-
 					new CU12Controller2(ventana).setCU12Controller1(instancia);
 				}
 			}catch(Exception ex) {
@@ -258,7 +276,6 @@ public class CU12Controller1 {
 		public void actionPerformed(ActionEvent e) {
 			try {
 				volver();
-				HibernateUtil.cerrarSessionesUsadas();
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}

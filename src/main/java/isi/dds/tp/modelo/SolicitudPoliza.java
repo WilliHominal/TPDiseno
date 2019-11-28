@@ -9,10 +9,9 @@ import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
 import org.hibernate.annotations.IndexColumn;
 import isi.dds.tp.enums.EnumSiniestros;
 
@@ -21,16 +20,16 @@ import isi.dds.tp.enums.EnumSiniestros;
 @Table(name = "solicitud_poliza")
 public class SolicitudPoliza {
 	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "tipo_cobertura", foreignKey=@ForeignKey(name = "fk_tipo_cobertura"))
-    @OneToOne
     private TipoCobertura tipoCobertura;
 
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "anio_modelo", foreignKey=@ForeignKey(name = "fk_anio_modelo"))
-    @OneToOne
 	private AnioModelo anioModelo;
 	
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(foreignKey=@ForeignKey(name = "fk_ciudad"))
-    @OneToOne
 	private Ciudad ciudad;
 	
 	@OneToMany(fetch = FetchType.LAZY)

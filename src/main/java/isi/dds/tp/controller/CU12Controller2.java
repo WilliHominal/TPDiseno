@@ -4,6 +4,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.text.DecimalFormat;
+import java.util.Locale;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -24,6 +26,8 @@ public class CU12Controller2 {
 	private JPanel panelAnterior;
 	private String tituloAnterior = "";
 	
+	private DecimalFormat num;
+	
 	public CU12Controller2(JFrame ventana) {
 		this.ventana = ventana;
 		this.tituloAnterior = ventana.getTitle();
@@ -39,6 +43,9 @@ public class CU12Controller2 {
 		GestorTema.get().setTema(ventana, "Realizar pago de póliza: REGISTRAR PAGO DE PÓLIZA");
 		view2 = new CU12View2();
 		
+		Locale.setDefault(Locale.US);
+		num = new DecimalFormat("0.00");
+		
 		view2.addListenerBtn_CambiarMonto(new ListenerBtnCambiarMonto());;
 		view2.addListenerBtn_Cancelar(new ListenerBtnCancelar());
 		view2.addListenerBtn_CompletarPago(new ListenerBtnCompletarPago());
@@ -52,24 +59,24 @@ public class CU12Controller2 {
 		this.controller1 = controller1;
 	}
 	
-	private int parteDecimal (String numero) {
+	private Long parteDecimal (String numero) {
 		if (numero.substring(numero.length()-1).equals("."))
-			return 0;
+			return 0l;
 		else {
 			String[] parteDecimal = numero.split("\\.");
-			return Integer.valueOf(parteDecimal[1]);
+			return Long.valueOf(parteDecimal[1]);
 		}
 	}
 	
-	private int parteEntera (String numero) {
+	private Long parteEntera (String numero) {
 		String[] parteEntera = numero.split("\\.");
-		return Integer.valueOf(parteEntera[0]);
+		return Long.valueOf(parteEntera[0]);
 	}
 	
 	private Float calcularVuelto(char caracter) {
 		Float montoAbonado = 0f, totalAPagar = 0f;
 		String monto = "";
-		Integer parteEntera, parteDecimal;
+		Long parteEntera, parteDecimal;
 		
 		if (!view2.getMontoAbonado().isEmpty())
 			monto = view2.getMontoAbonado();
@@ -80,7 +87,7 @@ public class CU12Controller2 {
 			parteEntera = parteEntera(monto);
 			parteDecimal = parteDecimal(monto);
 			parteDecimal = parteDecimal * 10 + (int) Character.getNumericValue(caracter);
-			monto = Integer.toString(parteEntera) + "." + Integer.toString(parteDecimal);
+			monto = Long.toString(parteEntera) + "." + Long.toString(parteDecimal);
 			montoAbonado = Float.parseFloat(monto);
 		} else if (!monto.isEmpty()){ 
 			montoAbonado = Float.parseFloat(monto)*10 + (float) Character.getNumericValue(caracter);
@@ -94,7 +101,7 @@ public class CU12Controller2 {
 	private Float calcularVuelto() {
 		Float montoAbonado = 0f, totalAPagar = 0f;
 		String monto = "";
-		Integer parteEntera, parteDecimal;
+		Long parteEntera, parteDecimal;
 		
 		if (!view2.getMontoAbonado().isEmpty())
 			monto = view2.getMontoAbonado();
@@ -105,7 +112,7 @@ public class CU12Controller2 {
 			parteEntera = parteEntera(monto);
 			parteDecimal = parteDecimal(monto);
 			parteDecimal = parteDecimal / 10;
-			monto = Integer.toString(parteEntera) + "." + Integer.toString(parteDecimal);
+			monto = Long.toString(parteEntera) + "." + Long.toString(parteDecimal);
 			montoAbonado = Float.parseFloat(monto);
 		} else if (!monto.isEmpty()) {
 			montoAbonado = (Float.parseFloat(view2.getMontoAbonado())/10f);
@@ -156,9 +163,9 @@ public class CU12Controller2 {
 				if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE) {
 					if (view2.getMontoAbonado().length() == 1) {
 						view2.habilitarBotonPago(false);
-						view2.setVuelto( ((Float)( - Float.parseFloat(controller1.getView().getImportesParciales()) )).toString() );
+						view2.setVuelto( num.format((Float)( - Float.parseFloat(controller1.getView().getImportesParciales()) )) );
 					} else {
-						view2.setVuelto(calcularVuelto().toString());
+						view2.setVuelto(num.format(calcularVuelto()));
 					}
 				} else {
 					char caracter = e.getKeyChar();
@@ -208,8 +215,9 @@ public class CU12Controller2 {
 	}
 	private class ListenerBtnCancelar implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
-			try {			
-				volver();
+			try {
+				controller1.volver();
+				view2.setVisible(false);
 			}catch(Exception ex) {
 			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
 			}

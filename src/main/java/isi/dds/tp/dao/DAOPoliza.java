@@ -66,7 +66,6 @@ public class DAOPoliza {
         }
         catch (HibernateException e) {
         	altaPoliza = false;
-        	e.printStackTrace();
             session.getTransaction().rollback();	
 		}
         session.close();
@@ -154,7 +153,7 @@ public class DAOPoliza {
 	public List<Poliza> getPolizasActivas(Long numeroCliente) {
         try {
             return session.createQuery("SELECT p FROM Poliza p WHERE numero_cliente="+numeroCliente
-            		+" and estado='"+EnumEstadoPoliza.VIGENTE+"'", Poliza.class).list();
+            		+" and estado='"+EnumEstadoPoliza.VIGENTE.name()+"'", Poliza.class).list();
         }
         catch (HibernateException e) {
             e.printStackTrace();

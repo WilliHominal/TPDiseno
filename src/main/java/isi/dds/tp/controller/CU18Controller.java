@@ -2,6 +2,7 @@ package isi.dds.tp.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -76,7 +77,8 @@ public class CU18Controller {
 		Pago ppago = GestorPoliza.get().ultimoPago(poliza);
 		
 		if(ppago != null) {
-			view18.setfechaPago(ppago.getFechaPago().toString().substring(0,2) + "/" +ppago.getFechaPago().getMonthValue() + "/"+(ppago.getFechaPago().getYear()) );
+			DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d/MM/uuuu");
+			view18.setfechaPago(ppago.getFechaPago().format(formatters));
 			view18.setMonto(ppago.getImporte().toString());
 		}		
 		else {
@@ -146,8 +148,8 @@ public class CU18Controller {
 				}
 				else {
 					JOptionPane.showMessageDialog(null, "No existe póliza con ese número.\n",
-				                          "Error.", JOptionPane.ERROR_MESSAGE); 
-					}
+		                        "Error.", JOptionPane.ERROR_MESSAGE); 
+				}
 			}catch(Exception ex) {
 				JOptionPane.showMessageDialog(ventana, "No se pudo obtener la póliza desde la base de datos",
                         "Error.", JOptionPane.ERROR_MESSAGE);  

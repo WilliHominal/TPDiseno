@@ -31,15 +31,10 @@ public class CU01Controller3 {
 		view3.setLocationRelativeTo(null);
 		view3.setTitle("Dar de alta póliza: AGREGAR DATOS HIJOS");
 		view3.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
-		System.out.println("Linea 34 controller 3");
 		setFechaInicioDefault();
-		System.out.println("Linea 36 controller 3");
 		addSelecccionSexo();
-		System.out.println("Linea 38 controller 3");
 		addSeleccionEstadoCivil();
-		System.out.println("Linea 40 controller 3");
 		addListenerVentanaDeclararHijo();
-		System.out.println("Linea 42 controller 3");
 		view3.addListenerPane(new ListenerPanel());
 		view3.addListenerSeleccionSexo(new ListenerSeleccionSexo());
 		view3.addListenerBtnAgregarHijo(new ListenerBtnAgregarHijo());

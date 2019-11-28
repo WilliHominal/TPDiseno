@@ -494,7 +494,6 @@ public class CU01View1 extends JPanel {
 			tema.setTema(seleccionModelo, false);
 			tema.setTema(seleccionAnio, false);
 		}
-		System.out.println("Linea 497 view1");
 		tema.setTema(seleccionKm, estaDeclarando);
 		tema.setTema(seleccionProvincia, estaDeclarando);
 		tema.setTema(seleccionCiudad, estaDeclarando);
@@ -506,7 +505,6 @@ public class CU01View1 extends JPanel {
 		
 		tema.setTema(tablaHijos, estaDeclarando);
 		tema.setTema(tablaHijosScroll, estaDeclarando);
-		System.out.println("Linea 510 view 1");
 		rbtnGarageSi.setEnabled(estaDeclarando);
 		rbtnGarageNo.setEnabled(estaDeclarando);
 		rbtnAlarmaSi.setEnabled(estaDeclarando);
@@ -521,7 +519,6 @@ public class CU01View1 extends JPanel {
 		tema.setTema(btnConfirmarDatos, estaDeclarando);
 		tema.setTema(btnCancelar, estaDeclarando);
 		tema.setTema(btnAgregarHijo, estaDeclarando);
-		System.out.println("Linea 525 view 1");
 		if(cantHijos > 0 && estaDeclarando) {
 			tema.setTema(btnQuitarHijo, true);
 		}

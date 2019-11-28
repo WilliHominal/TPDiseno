@@ -154,9 +154,10 @@ public class CU01Controller2 {
 			}
 			else {
 				gestorPoliza.actualizarPoliza(poliza, view2.getTipoCobertura(), inicioVigencia, EnumFormaPago.SEMESTRAL );
+				descuentoSemestral = true;
 			}
 			
-			if (gestorPoliza.getPolizas(poliza.getCliente().getNumeroCliente()).size() > 0) {
+			if (gestorPoliza.getPolizasActivas(poliza.getCliente().getNumeroCliente()) > 0) {
 				descuentoMasDeUnaUnidad = true;
 			}
 

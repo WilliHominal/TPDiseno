@@ -1,34 +1,17 @@
 package isi.dds.tp.modelo;
 
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import isi.dds.tp.enums.EnumTipoUsuario;
-import org.hibernate.annotations.IndexColumn;
 
-@SuppressWarnings("deprecation")
 @Entity
 @Table
 public class Usuario {
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name ="id_usuario")
-	@IndexColumn(name ="idx")
-	private List <BitacoraSolicitudPoliza> bitacorasSolicitudPoliza;
-	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name ="id_usuario")
-	@IndexColumn(name ="idx")
-	private List <BitacoraParametrosPoliza> bitacoraParametrosPoliza;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "id_usuario")
@@ -50,14 +33,6 @@ public class Usuario {
 
 	public Usuario() { }
 	
-	public List<BitacoraSolicitudPoliza> getBitacorasSolicitudPoliza() {
-		return bitacorasSolicitudPoliza;
-	}
-	
-	public List<BitacoraParametrosPoliza> getBitacoraParametrosPoliza() {
-		return bitacoraParametrosPoliza;
-	}
-	
 	public Integer getIdUsuario() {
 		return idUsuario;
 	}
@@ -68,14 +43,6 @@ public class Usuario {
 	
 	public EnumTipoUsuario getTipoUsuario() {
 		return tipoUsuario;
-	}
-	
-	public void setBitacorasSolicitudPoliza(List<BitacoraSolicitudPoliza> bitacorasSolicitudPoliza) {
-		this.bitacorasSolicitudPoliza = bitacorasSolicitudPoliza;
-	}
-	
-	public void setBitacoraParametrosPoliza(List<BitacoraParametrosPoliza> bitacoraParametrosPoliza) {
-		this.bitacoraParametrosPoliza = bitacoraParametrosPoliza;
 	}
 	
 	public void setIdUsuario(Integer idUsuario) {

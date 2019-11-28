@@ -449,8 +449,18 @@ public class CU01View2 extends JPanel  {
 	}
 
 	public void visualizarDescuentos(Boolean descuentoMasDeUnaUnidad, Boolean descuentoSemestral) {
-		lDescSemestral.setVisible(descuentoSemestral);
-		lDescUnidad.setVisible(descuentoMasDeUnaUnidad);
+		if(descuentoMasDeUnaUnidad) {
+			lDescUnidad.setVisible(descuentoMasDeUnaUnidad);
+			if(descuentoSemestral) {
+				lDescSemestral.setVisible(descuentoSemestral);
+			}
+		}
+		else {
+			if(descuentoSemestral) {
+				lDescUnidad.setText("-Descuento por pago semestral");
+				lDescUnidad.setVisible(descuentoSemestral);
+			}
+		}
 	}
 
 	public void inhabilitarSeleccion() {

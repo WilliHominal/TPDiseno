@@ -95,6 +95,9 @@ public class CU01Controller1 {
 				view1.cargarHijosTabla(fila, formattedString, sexo, estadoCivil);
 			}
 		}
+		else {
+			view1.componentesAlDeclararHijos(true, poliza.getHijosDeclarado().size());
+		}
 	}	
 
 	/**
@@ -397,9 +400,7 @@ public class CU01Controller1 {
 	private class ListenerBtnDeclararHijo implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
 			try {		
-				System.out.println("Linea 400 controller 1");
 				view1.componentesAlDeclararHijos(false, 0);
-				System.out.println("Linea 402 controller 1");
 				new CU01Controller3().setCU01Controller1(instancia);
 				
 			}catch(Exception ex) {
@@ -416,7 +417,7 @@ public class CU01Controller1 {
 					return;
 				}
 			}catch(Exception ex) {
-			    JOptionPane.showMessageDialog(ventana, ex.getMessage(), "ERROR", JOptionPane.ERROR_MESSAGE);
+			    JOptionPane.showMessageDialog(ventana, "Debe seleccionar hijo a quitar.", "Error", JOptionPane.INFORMATION_MESSAGE);
 			}
 		}
 	}

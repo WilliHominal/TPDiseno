@@ -2,6 +2,8 @@ package isi.dds.tp.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
+
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -66,7 +68,8 @@ public class CU17Controller2 {
 		view2.setAnioRegistro(cliente.getAnioRegistro().toString());
 		view2.setTipoDocumento(cliente.getTipoDocumento().toString());
 		view2.setSexo(cliente.getSexo().toString());
-		view2.setFechaNacimiento(cliente.getFechaNacimiento().toString().substring(0,2) + "/" +cliente.getFechaNacimiento().getMonthValue() + "/" +cliente.getFechaNacimiento().getYear());
+		DateTimeFormatter formatters = DateTimeFormatter.ofPattern("d/MM/uuuu");
+		view2.setFechaNacimiento(cliente.getFechaNacimiento().format(formatters));
 		view2.setPais(cliente.getCiudad().getProvincia().getPais().getNombre());
 		view2.setProvincia(cliente.getCiudad().getProvincia().getNombre());
 		view2.setCiudad(cliente.getCiudad().getNombre());
