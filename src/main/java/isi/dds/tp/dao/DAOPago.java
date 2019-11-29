@@ -3,7 +3,7 @@ package isi.dds.tp.dao;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import isi.dds.tp.hibernate.HibernateUtil;
-import isi.dds.tp.modelo.Pago;
+import isi.dds.tp.modelo.Cuota;
 
 public class DAOPago {
 	private static DAOPago instanciaDAO = null;
@@ -12,26 +12,41 @@ public class DAOPago {
     private DAOPago() { }
 
     public static DAOPago getDAO() {
-    	 if (instanciaDAO == null){
-         	instanciaDAO = new DAOPago();
-         }
-         if(session == null) {
-     		session = HibernateUtil.getSessionFactoryValidate().openSession();
-         	session.beginTransaction();
-         }
-         return instanciaDAO;
+        if (instanciaDAO == null){
+        	instanciaDAO = new DAOPago();
+        }
+        if(session == null) {
+    		session = HibernateUtil.getSessionFactoryValidate().openSession();
+        	session.beginTransaction();
+        }        
+        return instanciaDAO;
     }
-    
+
     public static void shutdown() {
     	if(session != null) {
     		session.close();
     		session = null;
     	}
     }
-
-	public void addPago(Pago pago) {
+    
+    public void removeCuota (Cuota cuota) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
-            session.save(pago);
+        	session.beginTransaction();
+            session.delete(cuota);
+            session.getTransaction().commit();
+        }
+        catch (HibernateException e) {
+            session.getTransaction().rollback();	
+		}
+        session.close();
+    }
+    
+    public void addCuota (Cuota cuota) {
+    	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
+        try {
+        	session.beginTransaction();
+            session.save(cuota);
             session.getTransaction().commit();
         }
         catch (HibernateException e) {
@@ -39,5 +54,6 @@ public class DAOPago {
             session.getTransaction().rollback();	
 		}
         session.close();
-	}
+    }
+
 }
