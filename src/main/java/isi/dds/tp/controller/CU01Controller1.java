@@ -295,7 +295,7 @@ public class CU01Controller1 {
 					if(!errorEnPatente) {
 						if(gestorPoliza.validarPatente(textoPatente)) {
 							errorEnPatente = true;
-							textoErrorPatente = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
+							textoErrorPatente = errorNumero+") El valor ingresado del número de patente, ya está registrado como parte de otra póliza.\n";
 							errorNumero++;
 						}
 					}
@@ -329,7 +329,7 @@ public class CU01Controller1 {
 					if(!errorEnPatente) {
 						if(gestorPoliza.validarPatente(textoPatente)) {
 							errorEnPatente = true;
-							textoErrorPatente = errorNumero+") El valor ingresado del número de motor, ya está registrado como parte de otra póliza.\n";
+							textoErrorPatente = errorNumero+") El valor ingresado del número de patente, ya está registrado como parte de otra póliza.\n";
 							errorNumero++;
 						}
 					}
