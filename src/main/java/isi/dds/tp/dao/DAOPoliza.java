@@ -65,6 +65,7 @@ public class DAOPoliza {
             altaPoliza = true;
         }
         catch (HibernateException e) {
+        	e.printStackTrace();
         	altaPoliza = false;
             session.getTransaction().rollback();	
 		}
@@ -94,7 +95,8 @@ public class DAOPoliza {
 	
 	public Long getCantPolizaPorMotor(String motor) {
         try {
-            return (Long) session.createQuery("select count(*) from Poliza where motor='"+motor+"'").getSingleResult();
+        	//TODO habria que validar que sea para el mismi modelo de auto etc
+            return (Long) session.createQuery("select count(*) from Poliza where motor='"+motor+"' and (estado='"+EnumEstadoPoliza.VIGENTE.name()+"' or estado='"+EnumEstadoPoliza.GENERADA.name()+"')").getSingleResult();
         }
         catch (HibernateException e) { }
         return null;
@@ -102,7 +104,8 @@ public class DAOPoliza {
 	
 	public Long getCantPolizaPorChasis(String chasis) {
         try {
-        	return (Long) session.createQuery("select count(*) from Poliza where chasis='"+chasis+"'").getSingleResult();
+        	//TODO habria que validar que sea para el mismi modelo de auto etc
+        	return (Long) session.createQuery("select count(*) from Poliza where chasis='"+chasis+"' and (estado='"+EnumEstadoPoliza.VIGENTE.name()+"' or estado='"+EnumEstadoPoliza.GENERADA.name()+"')").getSingleResult();
         }
         catch (HibernateException e) { }
         return null;
@@ -110,7 +113,8 @@ public class DAOPoliza {
 	
 	public Long getCantPolizaPorPatente(String patente) {
         try {
-        	return (Long) session.createQuery("select count(*) from Poliza where patente='"+patente+"'").getSingleResult();
+        	//TODO habria que validar que sea para el mismi modelo de auto etc
+        	return (Long) session.createQuery("select count(*) from Poliza where patente='"+patente+"' and (estado='"+EnumEstadoPoliza.VIGENTE.name()+"' or estado='"+EnumEstadoPoliza.GENERADA.name()+"')").getSingleResult();
         }
         catch (HibernateException e) { }
         return null;

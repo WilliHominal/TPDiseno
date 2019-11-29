@@ -332,7 +332,7 @@ public class GestorPoliza {
 			if (fechaActual.isAfter(fechaPago)) {
 				Long cantMeses = ChronoUnit.MONTHS.between(fechaPago.withDayOfMonth(1), fechaActual.withDayOfMonth(1));
 				cuota.setEstadoPagoCuota(EnumPagoCuota.EN_MORA);
-				cuota.setBonificacionPagoAdelantado(cuota.getMonto() * (GestorSistemaFinanciero.get().getTasaInteresAnual() * cantMeses) / 12);
+				cuota.setRecargoPorMora(cuota.getMonto() * (GestorSistemaFinanciero.get().getTasaInteresAnual() * cantMeses) / 12);
 			} 
 			else {
 				cuota.setEstadoPagoCuota(EnumPagoCuota.EN_TERMINO);
@@ -366,5 +366,15 @@ public class GestorPoliza {
 
 	public int getPolizasActivas(Long numeroCliente) {
 		return DAOPoliza.getDAO().getPolizasActivas(numeroCliente).size();
+	}
+
+
+	public void vaciarCuotas(Poliza poliza) {
+		Integer size = poliza.getCuotas().size(), indice = 0;
+		while(indice < size) {
+			poliza.getCuotas().get(indice).setPoliza(null);;
+			indice++;
+		}
+		poliza.setCuotas(new ArrayList<Cuota>());
 	}
 }

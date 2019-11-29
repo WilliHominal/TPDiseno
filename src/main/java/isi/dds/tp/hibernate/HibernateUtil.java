@@ -52,7 +52,11 @@ public class HibernateUtil {
             } catch (Exception e) {
             	sessionFactory = getSessionFactoryCreate();
             }
-            sessionFactory.getCurrentSession().beginTransaction();
+            try {
+            	sessionFactory.getCurrentSession().beginTransaction();
+            } catch (Exception e) {
+            	return null;
+            }
         }
         return sessionFactory;
     }

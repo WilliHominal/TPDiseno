@@ -2,7 +2,6 @@ package isi.dds.tp.modelo;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.ForeignKey;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -16,8 +15,8 @@ import javax.persistence.Table;
 @Table(name = "anio_modelo")
 public class AnioModelo {
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn (name = "id_modelo", foreignKey=@ForeignKey(name = "fk_id_modelo"))
+	@ManyToOne
+	@JoinColumn (name = "id_modelo", foreignKey=@ForeignKey(name = "fk_id_modelo"), nullable = false)
 	private Modelo modelo;
 
 	@Id

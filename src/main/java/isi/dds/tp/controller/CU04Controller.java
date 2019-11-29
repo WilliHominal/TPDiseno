@@ -91,7 +91,7 @@ public class CU04Controller {
 	}
 	
 	private void addSeleccionCiudad() {
-		List<Ciudad> ciudades = gestorDomicilio.sortCiudades(view.getProvincia());
+		List<Ciudad> ciudades = gestorDomicilio.sortCiudades(view.getProvincia().getIdProvincia());
 		Iterator<Ciudad> iteradorCiudades = ciudades.iterator();
 		while(iteradorCiudades.hasNext()){
 			view.addCiudad(iteradorCiudades.next());
@@ -143,7 +143,7 @@ public class CU04Controller {
 			
 			view.habilitarCiudad(false);
 								
-			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(view.getProvincia()).iterator();
+			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(view.getProvincia().getIdProvincia()).iterator();
 			while(iteratorCiudad.hasNext()){
 				view.addCiudad(iteratorCiudad.next());
 			}
@@ -157,7 +157,7 @@ public class CU04Controller {
 		public void actionPerformed(ActionEvent e) {
 			view.habilitarCiudad(false);
 								
-			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(view.getProvincia()).iterator();
+			Iterator<Ciudad> iteratorCiudad = gestorDomicilio.sortCiudades(view.getProvincia().getIdProvincia()).iterator();
 			while(iteratorCiudad.hasNext()){
 				view.addCiudad(iteratorCiudad.next());
 			}

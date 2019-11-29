@@ -23,7 +23,7 @@ import javax.persistence.Table;
 public class Cuota {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "numero_poliza", foreignKey=@ForeignKey(name = "fk_numero_poliza"))
+	@JoinColumn(name = "numero_poliza", foreignKey=@ForeignKey(name = "fk_numero_poliza"), nullable = false)
 	private Poliza poliza;
 	
 	@ManyToOne(fetch = FetchType.LAZY)

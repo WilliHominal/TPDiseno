@@ -21,8 +21,8 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Ciudad {
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="id_provincia", foreignKey=@ForeignKey(name = "fk_id_provincia"))
+	@ManyToOne
+	@JoinColumn(name="id_provincia", foreignKey=@ForeignKey(name = "fk_id_provincia"), nullable = false)
 	private Provincia provincia;
 
 	@OneToMany(cascade= CascadeType.ALL, fetch = FetchType.LAZY)

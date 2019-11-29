@@ -187,7 +187,7 @@ public class CU01Controller2 {
 			view2.setSumaAsegurada(num.format(poliza.getSumaAsegurada()));
 			view2.setDescuento(num.format(descuento));
 			
-			
+			gestorPoliza.vaciarCuotas(poliza);
 			if(view2.eligioMensual()) {
 				view2.cargarTabla(6);
 				LocalDate fechaMensual = inicioVigencia.minusDays(1);

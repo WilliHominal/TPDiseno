@@ -21,8 +21,8 @@ import org.hibernate.annotations.IndexColumn;
 @Table
 public class Modelo {
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="id_marca", foreignKey=@ForeignKey(name = "fk_id_marca"))
+	@ManyToOne
+	@JoinColumn(name="id_marca", foreignKey=@ForeignKey(name = "fk_id_marca"), nullable = false)
 	private Marca marca;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)

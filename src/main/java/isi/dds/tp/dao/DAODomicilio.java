@@ -87,6 +87,16 @@ public class DAODomicilio {
     	return null;
     }
 	
+	public List<Ciudad> getCiudades(Integer id_provincia) {
+        try {
+            return session.createQuery("SELECT c FROM Ciudad c where id_provincia="+id_provincia, Ciudad.class).list();
+        }
+        catch (HibernateException e) {
+            e.printStackTrace();
+        }
+    	return null;
+	} 
+	
 	public Ciudad getCiudad(Integer id_ciudad) {
         try {
             return session.get(Ciudad.class, id_ciudad);
@@ -116,6 +126,6 @@ public class DAODomicilio {
         	e.printStackTrace();
             session.getTransaction().rollback();	
 		}
-	}   
+	}  
     
 }

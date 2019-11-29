@@ -22,7 +22,7 @@ import isi.dds.tp.enums.EnumTipoDocumento;
 @Table(uniqueConstraints = {@UniqueConstraint(name = "uk_documento", columnNames= { "documento" } ),
 							@UniqueConstraint(name = "uk_cuil", columnNames= { "cuil" } ) })
 public class Cliente {
-	@JoinColumn(name="id_ciudad", foreignKey=@ForeignKey(name = "fk_id_ciudad"))
+	@JoinColumn(name="id_ciudad", foreignKey=@ForeignKey(name = "fk_id_ciudad"), nullable = false)
     @OneToOne
 	private Ciudad ciudad;
 	

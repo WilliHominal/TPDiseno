@@ -35,6 +35,10 @@ public class GestorPago {
 		}			
 		DAOPago.getDAO().addPago(pago);
     }
+    
+    public void calcularRedondeos() {
+    	//TODO falta
+    }
 }
 	
 

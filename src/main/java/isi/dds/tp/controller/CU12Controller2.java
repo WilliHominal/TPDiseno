@@ -173,7 +173,7 @@ public class CU12Controller2 {
 						if (!view2.pagoHabilitado())
 							view2.habilitarBotonPago(true);
 						e.setKeyChar(caracter);
-						view2.setVuelto(calcularVuelto(caracter).toString());
+						view2.setVuelto(num.format(calcularVuelto(caracter)));
 					}
 					else{
 						e.consume();

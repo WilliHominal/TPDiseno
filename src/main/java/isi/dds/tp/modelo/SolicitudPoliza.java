@@ -21,15 +21,15 @@ import isi.dds.tp.enums.EnumSiniestros;
 public class SolicitudPoliza {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tipo_cobertura", foreignKey=@ForeignKey(name = "fk_tipo_cobertura"))
+	@JoinColumn(name = "tipo_cobertura", foreignKey=@ForeignKey(name = "fk_tipo_cobertura"), nullable = false)
     private TipoCobertura tipoCobertura;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "anio_modelo", foreignKey=@ForeignKey(name = "fk_anio_modelo"))
+	@JoinColumn(name = "anio_modelo", foreignKey=@ForeignKey(name = "fk_anio_modelo"), nullable = false)
 	private AnioModelo anioModelo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(foreignKey=@ForeignKey(name = "fk_ciudad"))
+	@JoinColumn(foreignKey=@ForeignKey(name = "fk_ciudad"), nullable = false)
 	private Ciudad ciudad;
 	
 	@OneToMany(fetch = FetchType.LAZY)

@@ -24,7 +24,7 @@ import isi.dds.tp.enums.EnumSiniestros;
 @Table
 public class Poliza {
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "numero_cliente", foreignKey=@ForeignKey(name = "fk_numero_cliente"))
+	@JoinColumn(name = "numero_cliente", foreignKey=@ForeignKey(name = "fk_numero_cliente"), nullable = false)
 	private Cliente cliente;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -38,19 +38,19 @@ public class Poliza {
 	private List<Cuota> cuotas;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "tipo_cobertura", foreignKey=@ForeignKey(name = "fk_tipo_cobertura"))
+	@JoinColumn(name = "tipo_cobertura", foreignKey=@ForeignKey(name = "fk_tipo_cobertura"), nullable = false)
 	private TipoCobertura tipoCobertura;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "anio_modelo", foreignKey=@ForeignKey(name = "fk_anio_modelo"))
+	@JoinColumn(name = "anio_modelo", foreignKey=@ForeignKey(name = "fk_anio_modelo"), nullable = false)
 	private AnioModelo anioModelo;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_ciudad", foreignKey=@ForeignKey(name = "fk_id_ciudad"))
+	@JoinColumn(name = "id_ciudad", foreignKey=@ForeignKey(name = "fk_id_ciudad"), nullable = false)
 	private Ciudad ciudad;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "parametros_poliza", foreignKey=@ForeignKey(name = "fk_parametros_poliza"))
+	@JoinColumn(name = "parametros_poliza", foreignKey=@ForeignKey(name = "fk_parametros_poliza"), nullable = false)
 	private ParametrosPoliza parametrosPoliza;
     
 	@ManyToOne(fetch = FetchType.LAZY)

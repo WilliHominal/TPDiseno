@@ -69,15 +69,16 @@ public class GestorDomicilio {
 	    return pais.getProvincias();
     }
     
-    public List<Ciudad> sortCiudades(Provincia provincia){
-    	provincia.getCiudades().sort(Comparator.comparing(Ciudad::getNombre));
-	    Collections.sort(provincia.getCiudades(), new Comparator<Ciudad>() {
+    public List<Ciudad> sortCiudades(Integer id_provincia){
+    	List<Ciudad> ciudades = DAODomicilio.getDAO().getCiudades(id_provincia);
+    	ciudades.sort(Comparator.comparing(Ciudad::getNombre));
+	    Collections.sort(ciudades, new Comparator<Ciudad>() {
 	    	@Override
 	    	public int compare(Ciudad c1, Ciudad c2) {
 	    		return c1.getNombre().compareTo(c2.getNombre());
 	    	}
 	    });
-	    return provincia.getCiudades();
+	    return ciudades;
     }
 
 	public RiesgoCiudad newRiesgoCiudad(Integer idCiudad, Float riesgo) {

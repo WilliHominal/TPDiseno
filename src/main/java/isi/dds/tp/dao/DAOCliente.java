@@ -49,28 +49,31 @@ public class DAOCliente {
 		session.close();
 	}
     
-    public Cliente getCliente(Long numeroCliente) {    	
-        try {
-            return session.get(Cliente.class, numeroCliente);
+    public Cliente getCliente(Long numeroCliente) {
+    	Cliente c = null;
+		try {
+            c = session.get(Cliente.class, numeroCliente);
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }	
-    	return null;
+        session.close();
+    	return c;
     }
     
 	public List<Cliente> getClientes(String consulta) {
-        try {
-        	return session.createNativeQuery("SELECT * FROM cliente "+consulta, Cliente.class).getResultList();
+    	List<Cliente> c = null;
+		try {
+        	c = session.createNativeQuery("SELECT * FROM cliente "+consulta, Cliente.class).getResultList();
         }
         catch (HibernateException e) {
             e.printStackTrace();
         }
-        return null;
+        return c;
     }
 
 	public void updateCliente(Cliente cliente) {
-        try {
+    	try {
             session.update(cliente);
             session.getTransaction().commit();
         }
@@ -78,6 +81,5 @@ public class DAOCliente {
         	e.printStackTrace();
             session.getTransaction().rollback();	
 		}
-        session.close();
 	} 
 }
