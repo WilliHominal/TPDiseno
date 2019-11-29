@@ -48,15 +48,13 @@ public class HibernateUtil {
                 MetadataSources sources = new MetadataSources(registry);
                 Metadata metadata = sources.getMetadataBuilder().build();
                 sessionFactory = metadata.getSessionFactoryBuilder().build();
+                sessionFactory.getCurrentSession().beginTransaction();
                 
             } catch (Exception e) {
-            	sessionFactory = getSessionFactoryCreate();
+            	recargarBaseDatos();
+            	//sessionFactory = getSessionFactoryCreate();
             }
-            try {
-            	sessionFactory.getCurrentSession().beginTransaction();
-            } catch (Exception e) {
-            	return null;
-            }
+            
         }
         return sessionFactory;
     }
@@ -71,7 +69,6 @@ public class HibernateUtil {
 	}
     
     public static void shutdown() {
-   
 		DAOParametrosPoliza.shutdown();
 		DAODomicilio.shutdown();
 		DAOSiniestros.shutdown();
@@ -79,8 +76,8 @@ public class HibernateUtil {
 		DAOParametrosVehiculo.shutdown();
 		DAOCliente.shutdown();
 		DAOPoliza.shutdown();
-		DAOBitacora.shutdown();
 		DAOPago.shutdown();
+		DAOBitacora.shutdown();
 		DAOUsuario.shutdown();
     	
         if (registry != null && sessionFactory != null) {
