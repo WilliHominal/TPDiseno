@@ -158,7 +158,7 @@ public class GestorPoliza {
 			break;
 			
 			case UNO:
-				ajusteSiniestros = param.getPorcentajeNingunSiniestro();
+				ajusteSiniestros = param.getPorcentajeUnSiniestro();
 			break;
 				
 			case DOS:
