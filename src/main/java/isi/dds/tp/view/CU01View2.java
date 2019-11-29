@@ -455,10 +455,10 @@ public class CU01View2 extends JPanel  {
 				lDescSemestral.setVisible(descuentoSemestral);
 			}
 		}
-		else {
+		else{
 			if(descuentoSemestral) {
-				lDescUnidad.setText("-Descuento por pago semestral");
-				lDescUnidad.setVisible(descuentoSemestral);
+				lDescSemestral.setText("-Descuento por pago semestral");
+				lDescSemestral.setVisible(descuentoSemestral);
 			}
 		}
 	}
