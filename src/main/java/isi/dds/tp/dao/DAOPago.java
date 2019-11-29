@@ -4,6 +4,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import isi.dds.tp.hibernate.HibernateUtil;
 import isi.dds.tp.modelo.Cuota;
+import isi.dds.tp.modelo.Pago;
 
 public class DAOPago {
 	private static DAOPago instanciaDAO = null;
@@ -42,11 +43,11 @@ public class DAOPago {
         session.close();
     }
     
-    public void addCuota (Cuota cuota) {
+    public void addPago (Pago pago) {
     	Session session = HibernateUtil.getSessionFactoryValidate().openSession();
         try {
         	session.beginTransaction();
-            session.save(cuota);
+            session.save(pago);
             session.getTransaction().commit();
         }
         catch (HibernateException e) {
